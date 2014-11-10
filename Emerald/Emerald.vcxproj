@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EEF4FDD6-62DA-454E-BD29-EC501C1E11BB}</ProjectGuid>
+    <RootNamespace>Emerald</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>D:\project\Emerald\Emerald\Include;E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)Include;E:\boost_1_55_0\boost_1_55_0</IncludePath>
+    <LibraryPath>E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;$(LibraryPath);$(DXSDK_DIR)Lib\x86;E:\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="EEAction.cpp" />
+    <ClCompile Include="EECamera.cpp" />
+    <ClCompile Include="EECollision.cpp" />
+    <ClCompile Include="EEColor.cpp" />
+    <ClCompile Include="EECore.cpp" />
+    <ClCompile Include="EED3D.cpp" />
+    <ClCompile Include="EEGeometry.cpp" />
+    <ClCompile Include="EEGUI.cpp" />
+    <ClCompile Include="EEMusic.cpp" />
+    <ClCompile Include="EETexture.cpp" />
+    <ClCompile Include="EEInput.cpp" />
+    <ClCompile Include="EEMath.cpp" />
+    <ClCompile Include="EEObject.cpp" />
+    <ClCompile Include="EEShaderState.cpp" />
+    <ClCompile Include="EESystem.cpp" />
+    <ClCompile Include="EETimer.cpp" />
+    <ClCompile Include="源.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EEAction.h" />
+    <ClInclude Include="EECamera.h" />
+    <ClInclude Include="EECollision.h" />
+    <ClInclude Include="EEColor.h" />
+    <ClInclude Include="EECore.h" />
+    <ClInclude Include="EED3D.h" />
+    <ClInclude Include="EEGeometry.h" />
+    <ClInclude Include="EEGUI.h" />
+    <ClInclude Include="EEHelper.h" />
+    <ClInclude Include="EEMusic.h" />
+    <ClInclude Include="EETexture.h" />
+    <ClInclude Include="EEInput.h" />
+    <ClInclude Include="EEMath.h" />
+    <ClInclude Include="EEObject.h" />
+    <ClInclude Include="EEShaderState.h" />
+    <ClInclude Include="EESystem.h" />
+    <ClInclude Include="EETimer.h" />
+    <ClInclude Include="Emerald.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEQuadShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEObjectBuffer.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
