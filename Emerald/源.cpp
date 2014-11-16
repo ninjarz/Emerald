@@ -1,3 +1,4 @@
+#if 0
 #include "Emerald.h"
 
 #define debugmode
@@ -15,7 +16,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	EETexture upTex(L"Texture/界面/主界面/CG鉴赏.png");
 	EETexture overTex(L"Texture/界面/主界面/更多.png");
 	EETexture downTex(L"Texture/界面/主界面/成就.png");
-	SaveTextureToFile(EE_BMP, L"test.bmp", downTex);
+	//SaveTextureToFile(EE_BMP, L"test.bmp", downTex);
 
 	EEButton *button1 = new EEButton(EE_BUTTON_THREE, Rect_Float(300.f, 100.f, 400.f, 200.f), upTex, overTex, downTex, NULL);
 	EEButton *button2 = new EEButton(EE_BUTTON_SCALE, Rect_Float(200.f, 200.f, 300.f, 300.f), 1.3f, 0.2f, 0.2f, upTex, NULL);
@@ -56,3 +57,4 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	EEShutdown();
 	return 0;
 }
+#endif

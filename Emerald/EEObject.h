@@ -12,6 +12,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	struct EEObjectBufferDesc
 	{
+		MATRIX rotation;
 		float alpha;
 		float tmp1;
 		float tmp2;
@@ -23,14 +24,16 @@ namespace Emerald
 	class EEObject
 	{
 	public:
+		static bool InitializeObjectBuffer();
+
+	public:
 		EEObject();
 		EEObject(const EEObject& _object);
 		~EEObject();
 
-		static bool InitializeObjectBuffer();
-
 		virtual bool Update() = NULL;
 		virtual bool Render() = NULL;
+		virtual bool Process();
 
 		virtual void SetPositionX(float _posX);
 		virtual void SetPositionY(float _posY);
@@ -41,8 +44,9 @@ namespace Emerald
 		virtual void SetScaleY(float _scaleY);
 		virtual void SetScaleZ(float _scaleZ);
 		virtual void SetScale(float _scale);
-		virtual void SetScale(FLOAT3 _scale);
+		virtual void SetScale(const FLOAT3& _scale);
 		virtual void SetAlpha(float _alpha);
+		virtual void SetRotation(const MATRIX& _rotation);
 		virtual void SetLocalZOrder(float _localZOrder);
 
 		virtual float GetPositionX() const;
@@ -58,6 +62,8 @@ namespace Emerald
 		virtual bool IsScaleDirty();
 		virtual float GetAlpha();
 		virtual bool IsAlphaDirty();
+		virtual const MATRIX& GetRotation();
+		virtual bool IsRotaionDirty();
 		virtual float GetLocalZOrder();
 		virtual bool IsLocalZOrderDirty();
 
@@ -75,6 +81,8 @@ namespace Emerald
 		bool m_isScaleDirty;
 		float m_alpha;
 		bool m_isAlphaDirty;
+		MATRIX m_rotation;
+		bool m_isRotationDirty;
 		float m_localZOrder;
 		bool m_isLocalZOrderDirty;
 	};

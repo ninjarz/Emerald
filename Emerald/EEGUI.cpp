@@ -695,7 +695,7 @@ namespace Emerald
 	EEScene::EEScene(const EEScene &_scene)
 		:
 		EEQuad(_scene),
-		m_buttons(m_buttons)
+		m_objects(m_objects)
 	{
 
 	}
@@ -710,9 +710,9 @@ namespace Emerald
 	bool EEScene::Update()
 	{
 		EEQuad::Update();
-		for (UINT i = 0; i < m_buttons.size(); ++i)
+		for (UINT i = 0; i < m_objects.size(); ++i)
 		{
-			m_buttons[i]->Update();
+			m_objects[i]->Update();
 		}
 
 		return true;
@@ -722,19 +722,19 @@ namespace Emerald
 	bool EEScene::Render()
 	{
 		EEQuad::Render();
-		for (UINT i = 0; i < m_buttons.size(); ++i)
+		for (UINT i = 0; i < m_objects.size(); ++i)
 		{
-			m_buttons[i]->Render();
+			m_objects[i]->Render();
 		}
 
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEScene::AddButton(EEButton* _button)
+	void EEScene::AddObject(EEObject* _object)
 	{
 		//if (m_control.size() == m_control.capacity())
 		//	m_control.reserve(m_control.size() + 1);
-		m_buttons.push_back(_button);
+		m_objects.push_back(_object);
 	}
 }

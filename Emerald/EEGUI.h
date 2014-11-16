@@ -121,11 +121,11 @@ namespace Emerald
 
 		bool Update();
 		bool Render();
-		void AddButton(EEButton* _button);
+		void AddObject(EEObject* _object);
 
 	private:
 		//controls
-		std::vector<EEButton*> m_buttons;
+		std::vector<EEObject*> m_objects;
 	};
 
 }

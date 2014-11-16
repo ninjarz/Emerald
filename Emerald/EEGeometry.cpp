@@ -12,77 +12,6 @@ namespace Emerald
 	ID3D11PixelShader  *EEQuad::s_quadPS = NULL;
 	
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const Rect_Float &_rect)
-		:
-		EEObject(),
-		m_quadRect(_rect),
-		m_quadWidth(_rect.z - _rect.x),
-		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
-		m_quadTex()
-	{
-		InitializeQuadShader();
-
-		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
-		CreateQuadVertexBuffer();
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const Rect_Float &_rect, const EETexture& _tex)
-		:
-		EEObject(),
-		m_quadRect(_rect),
-		m_quadWidth(_rect.z - _rect.x),
-		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
-		m_quadTex(_tex)
-	{
-		InitializeQuadShader();
-
-		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
-		CreateQuadVertexBuffer();
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex)
-		:
-		EEObject(),
-		m_quadRect(_rect),
-		m_quadWidth(_rect.z - _rect.x),
-		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
-		m_quadTex(_tex)
-	{
-		InitializeQuadShader();
-
-		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
-		CreateQuadVertexBuffer();
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const EEQuad& _quad)
-		:
-		EEObject(_quad),
-		m_quadRect(_quad.m_quadRect),
-		m_quadWidth(_quad.m_quadWidth),
-		m_quadHeight(_quad.m_quadHeight),
-		m_quadVB(_quad.m_quadVB),
-		m_quadColor(_quad.m_quadColor),
-		m_quadTex(_quad.m_quadTex)
-	{
-
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEQuad::~EEQuad()
-	{
-		SAFE_RELEASE(m_quadVB);
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	bool EEQuad::InitializeQuadShader()
 	{
 		if (!s_isQuadInitialized)
@@ -171,6 +100,77 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEQuad::EEQuad(const Rect_Float &_rect)
+		:
+		EEObject(),
+		m_quadRect(_rect),
+		m_quadWidth(_rect.z - _rect.x),
+		m_quadHeight(_rect.w - _rect.y),
+		m_quadVB(NULL),
+		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
+		m_quadTex()
+	{
+		InitializeQuadShader();
+
+		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad::EEQuad(const Rect_Float &_rect, const EETexture& _tex)
+		:
+		EEObject(),
+		m_quadRect(_rect),
+		m_quadWidth(_rect.z - _rect.x),
+		m_quadHeight(_rect.w - _rect.y),
+		m_quadVB(NULL),
+		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
+		m_quadTex(_tex)
+	{
+		InitializeQuadShader();
+
+		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad::EEQuad(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex)
+		:
+		EEObject(),
+		m_quadRect(_rect),
+		m_quadWidth(_rect.z - _rect.x),
+		m_quadHeight(_rect.w - _rect.y),
+		m_quadVB(NULL),
+		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
+		m_quadTex(_tex)
+	{
+		InitializeQuadShader();
+
+		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad::EEQuad(const EEQuad& _quad)
+		:
+		EEObject(_quad),
+		m_quadRect(_quad.m_quadRect),
+		m_quadWidth(_quad.m_quadWidth),
+		m_quadHeight(_quad.m_quadHeight),
+		m_quadVB(_quad.m_quadVB),
+		m_quadColor(_quad.m_quadColor),
+		m_quadTex(_quad.m_quadTex)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad::~EEQuad()
+	{
+		SAFE_RELEASE(m_quadVB);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEQuad::Update()
 	{
 		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
@@ -212,7 +212,6 @@ namespace Emerald
 		MapObjectBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
-
 		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		deviceConstext->IASetInputLayout(s_quadIL);
 		UINT stride = sizeof(EEQuadVertex);
@@ -270,6 +269,32 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	void EEQuad::SetRect(const Rect_Float& _rect)
+	{
+		m_quadRect = _rect;
+		m_quadWidth = _rect.z - _rect.x;
+		m_quadHeight = _rect.w - _rect.y;
+		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEQuad::SetWidth(float _width)
+	{
+		m_quadWidth = _width;
+		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEQuad::SetHeight(float _height)
+	{
+		m_quadHeight = _height;
+		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEQuad::SetTexture(EETexture* _tex)
 	{
 		m_quadTex.SetTexture(_tex->GetTexture());
@@ -285,6 +310,23 @@ namespace Emerald
 		return true;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	Rect_Float EEQuad::GetRect()
+	{
+		return m_quadRect;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEQuad::GetWidht()
+	{
+		return m_quadWidth;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEQuad::GetHeight()
+	{
+		return m_quadHeight;
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	EETexture* EEQuad::GetTexture()

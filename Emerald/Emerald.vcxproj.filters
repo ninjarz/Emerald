@@ -22,11 +22,11 @@
     <Filter Include="头文件\Emerald\EEShader">
       <UniqueIdentifier>{87eb1836-7c57-48f9-8e85-0d168c384eb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Demo">
+      <UniqueIdentifier>{815156d8-c045-4760-ba14-c71b37a5da13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="源.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="EESystem.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -74,6 +74,15 @@
     </ClCompile>
     <ClCompile Include="EEMusic.cpp">
       <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="源.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="源1.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="源2.cpp">
+      <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +146,9 @@
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
     <None Include="EEShader\EEObjectBuffer.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EECameraBuffer.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
   </ItemGroup>

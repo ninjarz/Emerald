@@ -102,6 +102,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	int EECore::Run()
 	{
+		Start();
 		Tick();
 		if (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
 		{

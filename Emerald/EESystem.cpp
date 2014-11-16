@@ -124,10 +124,10 @@ namespace Emerald
 		}
 
 		//create window
-		m_hWnd = CreateWindowExW(WS_EX_APPWINDOW,					//窗口的扩展风格
+			m_hWnd = CreateWindowExW(WS_EX_APPWINDOW,					//窗口的扩展风格
 			m_applicationName,                                    //指向窗口类名字的指针
 			m_applicationName,                                    //指向窗口名字的指针
-			WS_OVERLAPPEDWINDOW,                                  //窗口的风格
+			WS_POPUP,                                  //窗口的风格
 			posX, posY,                                           //窗口在屏幕上显示的起始位置
 			m_width, m_height,                                    //窗口的宽度和高度
 			NULL,                                                 //指向被创建窗口的的父窗口的句柄

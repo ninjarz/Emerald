@@ -24,13 +24,14 @@ namespace Emerald
 	class EEQuad : public EEObject
 	{
 	public:
+		static bool InitializeQuadShader();
+
+	public:
 		EEQuad(const Rect_Float &_rect);
 		EEQuad(const Rect_Float &_rect, const EETexture& _tex);
 		EEQuad(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex);
 		EEQuad(const EEQuad& _quad);
 		~EEQuad();
-
-		static bool InitializeQuadShader();
 
 		bool Update();
 		bool Render();
@@ -39,9 +40,15 @@ namespace Emerald
 		void SetPositionY(float _posY);
 		void SetPositionXY(const FLOAT2& _pos);
 		void SetPosition(const FLOAT3& _pos);
+		void SetRect(const Rect_Float& _rect);
+		void SetWidth(float _width);
+		void SetHeight(float _height);
 		bool SetTexture(EETexture* _tex);
 		bool SetTexture(ID3D11ShaderResourceView* _tex);
 
+		Rect_Float GetRect();
+		float GetWidht();
+		float GetHeight();
 		EETexture* GetTexture();
 
 	protected:
@@ -64,8 +71,6 @@ namespace Emerald
 		//the texture of the quad if need
 		EETexture m_quadTex;
 	};
-
-
 }
 
 

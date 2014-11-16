@@ -42,6 +42,9 @@ namespace Emerald
 	class EEMusic
 	{
 	public:
+		static bool InitializeMusic();
+
+	public:
 		EEMusic();
 		EEMusic(const char* _fileName);
 		EEMusic(const EEMusic& _music);
@@ -52,6 +55,7 @@ namespace Emerald
 		bool Start(float _begin, float _end, int _times = 1);
 		bool Pause();
 		bool Stop();
+
 		bool SetVolume(float _volume);
 		bool SetSampleRate(int _rate);
 		bool SetFrequencyRatio(float _para);
@@ -61,10 +65,9 @@ namespace Emerald
 		int GetTotalSamples();
 		int GetSampled();
 		float GetProgress();
+		char* GetSampleData(int _num);
 
 	private:
-		static bool InitializeMusic();
-
 		bool LoadMusic(const char* _fileName);
 
 	private:

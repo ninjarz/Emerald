@@ -1068,9 +1068,11 @@ namespace Emerald
 	MATRIX MatrixRotationAxis(const FLOAT4& axis, const FLOAT radians);
 	MATRIX MatrixRotationAxisN(const FLOAT3& axisN, const FLOAT radians);
 	MATRIX MatrixRotationAxisN(const FLOAT4& axisN, const FLOAT radians);
+	MATRIX MatrixOrthoLH(FLOAT _Width, FLOAT _Height, FLOAT _nearZ, FLOAT _farZ);
 	MATRIX MatrixPerspectiveFovLH(const FLOAT fovY, const FLOAT aspectRatio, const FLOAT nearZ, const FLOAT farZ);
 	MATRIX MatrixTranslation(const FLOAT x, const FLOAT y, const FLOAT z);
-	FLOAT MatrixMinorDeterminant(const MATRIX& _matrix,
+	FLOAT MatrixMinorDeterminant(
+		const MATRIX& _matrix,
 		const UINT _r0, const UINT _r1, const UINT _r2,
 		const UINT _c0, const UINT _c1, const UINT _c2);
 	FLOAT MatrixDeterminant(const MATRIX& _matrix);

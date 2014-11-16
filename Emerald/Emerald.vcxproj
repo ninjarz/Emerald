@@ -47,6 +47,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -85,6 +86,8 @@
     <ClCompile Include="EESystem.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="源.cpp" />
+    <ClCompile Include="源1.cpp" />
+    <ClCompile Include="源2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EEAction.h" />
@@ -113,6 +116,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EECameraBuffer.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

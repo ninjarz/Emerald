@@ -20,6 +20,7 @@ namespace Emerald
 		m_isStopped = false;
 
 		Tick();
+		Stop();
 
 		return true;
 	}
@@ -119,7 +120,7 @@ namespace Emerald
 		//注意把计数转换为秒
 		if (m_isStopped)
 		{
-			return (m_stopTime - m_baseTime - m_pausedTime)*m_secsPerCount;
+			return (m_stopTime - m_baseTime - m_pausedTime) * m_secsPerCount;
 		}
 		//如果是正常状态
 		//	开始时刻T0							当前时刻T
@@ -128,7 +129,7 @@ namespace Emerald
 		//注意把计数转换为秒
 		else
 		{
-			return (m_currTime - m_baseTime - m_pausedTime)*m_secsPerCount;
+			return (m_currTime - m_baseTime - m_pausedTime) * m_secsPerCount;
 		}
 	}
 

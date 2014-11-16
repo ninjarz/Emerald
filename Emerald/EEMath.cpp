@@ -129,6 +129,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	//the matrix is for the special coordinate system of the 2-D screen only
+	MATRIX MatrixOrthoLH(FLOAT _Width, FLOAT _Height, FLOAT _nearZ, FLOAT _farZ)
+	{
+		MATRIX result;
+
+		FLOAT range = 1.0f / (_nearZ - _farZ);
+		result(0, 0) = 2.0f / _Width;	result(0, 1) = 0.0f;				result(0, 2) = 0.0f;			result(0, 3) = 0;
+		result(1, 0) = 0.0f;			result(1, 1) = - 2.0f / _Height;	result(1, 2) = 0.0f;			result(1, 3) = 0;
+		result(2, 0) = 0.0f;			result(2, 1) = 0.0f;				result(2, 2) = range;			result(2, 3) = 0;
+		result(3, 0) = -1.0f;			result(3, 1) = 1.0f;				result(3, 2) = -range * _nearZ;	result(3, 3) = 1;
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixPerspectiveFovLH(const FLOAT fovY, const FLOAT aspectRatio, const FLOAT nearZ, const FLOAT farZ)
 	{
 		MATRIX result;
@@ -139,10 +154,12 @@ namespace Emerald
 		result.m[2][3] = 1.0f;
 		result.m[3][2] = (nearZ * farZ) / (nearZ - farZ);
 
+		/*
 		result.m[0][1] = result.m[0][2] = result.m[0][3] =
 			result.m[1][0] = result.m[1][2] = result.m[1][3] =
 			result.m[2][0] = result.m[2][1] =
 			result.m[3][0] = result.m[3][1] = result.m[3][3] = 0.f;
+			*/
 
 		return result;
 	}
@@ -176,7 +193,8 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT MatrixMinorDeterminant(const MATRIX& _matrix,
+	FLOAT MatrixMinorDeterminant(
+		const MATRIX& _matrix,
 		const UINT _r0, const UINT _r1, const UINT _r2,
 		const UINT _c0, const UINT _c1, const UINT _c2)
 	{
