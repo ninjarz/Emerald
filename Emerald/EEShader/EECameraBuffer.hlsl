@@ -5,3 +5,5 @@ cbuffer CameraBuffer : register(b1)
 {
 	row_major matrix  cb_orthoLH : packoffset(c0);
 };
+
+#endif

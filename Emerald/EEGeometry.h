@@ -33,23 +33,26 @@ namespace Emerald
 		EEQuad(const EEQuad& _quad);
 		~EEQuad();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 
-		void SetPositionX(float _posX);
-		void SetPositionY(float _posY);
-		void SetPositionXY(const FLOAT2& _pos);
-		void SetPosition(const FLOAT3& _pos);
-		void SetRect(const Rect_Float& _rect);
-		void SetWidth(float _width);
-		void SetHeight(float _height);
-		bool SetTexture(EETexture* _tex);
-		bool SetTexture(ID3D11ShaderResourceView* _tex);
+		virtual void SetPositionX(float _posX);
+		virtual void SetPositionY(float _posY);
+		virtual void SetPositionXY(const FLOAT2& _pos);
+		virtual void SetPosition(const FLOAT3& _pos);
+		virtual void SetRect(const Rect_Float& _rect);
+		virtual void SetWidth(float _width);
+		virtual void SetHeight(float _height);
+		virtual bool SetTexture(EETexture* _tex);
+		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
 
-		Rect_Float GetRect();
-		float GetWidht();
-		float GetHeight();
-		EETexture* GetTexture();
+		virtual const Rect_Float& GetRect();
+		virtual Rect_Float GetFinalRect();
+		virtual float GetWidht();
+		virtual float GetHeight();
+		virtual FLOAT2 GetCenter();
+		virtual FLOAT2 GetFinalCenter();
+		virtual EETexture* GetTexture();
 
 	protected:
 		bool CreateQuadVertexBuffer();

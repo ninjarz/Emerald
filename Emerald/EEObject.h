@@ -35,6 +35,7 @@ namespace Emerald
 		virtual bool Render() = NULL;
 		virtual bool Process();
 
+		virtual void SetParent(EEObject* _parent);
 		virtual void SetPositionX(float _posX);
 		virtual void SetPositionY(float _posY);
 		virtual void SetPositionZ(float _posZ);
@@ -49,6 +50,7 @@ namespace Emerald
 		virtual void SetRotation(const MATRIX& _rotation);
 		virtual void SetLocalZOrder(float _localZOrder);
 
+		virtual EEObject* GetParent();
 		virtual float GetPositionX() const;
 		virtual float GetPositionY() const;
 		virtual float GetPositionZ() const;
@@ -75,6 +77,7 @@ namespace Emerald
 		static bool s_isObjectInitialized;
 		static ID3D11Buffer *s_objectBuffer;
 
+		EEObject *m_parent;
 		FLOAT3 m_pos;
 		bool m_isPosDirty;
 		FLOAT3 m_scale;

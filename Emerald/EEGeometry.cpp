@@ -175,20 +175,16 @@ namespace Emerald
 	{
 		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float quadPosX = ((m_quadRect.x - m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosY = 1.0f - ((m_quadRect.y - m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
-			float quadPosZ = ((m_quadRect.z + m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosW = 1.0f - ((m_quadRect.w + m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			Rect_Float finalRect = GetFinalRect();
 
 			EEQuadVertex quadVertices[4];
-			quadVertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
+			quadVertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			quadVertices[0].tex = FLOAT2(0, 0);
-			quadVertices[1].pos = FLOAT3(quadPosZ, quadPosY, m_localZOrder * 0.0001f);
+			quadVertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
 			quadVertices[1].tex = FLOAT2(1, 0);
-			quadVertices[2].pos = FLOAT3(quadPosX, quadPosW, m_localZOrder * 0.0001f);
+			quadVertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
 			quadVertices[2].tex = FLOAT2(0, 1);
-			quadVertices[3].pos = FLOAT3(quadPosZ, quadPosW, m_localZOrder * 0.0001f);
+			quadVertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
 			quadVertices[3].tex = FLOAT2(1, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -233,6 +229,7 @@ namespace Emerald
 		m_pos.x = _posX;
 		m_quadRect.x = _posX;
 		m_quadRect.z = m_quadRect.x + m_quadWidth;
+
 		m_isPosDirty = true;
 	}
 
@@ -311,9 +308,35 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	Rect_Float EEQuad::GetRect()
+	const Rect_Float& EEQuad::GetRect()
 	{
 		return m_quadRect;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	Rect_Float EEQuad::GetFinalRect()
+	{
+		if (m_parent)
+		{
+			FLOAT3 scale = (m_parent->GetScale() * m_scale - 1.0f) * 0.5f;
+			FLOAT3 deltaPos = m_parent->GetPosition();
+			return Rect_Float(
+				m_quadRect.x - m_quadWidth * scale.x + deltaPos.x,
+				m_quadRect.y - m_quadHeight * scale.y + deltaPos.y,
+				m_quadRect.z + m_quadWidth * scale.x + deltaPos.x,
+				m_quadRect.w + m_quadHeight * scale.y + deltaPos.y
+				);
+		}
+		else
+		{
+			FLOAT3 scale = (m_scale - 1.0f) * 0.5f;
+			return Rect_Float(
+				m_quadRect.x - m_quadWidth * scale.x,
+				m_quadRect.y - m_quadHeight * scale.y,
+				m_quadRect.z + m_quadWidth * scale.x,
+				m_quadRect.w + m_quadHeight * scale.y
+				);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -329,6 +352,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEQuad::GetCenter()
+	{
+		return FLOAT2(m_pos.x + m_quadWidth / 2, m_pos.y + m_quadHeight / 2);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEQuad::GetFinalCenter()
+	{
+		if (m_parent)
+			return FLOAT2(m_pos.x + m_quadWidth / 2 + m_parent->GetPosition().x, m_pos.y + m_quadHeight / 2 + m_parent->GetPosition().y);
+		else
+			return FLOAT2(m_pos.x + m_quadWidth / 2, m_pos.y + m_quadHeight / 2);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EETexture* EEQuad::GetTexture()
 	{
 		return &m_quadTex;
@@ -339,20 +377,16 @@ namespace Emerald
 	{
 		SAFE_RELEASE(m_quadVB);
 
-		FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-		float quadPosX = ((m_quadRect.x - m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-		float quadPosY = 1.0f - ((m_quadRect.y - m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
-		float quadPosZ = ((m_quadRect.z + m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-		float quadPosW = 1.0f - ((m_quadRect.w + m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+		Rect_Float finalRect = GetFinalRect();
 
 		EEQuadVertex quadVertices[4];
-		quadVertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
+		quadVertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 		quadVertices[0].tex = FLOAT2(0, 0);
-		quadVertices[1].pos = FLOAT3(quadPosZ, quadPosY, m_localZOrder * 0.0001f);
+		quadVertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
 		quadVertices[1].tex = FLOAT2(1, 0);
-		quadVertices[2].pos = FLOAT3(quadPosX, quadPosW, m_localZOrder * 0.0001f);
+		quadVertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
 		quadVertices[2].tex = FLOAT2(0, 1);
-		quadVertices[3].pos = FLOAT3(quadPosZ, quadPosW, m_localZOrder * 0.0001f);
+		quadVertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
 		quadVertices[3].tex = FLOAT2(1, 1);
 
 		D3D11_BUFFER_DESC vbDesc = { 0 };

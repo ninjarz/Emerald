@@ -7,9 +7,9 @@ namespace Emerald
 {
 	//EEAction_APIs
 	//----------------------------------------------------------------------------------------------------
-	void EEMoveBy(EEObject* _object, float _time, const FLOAT2& _dir, float _delay)
+	boost::thread* EEMoveBy(EEObject* _object, float _time, const FLOAT2& _dir, float _delay)
 	{
-		boost::thread thrd(boost::bind(&EEMoveByProcess, _object, _time, _dir, _delay, (float)EECore::s_EECore->GetTotalTime()));
+		return new boost::thread(boost::bind(&EEMoveByProcess, _object, _time, _dir, _delay, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -61,9 +61,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEScale(EEObject* _object, float _time, float _degree, float _delay)
+	boost::thread* EEScale(EEObject* _object, float _time, float _degree, float _delay)
 	{
-		boost::thread thrd(boost::bind(&EEScaleProcess, _object, _time, _degree, _delay, (float)EECore::s_EECore->GetTotalTime()));
+		return new boost::thread(boost::bind(&EEScaleProcess, _object, _time, _degree, _delay, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -115,9 +115,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EERotate(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay)
+	boost::thread* EERotate(EEObject* _object, float _time, float _radians, float _delay = 0.0f)
 	{
-		boost::thread thrd(boost::bind(&EERotateProcess, _object, _time, _radians, _center, _delay, (float)EECore::s_EECore->GetTotalTime()));
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EERotateProcess(EEObject* _object, float _time, float _radians, float _delay, float _startTime)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	boost::thread* EERotate(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay)
+	{
+		return new boost::thread(boost::bind(&EERotateProcess, _object, _time, _radians, _center, _delay, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -158,23 +170,25 @@ namespace Emerald
 				MATRIX centerToOrigin = MatrixTranslation(-_center.x, -_center.y, 0.0f);
 				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * remainTime);
 				MATRIX originToCenter = MatrixTranslation(_center.x, _center.y, 0.0f);
-				_object->SetRotation(centerToOrigin * rotation * originToCenter);
+				_object->SetRotation(_object->GetRotation() * centerToOrigin * rotation * originToCenter);
 				remainTime = 0.f;
 				return;
 			}
 			else
 			{
+				MATRIX centerToOrigin = MatrixTranslation(-_center.x, -_center.y, 0.0f);
 				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * deltaTime);
-				_object->SetPosition(_object->GetPosition() * rotation);
+				MATRIX originToCenter = MatrixTranslation(_center.x, _center.y, 0.0f);
+				_object->SetRotation(_object->GetRotation() * centerToOrigin * rotation * originToCenter);
 				remainTime -= deltaTime;
 			}
 		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EERotateBy(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay)
+	boost::thread* EERotateBy(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay)
 	{
-		boost::thread thrd(boost::bind(&EERotateByProcess, _object, _time, _radians, _center, _delay, (float)EECore::s_EECore->GetTotalTime()));
+		return new boost::thread(boost::bind(&EERotateByProcess, _object, _time, _radians, _center, _delay, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -230,9 +244,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEFade(EEObject* _object, float _time, float _degree, float _delay)
+	boost::thread* EEFade(EEObject* _object, float _time, float _degree, float _delay)
 	{
-		boost::thread thrd(boost::bind(&EEFadeProcess, _object, _time, _degree, _delay, (float)EECore::s_EECore->GetTotalTime()));
+		return new boost::thread(boost::bind(&EEFadeProcess, _object, _time, _degree, _delay, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	void EEFadeProcess(EEObject* _object, float _time, float _degree, float _delay, float _startTime)

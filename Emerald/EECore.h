@@ -20,6 +20,7 @@ namespace Emerald
 	class EEInput;
 	class EETimer;
 	class EED3D;
+	class EECamera;
 	class EEShaderState;
 
 	//EEDesc
@@ -52,7 +53,6 @@ namespace Emerald
 		{
 		}
 
-		bool Initialize_All();
 		bool Initialize_All(const EEDesc& _EEDesc);
 		void Shutdown();
 		int Run();
@@ -144,6 +144,13 @@ namespace Emerald
 	private:
 		EED3D *m_EED3D;
 
+		//EECore_Camera
+	public:
+		EECamera* GetEECamera();
+
+	private:
+		EECamera *m_EECamera;
+
 		//EECore_ShaderState
 	public:
 		EEShaderState* GetEEShaderState();
@@ -161,8 +168,7 @@ namespace Emerald
 
 	//EECore_APIs
 	//----------------------------------------------------------------------------------------------------
-	bool EEInitialize();
-	bool EEInitialize(const EEDesc& _EEDesc);
+	bool EEInitialize(const EEDesc& _EEDesc = { L"Emerald", false, 800, 450, true, false });
 	void EEShutdown();
 	int EERun();
 }

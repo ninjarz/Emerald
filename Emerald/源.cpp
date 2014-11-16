@@ -13,9 +13,9 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	music.SetFrequencyRatio(2.0f);
 	music.Start(0.2f);
 
-	EETexture upTex(L"Texture/界面/主界面/CG鉴赏.png");
-	EETexture overTex(L"Texture/界面/主界面/更多.png");
-	EETexture downTex(L"Texture/界面/主界面/成就.png");
+	EETexture upTex(L"Texture/主界面/模式标签/CG鉴赏.png");
+	EETexture overTex(L"Texture/主界面/模式标签/更多.png");
+	EETexture downTex(L"Texture/主界面/模式标签/成就.png");
 	//SaveTextureToFile(EE_BMP, L"test.bmp", downTex);
 
 	EEButton *button1 = new EEButton(EE_BUTTON_THREE, Rect_Float(300.f, 100.f, 400.f, 200.f), upTex, overTex, downTex, NULL);
@@ -24,11 +24,11 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	progressbar->SetProgress(0.5f);
 	progressbar->SetScale(2.0f);
 
-	EETexture sceneTex(L"Texture/界面/主界面/主界面-1.png");
+	EETexture sceneTex(L"Texture/主界面/模式标签/主界面-1.png");
 
 	EEScene *scene = new EEScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), sceneTex);
-	scene->AddButton(button1);
-	scene->AddButton(button2);
+	scene->AddObject(button1);
+	scene->AddObject(button2);
 
 	EEMoveBy(button2, 5.f, FLOAT2(100.f, 100.f));
 	EEScale(button2, 2.f, 2.0f);

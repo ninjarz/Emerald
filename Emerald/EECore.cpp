@@ -3,6 +3,7 @@
 #include "EEInput.h"
 #include "EETimer.h"
 #include "EED3D.h"
+#include "EECamera.h"
 #include "EEShaderState.h"
 #include "EEGUI.h"
 
@@ -11,47 +12,6 @@ namespace Emerald
 	//EECore
 	//----------------------------------------------------------------------------------------------------
 	EECore *EECore::s_EECore = NULL;
-
-	//----------------------------------------------------------------------------------------------------
-	bool EECore::Initialize_All()
-	{
-		//EECore_System
-		m_EESystem = NULL;
-		m_EESystem = new EESystem;
-		if (!m_EESystem->Initialize(L"Emerald", false, 800, 450))
-			return false;
-
-		//EECore_Input
-		m_EEInput = NULL;
-		m_EEInput = new EEInput;
-		if (!m_EEInput->Initialize())
-			return false;
-		m_inputPro = &EEInput::MessageHandler;
-
-		//EECore_Timer
-		m_EETimer = NULL;
-		m_EETimer = new EETimer;
-		if (!m_EETimer->Initialize())
-			return false;
-
-		//EECore_D3D
-		m_EED3D = NULL;
-		m_EED3D = new EED3D;
-		if (!m_EED3D->Initialize(true, false))
-			return false;
-
-		//EECore_ShaderState
-		m_EEShaderState = NULL;
-		m_EEShaderState = new EEShaderState;
-		if (!m_EEShaderState->Initialize())
-			return false;
-
-		//EECore_GUI
-		m_control_mutex = NULL;
-		m_control_mutex = new boost::shared_mutex;
-
-		return true;
-	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EECore::Initialize_All(const EEDesc& _desc)
@@ -79,6 +39,12 @@ namespace Emerald
 		m_EED3D = NULL;
 		m_EED3D = new EED3D;
 		if (!m_EED3D->Initialize(_desc.isSSAA, _desc.isVsync))
+			return false;
+
+		//EECore_Camera
+		m_EECamera = NULL;
+		m_EECamera = new EECamera;
+		if (!m_EECamera->Initialize())
 			return false;
 
 		//EECore_ShaderState
@@ -185,6 +151,10 @@ namespace Emerald
 	bool EECore::GetIsSSAA() const { return m_EED3D->GetIsSSAA(); }
 	bool EECore::GetIsVsync() const { return m_EED3D->GetIsVsync(); }
 
+	//EECore_Camera
+	//----------------------------------------------------------------------------------------------------
+	EECamera* EECore::GetEECamera() { return m_EECamera; }
+
 	//EECore_ShaderState
 	//----------------------------------------------------------------------------------------------------
 	EEShaderState* EECore::GetEEShaderState() { return m_EEShaderState; }
@@ -194,16 +164,6 @@ namespace Emerald
 	boost::shared_mutex* EECore::GetControlMutex() { return m_control_mutex; }
 
 	//EECore_APIs
-	//----------------------------------------------------------------------------------------------------
-	bool EEInitialize()
-	{
-		EECore::s_EECore = new EECore;
-		if (!EECore::s_EECore->Initialize_All())
-			return false;
-
-		return true;
-	}
-
 	//----------------------------------------------------------------------------------------------------
 	bool EEInitialize(const EEDesc& _EEDesc)
 	{

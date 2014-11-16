@@ -134,7 +134,7 @@ namespace Emerald
 	{
 		MATRIX result;
 
-		FLOAT range = 1.0f / (_nearZ - _farZ);
+		FLOAT range = 1.0f / (_farZ - _nearZ);
 		result(0, 0) = 2.0f / _Width;	result(0, 1) = 0.0f;				result(0, 2) = 0.0f;			result(0, 3) = 0;
 		result(1, 0) = 0.0f;			result(1, 1) = - 2.0f / _Height;	result(1, 2) = 0.0f;			result(1, 3) = 0;
 		result(2, 0) = 0.0f;			result(2, 1) = 0.0f;				result(2, 2) = range;			result(2, 3) = 0;

@@ -13,13 +13,20 @@ namespace Emerald
 	class EEProgressbar : public EEQuad
 	{
 	public:
-		EEProgressbar(const Rect_Float& _quadRect, const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _borderTex, void(*_funcPtr)());
+		EEProgressbar(const Rect_Float& _quadRect, const Rect_Float& _progressRect, const EETexture& _borderTex, const EETexture& _progressTex, void(*_funcPtr)());
 		EEProgressbar(const EEProgressbar& _progressbar);
 		~EEProgressbar();
 
 		bool Update();
 		bool Render();
 
+		void SetPositionX(float _posX);
+		void SetPositionY(float _posY);
+		void SetPositionXY(const FLOAT2& _pos);
+		void SetPosition(const FLOAT3& _pos);
+		void SetRect(const Rect_Float& _rect);
+		void SetWidth(float _width);
+		void SetHeight(float _height);
 		bool SetProgress(float _progress);
 		bool SetCallbackFunc(void(*_funcPtr)());
 
@@ -67,10 +74,10 @@ namespace Emerald
 	class EEButton : public EEQuad
 	{
 	public:
-		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, void(*_funcPtr)());
-		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, void(*_funcPtr)());
-		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, void(*_funcPtr)());
-		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, void(*_funcPtr)());
+		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, void(*_funcPtr)() = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, void(*_funcPtr)() = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, void(*_funcPtr)() = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, void(*_funcPtr)() = NULL);
 		EEButton(const EEButton& _button);
 		~EEButton();
 

@@ -27,6 +27,9 @@ namespace Emerald
 		EECamera(const EECamera& _camera);
 		~EECamera();
 
+		bool Initialize();
+		void Shutdown();
+
 	protected:
 		static bool s_isCameraInitialized;
 		static ID3D11Buffer *s_cameraBuffer;

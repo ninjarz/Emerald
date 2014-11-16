@@ -7,7 +7,7 @@ namespace Emerald
 {
 	//EEProgressBar
 	//----------------------------------------------------------------------------------------------------
-	EEProgressbar::EEProgressbar(const Rect_Float& _quadRect, const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _borderTex, void(*_funcPtr)())
+	EEProgressbar::EEProgressbar(const Rect_Float& _quadRect, const Rect_Float& _progressRect, const EETexture& _borderTex, const EETexture& _progressTex, void(*_funcPtr)())
 		:
 		EEQuad(_quadRect, _borderTex),
 		m_progressRect(_progressRect),
@@ -51,10 +51,10 @@ namespace Emerald
 		{
 			//update the quadVB
 			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float quadPosX = ((m_quadRect.x - m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosY = 1.0f - ((m_quadRect.y - m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
-			float quadPosZ = ((m_quadRect.z + m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosW = 1.0f - ((m_quadRect.w + m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float quadPosX = m_quadRect.x - m_quadWidth * currScale.x;
+			float quadPosY = m_quadRect.y - m_quadHeight * currScale.y;
+			float quadPosZ = m_quadRect.z + m_quadWidth * currScale.x;
+			float quadPosW = m_quadRect.w + m_quadHeight * currScale.y;
 
 			EEQuadVertex quadVertices[4];
 			quadVertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
@@ -74,11 +74,11 @@ namespace Emerald
 			deviceContext->Unmap(m_quadVB, 0);
 
 			//update the progressVB
-			float posX = ((m_progressRect.x - m_progressWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float posY = 1.0f - ((m_progressRect.y - m_progressHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float posX = m_progressRect.x - m_progressWidth * currScale.x;
+			float posY = m_progressRect.y - m_progressHeight * currScale.y;
 			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
-			float posZ = (((m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress)) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float posW = 1.0f - ((m_progressRect.w + m_progressHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float posZ = (m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress);
+			float posW = m_progressRect.w + m_progressHeight * currScale.y;
 
 			EEQuadVertex vertices[4];
 			vertices[0].pos = FLOAT3(posX, posY, m_localZOrder * 0.0001f);
@@ -106,11 +106,11 @@ namespace Emerald
 		{
 			//update the progressVB
 			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float posX = ((m_progressRect.x - m_progressWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float posY = 1.0f - ((m_progressRect.y - m_progressHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float posX = m_progressRect.x - m_progressWidth * currScale.x;
+			float posY = m_progressRect.y - m_progressHeight * currScale.y;
 			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
-			float posZ = (((m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress)) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float posW = 1.0f - ((m_progressRect.w + m_progressHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float posZ = (m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress);
+			float posW = m_progressRect.w + m_progressHeight * currScale.y;
 
 			EEQuadVertex vertices[4];
 			vertices[0].pos = FLOAT3(posX, posY, m_localZOrder * 0.0001f);
@@ -173,6 +173,79 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetPositionX(float _posX)
+	{
+		float deltaX = _posX - m_pos.x;
+		m_pos.x = _posX;
+		m_quadRect.x = _posX;
+		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_progressRect.x += deltaX;
+		m_progressRect.z = m_progressRect.x + m_progressWidth;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetPositionY(float _posY)
+	{
+		float deltaY = _posY - m_pos.y;
+		m_pos.y = _posY;
+		m_quadRect.y = _posY;
+		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_progressRect.y += deltaY;
+		m_progressRect.w = m_progressRect.y + m_progressHeight;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetPositionXY(const FLOAT2& _pos)
+	{
+		m_pos.x = _pos.x;
+		m_quadRect.x = _pos.x;
+		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_pos.y = _pos.y;
+		m_quadRect.y = _pos.y;
+		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetPosition(const FLOAT3& _position)
+	{
+		m_pos = _position;
+		m_quadRect.x = _position.x;
+		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_quadRect.y = _position.y;
+		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetRect(const Rect_Float& _rect)
+	{
+		m_quadRect = _rect;
+		m_quadWidth = _rect.z - _rect.x;
+		m_quadHeight = _rect.w - _rect.y;
+		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetWidth(float _width)
+	{
+		m_quadWidth = _width;
+		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::SetHeight(float _height)
+	{
+		m_quadHeight = _height;
+		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_isPosDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEProgressbar::SetProgress(float _progress)
 	{
 		m_progress = _progress;
@@ -213,11 +286,11 @@ namespace Emerald
 		SAFE_RELEASE(m_progressVB);
 
 		FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-		float posX = ((m_progressRect.x - m_progressWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-		float posY = 1.0f - ((m_progressRect.y - m_progressHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+		float posX = m_progressRect.x - m_progressWidth * currScale.x;
+		float posY = m_progressRect.y - m_progressHeight * currScale.y;
 		//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
-		float posZ = (((m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress)) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-		float posW = 1.0f - ((m_progressRect.w + m_progressHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+		float posZ = (m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress);
+		float posW = m_progressRect.w + m_progressHeight * currScale.y;
 
 		EEQuadVertex vertices[4];
 		vertices[0].pos = FLOAT3(posX, posY, m_localZOrder * 0.0001f);
@@ -547,10 +620,10 @@ namespace Emerald
 		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
 			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float quadPosX = ((m_quadRect.x - m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosY = 1.0f - ((m_quadRect.y - m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
-			float quadPosZ = ((m_quadRect.z + m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosW = 1.0f - ((m_quadRect.w + m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float quadPosX = m_quadRect.x - m_quadWidth * currScale.x;
+			float quadPosY = m_quadRect.y - m_quadHeight * currScale.y;
+			float quadPosZ = m_quadRect.z + m_quadWidth * currScale.x;
+			float quadPosW = m_quadRect.w + m_quadHeight * currScale.y;
 
 			EEQuadVertex vertices[4];
 			vertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
@@ -619,10 +692,10 @@ namespace Emerald
 		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
 			FLOAT3 currScale = (m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
-			float quadPosX = ((m_quadRect.x - m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosY = 1.0f - ((m_quadRect.y - m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
-			float quadPosZ = ((m_quadRect.z + m_quadWidth * currScale.x) / (float)EECore::s_EECore->GetWidth()) * 2.0f - 1.0f;
-			float quadPosW = 1.0f - ((m_quadRect.w + m_quadHeight * currScale.y) / (float)EECore::s_EECore->GetHeight()) * 2.0f;
+			float quadPosX = m_quadRect.x - m_quadWidth * currScale.x;
+			float quadPosY = m_quadRect.y - m_quadHeight * currScale.y;
+			float quadPosZ = m_quadRect.z + m_quadWidth * currScale.x;
+			float quadPosW = m_quadRect.w + m_quadHeight * currScale.y;
 
 			EEQuadVertex vertices[4];
 			vertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
@@ -733,6 +806,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEScene::AddObject(EEObject* _object)
 	{
+		_object->SetParent(this);
 		//if (m_control.size() == m_control.capacity())
 		//	m_control.reserve(m_control.size() + 1);
 		m_objects.push_back(_object);

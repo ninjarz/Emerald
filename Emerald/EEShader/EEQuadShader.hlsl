@@ -2,6 +2,7 @@
 #define _EE_QUADSHADER_HLSL_
 
 #include "EEObjectBuffer.hlsl"
+#include "EECameraBuffer.hlsl"
 
 Texture2D g_tex : register(ps, t0);
 
@@ -25,8 +26,8 @@ struct QuadVOut
 QuadVOut QuadVS(QuadVIn _vIn)
 {
 	QuadVOut vOut;
-	//transformation for the vertices of quad is not necessary
-	vOut.posH = float4(_vIn.pos, 1.0f);
+	vOut.posH = mul(float4(_vIn.pos, 1.0f), cb_rotation);
+	vOut.posH = mul(vOut.posH, cb_orthoLH);
 	vOut.tex = _vIn.tex;
 	return vOut;
 }

@@ -28,7 +28,7 @@ namespace Emerald
 			result = device->CreateBuffer(&bufferDesc, NULL, &s_objectBuffer);
 			if (FAILED(result))
 				return false;
-
+			deviceContext->VSSetConstantBuffers(0, 1, &s_objectBuffer);
 			deviceContext->PSSetConstantBuffers(0, 1, &s_objectBuffer);
 
 			s_isObjectInitialized = true;
@@ -40,6 +40,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject::EEObject()
 		:
+		m_parent(NULL),
 		m_pos(0.0f),
 		m_isPosDirty(false),
 		m_scale(1.0f),
@@ -57,6 +58,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject::EEObject(const EEObject& _object)
 		:
+		m_parent(_object.m_parent),
 		m_pos(_object.m_pos),
 		m_isPosDirty(_object.m_isPosDirty),
 		m_scale(_object.m_scale),
@@ -82,6 +84,12 @@ namespace Emerald
 		Render();
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::SetParent(EEObject* _parent)
+	{
+		m_parent = _parent;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -174,6 +182,12 @@ namespace Emerald
 	{
 		m_localZOrder = _localZOrder;
 		m_isLocalZOrderDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEObject* EEObject::GetParent()
+	{
+		return m_parent;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -290,8 +304,8 @@ namespace Emerald
 			return false;
 		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
-		objectBufferDesc->rotation = m_rotation;
-		objectBufferDesc->alpha = m_alpha;
+		objectBufferDesc->rotation = m_parent ? m_parent->GetRotation() * m_rotation : m_rotation;
+		objectBufferDesc->alpha = m_parent ? m_parent->GetAlpha() * m_alpha : m_alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
 
 		return true;
@@ -309,8 +323,8 @@ namespace Emerald
 			return false;
 		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
-		objectBufferDesc->rotation = m_rotation;
-		objectBufferDesc->alpha = _alpha;
+		objectBufferDesc->rotation = m_parent ? m_parent->GetRotation() * m_rotation : m_rotation;
+		objectBufferDesc->alpha = m_parent ? m_parent->GetAlpha() * _alpha : _alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
 
 		return true;
