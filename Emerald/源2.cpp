@@ -1,8 +1,5 @@
 #if 1
 #include "Emerald.h"
-//#include <xnamath.h>
-
-#define WAVEWIDTH 100
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -23,7 +20,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 1, time 0 - +∞
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
-	EEScene *mainScene = new EEScene(Rect_Float(100, 100, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
+	EEScene *mainScene = new EEScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
 	mainScene->SetLocalZOrder(1.0f);
 
 	//order 0, time 0 - +∞
@@ -39,7 +36,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	round1Quad->SetLocalZOrder(0.1f);
 	round1Quad->SetAlpha(0.0f);
 	EEFade(round1Quad, 1.0f, 1.0f, 1.0f);
-	EERotate(round1Quad, 16.0f, 2 * EE_2PI, round1Quad->GetFinalCenter(), 1.0f);
+	EERotateYX(round1Quad, 16.0f, 2 * EE_2PI, 1.0f, true);
 
 	//order 0.1, time 2 - +∞
 	EETexture round2Tex(L"Texture\\主界面\\圆形图案2（滤色）.png");
@@ -47,7 +44,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	round2Quad->SetLocalZOrder(0.1f);
 	round2Quad->SetAlpha(0.0f);
 	EEFade(round2Quad, 1.0f, 1.0f, 2.0f);
-	EERotate(round2Quad, 16.0f, - 2 * EE_2PI, round2Quad->GetFinalCenter(), 2.0f);
+	EERotateYX(round2Quad, 16.0f, -2 * EE_2PI, 2.0f, true);
 
 	//order 0.1, time 3.5 - +∞
 	EETexture road1Tex(L"Texture\\主界面\\线路形图案1（滤色）.png");
@@ -71,12 +68,11 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	EEFade(TopQuad, 1.0f, 1.0f, 3.5);
 
 	//order 0.1, time 3.5 - +∞
-	EETexture BottomTex(L"Texture\\主界面\\上框.png");
+	EETexture BottomTex(L"Texture\\主界面\\下框.png");
 	EEQuad *BottomQuad = new EEQuad(Rect_Float(0, (float)EEGetHeight() - 25.f, (float)EEGetWidth(), (float)EEGetHeight()), BottomTex);
 	BottomQuad->SetLocalZOrder(0.1f);
 	BottomQuad->SetAlpha(0.0f);
 	EEFade(BottomQuad, 1.0f, 1.0f, 3.5);
-
 
 	EETexture button1Tex(L"Texture/主界面/模式标签/自由模式.png");
 	EEButton *button1 = new EEButton(EE_BUTTON_SCALE, Rect_Float(40.f, 380.f, 100.f, 440.f), 1.3f, 0.2f, 0.2f, button1Tex, NULL);
@@ -98,7 +94,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	EETexture musicFrameTex(L"Texture/主界面/播放器/时间轴.png");
 	EETexture musicProgressTex(L"Texture/主界面/播放器/进度.png");
-	EEProgressbar *progressbar = new EEProgressbar(Rect_Float(580.f, 335.f, 770.f, 340.f), Rect_Float(580.f, 335.f, 770.f, 340.f), musicFrameTex, musicProgressTex, NULL);
+	EEProgressbar *progressbar = new EEProgressbar(Rect_Float(580.f, 335.f, 770.f, 340.f), Rect_Float(0.0f, 0.0f, 190.f, 5.f), musicProgressTex, musicFrameTex, NULL);
 
 
 

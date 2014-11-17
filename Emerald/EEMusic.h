@@ -32,7 +32,6 @@ extern "C"
 }
 #pragma comment(lib,"Winmm.lib")
 #include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xaudio2.h>
-#include <string>
 
 
 namespace Emerald

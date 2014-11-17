@@ -41,8 +41,8 @@ namespace Emerald
 	EEObject::EEObject()
 		:
 		m_parent(NULL),
-		m_pos(0.0f),
-		m_isPosDirty(false),
+		m_position(0.0f),
+		m_isPositionDirty(false),
 		m_scale(1.0f),
 		m_isScaleDirty(false),
 		m_alpha(1.0f),
@@ -59,8 +59,8 @@ namespace Emerald
 	EEObject::EEObject(const EEObject& _object)
 		:
 		m_parent(_object.m_parent),
-		m_pos(_object.m_pos),
-		m_isPosDirty(_object.m_isPosDirty),
+		m_position(_object.m_position),
+		m_isPositionDirty(_object.m_isPositionDirty),
 		m_scale(_object.m_scale),
 		m_isScaleDirty(_object.m_isScaleDirty),
 		m_alpha(_object.m_alpha),
@@ -96,58 +96,58 @@ namespace Emerald
 	void EEObject::SetPositionX(float _posX)
 	{
 		//if they are unequal
-		m_pos.x = _posX;
-		m_isPosDirty = true;
+		m_position.x = _posX;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetPositionY(float _posY)
 	{
-		m_pos.y = _posY;
-		m_isPosDirty = true;
+		m_position.y = _posY;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetPositionZ(float _posZ)
 	{
-		m_pos.z = _posZ;
-		m_isPosDirty = true;
+		m_position.z = _posZ;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetPositionXY(const FLOAT2& _pos)
 	{
-		m_pos.x = _pos.x;
-		m_pos.y = _pos.y;
-		m_isPosDirty = true;
+		m_position.x = _pos.x;
+		m_position.y = _pos.y;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetPosition(const FLOAT3& _pos)
 	{
-		m_pos = _pos;
-		m_isPosDirty = true;
+		m_position = _pos;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetScaleX(float _scaleX)
 	{
 		m_scale.x = _scaleX;
-		m_isPosDirty = true;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetScaleY(float _scaleY)
 	{
 		m_scale.y = _scaleY;
-		m_isPosDirty = true;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetScaleZ(float _scaleZ)
 	{
 		m_scale.z = _scaleZ;
-		m_isPosDirty = true;
+		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -193,37 +193,37 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	float EEObject::GetPositionX() const
 	{
-		return m_pos.x;
+		return m_position.x;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	float EEObject::GetPositionY() const
 	{
-		return m_pos.y;
+		return m_position.y;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	float EEObject::GetPositionZ() const
 	{
-		return m_pos.z;
+		return m_position.z;
 	}
 	
 	//----------------------------------------------------------------------------------------------------
 	const FLOAT2& EEObject::GetPositionXY() const
 	{
-		return *(FLOAT2*)(&m_pos);
+		return *(FLOAT2*)(&m_position);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	const FLOAT3& EEObject::GetPosition() const
 	{
-		return m_pos;
+		return m_position;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::IsPosDirty()
 	{
-		return m_isPosDirty;
+		return m_isPositionDirty;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -293,6 +293,71 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	FLOAT3 EEObject::GetFinalPosition() const
+	{
+		if (m_parent)
+		{
+			return m_position + m_parent->GetFinalPosition();
+		}
+		else
+		{
+			return m_position;
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT3 EEObject::GetFinalScale()
+	{
+		if (m_parent)
+		{
+			return m_scale * m_parent->GetFinalScale();
+		}
+		else
+		{
+			return m_scale;
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT EEObject::GetFinalAlpha()
+	{
+		if (m_parent)
+		{
+			return m_alpha * m_parent->GetFinalAlpha();
+		}
+		else
+		{
+			return m_alpha;
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	MATRIX EEObject::GetFinalRotation()
+	{
+		if (m_parent)
+		{
+			return m_rotation * m_parent->GetFinalRotation();
+		}
+		else
+		{
+			return m_rotation;
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEObject::GetFinalLocalZOrder()
+	{
+		if (m_parent)
+		{
+			return m_localZOrder;
+		}
+		else
+		{
+			return m_localZOrder;
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEObject::MapObjectBuffer()
 	{
 		HRESULT result;
@@ -304,8 +369,8 @@ namespace Emerald
 			return false;
 		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
-		objectBufferDesc->rotation = m_parent ? m_parent->GetRotation() * m_rotation : m_rotation;
-		objectBufferDesc->alpha = m_parent ? m_parent->GetAlpha() * m_alpha : m_alpha;
+		objectBufferDesc->rotation = GetFinalRotation();
+		objectBufferDesc->alpha = GetFinalAlpha();
 		deviceContext->Unmap(s_objectBuffer, 0);
 
 		return true;
@@ -323,8 +388,8 @@ namespace Emerald
 			return false;
 		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
-		objectBufferDesc->rotation = m_parent ? m_parent->GetRotation() * m_rotation : m_rotation;
-		objectBufferDesc->alpha = m_parent ? m_parent->GetAlpha() * _alpha : _alpha;
+		objectBufferDesc->rotation = GetFinalRotation();
+		objectBufferDesc->alpha = _alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
 
 		return true;

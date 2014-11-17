@@ -7,35 +7,27 @@ namespace Emerald
 {
 	//EEProgressBar
 	//----------------------------------------------------------------------------------------------------
-	EEProgressbar::EEProgressbar(const Rect_Float& _quadRect, const Rect_Float& _progressRect, const EETexture& _borderTex, const EETexture& _progressTex, void(*_funcPtr)())
+	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, void(*_funcPtr)())
 		:
-		EEQuad(_quadRect, _borderTex),
-		m_progressRect(_progressRect),
-		m_progressWidth(_progressRect.z - _progressRect.x),
-		m_progressHeight(_progressRect.w - _progressRect.y),
-		m_progressVB(NULL),
+		EEQuad(_progressRect, _progressTex),
+		m_progressFrame(_frameRect, _frameTex),
 		m_progress(0.0f),
 		m_isProgressDirty(false),
-		m_callbackFunc(_funcPtr),
-		m_progressTex(_progressTex)
+		m_callbackFunc(_funcPtr)
 	{
-		CreateProgressVertexBuffer();
+		m_progressFrame.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EEProgressbar::EEProgressbar(const EEProgressbar& _progressbar)
 		:
 		EEQuad(_progressbar),
-		m_progressRect(_progressbar.m_progressRect),
-		m_progressWidth(_progressbar.m_progressWidth),
-		m_progressHeight(_progressbar.m_progressHeight),
-		m_progressVB(_progressbar.m_progressVB),
+		m_progressFrame(_progressbar.m_progressFrame),
 		m_progress(_progressbar.m_progress),
 		m_isProgressDirty(_progressbar.m_isProgressDirty),
-		m_callbackFunc(_progressbar.m_callbackFunc),
-		m_progressTex(_progressbar.m_progressTex)
+		m_callbackFunc(_progressbar.m_callbackFunc)
 	{
-
+		m_progressFrame.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -47,90 +39,37 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEProgressbar::Update()
 	{
-		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty || m_isProgressDirty)
 		{
-			//update the quadVB
-			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float quadPosX = m_quadRect.x - m_quadWidth * currScale.x;
-			float quadPosY = m_quadRect.y - m_quadHeight * currScale.y;
-			float quadPosZ = m_quadRect.z + m_quadWidth * currScale.x;
-			float quadPosW = m_quadRect.w + m_quadHeight * currScale.y;
+			Rect_Float finalRect = GetFinalRect();
+			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
+			finalRect.z -= (finalRect.z - finalRect.x) * (1.0f - m_progress);
 
-			EEQuadVertex quadVertices[4];
-			quadVertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
-			quadVertices[0].tex = FLOAT2(0, 0);
-			quadVertices[1].pos = FLOAT3(quadPosZ, quadPosY, m_localZOrder * 0.0001f);
-			quadVertices[1].tex = FLOAT2(1, 0);
-			quadVertices[2].pos = FLOAT3(quadPosX, quadPosW, m_localZOrder * 0.0001f);
-			quadVertices[2].tex = FLOAT2(0, 1);
-			quadVertices[3].pos = FLOAT3(quadPosZ, quadPosW, m_localZOrder * 0.0001f);
-			quadVertices[3].tex = FLOAT2(1, 1);
+			EEQuadVertex vertices[4];
+			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
+			vertices[0].tex = FLOAT2(0, 0);
+			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
+			vertices[1].tex = FLOAT2(m_progress, 0);
+			vertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
+			vertices[2].tex = FLOAT2(0, 1);
+			vertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
+			vertices[3].tex = FLOAT2(m_progress, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
 			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 			deviceContext->Map(m_quadVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			memcpy(mappedResource.pData, quadVertices, sizeof(quadVertices));
+			memcpy(mappedResource.pData, vertices, sizeof(vertices));
 			deviceContext->Unmap(m_quadVB, 0);
 
-			//update the progressVB
-			float posX = m_progressRect.x - m_progressWidth * currScale.x;
-			float posY = m_progressRect.y - m_progressHeight * currScale.y;
-			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
-			float posZ = (m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress);
-			float posW = m_progressRect.w + m_progressHeight * currScale.y;
-
-			EEQuadVertex vertices[4];
-			vertices[0].pos = FLOAT3(posX, posY, m_localZOrder * 0.0001f);
-			vertices[0].tex = FLOAT2(0, 0);
-			vertices[1].pos = FLOAT3(posZ, posY, m_localZOrder * 0.0001f);
-			vertices[1].tex = FLOAT2(m_progress, 0);
-			vertices[2].pos = FLOAT3(posX, posW, m_localZOrder * 0.0001f);
-			vertices[2].tex = FLOAT2(0, 1);
-			vertices[3].pos = FLOAT3(posZ, posW, m_localZOrder * 0.0001f);
-			vertices[3].tex = FLOAT2(m_progress, 1);
-
-			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-			deviceContext->Map(m_progressVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			memcpy(mappedResource.pData, vertices, sizeof(vertices));
-			deviceContext->Unmap(m_progressVB, 0);
-
-			//the progress has been used here
+			//the progress has been updated here
 			m_isProgressDirty = false;
-			m_isPosDirty = false;
+			m_isPositionDirty = false;
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
 		}
 
-		if (m_isProgressDirty)
-		{
-			//update the progressVB
-			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float posX = m_progressRect.x - m_progressWidth * currScale.x;
-			float posY = m_progressRect.y - m_progressHeight * currScale.y;
-			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
-			float posZ = (m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress);
-			float posW = m_progressRect.w + m_progressHeight * currScale.y;
-
-			EEQuadVertex vertices[4];
-			vertices[0].pos = FLOAT3(posX, posY, m_localZOrder * 0.0001f);
-			vertices[0].tex = FLOAT2(0, 0);
-			vertices[1].pos = FLOAT3(posZ, posY, m_localZOrder * 0.0001f);
-			vertices[1].tex = FLOAT2(m_progress, 0);
-			vertices[2].pos = FLOAT3(posX, posW, m_localZOrder * 0.0001f);
-			vertices[2].tex = FLOAT2(0, 1);
-			vertices[3].pos = FLOAT3(posZ, posW, m_localZOrder * 0.0001f);
-			vertices[3].tex = FLOAT2(m_progress, 1);
-
-			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-			deviceContext->Map(m_progressVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			memcpy(mappedResource.pData, vertices, sizeof(vertices));
-			deviceContext->Unmap(m_progressVB, 0);
-
-			m_isProgressDirty = false;
-		}
+		m_progressFrame.Update();
 
 		if (m_progress >= 1.0f)
 		{
@@ -147,102 +86,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEProgressbar::Render()
 	{
-		MapObjectBuffer();
-
-		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
-
-		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		deviceConstext->IASetInputLayout(s_quadIL);
-		UINT stride = sizeof(EEQuadVertex);
-		UINT offset = 0;
-		deviceConstext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
-		deviceConstext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);
-		deviceConstext->VSSetShader(s_quadVS, NULL, 0);
-		ID3D11ShaderResourceView *texture = NULL;
-		texture = m_quadTex.GetTexture();
-		deviceConstext->PSSetShaderResources(0, 1, &texture);
-		deviceConstext->PSSetShader(s_quadPS, NULL, 0);
-		deviceConstext->Draw(4, 0);
-
-		deviceConstext->IASetVertexBuffers(0, 1, &m_progressVB, &stride, &offset);
-		texture = m_progressTex.GetTexture();
-		deviceConstext->PSSetShaderResources(0, 1, &texture);
-		deviceConstext->Draw(4, 0);
+		m_progressFrame.Render();
+		EEQuad::Render();
 
 		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetPositionX(float _posX)
-	{
-		float deltaX = _posX - m_pos.x;
-		m_pos.x = _posX;
-		m_quadRect.x = _posX;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
-		m_progressRect.x += deltaX;
-		m_progressRect.z = m_progressRect.x + m_progressWidth;
-		m_isPosDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetPositionY(float _posY)
-	{
-		float deltaY = _posY - m_pos.y;
-		m_pos.y = _posY;
-		m_quadRect.y = _posY;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
-		m_progressRect.y += deltaY;
-		m_progressRect.w = m_progressRect.y + m_progressHeight;
-		m_isPosDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetPositionXY(const FLOAT2& _pos)
-	{
-		m_pos.x = _pos.x;
-		m_quadRect.x = _pos.x;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
-		m_pos.y = _pos.y;
-		m_quadRect.y = _pos.y;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
-		m_isPosDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetPosition(const FLOAT3& _position)
-	{
-		m_pos = _position;
-		m_quadRect.x = _position.x;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
-		m_quadRect.y = _position.y;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
-		m_isPosDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetRect(const Rect_Float& _rect)
-	{
-		m_quadRect = _rect;
-		m_quadWidth = _rect.z - _rect.x;
-		m_quadHeight = _rect.w - _rect.y;
-		m_pos = FLOAT3(_rect.x, _rect.y, 0.0f);
-		m_isPosDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetWidth(float _width)
-	{
-		m_quadWidth = _width;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
-		m_isPosDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEProgressbar::SetHeight(float _height)
-	{
-		m_quadHeight = _height;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
-		m_isPosDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -271,56 +118,13 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EETexture* EEProgressbar::GetProgressTex()
 	{
-		return &m_progressTex;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EETexture* EEProgressbar::GetBorderTex()
-	{
 		return &m_quadTex;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEProgressbar::CreateProgressVertexBuffer()
+	EETexture* EEProgressbar::GetFrameTex()
 	{
-		SAFE_RELEASE(m_progressVB);
-
-		FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-		float posX = m_progressRect.x - m_progressWidth * currScale.x;
-		float posY = m_progressRect.y - m_progressHeight * currScale.y;
-		//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
-		float posZ = (m_progressRect.z + m_progressWidth * currScale.x) - m_progressWidth * m_scale.x * (1.0f - m_progress);
-		float posW = m_progressRect.w + m_progressHeight * currScale.y;
-
-		EEQuadVertex vertices[4];
-		vertices[0].pos = FLOAT3(posX, posY, m_localZOrder * 0.0001f);
-		vertices[0].tex = FLOAT2(0, 0);
-		vertices[1].pos = FLOAT3(posZ, posY, m_localZOrder * 0.0001f);
-		vertices[1].tex = FLOAT2(m_progress, 0);
-		vertices[2].pos = FLOAT3(posX, posW, m_localZOrder * 0.0001f);
-		vertices[2].tex = FLOAT2(0, 1);
-		vertices[3].pos = FLOAT3(posZ, posW, m_localZOrder * 0.0001f);
-		vertices[3].tex = FLOAT2(m_progress, 1);
-		
-		D3D11_BUFFER_DESC vbDesc = { 0 };
-		vbDesc.ByteWidth = sizeof(EEQuadVertex)* 4;
-		vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		vbDesc.MiscFlags = 0;
-		vbDesc.StructureByteStride = 0;
-		vbDesc.Usage = D3D11_USAGE_DYNAMIC;
-		D3D11_SUBRESOURCE_DATA vbData;
-		vbData.pSysMem = vertices;
-		vbData.SysMemPitch = 0;
-		vbData.SysMemSlicePitch = 0;
-
-		if (FAILED(EECore::s_EECore->GetDevice()->CreateBuffer(&vbDesc, &vbData, &m_progressVB)))
-		{
-			MessageBox(NULL, L"CreateVertexBuffer failed!", L"Error", MB_OK);
-			return false;
-		}
-
-		return true;
+		return m_progressFrame.GetTexture();
 	}
 
 	//EEButton
@@ -496,6 +300,24 @@ namespace Emerald
 
 		return true;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	Rect_Float EEButton::GetFinalRect()
+	{
+		switch (m_type)
+		{
+		case EE_BUTTON_THREE:
+		{
+								return GetFinalRect_THREE();
+		}
+		case EE_BUTTON_SCALE:
+		{
+								return GetFinalRect_SCALE();
+		}
+		}
+
+		return Rect_Float(0.0f, 0.0f, 0.0f, 0.0f);
+	}
 	
 	//----------------------------------------------------------------------------------------------------
 	EETexture* EEButton::GetUpTex()
@@ -617,22 +439,18 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Update_THREE()
 	{
-		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 currScale = (m_scale - 1.0f) * 0.5f;
-			float quadPosX = m_quadRect.x - m_quadWidth * currScale.x;
-			float quadPosY = m_quadRect.y - m_quadHeight * currScale.y;
-			float quadPosZ = m_quadRect.z + m_quadWidth * currScale.x;
-			float quadPosW = m_quadRect.w + m_quadHeight * currScale.y;
+			Rect_Float finalRect = GetFinalRect_THREE();
 
 			EEQuadVertex vertices[4];
-			vertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
+			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
-			vertices[1].pos = FLOAT3(quadPosZ, quadPosY, m_localZOrder * 0.0001f);
+			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[1].tex = FLOAT2(1, 0);
-			vertices[2].pos = FLOAT3(quadPosX, quadPosW, m_localZOrder * 0.0001f);
+			vertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
 			vertices[2].tex = FLOAT2(0, 1);
-			vertices[3].pos = FLOAT3(quadPosZ, quadPosW, m_localZOrder * 0.0001f);
+			vertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
 			vertices[3].tex = FLOAT2(1, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -642,7 +460,7 @@ namespace Emerald
 			memcpy(mappedResource.pData, vertices, sizeof(vertices));
 			deviceContext->Unmap(m_quadVB, 0);
 
-			m_isPosDirty = false;
+			m_isPositionDirty = false;
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
 		}
@@ -687,24 +505,46 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	Rect_Float EEButton::GetFinalRect_THREE()
+	{
+		if (m_parent)
+		{
+			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale - 1.0f) * 0.5f;
+			FLOAT3 deltaPos = m_parent->GetFinalPosition();
+			return Rect_Float(
+				m_quadRect.x - m_quadWidth * scale.x + deltaPos.x,
+				m_quadRect.y - m_quadHeight * scale.y + deltaPos.y,
+				m_quadRect.z + m_quadWidth * scale.x + deltaPos.x,
+				m_quadRect.w + m_quadHeight * scale.y + deltaPos.y
+				);
+		}
+		else
+		{
+			FLOAT3 scale = (m_scale - 1.0f) * 0.5f;
+			return Rect_Float(
+				m_quadRect.x - m_quadWidth * scale.x,
+				m_quadRect.y - m_quadHeight * scale.y,
+				m_quadRect.z + m_quadWidth * scale.x,
+				m_quadRect.w + m_quadHeight * scale.y
+				);
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Update_SCALE()
 	{
-		if (m_isPosDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 currScale = (m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
-			float quadPosX = m_quadRect.x - m_quadWidth * currScale.x;
-			float quadPosY = m_quadRect.y - m_quadHeight * currScale.y;
-			float quadPosZ = m_quadRect.z + m_quadWidth * currScale.x;
-			float quadPosW = m_quadRect.w + m_quadHeight * currScale.y;
+			Rect_Float finalRect = GetFinalRect_SCALE();
 
 			EEQuadVertex vertices[4];
-			vertices[0].pos = FLOAT3(quadPosX, quadPosY, m_localZOrder * 0.0001f);
+			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
-			vertices[1].pos = FLOAT3(quadPosZ, quadPosY, m_localZOrder * 0.0001f);
+			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[1].tex = FLOAT2(1, 0);
-			vertices[2].pos = FLOAT3(quadPosX, quadPosW, m_localZOrder * 0.0001f);
+			vertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
 			vertices[2].tex = FLOAT2(0, 1);
-			vertices[3].pos = FLOAT3(quadPosZ, quadPosW, m_localZOrder * 0.0001f);
+			vertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
 			vertices[3].tex = FLOAT2(1, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -714,7 +554,7 @@ namespace Emerald
 			memcpy(mappedResource.pData, vertices, sizeof(vertices));
 			deviceContext->Unmap(m_quadVB, 0);
 
-			m_isPosDirty = false;
+			m_isPositionDirty = false;
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
 		}
@@ -725,8 +565,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Render_SCALE()
 	{
-		float currAlpha = m_alpha * (1.0f - (m_currFadeTime / m_aimFadeTime));
-		MapObjectBuffer(currAlpha);
+		float finalAlpha = GetFinalAlpha() * (1.0f - (m_currFadeTime / m_aimFadeTime));
+		MapObjectBuffer(finalAlpha);
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 
@@ -743,6 +583,32 @@ namespace Emerald
 		deviceConstext->Draw(4, 0);
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	Rect_Float EEButton::GetFinalRect_SCALE()
+	{
+		if (m_parent)
+		{
+			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
+			FLOAT3 deltaPos = m_parent->GetFinalPosition();
+			return Rect_Float(
+				m_quadRect.x - m_quadWidth * scale.x + deltaPos.x,
+				m_quadRect.y - m_quadHeight * scale.y + deltaPos.y,
+				m_quadRect.z + m_quadWidth * scale.x + deltaPos.x,
+				m_quadRect.w + m_quadHeight * scale.y + deltaPos.y
+				);
+		}
+		else
+		{
+			FLOAT3 scale = (m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
+			return Rect_Float(
+				m_quadRect.x - m_quadWidth * scale.x,
+				m_quadRect.y - m_quadHeight * scale.y,
+				m_quadRect.z + m_quadWidth * scale.x,
+				m_quadRect.w + m_quadHeight * scale.y
+				);
+		}
 	}
 
 	//EEScene

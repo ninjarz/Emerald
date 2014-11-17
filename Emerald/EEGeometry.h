@@ -47,12 +47,13 @@ namespace Emerald
 		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
 
 		virtual const Rect_Float& GetRect();
-		virtual Rect_Float GetFinalRect();
 		virtual float GetWidht();
 		virtual float GetHeight();
-		virtual FLOAT2 GetCenter();
-		virtual FLOAT2 GetFinalCenter();
+		virtual FLOAT3 GetCenter();
 		virtual EETexture* GetTexture();
+
+		virtual Rect_Float GetFinalRect();
+		virtual FLOAT3 GetFinalCenter();
 
 	protected:
 		bool CreateQuadVertexBuffer();

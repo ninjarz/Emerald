@@ -13,43 +13,28 @@ namespace Emerald
 	class EEProgressbar : public EEQuad
 	{
 	public:
-		EEProgressbar(const Rect_Float& _quadRect, const Rect_Float& _progressRect, const EETexture& _borderTex, const EETexture& _progressTex, void(*_funcPtr)());
+		EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, void(*_funcPtr)());
 		EEProgressbar(const EEProgressbar& _progressbar);
 		~EEProgressbar();
 
 		bool Update();
 		bool Render();
 
-		void SetPositionX(float _posX);
-		void SetPositionY(float _posY);
-		void SetPositionXY(const FLOAT2& _pos);
-		void SetPosition(const FLOAT3& _pos);
-		void SetRect(const Rect_Float& _rect);
-		void SetWidth(float _width);
-		void SetHeight(float _height);
 		bool SetProgress(float _progress);
 		bool SetCallbackFunc(void(*_funcPtr)());
 
 		float GetProgress();
 		EETexture* GetProgressTex();
-		EETexture* GetBorderTex();
+		EETexture* GetFrameTex();
 
 	private:
-		bool CreateProgressVertexBuffer();
-
-	private:
-		//the size of the progress
-		Rect_Float m_progressRect;
-		float m_progressWidth, m_progressHeight;
+		//the quad of the frame
+		EEQuad m_progressFrame;
 		//the degree of the progress
 		float m_progress;
 		bool m_isProgressDirty;
-		//the vertex buffer of the progress
-		ID3D11Buffer *m_progressVB;
 		//callback function
 		void(*m_callbackFunc)(void);
-		//border texture
-		EETexture m_progressTex;
 	};
 	
 	//EEButtonType
@@ -84,19 +69,22 @@ namespace Emerald
 		bool Update();
 		bool Render();
 
+		Rect_Float GetFinalRect();
 		EETexture* GetUpTex();
 		EETexture* GetOverTex();
 		EETexture* GetDownTex();
 
-	private:
+	protected:
 		bool UpdateButtonState();
 
 		bool Update_THREE();
 		bool Render_THREE();
+		Rect_Float GetFinalRect_THREE();
 		bool Update_SCALE();
 		bool Render_SCALE();
+		Rect_Float GetFinalRect_SCALE();
 
-	private:
+	protected:
 		//type
 		EEButtonType m_type;
 		//state
@@ -112,7 +100,7 @@ namespace Emerald
 		float m_aimFadeTime;
 		//callback function
 		void(*m_callbackFunc)(void);
-		//button picture
+		//the picture of the button
 		EETexture m_overTex, m_downTex;
 	};
 
@@ -130,7 +118,7 @@ namespace Emerald
 		bool Render();
 		void AddObject(EEObject* _object);
 
-	private:
+	protected:
 		//controls
 		std::vector<EEObject*> m_objects;
 	};

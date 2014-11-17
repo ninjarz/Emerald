@@ -7,13 +7,13 @@ namespace Emerald
 {
 	//EEAction_APIs
 	//----------------------------------------------------------------------------------------------------
-	boost::thread* EEMoveBy(EEObject* _object, float _time, const FLOAT2& _dir, float _delay)
+	boost::thread* EEMoveBy(EEObject* _object, float _time, const FLOAT2& _dir, float _delay, bool _isInfinite)
 	{
-		return new boost::thread(boost::bind(&EEMoveByProcess, _object, _time, _dir, _delay, (float)EECore::s_EECore->GetTotalTime()));
+		return new boost::thread(boost::bind(&EEMoveByProcess, _object, _time, _dir, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEMoveByProcess(EEObject* _object, float _time, const FLOAT2& _dir, float _delay, float _startTime)
+	void EEMoveByProcess(EEObject* _object, float _time, const FLOAT2& _dir, float _delay, bool _isInfinite, float _startTime)
 	{
 		float remainTime = _delay + _time;
 		float progress = _startTime;
@@ -44,7 +44,7 @@ namespace Emerald
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
 			progress = currTime;
-			if (remainTime <= deltaTime)
+			if (remainTime <= deltaTime && !_isInfinite)
 			{
 				FLOAT2 deltaPos = speed * remainTime;
 				_object->SetPositionXY(_object->GetPositionXY() + deltaPos);
@@ -115,30 +115,17 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	boost::thread* EERotate(EEObject* _object, float _time, float _radians, float _delay = 0.0f)
+	boost::thread* EERotateYX(EEObject* _object, float _time, float _radiansYX, float _delay, bool _isInfinite)
 	{
-
+		return new boost::thread(boost::bind(&EERotateYXProcess, _object, _time, _radiansYX, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EERotateProcess(EEObject* _object, float _time, float _radians, float _delay, float _startTime)
-	{
-
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	boost::thread* EERotate(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay)
-	{
-		return new boost::thread(boost::bind(&EERotateProcess, _object, _time, _radians, _center, _delay, (float)EECore::s_EECore->GetTotalTime()));
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	//need to be recasted
-	void EERotateProcess(EEObject* _object, float _time, float _radians, const FLOAT2& _center,float _delay, float _startTime)
+	void EERotateYXProcess(EEObject* _object, float _time, float _radiansYX, float _delay, bool _isInfinite, float _startTime)
 	{
 		float remainTime = _delay + _time;
 		float progress = _startTime;
-		float speed = _radians / _time;
+		float speed = _radiansYX / _time;
 
 		while (1)
 		{
@@ -165,20 +152,22 @@ namespace Emerald
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
 			progress = currTime;
-			if (remainTime <= deltaTime)
+			if (remainTime <= deltaTime && !_isInfinite)
 			{
-				MATRIX centerToOrigin = MatrixTranslation(-_center.x, -_center.y, 0.0f);
+				FLOAT3 finalCenter = _object->GetFinalCenter();
+				MATRIX centerToOrigin = MatrixTranslation(-finalCenter.x, -finalCenter.y, 0.0f);
 				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * remainTime);
-				MATRIX originToCenter = MatrixTranslation(_center.x, _center.y, 0.0f);
+				MATRIX originToCenter = MatrixTranslation(finalCenter.x, finalCenter.y, 0.0f);
 				_object->SetRotation(_object->GetRotation() * centerToOrigin * rotation * originToCenter);
 				remainTime = 0.f;
 				return;
 			}
 			else
 			{
-				MATRIX centerToOrigin = MatrixTranslation(-_center.x, -_center.y, 0.0f);
+				FLOAT3 finalCenter = _object->GetFinalCenter();
+				MATRIX centerToOrigin = MatrixTranslation(-finalCenter.x, -finalCenter.y, 0.0f);
 				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * deltaTime);
-				MATRIX originToCenter = MatrixTranslation(_center.x, _center.y, 0.0f);
+				MATRIX originToCenter = MatrixTranslation(finalCenter.x, finalCenter.y, 0.0f);
 				_object->SetRotation(_object->GetRotation() * centerToOrigin * rotation * originToCenter);
 				remainTime -= deltaTime;
 			}
@@ -186,13 +175,14 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	boost::thread* EERotateBy(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay)
+	boost::thread* EERotate(EEObject* _object, float _time, float _radians, const FLOAT3& _center, float _delay, bool _isInfinite)
 	{
-		return new boost::thread(boost::bind(&EERotateByProcess, _object, _time, _radians, _center, _delay, (float)EECore::s_EECore->GetTotalTime()));
+		return new boost::thread(boost::bind(&EERotateProcess, _object, _time, _radians, _center, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EERotateByProcess(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay, float _startTime)
+	//need to be recasted
+	void EERotateProcess(EEObject* _object, float _time, float _radians, const FLOAT3& _center, float _delay, bool _isInfinite, float _startTime)
 	{
 		float remainTime = _delay + _time;
 		float progress = _startTime;
@@ -223,7 +213,65 @@ namespace Emerald
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
 			progress = currTime;
-			if (remainTime <= deltaTime)
+			if (remainTime <= deltaTime && !_isInfinite)
+			{
+				MATRIX centerToOrigin = MatrixTranslation(-_center.x, -_center.y, -_center.z);
+				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * remainTime);
+				MATRIX originToCenter = MatrixTranslation(_center.x, _center.y, _center.z);
+				_object->SetRotation(_object->GetRotation() * centerToOrigin * rotation * originToCenter);
+				remainTime = 0.f;
+				return;
+			}
+			else
+			{
+				MATRIX centerToOrigin = MatrixTranslation(-_center.x, -_center.y, -_center.z);
+				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * deltaTime);
+				MATRIX originToCenter = MatrixTranslation(_center.x, _center.y, _center.z);
+				_object->SetRotation(_object->GetRotation() * centerToOrigin * rotation * originToCenter);
+				remainTime -= deltaTime;
+			}
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	boost::thread* EERotateBy(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay, bool _isInfinite)
+	{
+		return new boost::thread(boost::bind(&EERotateByProcess, _object, _time, _radians, _center, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EERotateByProcess(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay, bool _isInfinite, float _startTime)
+	{
+		float remainTime = _delay + _time;
+		float progress = _startTime;
+		float speed = _radians / _time;
+
+		while (1)
+		{
+			Sleep(25);
+
+			float currTime = (float)EECore::s_EECore->GetTotalTime();
+			float deltaTime = currTime - progress;
+			progress = currTime;
+			if (remainTime <= deltaTime + _time)
+			{
+				remainTime = _time;
+				break;
+			}
+			else
+			{
+				remainTime -= deltaTime;
+			}
+		}
+
+		while (1)
+		{
+			Sleep(25);
+
+			float currTime = (float)EECore::s_EECore->GetTotalTime();
+			float deltaTime = currTime - progress;
+			progress = currTime;
+			if (remainTime <= deltaTime && !_isInfinite)
 			{
 				MATRIX rotation = MatrixRotationAxisN(FLOAT3(0.0f, 0.0f, 1.0f), speed * remainTime);
 				FLOAT3 position = _object->GetPosition() - _center;
