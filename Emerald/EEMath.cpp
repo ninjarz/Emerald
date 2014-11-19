@@ -322,4 +322,16 @@ namespace Emerald
 
 		return float4;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT3 Rand_FLOAT3()
+	{
+		return FLOAT3((float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)));
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT4 Rand_FLOAT4()
+	{
+		return FLOAT4((float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)));
+	}
 }

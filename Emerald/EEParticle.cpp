@@ -1,12 +1,14 @@
 #include "EEParticle.h"
+#include "EECore.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEParticle
+	//EEParticle2D
 	//----------------------------------------------------------------------------------------------------
-	EEParticle::EEParticle(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture)
+	EEParticle2D::EEParticle2D(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture)
 		:
+		m_isAlive(true),
 		m_durationTime(_durationTime),
 		EEQuad(_position, _width, _height, _texture),
 		m_positionSpeed(_positionSpeed),
@@ -18,8 +20,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEParticle::EEParticle(const EEParticle& _particle)
+	EEParticle2D::EEParticle2D(const EEParticle2D& _particle)
 		:
+		m_isAlive(_particle.m_isAlive),
 		m_durationTime(_particle.m_durationTime),
 		EEQuad(_particle),
 		m_positionSpeed(_particle.m_positionSpeed),
@@ -30,11 +33,72 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEParticle::~EEParticle()
+	EEParticle2D::~EEParticle2D()
 	{
 
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	bool EEParticle2D::Update()
+	{
+		if (m_isAlive)
+		{
+			FLOAT deltaTime = (FLOAT)EECore::s_EECore->GetDeltaTime();
+
+			if (m_durationTime <= deltaTime)
+			{
+				SetPosition(GetPosition() + m_positionSpeed * m_durationTime);
+				SetColor(GetColor() + m_colorSpeed * m_durationTime);
+				SetScale(GetScale() + m_scaleSpeed * m_durationTime);
+				m_durationTime = 0.0f;
+				m_isAlive = false;
+			}
+			else
+			{
+				SetPosition(GetPosition() + m_positionSpeed * deltaTime);
+				SetColor(GetColor() + m_colorSpeed * deltaTime);
+				SetScale(GetScale() + m_scaleSpeed * deltaTime);
+				m_durationTime -= deltaTime;
+			}
+
+			return EEQuad::Update();
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEParticle2D::Render()
+	{
+		if (m_isAlive)
+		{
+			return EEQuad::Render();
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEParticle2D::LoadDate(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture)
+	{
+		m_isAlive = true;
+		m_durationTime = _durationTime;
+		SetPosition(_position);
+		SetWidth(_width);
+		SetHeight(_height);
+		m_positionSpeed = _positionSpeed;
+		SetColor(_color);
+		m_colorSpeed = _colorSpeed;
+		SetScale(_scale);
+		m_scaleSpeed = _scaleSpeed;
+		m_quadTex = _texture;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEParticle2D::IsAlive()
+	{
+		return m_isAlive;
+	}
 
 	//EEParticleEmitter
 	//----------------------------------------------------------------------------------------------------
@@ -44,9 +108,10 @@ namespace Emerald
 		m_particleInfo(_info)
 	{
 		m_position = _info.position;
+		SetLocalZOrder(_info.position.z);
 		for (int i = 0; i < _info.amount; ++i)
 		{
-			m_particles.push_back(GeneratePaticle());
+			m_particles.push_back(GenerateParticle());
 		}
 	}
 
@@ -82,26 +147,30 @@ namespace Emerald
 		for (EEParticle* particle : m_particles)
 		{
 			particle->Render();
+			if (!particle->IsAlive())
+				RecastParticle(particle);
 		}
 
 		return true;
 	}
 
-	EEParticle* EEParticleEmitter::GeneratePaticle()
+	//----------------------------------------------------------------------------------------------------
+	EEParticle* EEParticleEmitter::GenerateParticle()
 	{
-		FLOAT durationTime = m_particleInfo.durationTime + m_particleInfo.deltaDurationTime * ((rand() / double(RAND_MAX)) - 0.5f);
-		FLOAT3 position = m_particleInfo.deltaPosition * ((rand() / double(RAND_MAX)) - 0.5f);
-		EEColor color = m_particleInfo.beginColor + ((rand() / double(RAND_MAX)) - 0.5f) * m_particleInfo.deltaBeginColor;
-		EEColor colorSpeed = (m_particleInfo.endColor + ((rand() / double(RAND_MAX)) - 0.5f) * m_particleInfo.deltaEndColor - color) / durationTime;
-		FLOAT scale = m_particleInfo.beginScale + ((rand() / double(RAND_MAX)) - 0.5f) * m_particleInfo.deltaBeginScale;
-		FLOAT scaleSpeed = (m_particleInfo.endScale + ((rand() / double(RAND_MAX)) - 0.5f) * m_particleInfo.deltaEndScale - scale) / durationTime;
+		FLOAT durationTime = m_particleInfo.durationTime + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaDurationTime;
+		FLOAT3 position = (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaPosition;
+		FLOAT3 positionSpeed = m_particleInfo.direction + (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaDirection;
+		EEColor color = m_particleInfo.beginColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaBeginColor;
+		EEColor colorSpeed = (m_particleInfo.endColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaEndColor - color) / durationTime;
+		FLOAT scale = m_particleInfo.beginScale + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaBeginScale;
+		FLOAT scaleSpeed = (m_particleInfo.endScale + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaEndScale - scale) / durationTime;
 
-		EEParticle* particle =  new EEParticle(
+		EEParticle2D* particle =  new EEParticle2D(
 			durationTime,
 			position,
 			m_particleInfo.width,
 			m_particleInfo.height,
-			m_particleInfo.direction,
+			positionSpeed,
 			color,
 			colorSpeed,
 			scale,
@@ -109,7 +178,33 @@ namespace Emerald
 			m_particleInfo.texture
 			);
 		particle->SetParent(this);
+		particle->SetLocalZOrder(GetLocalZOrder());
 		return particle;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEParticleEmitter::RecastParticle(EEParticle* _particle)
+	{
+		FLOAT durationTime = m_particleInfo.durationTime + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaDurationTime;
+		FLOAT3 position = (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaPosition;
+		FLOAT3 positionSpeed = m_particleInfo.direction + (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaDirection;
+		EEColor color = m_particleInfo.beginColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaBeginColor;
+		EEColor colorSpeed = (m_particleInfo.endColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaEndColor - color) / durationTime;
+		FLOAT scale = m_particleInfo.beginScale + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaBeginScale;
+		FLOAT scaleSpeed = (m_particleInfo.endScale + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaEndScale - scale) / durationTime;
+
+		_particle->LoadDate(
+			durationTime,
+			position,
+			m_particleInfo.width,
+			m_particleInfo.height,
+			positionSpeed,
+			color,
+			colorSpeed,
+			scale,
+			scaleSpeed,
+			m_particleInfo.texture
+			);
 	}
 
 	//----------------------------------------------------------------------------------------------------

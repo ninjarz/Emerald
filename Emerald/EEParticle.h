@@ -23,8 +23,8 @@ namespace Emerald
 		FLOAT3 deltaPosition;
 		FLOAT width;
 		FLOAT height;
-		//direction
 		FLOAT3 direction;
+		FLOAT3 deltaDirection;
 		//color
 		EEColor beginColor;
 		EEColor deltaBeginColor;
@@ -46,17 +46,36 @@ namespace Emerald
 
 	//EEParticle
 	//----------------------------------------------------------------------------------------------------
-	class EEParticle : public EEQuad
+	class EEParticle
 	{
 	public:
-		EEParticle(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture);
-		EEParticle(const EEParticle& _particle);
-		~EEParticle();
+		virtual bool Update() = NULL;
+		virtual bool Render() = NULL;
+		virtual void LoadDate(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture) = NULL;
+
+		virtual bool IsAlive() = NULL;
+	};
+
+	//EEParticle2D
+	//----------------------------------------------------------------------------------------------------
+	class EEParticle2D : public EEParticle, public EEQuad
+	{
+	public:
+		EEParticle2D(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture);
+		EEParticle2D(const EEParticle2D& _particle);
+		~EEParticle2D();
+
+		virtual bool Update();
+		virtual bool Render();
+		void LoadDate(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture);
+
+		bool IsAlive();
 
 	protected:
 		//life
+		bool m_isAlive;
 		FLOAT m_durationTime;
-		//direction
+		//position
 		FLOAT3 m_positionSpeed;
 		//color
 		EEColor m_colorSpeed;
@@ -75,7 +94,8 @@ namespace Emerald
 
 		virtual bool Update();
 		virtual bool Render();
-		EEParticle* GeneratePaticle();
+		EEParticle* GenerateParticle();
+		void RecastParticle(EEParticle* _particle);
 
 		//position
 		virtual FLOAT3 GetCenter() const;

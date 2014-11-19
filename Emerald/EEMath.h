@@ -685,6 +685,11 @@ namespace Emerald
 			return FLOAT4(x + _float4.x, y + _float4.y, z + _float4.z, w + _float4.w);
 		}
 
+		inline FLOAT4 operator- (const FLOAT& _float) const
+		{
+			return FLOAT4(x - _float, y - _float, z - _float, w - _float);
+		}
+
 		inline FLOAT4 operator- (const FLOAT4& _float4) const
 		{
 			return FLOAT4(x - _float4.x, y - _float4.y, z - _float4.z, w - _float4.w);
@@ -1015,7 +1020,7 @@ namespace Emerald
 		inline Point(int _x, int _y) : x(_x), y(_y) {}
 		inline ~Point() {}
 
-		inline Point& operator = (const Point& _point)
+		inline Point& operator= (const Point& _point)
 		{
 			x = _point.x;
 			y = _point.y;
@@ -1033,7 +1038,7 @@ namespace Emerald
 		inline Rect_Int(int _x, int _y, int _z, int _w) : x(_x), y(_y), z(_z), w(_w) {}
 		inline ~Rect_Int() {}
 
-		inline Rect_Int& operator = (const Rect_Int& _rect)
+		inline Rect_Int& operator= (const Rect_Int& _rect)
 		{
 			x = _rect.x;
 			y = _rect.y;
@@ -1053,7 +1058,7 @@ namespace Emerald
 		inline Rect_Float(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
 		inline ~Rect_Float() {}
 
-		inline Rect_Float& operator = (const Rect_Float& _rect)
+		inline Rect_Float& operator= (const Rect_Float& _rect)
 		{
 			x = _rect.x;
 			y = _rect.y;
@@ -1083,6 +1088,9 @@ namespace Emerald
 	FLOAT4 operator* (const FLOAT4, const MATRIX);
 	FLOAT3& operator*= (FLOAT3&, const MATRIX);
 	FLOAT4& operator*= (FLOAT4&, const MATRIX);
+
+	FLOAT3 Rand_FLOAT3();
+	FLOAT4 Rand_FLOAT4();
 }
 
 #endif
