@@ -78,6 +78,8 @@
     <ClCompile Include="EEGeometry.cpp" />
     <ClCompile Include="EEGUI.cpp" />
     <ClCompile Include="EEMusic.cpp" />
+    <ClCompile Include="EEParticle.cpp" />
+    <ClCompile Include="EESort.cpp" />
     <ClCompile Include="EETexture.cpp" />
     <ClCompile Include="EEInput.cpp" />
     <ClCompile Include="EEMath.cpp" />
@@ -100,6 +102,8 @@
     <ClInclude Include="EEGUI.h" />
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEMusic.h" />
+    <ClInclude Include="EEParticle.h" />
+    <ClInclude Include="EESort.h" />
     <ClInclude Include="EETexture.h" />
     <ClInclude Include="EEInput.h" />
     <ClInclude Include="EEMath.h" />

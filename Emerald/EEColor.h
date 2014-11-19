@@ -9,7 +9,7 @@ namespace Emerald
 {
 	//EEColor
 	//----------------------------------------------------------------------------------------------------
-	class EEColor
+	class EEColor : public FLOAT4
 	{
 	public:
 		static const FLOAT4 BLACK;
@@ -21,8 +21,18 @@ namespace Emerald
 		static const FLOAT4 CYAN;
 		static const FLOAT4 MAGENTA;
 		static const FLOAT4 SILVER;
-
 		static const FLOAT4 COLORS[9];
+
+	public:
+		EEColor();
+		EEColor(FLOAT _red, FLOAT _green, FLOAT _yellow, FLOAT _alpha);
+		EEColor(const FLOAT4& _color);
+		EEColor(const EEColor& _color);
+		~EEColor();
+
+		bool SetColor(const FLOAT4& _color);
+
+		const FLOAT4& GetColor();
 	};
 }
 

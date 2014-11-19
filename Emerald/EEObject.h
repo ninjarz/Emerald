@@ -4,6 +4,7 @@
 
 #include <d3d11.h>
 #include "EEMath.h"
+#include "EEColor.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -13,6 +14,7 @@ namespace Emerald
 	struct EEObjectBufferDesc
 	{
 		MATRIX rotation;
+		FLOAT4 color;
 		float alpha;
 		float tmp1;
 		float tmp2;
@@ -25,6 +27,10 @@ namespace Emerald
 	{
 	public:
 		static bool InitializeObjectBuffer();
+
+	protected:
+		static bool s_isObjectInitialized;
+		static ID3D11Buffer *s_objectBuffer;
 
 	public:
 		EEObject();
@@ -53,6 +59,8 @@ namespace Emerald
 		virtual void SetAlpha(float _alpha);
 		//rotation
 		virtual void SetRotation(const MATRIX& _rotation);
+		//color
+		virtual void SetColor(const EEColor& _color);
 		//localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
 
@@ -64,44 +72,48 @@ namespace Emerald
 		virtual float GetPositionZ() const;
 		virtual const FLOAT2& GetPositionXY() const;
 		virtual const FLOAT3& GetPosition() const;
-		virtual bool IsPosDirty();
-		virtual FLOAT3 GetCenter() = NULL;
+		virtual bool IsPositionDirty()  const;
+		virtual FLOAT3 GetCenter() const = NULL;
 		//scale
 		virtual float GetScaleX() const;
 		virtual float GetScaleY() const;
 		virtual float GetScaleZ() const;
 		virtual const FLOAT3& GetScale() const;
-		virtual bool IsScaleDirty();
+		virtual bool IsScaleDirty() const;
 		//alpha
-		virtual float GetAlpha();
-		virtual bool IsAlphaDirty();
+		virtual float GetAlpha() const;
+		virtual bool IsAlphaDirty() const;
 		//rotation
-		virtual const MATRIX& GetRotation();
-		virtual bool IsRotaionDirty();
+		virtual const MATRIX& GetRotation() const;
+		virtual bool IsRotaionDirty() const;
+		//color
+		virtual const EEColor& GetColor() const;
+		virtual bool IsColorDirty() const;
 		//localZOrder
-		virtual float GetLocalZOrder();
-		virtual bool IsLocalZOrderDirty();
+		virtual float GetLocalZOrder() const;
+		virtual bool IsLocalZOrderDirty() const;
 
 		//position
 		virtual FLOAT3 GetFinalPosition() const;
-		virtual FLOAT3 GetFinalCenter() = NULL;
+		virtual FLOAT3 GetFinalCenter() const = NULL;
 		//scale
-		virtual FLOAT3 GetFinalScale();
+		virtual FLOAT3 GetFinalScale() const;
 		//alpha
-		virtual FLOAT GetFinalAlpha();
+		virtual FLOAT GetFinalAlpha() const;
 		//rotation
-		virtual MATRIX GetFinalRotation();
+		virtual MATRIX GetFinalRotation() const;
 		//localZOrder
-		virtual float GetFinalLocalZOrder();
+		virtual float GetFinalLocalZOrder() const;
+
+		//operator
+		bool operator< (const EEObject& _object) const;
+		bool operator> (const EEObject& _object) const;
 
 	protected:
 		virtual bool MapObjectBuffer();
 		virtual bool MapObjectBuffer(float _alpha);
 
 	protected:
-		static bool s_isObjectInitialized;
-		static ID3D11Buffer *s_objectBuffer;
-
 		EEObject *m_parent;
 		FLOAT3 m_position;
 		bool m_isPositionDirty;
@@ -111,6 +123,8 @@ namespace Emerald
 		bool m_isAlphaDirty;
 		MATRIX m_rotation;
 		bool m_isRotationDirty;
+		EEColor m_color;
+		bool m_isColorDirty;
 		float m_localZOrder;
 		bool m_isLocalZOrderDirty;
 	};

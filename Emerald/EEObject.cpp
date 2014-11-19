@@ -49,6 +49,8 @@ namespace Emerald
 		m_isAlphaDirty(false),
 		m_rotation(MATRIX::IDENTITY),
 		m_isRotationDirty(false),
+		m_color(1.0f, 1.0f, 1.0f, 1.0f),
+		m_isColorDirty(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(false)
 	{
@@ -65,6 +67,8 @@ namespace Emerald
 		m_isScaleDirty(_object.m_isScaleDirty),
 		m_alpha(_object.m_alpha),
 		m_isAlphaDirty(_object.m_isAlphaDirty),
+		m_color(_object.m_color),
+		m_isColorDirty(_object.m_isColorDirty),
 		m_localZOrder(_object.m_localZOrder),
 		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty)
 	{
@@ -178,6 +182,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	void EEObject::SetColor(const EEColor& _color)
+	{
+		m_color = _color;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetLocalZOrder(float _localZOrder)
 	{
 		m_localZOrder = _localZOrder;
@@ -207,7 +217,7 @@ namespace Emerald
 	{
 		return m_position.z;
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------
 	const FLOAT2& EEObject::GetPositionXY() const
 	{
@@ -221,7 +231,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::IsPosDirty()
+	bool EEObject::IsPositionDirty() const
 	{
 		return m_isPositionDirty;
 	}
@@ -251,43 +261,55 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::IsScaleDirty()
+	bool EEObject::IsScaleDirty() const
 	{
 		return m_isScaleDirty;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEObject::GetAlpha()
+	float EEObject::GetAlpha() const
 	{
 		return m_alpha;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::IsAlphaDirty()
+	bool EEObject::IsAlphaDirty() const
 	{
 		return m_isAlphaDirty;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	const MATRIX& EEObject::GetRotation()
+	const MATRIX& EEObject::GetRotation() const
 	{
 		return m_rotation;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::IsRotaionDirty()
+	bool EEObject::IsRotaionDirty() const
 	{
 		return m_isRotationDirty;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEObject::GetLocalZOrder()
+	const EEColor& EEObject::GetColor() const
+	{
+		return m_color;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::IsColorDirty() const
+	{
+		return m_isColorDirty;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEObject::GetLocalZOrder() const
 	{
 		return m_localZOrder;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::IsLocalZOrderDirty()
+	bool EEObject::IsLocalZOrderDirty() const
 	{
 		return m_isLocalZOrderDirty;
 	}
@@ -306,7 +328,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT3 EEObject::GetFinalScale()
+	FLOAT3 EEObject::GetFinalScale() const
 	{
 		if (m_parent)
 		{
@@ -319,7 +341,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT EEObject::GetFinalAlpha()
+	FLOAT EEObject::GetFinalAlpha() const
 	{
 		if (m_parent)
 		{
@@ -332,7 +354,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	MATRIX EEObject::GetFinalRotation()
+	MATRIX EEObject::GetFinalRotation() const
 	{
 		if (m_parent)
 		{
@@ -345,7 +367,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEObject::GetFinalLocalZOrder()
+	float EEObject::GetFinalLocalZOrder() const
 	{
 		if (m_parent)
 		{
@@ -355,6 +377,18 @@ namespace Emerald
 		{
 			return m_localZOrder;
 		}
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::operator< (const EEObject& _object) const
+	{
+		return m_localZOrder < _object.GetLocalZOrder();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::operator> (const EEObject& _object) const
+	{
+		return m_localZOrder > _object.GetLocalZOrder();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -370,6 +404,7 @@ namespace Emerald
 		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
 		objectBufferDesc->rotation = GetFinalRotation();
+		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = GetFinalAlpha();
 		deviceContext->Unmap(s_objectBuffer, 0);
 
@@ -389,6 +424,7 @@ namespace Emerald
 		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
 		objectBufferDesc->rotation = GetFinalRotation();
+		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = _alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
 

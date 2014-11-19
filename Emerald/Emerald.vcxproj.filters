@@ -84,6 +84,12 @@
     <ClCompile Include="源2.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="EESort.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="EEParticle.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -138,6 +144,12 @@
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EEMusic.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EESort.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EEParticle.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "EEGUI.h"
 #include "EECore.h"
 #include "EECollision.h"
+#include "EESort.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -673,8 +674,9 @@ namespace Emerald
 	void EEScene::AddObject(EEObject* _object)
 	{
 		_object->SetParent(this);
-		//if (m_control.size() == m_control.capacity())
-		//	m_control.reserve(m_control.size() + 1);
-		m_objects.push_back(_object);
+		//if (m_objects.size() == m_objects.capacity())
+		//	m_objects.reserve(m_objects.size() + 1);
+		//m_objects.push_back(_object);
+		EEInsertSort(m_objects, _object, true);
 	}
 }

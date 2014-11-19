@@ -100,6 +100,22 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEQuad::EEQuad(const FLOAT3& _position, FLOAT _width, FLOAT _height)
+		:
+		EEObject(),
+		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
+		m_quadWidth(_width),
+		m_quadHeight(_height),
+		m_quadVB(NULL),
+		m_quadTex()
+	{
+		InitializeQuadShader();
+
+		m_position = _position;
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEQuad::EEQuad(const Rect_Float &_rect)
 		:
 		EEObject(),
@@ -107,12 +123,27 @@ namespace Emerald
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
 		m_quadTex()
 	{
 		InitializeQuadShader();
 
 		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad::EEQuad(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
+		:
+		EEObject(),
+		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
+		m_quadWidth(_width),
+		m_quadHeight(_height),
+		m_quadVB(NULL),
+		m_quadTex(_tex)
+	{
+		InitializeQuadShader();
+
+		m_position = _position;
 		CreateQuadVertexBuffer();
 	}
 
@@ -124,7 +155,6 @@ namespace Emerald
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
 		m_quadTex(_tex)
 	{
 		InitializeQuadShader();
@@ -141,7 +171,6 @@ namespace Emerald
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadColor(1.0f, 1.0f, 1.0f, 1.0f),
 		m_quadTex(_tex)
 	{
 		InitializeQuadShader();
@@ -158,7 +187,6 @@ namespace Emerald
 		m_quadWidth(_quad.m_quadWidth),
 		m_quadHeight(_quad.m_quadHeight),
 		m_quadVB(_quad.m_quadVB),
-		m_quadColor(_quad.m_quadColor),
 		m_quadTex(_quad.m_quadTex)
 	{
 
@@ -268,10 +296,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEQuad::SetRect(const Rect_Float& _rect)
 	{
+		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
 		m_quadRect = _rect;
 		m_quadWidth = _rect.z - _rect.x;
 		m_quadHeight = _rect.w - _rect.y;
-		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
 		m_isPositionDirty = true;
 	}
 
@@ -308,25 +336,25 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	const Rect_Float& EEQuad::GetRect()
+	const Rect_Float& EEQuad::GetRect() const
 	{
 		return m_quadRect;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEQuad::GetWidht()
+	float EEQuad::GetWidht() const
 	{
 		return m_quadWidth;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEQuad::GetHeight()
+	float EEQuad::GetHeight() const
 	{
 		return m_quadHeight;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT3 EEQuad::GetCenter()
+	FLOAT3 EEQuad::GetCenter() const
 	{
 		return FLOAT3(m_position.x + m_quadWidth / 2, m_position.y + m_quadHeight / 2, 0.0f);
 	}
@@ -338,7 +366,8 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	Rect_Float EEQuad::GetFinalRect()
+	//this function is different with other final functions. it is embellished with scale
+	Rect_Float EEQuad::GetFinalRect() const
 	{
 		if (m_parent)
 		{
@@ -364,7 +393,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT3 EEQuad::GetFinalCenter()
+	FLOAT3 EEQuad::GetFinalCenter() const
 	{
 		FLOAT3 finalPosition = GetFinalPosition();
 		return FLOAT3(finalPosition.x + m_quadWidth / 2, finalPosition.y + m_quadHeight / 2, 0.0f);

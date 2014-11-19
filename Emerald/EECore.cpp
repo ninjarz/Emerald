@@ -16,6 +16,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EECore::Initialize_All(const EEDesc& _desc)
 	{
+		srand((unsigned)time(NULL));
+
 		//EECore_System
 		m_EESystem = NULL;
 		m_EESystem = new EESystem;

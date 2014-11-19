@@ -41,6 +41,9 @@ namespace Emerald
 	{
 		//EECore
 	public:
+		static EECore *s_EECore;
+
+	public:
 		inline EECore()
 		{
 		}
@@ -56,9 +59,6 @@ namespace Emerald
 		bool Initialize_All(const EEDesc& _EEDesc);
 		void Shutdown();
 		int Run();
-
-	public:
-		static EECore *s_EECore;
 
 	private:
 		MSG m_msg;

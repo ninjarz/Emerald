@@ -35,7 +35,7 @@ QuadVOut QuadVS(QuadVIn _vIn)
 [earlydepthstencil]
 void QuadPS(QuadVOut _pIn, out float4 _finalColor :SV_TARGET)
 {
-	_finalColor = g_tex.Sample(samTex, _pIn.tex);
+	_finalColor = g_tex.Sample(samTex, _pIn.tex) * cb_color;
 	_finalColor.w = _finalColor.w * cb_alpha;
 }
 

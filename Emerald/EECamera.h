@@ -22,6 +22,10 @@ namespace Emerald
 	public:
 		static bool InitializeCameraBuffer();
 
+	protected:
+		static bool s_isCameraInitialized;
+		static ID3D11Buffer *s_cameraBuffer;
+
 	public:
 		EECamera();
 		EECamera(const EECamera& _camera);
@@ -29,10 +33,6 @@ namespace Emerald
 
 		bool Initialize();
 		void Shutdown();
-
-	protected:
-		static bool s_isCameraInitialized;
-		static ID3D11Buffer *s_cameraBuffer;
 	};
 }
 
