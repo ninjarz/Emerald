@@ -18,11 +18,11 @@ namespace Emerald
 		FLOAT2 tex;
 	};
 
-	//EEQuad
+	//EEQuad2D
 	//----------------------------------------------------------------------------------------------------
-	class EEQuad : public EEObject
+	class EEQuad2D : public EEObject
 	{
-	public:
+	protected:
 		static bool InitializeQuadShader();
 
 	protected:
@@ -33,13 +33,14 @@ namespace Emerald
 		static ID3D11PixelShader  *s_quadPS;
 
 	public:
-		EEQuad(const FLOAT3& _position, FLOAT _width, FLOAT _height);
-		EEQuad(const Rect_Float& _rect);
-		EEQuad(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex);
-		EEQuad(const Rect_Float& _rect, const EETexture& _tex);
-		EEQuad(const Rect_Float& _rect, ID3D11ShaderResourceView* _tex);
-		EEQuad(const EEQuad& _quad);
-		~EEQuad();
+		EEQuad2D(const FLOAT3& _position);
+		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height);
+		EEQuad2D(const Rect_Float& _rect);
+		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex);
+		EEQuad2D(const Rect_Float& _rect, const EETexture& _tex);
+		EEQuad2D(const Rect_Float& _rect, ID3D11ShaderResourceView* _tex);
+		EEQuad2D(const EEQuad2D& _quad);
+		~EEQuad2D();
 
 		virtual bool Update();
 		virtual bool Render();
@@ -47,13 +48,13 @@ namespace Emerald
 		//position
 		virtual void SetPositionX(float _posX);
 		virtual void SetPositionY(float _posY);
-		virtual void SetPositionXY(const FLOAT2& _pos);
-		virtual void SetPosition(const FLOAT3& _pos);
+		virtual void SetPositionXY(const FLOAT2& _position);
+		virtual void SetPosition(const FLOAT3& _position);
 		virtual void SetRect(const Rect_Float& _rect);
 		virtual void SetWidth(float _width);
 		virtual void SetHeight(float _height);
 		//texture
-		virtual bool SetTexture(EETexture* _tex);
+		virtual bool SetTexture(const EETexture& _tex);
 		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
 
 		//position
@@ -69,7 +70,7 @@ namespace Emerald
 		virtual FLOAT3 GetFinalCenter() const;
 
 	protected:
-		bool CreateQuadVertexBuffer();
+		bool CreateQuadVertexBuffer(int _verticesNum = 4);
 
 	protected:
 		//the size of the quad

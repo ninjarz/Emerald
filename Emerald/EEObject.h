@@ -25,7 +25,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	class EEObject
 	{
-	public:
+	protected:
 		static bool InitializeObjectBuffer();
 
 	protected:
@@ -73,7 +73,7 @@ namespace Emerald
 		virtual const FLOAT2& GetPositionXY() const;
 		virtual const FLOAT3& GetPosition() const;
 		virtual bool IsPositionDirty()  const;
-		virtual FLOAT3 GetCenter() const = NULL;
+		virtual FLOAT3 GetCenter() const;
 		//scale
 		virtual float GetScaleX() const;
 		virtual float GetScaleY() const;
@@ -95,7 +95,7 @@ namespace Emerald
 
 		//position
 		virtual FLOAT3 GetFinalPosition() const;
-		virtual FLOAT3 GetFinalCenter() const = NULL;
+		virtual FLOAT3 GetFinalCenter() const;
 		//scale
 		virtual FLOAT3 GetFinalScale() const;
 		//alpha

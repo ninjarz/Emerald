@@ -4,15 +4,15 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEQuad
+	//EEQuad2D
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::s_isQuadInitialized = false;
-	ID3D11InputLayout *EEQuad::s_quadIL = NULL;
-	ID3D11VertexShader *EEQuad::s_quadVS = NULL;
-	ID3D11PixelShader  *EEQuad::s_quadPS = NULL;
+	bool EEQuad2D::s_isQuadInitialized = false;
+	ID3D11InputLayout *EEQuad2D::s_quadIL = NULL;
+	ID3D11VertexShader *EEQuad2D::s_quadVS = NULL;
+	ID3D11PixelShader  *EEQuad2D::s_quadPS = NULL;
 	
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::InitializeQuadShader()
+	bool EEQuad2D::InitializeQuadShader()
 	{
 		if (!s_isQuadInitialized)
 		{
@@ -21,7 +21,7 @@ namespace Emerald
 			ID3D10Blob *vertexShaderBuffer = NULL;
 			ID3D10Blob *pixelShaderBuffer = NULL;
 
-			result = D3DX11CompileFromFileW(L"EEShader\\EEQuadShader.hlsl", NULL, NULL, "QuadVS", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, &vertexShaderBuffer, &errorMessage, NULL);
+			result = D3DX11CompileFromFileW(L"EEShader\\EEQuad2DShader.hlsl", NULL, NULL, "QuadVS", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, &vertexShaderBuffer, &errorMessage, NULL);
 			if (FAILED(result))
 			{
 				if (errorMessage)
@@ -33,14 +33,14 @@ namespace Emerald
 				}
 				else
 				{
-					MessageBox(NULL, L"CompileShader´íÎó!", L"´íÎó", MB_OK);
+					MessageBoxW(NULL, L"CompileShader´íÎó!", L"´íÎó", MB_OK);
 					SAFE_RELEASE(errorMessage);
 					SAFE_RELEASE(vertexShaderBuffer);
 					SAFE_RELEASE(pixelShaderBuffer);
 				}
 				return FALSE;
 			}
-			result = D3DX11CompileFromFileW(L"EEShader\\EEQuadShader.hlsl", NULL, NULL, "QuadPS", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, &pixelShaderBuffer, &errorMessage, NULL);
+			result = D3DX11CompileFromFileW(L"EEShader\\EEQuad2DShader.hlsl", NULL, NULL, "QuadPS", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, &pixelShaderBuffer, &errorMessage, NULL);
 			if (FAILED(result))
 			{
 				if (errorMessage)
@@ -52,7 +52,7 @@ namespace Emerald
 				}
 				else
 				{
-					MessageBox(NULL, L"CompileShader´íÎó!", L"´íÎó", MB_OK);
+					MessageBoxW(NULL, L"CompileShader´íÎó!", L"´íÎó", MB_OK);
 					SAFE_RELEASE(errorMessage);
 					SAFE_RELEASE(vertexShaderBuffer);
 					SAFE_RELEASE(pixelShaderBuffer);
@@ -100,7 +100,23 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const FLOAT3& _position, FLOAT _width, FLOAT _height)
+	EEQuad2D::EEQuad2D(const FLOAT3& _position)
+		:
+		EEObject(),
+		m_quadRect(_position.x, _position.y, _position.x, _position.y),
+		m_quadWidth(0.0f),
+		m_quadHeight(0.0f),
+		m_quadVB(NULL),
+		m_quadTex()
+	{
+		InitializeQuadShader();
+
+		m_position = _position;
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height)
 		:
 		EEObject(),
 		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
@@ -116,7 +132,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const Rect_Float &_rect)
+	EEQuad2D::EEQuad2D(const Rect_Float &_rect)
 		:
 		EEObject(),
 		m_quadRect(_rect),
@@ -132,7 +148,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
+	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
 		:
 		EEObject(),
 		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
@@ -148,7 +164,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const Rect_Float &_rect, const EETexture& _tex)
+	EEQuad2D::EEQuad2D(const Rect_Float &_rect, const EETexture& _tex)
 		:
 		EEObject(),
 		m_quadRect(_rect),
@@ -164,7 +180,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex)
+	EEQuad2D::EEQuad2D(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex)
 		:
 		EEObject(),
 		m_quadRect(_rect),
@@ -180,7 +196,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::EEQuad(const EEQuad& _quad)
+	EEQuad2D::EEQuad2D(const EEQuad2D& _quad)
 		:
 		EEObject(_quad),
 		m_quadRect(_quad.m_quadRect),
@@ -193,13 +209,13 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad::~EEQuad()
+	EEQuad2D::~EEQuad2D()
 	{
 		SAFE_RELEASE(m_quadVB);
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::Update()
+	bool EEQuad2D::Update()
 	{
 		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
@@ -231,7 +247,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::Render()
+	bool EEQuad2D::Render()
 	{
 		MapObjectBuffer();
 
@@ -252,49 +268,49 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetPositionX(float _posX)
+	void EEQuad2D::SetPositionX(float _posX)
 	{
 		m_position.x = _posX;
 		m_quadRect.x = _posX;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_quadRect.z = _posX + m_quadWidth;
 
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetPositionY(float _posY)
+	void EEQuad2D::SetPositionY(float _posY)
 	{
 		m_position.y = _posY;
 		m_quadRect.y = _posY;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_quadRect.w = _posY + m_quadHeight;
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetPositionXY(const FLOAT2& _pos)
+	void EEQuad2D::SetPositionXY(const FLOAT2& _position)
 	{
-		m_position.x = _pos.x;
-		m_quadRect.x = _pos.x;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
-		m_position.y = _pos.y;
-		m_quadRect.y = _pos.y;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_position.x = _position.x;
+		m_quadRect.x = _position.x;
+		m_quadRect.z = _position.x + m_quadWidth;
+		m_position.y = _position.y;
+		m_quadRect.y = _position.y;
+		m_quadRect.w = _position.y + m_quadHeight;
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetPosition(const FLOAT3& _position)
+	void EEQuad2D::SetPosition(const FLOAT3& _position)
 	{
 		m_position = _position;
 		m_quadRect.x = _position.x;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_quadRect.z = _position.x + m_quadWidth;
 		m_quadRect.y = _position.y;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_quadRect.w = _position.y + m_quadHeight;
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetRect(const Rect_Float& _rect)
+	void EEQuad2D::SetRect(const Rect_Float& _rect)
 	{
 		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
 		m_quadRect = _rect;
@@ -304,31 +320,31 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetWidth(float _width)
+	void EEQuad2D::SetWidth(float _width)
 	{
 		m_quadWidth = _width;
-		m_quadRect.z = m_quadRect.x + m_quadWidth;
+		m_quadRect.z = m_quadRect.x + _width;
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEQuad::SetHeight(float _height)
+	void EEQuad2D::SetHeight(float _height)
 	{
 		m_quadHeight = _height;
-		m_quadRect.w = m_quadRect.y + m_quadHeight;
+		m_quadRect.w = m_quadRect.y + _height;
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::SetTexture(EETexture* _tex)
+	bool EEQuad2D::SetTexture(const EETexture& _tex)
 	{
-		m_quadTex.SetTexture(_tex->GetTexture());
+		m_quadTex = _tex;
 
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::SetTexture(ID3D11ShaderResourceView* _tex)
+	bool EEQuad2D::SetTexture(ID3D11ShaderResourceView* _tex)
 	{
 		m_quadTex.SetTexture(_tex);
 
@@ -336,38 +352,38 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	const Rect_Float& EEQuad::GetRect() const
+	const Rect_Float& EEQuad2D::GetRect() const
 	{
 		return m_quadRect;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEQuad::GetWidht() const
+	float EEQuad2D::GetWidht() const
 	{
 		return m_quadWidth;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEQuad::GetHeight() const
+	float EEQuad2D::GetHeight() const
 	{
 		return m_quadHeight;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT3 EEQuad::GetCenter() const
+	FLOAT3 EEQuad2D::GetCenter() const
 	{
 		return FLOAT3(m_position.x + m_quadWidth / 2, m_position.y + m_quadHeight / 2, 0.0f);
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETexture* EEQuad::GetTexture()
+	EETexture* EEQuad2D::GetTexture()
 	{
 		return &m_quadTex;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	//this function is different with other final functions. it is embellished with scale
-	Rect_Float EEQuad::GetFinalRect() const
+	Rect_Float EEQuad2D::GetFinalRect() const
 	{
 		if (m_parent)
 		{
@@ -393,19 +409,19 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	FLOAT3 EEQuad::GetFinalCenter() const
+	FLOAT3 EEQuad2D::GetFinalCenter() const
 	{
 		FLOAT3 finalPosition = GetFinalPosition();
 		return FLOAT3(finalPosition.x + m_quadWidth / 2, finalPosition.y + m_quadHeight / 2, 0.0f);
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad::CreateQuadVertexBuffer()
+	bool EEQuad2D::CreateQuadVertexBuffer(int _verticesNum)
 	{
 		SAFE_RELEASE(m_quadVB);
 
 		D3D11_BUFFER_DESC vbDesc = { 0 };
-		vbDesc.ByteWidth = sizeof(EEQuadVertex)* 4;
+		vbDesc.ByteWidth = sizeof(EEQuadVertex) * _verticesNum;
 		vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		vbDesc.MiscFlags = 0;
@@ -413,11 +429,9 @@ namespace Emerald
 		vbDesc.Usage = D3D11_USAGE_DYNAMIC;
 		if (FAILED(EECore::s_EECore->GetDevice()->CreateBuffer(&vbDesc, NULL, &m_quadVB)))
 		{
-			MessageBox(NULL, L"CreateVertexBuffer failed!", L"Error", MB_OK);
+			MessageBoxW(NULL, L"CreateVertexBuffer failed!", L"Error", MB_OK);
 			return false;
 		}
-
-		m_isPositionDirty = true;
 
 		return true;
 	}

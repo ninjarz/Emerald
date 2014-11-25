@@ -42,7 +42,7 @@ namespace Emerald
 		:
 		m_parent(NULL),
 		m_position(0.0f),
-		m_isPositionDirty(false),
+		m_isPositionDirty(true),
 		m_scale(1.0f),
 		m_isScaleDirty(false),
 		m_alpha(1.0f),
@@ -237,6 +237,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	FLOAT3 EEObject::GetCenter() const
+	{
+		return m_position;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	float EEObject::GetScaleX() const
 	{
 		return m_scale.x;
@@ -316,6 +322,19 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	FLOAT3 EEObject::GetFinalPosition() const
+	{
+		if (m_parent)
+		{
+			return m_position + m_parent->GetFinalPosition();
+		}
+		else
+		{
+			return m_position;
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT3 EEObject::GetFinalCenter() const
 	{
 		if (m_parent)
 		{

@@ -14,6 +14,7 @@
 #include "EEAction.h"
 #include "EEMusic.h"
 #include "EEParticle.h"
+#include "EEFont.h"
 
 using namespace Emerald;
 

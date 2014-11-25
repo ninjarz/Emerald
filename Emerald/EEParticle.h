@@ -58,7 +58,7 @@ namespace Emerald
 
 	//EEParticle2D
 	//----------------------------------------------------------------------------------------------------
-	class EEParticle2D : public EEParticle, public EEQuad
+	class EEParticle2D : public EEParticle, public EEQuad2D
 	{
 	public:
 		EEParticle2D(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture);

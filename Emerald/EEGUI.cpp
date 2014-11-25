@@ -10,7 +10,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, void(*_funcPtr)())
 		:
-		EEQuad(_progressRect, _progressTex),
+		EEQuad2D(_progressRect, _progressTex),
 		m_progressFrame(_frameRect, _frameTex),
 		m_progress(0.0f),
 		m_isProgressDirty(false),
@@ -22,7 +22,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEProgressbar::EEProgressbar(const EEProgressbar& _progressbar)
 		:
-		EEQuad(_progressbar),
+		EEQuad2D(_progressbar),
 		m_progressFrame(_progressbar.m_progressFrame),
 		m_progress(_progressbar.m_progress),
 		m_isProgressDirty(_progressbar.m_isProgressDirty),
@@ -88,7 +88,7 @@ namespace Emerald
 	bool EEProgressbar::Render()
 	{
 		m_progressFrame.Render();
-		EEQuad::Render();
+		EEQuad2D::Render();
 
 		return true;
 	}
@@ -132,7 +132,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, void(*_funcPtr)())
 		:
-		EEQuad(_rect, _upTex),
+		EEQuad2D(_rect, _upTex),
 		//type
 		m_type(_type),
 		//state
@@ -158,7 +158,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, void(*_funcPtr)())
 		:
-		EEQuad(_rect, _upTex),
+		EEQuad2D(_rect, _upTex),
 		//type
 		m_type(_type),
 		//state
@@ -184,7 +184,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, void(*_funcPtr)())
 		:
-		EEQuad(_rect, _tex),
+		EEQuad2D(_rect, _tex),
 		//type
 		m_type(_type),
 		//state
@@ -210,7 +210,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEButton::EEButton(EEButtonType _type, const Rect_Float &_rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView *_tex, void(*_funcPtr)())
 		:
-		EEQuad(_rect, _tex),
+		EEQuad2D(_rect, _tex),
 		//type
 		m_type(_type),
 		//state
@@ -236,7 +236,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEButton::EEButton(const EEButton& _Button)
 		:
-		EEQuad(_Button),
+		EEQuad2D(_Button),
 		//type
 		m_type(_Button.m_type),
 		//state
@@ -616,7 +616,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEScene::EEScene(const Rect_Float &_rect, const EETexture& _tex)
 		:
-		EEQuad(_rect, _tex)
+		EEQuad2D(_rect, _tex)
 	{
 		//controls
 
@@ -625,7 +625,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEScene::EEScene(const Rect_Float &_rect, ID3D11ShaderResourceView *_tex)
 		:
-		EEQuad(_rect, _tex)
+		EEQuad2D(_rect, _tex)
 	{
 		//controls
 
@@ -634,7 +634,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEScene::EEScene(const EEScene &_scene)
 		:
-		EEQuad(_scene),
+		EEQuad2D(_scene),
 		m_objects(m_objects)
 	{
 
@@ -649,7 +649,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScene::Update()
 	{
-		EEQuad::Update();
+		EEQuad2D::Update();
 		for (UINT i = 0; i < m_objects.size(); ++i)
 		{
 			m_objects[i]->Update();
@@ -661,7 +661,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScene::Render()
 	{
-		EEQuad::Render();
+		EEQuad2D::Render();
 		for (UINT i = 0; i < m_objects.size(); ++i)
 		{
 			m_objects[i]->Render();

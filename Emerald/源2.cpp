@@ -1,8 +1,8 @@
-#if 1
+#if 0
 #include "Emerald.h"
 
-//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
-int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
+//int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
 	EEDesc desc;
 	desc.applicationName = L"Emerald";  //窗口名称
@@ -25,7 +25,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 1, time 0 - +∞
 	EETexture nameTex(L"Texture\\主界面\\游戏名称.png");
-	EEQuad *nameQuad = new EEQuad(Rect_Float(70, 170, 470, 270), nameTex);
+	EEQuad2D *nameQuad = new EEQuad2D(Rect_Float(70, 170, 470, 270), nameTex);
 	nameQuad->SetLocalZOrder(5.f);
 	nameQuad->SetAlpha(0.0f);
 	EEFade(nameQuad, 1.0f, 1.0f);
@@ -33,7 +33,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 9, time 1 - +∞
 	EETexture round1Tex(L"Texture\\主界面\\圆形图案1.png");
-	EEQuad *round1Quad = new EEQuad(Rect_Float(70, 75, 370, 375), round1Tex);
+	EEQuad2D *round1Quad = new EEQuad2D(Rect_Float(70, 75, 370, 375), round1Tex);
 	round1Quad->SetLocalZOrder(9.f);
 	round1Quad->SetAlpha(0.0f);
 	EEFade(round1Quad, 1.0f, 1.0f, 1.0f);
@@ -42,7 +42,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 9, time 2 - +∞
 	EETexture round2Tex(L"Texture\\主界面\\圆形图案2（滤色）.png");
-	EEQuad *round2Quad = new EEQuad(Rect_Float(0, 5, 440, 445), round2Tex);
+	EEQuad2D *round2Quad = new EEQuad2D(Rect_Float(0, 5, 440, 445), round2Tex);
 	round2Quad->SetLocalZOrder(9.f);
 	round2Quad->SetAlpha(0.0f);
 	EEFade(round2Quad, 1.0f, 1.0f, 2.0f);
@@ -51,7 +51,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 8, time 3.5 - +∞
 	EETexture road1Tex(L"Texture\\主界面\\线路形图案1（滤色）.png");
-	EEQuad *road1Quad = new EEQuad(Rect_Float(300, 65, 500, 385), road1Tex);
+	EEQuad2D *road1Quad = new EEQuad2D(Rect_Float(300, 65, 500, 385), road1Tex);
 	road1Quad->SetLocalZOrder(8.f);
 	road1Quad->SetAlpha(0.0f);
 	EEFade(road1Quad, 1.0f, 1.0f, 3.5f);
@@ -59,7 +59,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 8, time 3.0 - +∞
 	EETexture road2Tex(L"Texture\\主界面\\线路形图案2（滤色）.png");
-	EEQuad *road2Quad = new EEQuad(Rect_Float(40, 45, 600, 405), road2Tex);
+	EEQuad2D *road2Quad = new EEQuad2D(Rect_Float(40, 45, 600, 405), road2Tex);
 	road2Quad->SetLocalZOrder(8.f);
 	road2Quad->SetAlpha(0.0f);
 	EEFade(road2Quad, 1.0f, 1.0f, 3.0f);
@@ -67,7 +67,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 7, time 3.5 - +∞
 	EETexture TopTex(L"Texture\\主界面\\上框.png");
-	EEQuad *TopQuad = new EEQuad(Rect_Float(0, 0, (float)EEGetWidth(), 25.f), TopTex);
+	EEQuad2D *TopQuad = new EEQuad2D(Rect_Float(0, 0, (float)EEGetWidth(), 25.f), TopTex);
 	TopQuad->SetLocalZOrder(7.f);
 	TopQuad->SetAlpha(0.0f);
 	EEFade(TopQuad, 1.0f, 1.0f, 3.5);
@@ -75,7 +75,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 	//order 7, time 3.5 - +∞
 	EETexture BottomTex(L"Texture\\主界面\\下框.png");
-	EEQuad *BottomQuad = new EEQuad(Rect_Float(0, (float)EEGetHeight() - 25.f, (float)EEGetWidth(), (float)EEGetHeight()), BottomTex);
+	EEQuad2D *BottomQuad = new EEQuad2D(Rect_Float(0, (float)EEGetHeight() - 25.f, (float)EEGetWidth(), (float)EEGetHeight()), BottomTex);
 	BottomQuad->SetLocalZOrder(7.f);
 	BottomQuad->SetAlpha(0.0f);
 	EEFade(BottomQuad, 1.0f, 1.0f, 3.5);

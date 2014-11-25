@@ -21,7 +21,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -39,7 +39,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -75,7 +75,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -93,7 +93,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -129,7 +129,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -147,7 +147,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -190,7 +190,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -208,7 +208,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -248,7 +248,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -266,7 +266,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -305,7 +305,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;
@@ -323,7 +323,7 @@ namespace Emerald
 
 		while (1)
 		{
-			Sleep(25);
+			Sleep(20);
 
 			float currTime = (float)EECore::s_EECore->GetTotalTime();
 			float deltaTime = currTime - progress;

@@ -8,4 +8,10 @@
 
 #endif
 
+//D3D11_USAGE_
 //----------------------------------------------------------------------------------------------------
+//	Resource_Usage	Default	Dynamic	Immutable	Staging
+//	GPU - Read		yes		yes		yes			yes1
+//	GPU - Write		yes							yes1
+//	CPU - Read									yes1
+//	CPU - Write				yes					yes1

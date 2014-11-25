@@ -90,6 +90,15 @@
     <ClCompile Include="EEParticle.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
+    <ClCompile Include="EEFont.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="源3.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="源4.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -152,15 +161,21 @@
     <ClInclude Include="EEParticle.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
+    <ClInclude Include="EEFont.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EEShader\EEQuadShader.hlsl">
-      <Filter>头文件\Emerald\EEShader</Filter>
-    </None>
     <None Include="EEShader\EEObjectBuffer.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
     <None Include="EEShader\EECameraBuffer.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EEQuad2DShader.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EEFontShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
   </ItemGroup>

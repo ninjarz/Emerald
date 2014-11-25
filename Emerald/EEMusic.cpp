@@ -20,13 +20,13 @@ namespace Emerald
 			CoInitializeEx(NULL, COINIT_MULTITHREADED);
 			if (FAILED(XAudio2Create(&s_XAudio2, 0)))
 			{
-				MessageBox(NULL, L"Create XAudio2 failed!", L"ERROR", MB_OK);
+				MessageBoxW(NULL, L"Create XAudio2 failed!", L"ERROR", MB_OK);
 				CoUninitialize();
 				return false;
 			}
 			if (FAILED(s_XAudio2->CreateMasteringVoice(&s_masteringVoice)))
 			{
-				MessageBox(NULL, L"Create mastering voice failed!", L"ERROR", MB_OK);
+				MessageBoxW(NULL, L"Create mastering voice failed!", L"ERROR", MB_OK);
 				s_XAudio2->Release();
 				s_XAudio2 = NULL;
 				CoUninitialize();

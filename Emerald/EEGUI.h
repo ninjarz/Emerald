@@ -10,7 +10,7 @@ namespace Emerald
 {
 	//EEProgressBar
 	//----------------------------------------------------------------------------------------------------
-	class EEProgressbar : public EEQuad
+	class EEProgressbar : public EEQuad2D
 	{
 	public:
 		EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, void(*_funcPtr)());
@@ -29,7 +29,7 @@ namespace Emerald
 
 	private:
 		//the quad of the frame
-		EEQuad m_progressFrame;
+		EEQuad2D m_progressFrame;
 		//the degree of the progress
 		float m_progress;
 		bool m_isProgressDirty;
@@ -56,7 +56,7 @@ namespace Emerald
 
 	//EEButton
 	//----------------------------------------------------------------------------------------------------
-	class EEButton : public EEQuad
+	class EEButton : public EEQuad2D
 	{
 	public:
 		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, void(*_funcPtr)() = NULL);
@@ -106,7 +106,7 @@ namespace Emerald
 
 	//EEScne
 	//----------------------------------------------------------------------------------------------------
-	class EEScene : public EEQuad
+	class EEScene : public EEQuad2D
 	{
 	public:
 		EEScene(const Rect_Float &_rect, const EETexture& _tex);

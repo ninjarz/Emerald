@@ -28,12 +28,12 @@ namespace Emerald
 	public:
 		EETexture();
 		EETexture(LPCWSTR _file);
+		EETexture(const char* _file, unsigned int _width, unsigned int _height);
 		EETexture(ID3D11ShaderResourceView* _texture);
 		EETexture(const EETexture& _texture);
 		~EETexture();
 		
 		bool LoadTextureFromFile(LPCWSTR _file);
-
 		bool SetTexture(ID3D11ShaderResourceView* _texture);
 
 		ID3D11ShaderResourceView* GetTexture();
@@ -44,7 +44,7 @@ namespace Emerald
 
 	//EETexture_APIs
 	//----------------------------------------------------------------------------------------------------
-	bool SaveTextureToFile(EETextureType _type, LPCTSTR _fileName, EETexture& _texture);
+	bool SaveTextureToFile(EETexture& _texture, LPCWSTR _fileName, EETextureType _type);
 }
 
 #endif

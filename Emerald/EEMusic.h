@@ -30,8 +30,8 @@ extern "C"
 #include <libavutil/audioconvert.h>
 #include <libavutil/mathematics.h>
 }
-#pragma comment(lib,"Winmm.lib")
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xaudio2.h>
+#pragma comment(lib,"xaudio2.lib")
+#include <xaudio2.h>
 
 
 namespace Emerald
@@ -40,8 +40,13 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	class EEMusic
 	{
-	public:
+	protected:
 		static bool InitializeMusic();
+
+	protected:
+		static bool s_isMusicInitialized;
+		static IXAudio2 *s_XAudio2;
+		static IXAudio2MasteringVoice *s_masteringVoice;
 
 	public:
 		EEMusic();
@@ -68,11 +73,6 @@ namespace Emerald
 
 	private:
 		bool LoadMusic(const char* _fileName);
-
-	private:
-		static bool s_isMusicInitialized;
-		static IXAudio2 *s_XAudio2;
-		static IXAudio2MasteringVoice *s_masteringVoice;
 
 		IXAudio2SourceVoice *m_sourceVoice;
 		XAUDIO2_BUFFER m_buffer;

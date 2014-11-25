@@ -10,7 +10,7 @@ namespace Emerald
 		:
 		m_isAlive(true),
 		m_durationTime(_durationTime),
-		EEQuad(_position, _width, _height, _texture),
+		EEQuad2D(_position, _width, _height, _texture),
 		m_positionSpeed(_positionSpeed),
 		m_colorSpeed(_colorSpeed),
 		m_scaleSpeed(_scaleSpeed)
@@ -24,7 +24,7 @@ namespace Emerald
 		:
 		m_isAlive(_particle.m_isAlive),
 		m_durationTime(_particle.m_durationTime),
-		EEQuad(_particle),
+		EEQuad2D(_particle),
 		m_positionSpeed(_particle.m_positionSpeed),
 		m_colorSpeed(_particle.m_colorSpeed),
 		m_scaleSpeed(_particle.m_scaleSpeed)
@@ -61,7 +61,7 @@ namespace Emerald
 				m_durationTime -= deltaTime;
 			}
 
-			return EEQuad::Update();
+			return EEQuad2D::Update();
 		}
 
 		return false;
@@ -72,7 +72,7 @@ namespace Emerald
 	{
 		if (m_isAlive)
 		{
-			return EEQuad::Render();
+			return EEQuad2D::Render();
 		}
 
 		return false;
