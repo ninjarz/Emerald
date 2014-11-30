@@ -35,13 +35,11 @@ FontVOut FontVS(FontVIn _vIn)
 [earlydepthstencil]
 void FontPS(FontVOut _pIn, out float4 _finalColor :SV_TARGET)
 {
-	_finalColor = g_tex0.Sample(texSampler, _pIn.tex) * cb_color;
-	_finalColor.w = _finalColor.w * cb_alpha;
-
-	if (_finalColor.r == 0.0f)
+	float4 sampledColor = g_tex0.Sample(texSampler, _pIn.tex);
+	if (sampledColor.r == 0.0f)
 		clip(-1);
-	else
-		_finalColor = cb_color;
+	_finalColor = sampledColor * cb_color;
+	_finalColor.w = _finalColor.w * cb_alpha;
 }
 
 #endif

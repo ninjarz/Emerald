@@ -1,11 +1,73 @@
 #include "EEGUI.h"
 #include "EECore.h"
-#include "EECollision.h"
 #include "EESort.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	//EELineEditer
+	//----------------------------------------------------------------------------------------------------
+	EELineEditer::EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
+		:
+		EEQuad2D(_rect, _color),
+		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), "", _fontColor)
+	{
+		m_text.SetParent(this);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EELineEditer::EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
+		:
+		EEQuad2D(_rect, _tex),
+		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), "", _fontColor)
+	{
+		m_text.SetParent(this);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EELineEditer::EELineEditer(const EELineEditer& _lineEditer)
+		:
+		EEQuad2D(_lineEditer),
+		m_text(_lineEditer.m_text)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EELineEditer::~EELineEditer()
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EELineEditer::Update()
+	{
+		EEQuad2D::Update();
+		
+		if (m_isTriggered)
+		{
+			//the key queue need to be clear here
+			m_isTriggered = false;
+		}
+		if (s_focusedObject == this)
+		{
+			while (EECore::s_EECore->IsKeyInput())
+				m_text.AddText((char)EECore::s_EECore->GetKey());
+		}
+		m_text.Update();
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EELineEditer::Render()
+	{
+		EEQuad2D::Render();
+		m_text.Render();
+
+		return true;
+	}
+
 	//EEProgressBar
 	//----------------------------------------------------------------------------------------------------
 	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, void(*_funcPtr)())
@@ -46,7 +108,7 @@ namespace Emerald
 			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
 			finalRect.z -= (finalRect.z - finalRect.x) * (1.0f - m_progress);
 
-			EEQuadVertex vertices[4];
+			EEQuad2DVertex vertices[4];
 			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
 			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
@@ -135,9 +197,6 @@ namespace Emerald
 		EEQuad2D(_rect, _upTex),
 		//type
 		m_type(_type),
-		//state
-		m_state(EE_BUTTON_UP),
-		m_isTriggered(false),
 		//scale
 		m_aimScale(1.0),
 		m_currScaleTime(0.0),
@@ -161,9 +220,6 @@ namespace Emerald
 		EEQuad2D(_rect, _upTex),
 		//type
 		m_type(_type),
-		//state
-		m_state(EE_BUTTON_UP),
-		m_isTriggered(false),
 		//scale
 		m_aimScale(1.0),
 		m_currScaleTime(0.0),
@@ -187,9 +243,6 @@ namespace Emerald
 		EEQuad2D(_rect, _tex),
 		//type
 		m_type(_type),
-		//state
-		m_state(EE_BUTTON_UP),
-		m_isTriggered(false),
 		//scale
 		m_aimScale(_scale),
 		m_currScaleTime(0.0),
@@ -213,9 +266,6 @@ namespace Emerald
 		EEQuad2D(_rect, _tex),
 		//type
 		m_type(_type),
-		//state
-		m_state(EE_BUTTON_UP),
-		m_isTriggered(false),
 		//scale
 		m_aimScale(_scale),
 		m_currScaleTime(0.0),
@@ -239,9 +289,6 @@ namespace Emerald
 		EEQuad2D(_Button),
 		//type
 		m_type(_Button.m_type),
-		//state
-		m_state(_Button.m_state),
-		m_isTriggered(_Button.m_isTriggered),
 		//scale
 		m_aimScale(_Button.m_aimScale),
 		m_currScaleTime(_Button.m_currScaleTime),
@@ -267,7 +314,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Update()
 	{
-		UpdateButtonState();
+		UpdateObjectState();
 
 		switch (m_type)
 		{
@@ -338,100 +385,61 @@ namespace Emerald
 		return &m_downTex;
 	}
 
-	bool EEButton::UpdateButtonState()
+	bool EEButton::UpdateObjectState()
 	{
-		if (m_state != EE_BUTTON_DOWN)
-			m_state = EE_BUTTON_UP;
-		if (EECollision(m_quadRect, EECore::s_EECore->GetMousePosition()))
+		EEQuad2D::UpdateObjectState();
+
+		switch (m_type)
 		{
-			//BUTTON DOWN
-			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
-			{
-				switch (m_type)
-				{
-				case EE_BUTTON_THREE:
-				{
-										m_state = EE_BUTTON_DOWN;
-										m_isTriggered = false;
-				}
-					break;
-				case EE_BUTTON_SCALE:
-				{
-										m_state = EE_BUTTON_DOWN;
-										m_isTriggered = false;
-				}
-					break;
-				}
-			}
-			//BUTTON DOWN TO UP
-			else if (m_state == EE_BUTTON_DOWN)
-			{
-				m_state = EE_BUTTON_UP;
-				m_isTriggered = true;
-			}
-			//BUTTON OVER
-			else
-			{
-				switch (m_type)
-				{
-				case EE_BUTTON_THREE:
-				{
-										m_state = EE_BUTTON_OVER;
-				}
-					break;
-				case EE_BUTTON_SCALE:
-				{
-										m_state = EE_BUTTON_OVER;
-										m_currScaleTime += (float)EECore::s_EECore->GetDeltaTime();
-										if (m_currScaleTime > m_aimScaleTime)
-											m_currScaleTime = m_aimScaleTime;
-										//the scale value is changed in a sense
-										m_isScaleDirty = true;
-				}
-					break;
-				}
-			}
-		}
-		else if (m_isTriggered == false)
+		case EE_BUTTON_THREE:
 		{
-			m_state = EE_BUTTON_UP;
-			m_currScaleTime -= (float)EECore::s_EECore->GetDeltaTime();
-			if (m_currScaleTime < 0.0f)
-				m_currScaleTime = 0.0f;
-			m_currFadeTime -= (float)EECore::s_EECore->GetDeltaTime();
-			if (m_currFadeTime < 0.0f)
-				m_currFadeTime = 0.0f;
-			//the scale value is changed in a sense
-			m_isScaleDirty = true;
-		}
-		if (m_isTriggered)
-		{
-			switch (m_type)
-			{
-			case EE_BUTTON_THREE:
-			{
+								if (m_isTriggered)
+								{
 									if (m_callbackFunc)
 									{
 										(*m_callbackFunc)();
 										m_isTriggered = false;
 									}
-			}
-				break;
-			case EE_BUTTON_SCALE:
-			{
+								}
+		}
+			break;
+		case EE_BUTTON_SCALE:
+		{
+								if (m_isTriggered)
+								{
 									m_currFadeTime += (float)EECore::s_EECore->GetDeltaTime();
 									if (m_currFadeTime >= m_aimFadeTime)
 									{
 										m_currFadeTime = m_aimFadeTime;
-										if (m_callbackFunc && m_isTriggered == true)
+										if (m_callbackFunc)
 											(*m_callbackFunc)();
 										m_isTriggered = false;
 									}
 									//the scale value is changed in a sense
 									m_isScaleDirty = true;
-			}
-				break;
-			}
+								}
+								else if (m_state == EE_OBJECT_UP)
+								{
+									if (m_currScaleTime)
+										m_isScaleDirty = true;
+									m_currScaleTime -= (float)EECore::s_EECore->GetDeltaTime();
+									if (m_currScaleTime < 0.0f)
+										m_currScaleTime = 0.0f;
+									m_currFadeTime -= (float)EECore::s_EECore->GetDeltaTime();
+									if (m_currFadeTime < 0.0f)
+										m_currFadeTime = 0.0f;
+								}
+								else if (m_state == EE_OBJECT_OVER)
+								{
+									//the scale value is changed in a sense
+									if (m_currScaleTime < m_aimScaleTime)
+										m_isScaleDirty = true;
+									m_currScaleTime += (float)EECore::s_EECore->GetDeltaTime();
+									if (m_currScaleTime > m_aimScaleTime)
+										m_currScaleTime = m_aimScaleTime;
+								}
+		}
+			break;
 		}
 
 		return true;
@@ -444,7 +452,7 @@ namespace Emerald
 		{
 			Rect_Float finalRect = GetFinalRect_THREE();
 
-			EEQuadVertex vertices[4];
+			EEQuad2DVertex vertices[4];
 			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
 			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
@@ -473,12 +481,13 @@ namespace Emerald
 	bool EEButton::Render_THREE()
 	{
 		MapObjectBuffer();
+		MapQuad2DBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 
 		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		deviceConstext->IASetInputLayout(s_quadIL);
-		UINT stride = sizeof(EEQuadVertex);
+		UINT stride = sizeof(EEQuad2DVertex);
 		UINT offset = 0;
 		deviceConstext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
 		deviceConstext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);
@@ -486,15 +495,15 @@ namespace Emerald
 		ID3D11ShaderResourceView *texture = NULL;
 		switch (m_state)
 		{
-		case EE_BUTTON_UP:
+		case EE_OBJECT_UP:
 			texture = m_quadTex.GetTexture();
 			deviceConstext->PSSetShaderResources(0, 1, &texture);
 			break;
-		case EE_BUTTON_DOWN:
+		case EE_OBJECT_DOWN:
 			texture = m_downTex.GetTexture();
 			deviceConstext->PSSetShaderResources(0, 1, &texture);
 			break;
-		case EE_BUTTON_OVER:
+		case EE_OBJECT_OVER:
 			texture = m_overTex.GetTexture();
 			deviceConstext->PSSetShaderResources(0, 1, &texture);
 			break;
@@ -538,7 +547,7 @@ namespace Emerald
 		{
 			Rect_Float finalRect = GetFinalRect_SCALE();
 
-			EEQuadVertex vertices[4];
+			EEQuad2DVertex vertices[4];
 			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
 			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
@@ -568,12 +577,13 @@ namespace Emerald
 	{
 		float finalAlpha = GetFinalAlpha() * (1.0f - (m_currFadeTime / m_aimFadeTime));
 		MapObjectBuffer(finalAlpha);
+		MapQuad2DBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 
 		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		deviceConstext->IASetInputLayout(s_quadIL);
-		UINT stride = sizeof(EEQuadVertex);
+		UINT stride = sizeof(EEQuad2DVertex);
 		UINT offset = 0;
 		deviceConstext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
 		deviceConstext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);

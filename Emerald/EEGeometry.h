@@ -10,9 +10,19 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEQuadVertex
+	//EEQuad2DBufferDesc
 	//----------------------------------------------------------------------------------------------------
-	struct EEQuadVertex
+	struct EEQuad2DBufferDesc
+	{
+		int isUseColor;
+		int isUseTex;
+		float tmp2;
+		float tmp3;
+	};
+
+	//EEQuad2DVertex
+	//----------------------------------------------------------------------------------------------------
+	struct EEQuad2DVertex
 	{
 		FLOAT3 pos;
 		FLOAT2 tex;
@@ -23,7 +33,7 @@ namespace Emerald
 	class EEQuad2D : public EEObject
 	{
 	protected:
-		static bool InitializeQuadShader();
+		static bool InitializeQuad();
 
 	protected:
 		//the shader of quad
@@ -31,12 +41,14 @@ namespace Emerald
 		static ID3D11InputLayout *s_quadIL;
 		static ID3D11VertexShader *s_quadVS;
 		static ID3D11PixelShader  *s_quadPS;
+		static ID3D11Buffer *s_quad2DBuffer;
 
 	public:
 		EEQuad2D(const FLOAT3& _position);
 		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height);
-		EEQuad2D(const Rect_Float& _rect);
 		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex);
+		EEQuad2D(const Rect_Float& _rect);
+		EEQuad2D(const Rect_Float& _rect, const EEColor& _color);
 		EEQuad2D(const Rect_Float& _rect, const EETexture& _tex);
 		EEQuad2D(const Rect_Float& _rect, ID3D11ShaderResourceView* _tex);
 		EEQuad2D(const EEQuad2D& _quad);
@@ -70,6 +82,8 @@ namespace Emerald
 		virtual FLOAT3 GetFinalCenter() const;
 
 	protected:
+		virtual bool MapQuad2DBuffer();
+		virtual bool UpdateObjectState();
 		bool CreateQuadVertexBuffer(int _verticesNum = 4);
 
 	protected:
@@ -80,6 +94,8 @@ namespace Emerald
 		ID3D11Buffer *m_quadVB;
 		//the texture of the quad if need
 		EETexture m_quadTex;
+		bool m_isUseColor;
+		bool m_isUseTex;
 	};
 }
 

@@ -10,6 +10,8 @@ namespace Emerald
 	bool EEFont::s_isFontInitialized = false;
 	EETexture EEFont::s_fontTex;
 	EEFontData *EEFont::s_fontData = NULL;
+	FLOAT EEFont::s_fontWidth = 1.0f;
+	FLOAT EEFont::s_fontHeight = 16.0f;
 	ID3D11InputLayout *EEFont::s_fontIL = NULL;
 	ID3D11VertexShader *EEFont::s_fontVS = NULL;
 	ID3D11PixelShader  *EEFont::s_fontPS = NULL;
@@ -164,12 +166,12 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::Update()
 	{
-		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty || m_isTextDirty)
+		if ((m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty || m_isTextDirty) && m_text.size())
 		{
 			float fontPosX = m_position.x;
 			float fontPosY = m_position.y;
-			float deltaX = 1.0f * GetFinalScale().x;
-			float deltaY = 16.0f * GetFinalScale().y;
+			float deltaX = s_fontWidth * GetFinalScale().x;
+			float deltaY = s_fontHeight * GetFinalScale().y;
 			float fontWidth = 0.0f;
 			float fontHeight = fontPosY + deltaY;
 
@@ -178,13 +180,14 @@ namespace Emerald
 			int index(0), letter(0);
 			for (int i = 0; i < length; ++i)
 			{
-				letter = ((int)m_text[i]) - 32;
-				if (letter == 0)
+				letter = ((int)m_text[i]);
+				if (letter == 32)
 				{
 					fontPosX = fontPosX + 3 * deltaX;
 				}
-				else
+				else if (32 < letter && letter <= 126)
 				{
+					letter -= 32;
 					fontWidth = fontPosX + s_fontData[letter].size * deltaX;
 
 					vertices[index].pos = FLOAT3(fontPosX, fontPosY, 0.0f);
@@ -250,12 +253,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEFont::AddText(char _text)
+	{
+		m_text += _text;
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEFont::SetText(char* _text)
 	{
 		m_text = _text;
 		m_isTextDirty = true;
 
-		return 0;
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -265,8 +277,17 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEFont::IsTextDirty()
+	{
+		return m_isTextDirty;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEFont::CreateFontVertexBuffer(int _verticesNum)
 	{
+		if (!_verticesNum)
+			return false;
+
 		SAFE_RELEASE(m_fontVB);
 
 		D3D11_BUFFER_DESC vbDesc = { 0 };
@@ -283,5 +304,13 @@ namespace Emerald
 		}
 
 		return true;
+	}
+
+	//EEFont_APIS
+	//----------------------------------------------------------------------------------------------------
+	void EEPrint(const FLOAT3& _position, char* _text, const EEColor& _color)
+	{
+		EEFont font(_position, _text, _color);
+		font.Process();
 	}
 }

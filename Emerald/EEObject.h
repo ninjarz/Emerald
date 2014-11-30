@@ -21,16 +21,26 @@ namespace Emerald
 		float tmp3;
 	};
 
+	//EEObjectState
+	//----------------------------------------------------------------------------------------------------
+	typedef enum
+	{
+		EE_OBJECT_UP = 1,
+		EE_OBJECT_DOWN = 2,
+		EE_OBJECT_OVER = 3,
+	} EEObjectState;
+
 	//EEObject
 	//----------------------------------------------------------------------------------------------------
 	class EEObject
 	{
 	protected:
-		static bool InitializeObjectBuffer();
+		static bool InitializeObject();
 
 	protected:
 		static bool s_isObjectInitialized;
 		static ID3D11Buffer *s_objectBuffer;
+		static EEObject *s_focusedObject;
 
 	public:
 		EEObject();
@@ -112,6 +122,7 @@ namespace Emerald
 	protected:
 		virtual bool MapObjectBuffer();
 		virtual bool MapObjectBuffer(float _alpha);
+		virtual bool UpdateObjectState();
 
 	protected:
 		EEObject *m_parent;
@@ -127,6 +138,9 @@ namespace Emerald
 		bool m_isColorDirty;
 		float m_localZOrder;
 		bool m_isLocalZOrderDirty;
+		//state
+		EEObjectState m_state;
+		bool m_isTriggered;
 	};
 
 	//EEObject_APIs

@@ -1,8 +1,8 @@
 #if 0
 #include "Emerald.h"
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
-//int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
+int main(int _argc, char** _argv)
 {
 	EEDesc desc;
 	desc.applicationName = L"Emerald";  //窗口名称
@@ -16,7 +16,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	EEMusic music;
 	music.Open("Music/jx.mp3");
 	//music.SetFrequencyRatio(1.0f);
-	music.Start(0.0f);
+	//music.Start(0.0f);
 
 	//order 10, time 0 - +∞
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
@@ -134,7 +134,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	info.texture = particleTex;
 	EEParticleEmitter *particle = new EEParticleEmitter(info);
 	mainScene->AddObject(particle);
-
 
 	while (EERun())
 	{

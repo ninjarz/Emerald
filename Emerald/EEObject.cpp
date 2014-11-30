@@ -8,9 +8,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::s_isObjectInitialized = false;
 	ID3D11Buffer *EEObject::s_objectBuffer = NULL;
+	EEObject *EEObject::s_focusedObject = NULL;
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::InitializeObjectBuffer()
+	bool EEObject::InitializeObject()
 	{
 		if (!s_isObjectInitialized)
 		{
@@ -52,9 +53,12 @@ namespace Emerald
 		m_color(1.0f, 1.0f, 1.0f, 1.0f),
 		m_isColorDirty(false),
 		m_localZOrder(0.0f),
-		m_isLocalZOrderDirty(false)
+		m_isLocalZOrderDirty(false),
+		//state
+		m_state(EE_OBJECT_UP),
+		m_isTriggered(false)
 	{
-		InitializeObjectBuffer();
+		InitializeObject();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -70,7 +74,10 @@ namespace Emerald
 		m_color(_object.m_color),
 		m_isColorDirty(_object.m_isColorDirty),
 		m_localZOrder(_object.m_localZOrder),
-		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty)
+		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty),
+		//state
+		m_state(_object.m_state),
+		m_isTriggered(_object.m_isTriggered)
 	{
 
 	}
@@ -390,7 +397,7 @@ namespace Emerald
 	{
 		if (m_parent)
 		{
-			return m_localZOrder;
+			return m_parent->GetFinalLocalZOrder();
 		}
 		else
 		{
@@ -420,7 +427,6 @@ namespace Emerald
 		result = deviceContext->Map(s_objectBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		if (FAILED(result))
 			return false;
-		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
 		objectBufferDesc->rotation = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
@@ -440,13 +446,19 @@ namespace Emerald
 		result = deviceContext->Map(s_objectBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		if (FAILED(result))
 			return false;
-		//I don't know whether it is feasible
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
 		objectBufferDesc->rotation = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = _alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
 
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::UpdateObjectState()
+	{
+		
 		return true;
 	}
 

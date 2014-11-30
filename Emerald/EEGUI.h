@@ -4,10 +4,27 @@
 
 #include <vector>
 #include "EEGeometry.h"
+#include "EEFont.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	//EELineEditer
+	class EELineEditer : public EEQuad2D
+	{
+	public:
+		EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor);
+		EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor);
+		EELineEditer(const EELineEditer& _lineEditer);
+		~EELineEditer();
+
+		bool Update();
+		bool Render();
+
+	private:
+		EEFont m_text;
+	};
+
 	//EEProgressBar
 	//----------------------------------------------------------------------------------------------------
 	class EEProgressbar : public EEQuad2D
@@ -45,15 +62,6 @@ namespace Emerald
 		EE_BUTTON_SCALE = 2,
 	} EEButtonType;
 
-	//EEButtonState
-	//----------------------------------------------------------------------------------------------------
-	typedef enum
-	{
-		EE_BUTTON_UP = 1,
-		EE_BUTTON_DOWN = 2,
-		EE_BUTTON_OVER = 3,
-	} EEButtonState;
-
 	//EEButton
 	//----------------------------------------------------------------------------------------------------
 	class EEButton : public EEQuad2D
@@ -75,7 +83,7 @@ namespace Emerald
 		EETexture* GetDownTex();
 
 	protected:
-		bool UpdateButtonState();
+		virtual bool UpdateObjectState();
 
 		bool Update_THREE();
 		bool Render_THREE();
@@ -87,9 +95,6 @@ namespace Emerald
 	protected:
 		//type
 		EEButtonType m_type;
-		//state
-		EEButtonState m_state;
-		bool m_isTriggered;
 		//scale
 		float m_aimScale;
 		float m_currScaleTime;

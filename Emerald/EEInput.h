@@ -4,6 +4,7 @@
 
 #include <windows.h>
 #include <WindowsX.h>
+#include <queue>
 #include "EEMath.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -32,23 +33,20 @@ namespace Emerald
 		LRESULT MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
 		//EEInput_Keyboard
-	private:
-		void KeyDown(unsigned int);
-		void KeyUp(unsigned int);
-
 	public:
 		bool IsKeyDown(UINT);
+		UINT GetKey();
+		bool IsKeyInput();
+
+	private:
+		void KeyDown(UINT);
+		void KeyUp(UINT);
 
 	private:
 		bool m_keys[256];
+		std::queue<UINT> m_keyInput;
 
 		//EEInput_Mouse
-	private:
-		void MouseDown(WPARAM, int, int);
-		void MouseUp(WPARAM, int, int);
-		void MouseWheel(WPARAM, int, int);
-		void OnMouseMove(WPARAM, int, int);
-
 	public:
 		inline Point GetMousePosition() const	{ return m_pos; }
 		inline int GetOnDeltaX() const			{ return m_onDeltaX; }
@@ -56,6 +54,12 @@ namespace Emerald
 		inline void ClearOnDeltaX()				{ m_onDeltaX = 0; }
 		inline void ClearOnDeltaY()				{ m_onDeltaY = 0; }
 		inline void ClearOnDeltaXY()			{ m_onDeltaX = 0; m_onDeltaY = 0; }
+
+	private:
+		void MouseDown(WPARAM, int, int);
+		void MouseUp(WPARAM, int, int);
+		void MouseWheel(WPARAM, int, int);
+		void OnMouseMove(WPARAM, int, int);
 
 	private:
 		Point m_pos;
@@ -68,6 +72,8 @@ namespace Emerald
 	//EEInput_APIs
 	//----------------------------------------------------------------------------------------------------
 	bool EEIsKeyDown(UINT _para);
+	UINT EEGetKey();
+	bool EEIsKeyInput();
 	Point EEGetMousePosition();
 	int EEGetOnDeltaX();
 	int EEGetOnDeltaY();

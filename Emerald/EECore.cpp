@@ -115,6 +115,8 @@ namespace Emerald
 	LRESULT(EEInput::*EECore::GetInputPro())(HWND, UINT, WPARAM, LPARAM) { return m_inputPro; };
 
 	bool EECore::IsKeyDown(UINT _key) { return m_EEInput->IsKeyDown(_key); }
+	UINT EECore::GetKey() { return m_EEInput->GetKey(); }
+	bool EECore::IsKeyInput() { return m_EEInput->IsKeyInput(); }
 	Point EECore::GetMousePosition() const { return m_EEInput->GetMousePosition(); }
 	int EECore::GetOnDeltaX() const { return m_EEInput->GetOnDeltaX(); }
 	int EECore::GetOnDeltaY() const { return m_EEInput->GetOnDeltaY(); }

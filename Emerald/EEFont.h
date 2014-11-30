@@ -37,6 +37,8 @@ namespace Emerald
 		static bool s_isFontInitialized;
 		static EETexture s_fontTex;
 		static EEFontData *s_fontData;
+		static FLOAT s_fontWidth;
+		static FLOAT s_fontHeight;
 		static ID3D11InputLayout *s_fontIL;
 		static ID3D11VertexShader *s_fontVS;
 		static ID3D11PixelShader  *s_fontPS;
@@ -48,10 +50,12 @@ namespace Emerald
 
 		virtual bool Update();
 		virtual bool Render();
+		bool AddText(char _text);
 
 		bool SetText(char* _text);
 
 		const std::string& GetText();
+		bool IsTextDirty();
 
 	protected:
 		bool CreateFontVertexBuffer(int _verticesNum);
@@ -61,6 +65,10 @@ namespace Emerald
 		bool m_isTextDirty;
 		ID3D11Buffer *m_fontVB;
 	};
+
+	//EEFont_APIS
+	//----------------------------------------------------------------------------------------------------
+	void EEPrint(const FLOAT3& _position, char* _text, const EEColor& _color);
 }
 
 

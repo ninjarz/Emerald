@@ -1,5 +1,6 @@
 #include "EEGeometry.h"
 #include "EECore.h"
+#include "EECollision.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -10,9 +11,10 @@ namespace Emerald
 	ID3D11InputLayout *EEQuad2D::s_quadIL = NULL;
 	ID3D11VertexShader *EEQuad2D::s_quadVS = NULL;
 	ID3D11PixelShader  *EEQuad2D::s_quadPS = NULL;
+	ID3D11Buffer *EEQuad2D::s_quad2DBuffer = NULL;
 	
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::InitializeQuadShader()
+	bool EEQuad2D::InitializeQuad()
 	{
 		if (!s_isQuadInitialized)
 		{
@@ -93,6 +95,22 @@ namespace Emerald
 			SAFE_RELEASE(vertexShaderBuffer);
 			SAFE_RELEASE(pixelShaderBuffer);
 
+			ID3D11Device* device = EECore::s_EECore->GetDevice();
+			ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+
+			D3D11_BUFFER_DESC bufferDesc;
+			bufferDesc.ByteWidth = sizeof(EEQuad2DBufferDesc);
+			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			bufferDesc.MiscFlags = 0;
+			bufferDesc.StructureByteStride = 0;
+			result = device->CreateBuffer(&bufferDesc, NULL, &s_quad2DBuffer);
+			if (FAILED(result))
+				return false;
+			deviceContext->VSSetConstantBuffers(3, 1, &s_quad2DBuffer);
+			deviceContext->PSSetConstantBuffers(3, 1, &s_quad2DBuffer);
+
 			s_isQuadInitialized = true;
 		}
 
@@ -107,9 +125,11 @@ namespace Emerald
 		m_quadWidth(0.0f),
 		m_quadHeight(0.0f),
 		m_quadVB(NULL),
-		m_quadTex()
+		m_quadTex(),
+		m_isUseColor(true),
+		m_isUseTex(false)
 	{
-		InitializeQuadShader();
+		InitializeQuad();
 
 		m_position = _position;
 		CreateQuadVertexBuffer();
@@ -123,9 +143,29 @@ namespace Emerald
 		m_quadWidth(_width),
 		m_quadHeight(_height),
 		m_quadVB(NULL),
-		m_quadTex()
+		m_quadTex(),
+		m_isUseColor(true),
+		m_isUseTex(false)
 	{
-		InitializeQuadShader();
+		InitializeQuad();
+
+		m_position = _position;
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
+		:
+		EEObject(),
+		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
+		m_quadWidth(_width),
+		m_quadHeight(_height),
+		m_quadVB(NULL),
+		m_quadTex(_tex),
+		m_isUseColor(false),
+		m_isUseTex(true)
+	{
+		InitializeQuad();
 
 		m_position = _position;
 		CreateQuadVertexBuffer();
@@ -139,27 +179,32 @@ namespace Emerald
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadTex()
+		m_quadTex(),
+		m_isUseColor(true),
+		m_isUseTex(false)
 	{
-		InitializeQuadShader();
+		InitializeQuad();
 
 		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
 		CreateQuadVertexBuffer();
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
+	EEQuad2D::EEQuad2D(const Rect_Float& _rect, const EEColor& _color)
 		:
 		EEObject(),
-		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
-		m_quadWidth(_width),
-		m_quadHeight(_height),
+		m_quadRect(_rect),
+		m_quadWidth(_rect.z - _rect.x),
+		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadTex(_tex)
+		m_quadTex(),
+		m_isUseColor(true),
+		m_isUseTex(false)
 	{
-		InitializeQuadShader();
+		InitializeQuad();
 
-		m_position = _position;
+		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
+		SetColor(_color);
 		CreateQuadVertexBuffer();
 	}
 
@@ -171,9 +216,11 @@ namespace Emerald
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadTex(_tex)
+		m_quadTex(_tex),
+		m_isUseColor(false),
+		m_isUseTex(true)
 	{
-		InitializeQuadShader();
+		InitializeQuad();
 
 		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
 		CreateQuadVertexBuffer();
@@ -187,9 +234,11 @@ namespace Emerald
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
-		m_quadTex(_tex)
+		m_quadTex(_tex),
+		m_isUseColor(false),
+		m_isUseTex(true)
 	{
-		InitializeQuadShader();
+		InitializeQuad();
 
 		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
 		CreateQuadVertexBuffer();
@@ -203,7 +252,9 @@ namespace Emerald
 		m_quadWidth(_quad.m_quadWidth),
 		m_quadHeight(_quad.m_quadHeight),
 		m_quadVB(_quad.m_quadVB),
-		m_quadTex(_quad.m_quadTex)
+		m_quadTex(_quad.m_quadTex),
+		m_isUseColor(_quad.m_isUseColor),
+		m_isUseTex(_quad.m_isUseTex)
 	{
 
 	}
@@ -217,11 +268,13 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEQuad2D::Update()
 	{
+		UpdateObjectState();
+
 		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
 		{
 			Rect_Float finalRect = GetFinalRect();
 
-			EEQuadVertex quadVertices[4];
+			EEQuad2DVertex quadVertices[4];
 			quadVertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
 			quadVertices[0].tex = FLOAT2(0, 0);
 			quadVertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
@@ -250,11 +303,12 @@ namespace Emerald
 	bool EEQuad2D::Render()
 	{
 		MapObjectBuffer();
+		MapQuad2DBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		deviceConstext->IASetInputLayout(s_quadIL);
-		UINT stride = sizeof(EEQuadVertex);
+		UINT stride = sizeof(EEQuad2DVertex);
 		UINT offset = 0;
 		deviceConstext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
 		deviceConstext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);
@@ -414,6 +468,59 @@ namespace Emerald
 		FLOAT3 finalPosition = GetFinalPosition();
 		return FLOAT3(finalPosition.x + m_quadWidth / 2, finalPosition.y + m_quadHeight / 2, 0.0f);
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	bool EEQuad2D::MapQuad2DBuffer()
+	{
+		HRESULT result;
+		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		result = deviceContext->Map(s_quad2DBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		if (FAILED(result))
+			return false;
+		EEQuad2DBufferDesc *quad2DBufferDesc = (EEQuad2DBufferDesc*)mappedResource.pData;
+		quad2DBufferDesc->isUseColor = m_isUseColor;
+		quad2DBufferDesc->isUseTex = m_isUseTex;
+		deviceContext->Unmap(s_quad2DBuffer, 0);
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEQuad2D::UpdateObjectState()
+	{
+		if (m_state != EE_OBJECT_DOWN)
+			m_state = EE_OBJECT_UP;
+		//the mouse is within the rect
+		if (EECollision(m_quadRect, EECore::s_EECore->GetMousePosition()))
+		{
+			//DOWN
+			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
+			{
+				if (m_state = EE_OBJECT_UP)
+					m_state = EE_OBJECT_DOWN;
+			}
+			//DOWN TO UP
+			else if (m_state == EE_OBJECT_DOWN)
+			{
+				//....
+				m_state = EE_OBJECT_OVER;
+				s_focusedObject = this;
+				m_isTriggered = true;
+			}
+			//OVER
+			else
+			{
+				m_state = EE_OBJECT_OVER;
+			}
+		}
+		else
+		{
+			m_state = EE_OBJECT_UP;
+		}
+
+		return true;
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEQuad2D::CreateQuadVertexBuffer(int _verticesNum)
@@ -421,7 +528,7 @@ namespace Emerald
 		SAFE_RELEASE(m_quadVB);
 
 		D3D11_BUFFER_DESC vbDesc = { 0 };
-		vbDesc.ByteWidth = sizeof(EEQuadVertex) * _verticesNum;
+		vbDesc.ByteWidth = sizeof(EEQuad2DVertex) * _verticesNum;
 		vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		vbDesc.MiscFlags = 0;

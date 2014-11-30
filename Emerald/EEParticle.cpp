@@ -15,6 +15,7 @@ namespace Emerald
 		m_colorSpeed(_colorSpeed),
 		m_scaleSpeed(_scaleSpeed)
 	{
+		m_isUseColor = true;
 		SetColor(_color);
 		SetScale(_scale);
 	}

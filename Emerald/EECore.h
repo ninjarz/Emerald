@@ -96,6 +96,8 @@ namespace Emerald
 		LRESULT (EEInput::*GetInputPro())(HWND, UINT, WPARAM, LPARAM);
 
 		bool IsKeyDown(UINT);
+		UINT GetKey();
+		bool IsKeyInput();
 		Point GetMousePosition() const;
 		int GetOnDeltaX() const;
 		int GetOnDeltaY() const;

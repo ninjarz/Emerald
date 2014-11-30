@@ -4,6 +4,13 @@
 #include "EEObjectBuffer.hlsl"
 #include "EECameraBuffer.hlsl"
 
+cbuffer Quad2DBuffer  : register(b3)
+{
+	int cb_isUseColor : packoffset(c0.x);
+	int cb_isUseTex : packoffset(c0.y);
+	float cb_tmp32 : packoffset(c0.z);
+	float cb_tmp33 : packoffset(c0.w);
+};
 Texture2D g_tex0 : register(ps, t0);
 
 SamplerState texSampler
@@ -35,7 +42,15 @@ QuadVOut QuadVS(QuadVIn _vIn)
 [earlydepthstencil]
 void QuadPS(QuadVOut _pIn, out float4 _finalColor :SV_TARGET)
 {
-	_finalColor = g_tex0.Sample(texSampler, _pIn.tex) * cb_color;
+	if (cb_isUseColor && cb_isUseTex)
+		_finalColor = g_tex0.Sample(texSampler, _pIn.tex) * cb_color;
+	else if (cb_isUseColor)
+		_finalColor = cb_isUseColor;
+	else if (cb_isUseTex)
+		_finalColor = g_tex0.Sample(texSampler, _pIn.tex);
+	else
+		_finalColor = cb_isUseColor;
+
 	_finalColor.w = _finalColor.w * cb_alpha;
 }
 
