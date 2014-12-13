@@ -15,8 +15,8 @@ int main(int _argc, char** _argv)
 
 	EEMusic music;
 	music.Open("Music/jx.mp3");
-	//music.SetFrequencyRatio(1.0f);
-	//music.Start(0.0f);
+	//music.SetFrequencyRatio(2.0f);
+	music.Start(0.2f, 0.1f, 5);
 
 	//order 10, time 0 - +∞
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");

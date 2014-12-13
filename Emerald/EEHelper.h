@@ -6,6 +6,12 @@
 #define SAFE_DELETE(x)       { if(x) { delete (x);     (x)=NULL; } }
 #define SAFE_DELETE_ARRAY(x) { if(x) { delete[] (x);   (x)=NULL; } }
 
+//----------------------------------------------------------------------------------------------------
+namespace Emerald
+{
+	bool EEIsBigEndian();
+}
+
 #endif
 
 //D3D11_USAGE_

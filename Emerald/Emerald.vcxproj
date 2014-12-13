@@ -84,9 +84,12 @@
     <ClCompile Include="EEFont.cpp" />
     <ClCompile Include="EEGeometry.cpp" />
     <ClCompile Include="EEGUI.cpp" />
+    <ClCompile Include="EEHelper.cpp" />
     <ClCompile Include="EEMusic.cpp" />
     <ClCompile Include="EEParticle.cpp" />
+    <ClCompile Include="EERecorder.cpp" />
     <ClCompile Include="EESort.cpp" />
+    <ClCompile Include="EETCP.cpp" />
     <ClCompile Include="EETexture.cpp" />
     <ClCompile Include="EEInput.cpp" />
     <ClCompile Include="EEMath.cpp" />
@@ -99,6 +102,7 @@
     <ClCompile Include="源2.cpp" />
     <ClCompile Include="源3.cpp" />
     <ClCompile Include="源4.cpp" />
+    <ClCompile Include="源5.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EEAction.h" />
@@ -113,7 +117,9 @@
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEParticle.h" />
+    <ClInclude Include="EERecorder.h" />
     <ClInclude Include="EESort.h" />
+    <ClInclude Include="EETCP.h" />
     <ClInclude Include="EETexture.h" />
     <ClInclude Include="EEInput.h" />
     <ClInclude Include="EEMath.h" />

@@ -13,8 +13,10 @@
 #include "EEGUI.h"
 #include "EEAction.h"
 #include "EEMusic.h"
+#include "EERecorder.h"
 #include "EEParticle.h"
 #include "EEFont.h"
+#include "EETCP.h"
 
 using namespace Emerald;
 

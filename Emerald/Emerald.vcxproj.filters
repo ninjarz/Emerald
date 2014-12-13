@@ -99,6 +99,18 @@
     <ClCompile Include="源4.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="EETCP.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="EEHelper.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="EERecorder.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="源5.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -162,6 +174,12 @@
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EEFont.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EETCP.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EERecorder.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
   </ItemGroup>

@@ -51,6 +51,7 @@ namespace Emerald
 		virtual bool Update();
 		virtual bool Render();
 		bool AddText(char _text);
+		bool AddText(const char* _text);
 
 		bool SetText(char* _text);
 

@@ -19,7 +19,7 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	EEMusic music;
 	music.Open("Music/jx.mp3");
 	music.SetFrequencyRatio(2.0f);
-	music.Start(0.2f);
+	music.Play(0.2f);
 	
 	
 

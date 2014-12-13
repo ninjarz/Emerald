@@ -262,6 +262,15 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEFont::AddText(const char* _text)
+	{
+		m_text += _text;
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEFont::SetText(char* _text)
 	{
 		m_text = _text;

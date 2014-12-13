@@ -77,7 +77,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::Start(float _begin)
+	bool EEMusic::Play(float _begin)
 	{
 		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
 			return false;
@@ -103,7 +103,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::Start(float _begin, float _len, int _times)
+	bool EEMusic::Play(float _begin, float _len, int _times)
 	{
 		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
 			return false;
@@ -179,7 +179,7 @@ namespace Emerald
 	{
 		if (FAILED(m_sourceVoice->SetSourceSampleRate(_rate)))
 			return false;
-		m_samplesPerSec = _rate;
+		m_format.nSamplesPerSec = _rate;
 
 		return true;
 	}
@@ -205,7 +205,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	int EEMusic::GetSampleRate()
 	{
-		return m_samplesPerSec;
+		return m_format.nSamplesPerSec;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -232,7 +232,7 @@ namespace Emerald
 	char* EEMusic::GetSampleData(int _num)
 	{
 		if (_num < m_totalSamples)
-			return m_data + m_blockAlign * _num;
+			return m_data + m_format.nBlockAlign * _num;
 		else
 			return NULL;
 	}
@@ -279,13 +279,13 @@ namespace Emerald
 			return false;
 		}
 
-		m_channels = codecContext->channels;
-		m_bitsPerSample = av_get_bits_per_sample_fmt(codecContext->sample_fmt);
-		m_samplesPerSec = codecContext->sample_rate;
-		m_blockAlign = m_bitsPerSample * m_channels / 8;
-		m_avgBytesPerSec = m_samplesPerSec * m_blockAlign;
-		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * m_avgBytesPerSec);
-		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * m_samplesPerSec);
+		int channels = codecContext->channels;
+		int bitsPerSample = av_get_bits_per_sample_fmt(codecContext->sample_fmt);
+		int samplesPerSec = codecContext->sample_rate;
+		int blockAlign = bitsPerSample * channels / 8;
+		int avgBytesPerSec = samplesPerSec * blockAlign;
+		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
+		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
 		m_totalTimes = (int)(formatContext->duration / AV_TIME_BASE);
 		m_data = new char[m_totalBytes];
 
@@ -329,18 +329,17 @@ namespace Emerald
 			av_free_packet(packet);
 		}
 		m_totalBytes = len;
-		m_totalSamples = len / m_blockAlign;
-		m_totalTimes = m_totalSamples / m_samplesPerSec;
+		m_totalSamples = len / blockAlign;
+		m_totalTimes = m_totalSamples / samplesPerSec;
 		
-		WAVEFORMATEX waveFormat;
-		waveFormat.wFormatTag = WAVE_FORMAT_PCM;																/* format type */
-		waveFormat.nChannels = m_channels;																		/* number of channels (i.e. mono, stereo...) */
-		waveFormat.nSamplesPerSec = m_samplesPerSec;															/* sample rate */
-		waveFormat.nAvgBytesPerSec = m_avgBytesPerSec;															/* for buffer estimation */
-		waveFormat.nBlockAlign = m_blockAlign;																	/* block size of data */
-		waveFormat.wBitsPerSample = m_bitsPerSample;															/* number of bits per sample of mono data */
-		waveFormat.cbSize = 0;																					/* extra information (after cbSize) */
-		if (FAILED(s_XAudio2->CreateSourceVoice(&m_sourceVoice, &waveFormat)))
+		m_format.wFormatTag = WAVE_FORMAT_PCM;																/* format type */
+		m_format.nChannels = channels;																		/* number of channels (i.e. mono, stereo...) */
+		m_format.nSamplesPerSec = samplesPerSec;															/* sample rate */
+		m_format.nAvgBytesPerSec = avgBytesPerSec;															/* for buffer estimation */
+		m_format.nBlockAlign = blockAlign;																	/* block size of data */
+		m_format.wBitsPerSample = bitsPerSample;															/* number of bits per sample of mono data */
+		m_format.cbSize = 0;																				/* extra information (after cbSize) */
+		if (FAILED(s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format)))
 			return false;
 
 		avcodec_close(codecContext);

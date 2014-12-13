@@ -55,8 +55,8 @@ namespace Emerald
 		~EEMusic();
 
 		bool Open(const char* _fileName);
-		bool Start(float _begin = 0.0f);
-		bool Start(float _begin, float _end, int _times = 1);
+		bool Play(float _begin = 0.0f);
+		bool Play(float _begin, float _end, int _times = 1);
 		bool Pause();
 		bool Stop();
 
@@ -71,16 +71,12 @@ namespace Emerald
 		float GetProgress();
 		char* GetSampleData(int _num);
 
-	private:
+	protected:
 		bool LoadMusic(const char* _fileName);
 
 		IXAudio2SourceVoice *m_sourceVoice;
 		XAUDIO2_BUFFER m_buffer;
-		int m_channels;
-		int m_bitsPerSample;
-		int m_samplesPerSec;
-		int m_blockAlign;
-		int m_avgBytesPerSec;
+		WAVEFORMATEX m_format;
 		int m_totalBytes;
 		int m_totalSamples;
 		int m_totalTimes;
