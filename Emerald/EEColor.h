@@ -22,6 +22,7 @@ namespace Emerald
 		static const FLOAT4 MAGENTA;
 		static const FLOAT4 SILVER;
 		static const FLOAT4 COLORS[9];
+		static const FLOAT4 LUCENCY;
 
 	public:
 		EEColor();

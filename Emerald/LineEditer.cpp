@@ -1,5 +1,5 @@
-//TCP Demo
-#if 0
+//LineEditer Demo
+#if 1
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -14,27 +14,19 @@ int main(int _argc, char** _argv)
 	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
 
-	EEFont word1(FLOAT3(100.0f, 100.0f, 0.0f), "send:", EEColor::YELLOW);
-	EEFont word2(FLOAT3(100.0f, 200.0f, 0.0f), "recv:", EEColor::YELLOW);
-
-	EETCPServer server("192.168.229.1", 23333);
-	EETCPClient client("192.168.229.1", 23333);
-
+	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
+	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), "hello world", EEColor::YELLOW);
+	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
+	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
+		EEShowFPSInTitle(L"- -");
 
-		server.Process();
-		std::string buf;
-		std::cin >> buf;
-		server.Send(buf);
-		word1.AddText(buf.c_str());
-		std::string asd;
-		client.Recv(asd);
-		word2.AddText(asd.c_str());
-		word1.Process();
-		word2.Process();
+		lineEditer->Process();
+		lineEditer2->Process();
+		helloworld.Process();
 
 		EEEndScene();
 	}

@@ -175,18 +175,24 @@ namespace Emerald
 			float fontWidth = 0.0f;
 			float fontHeight = fontPosY + deltaY;
 
-			int length = m_text.size();
-			std::vector<EEFontVertex> vertices(length * 6);
-			int index(0), letter(0);
-			for (int i = 0; i < length; ++i)
+			std::vector<EEFontVertex> vertices(m_text.size() * 6);
+			int length(0), index(0), letter(0);
+			for (int i = 0; i < m_text.size(); ++i)
 			{
 				letter = ((int)m_text[i]);
-				if (letter == 32)
+				if (letter == '\r')
+				{
+					fontPosX = m_position.x;
+					fontPosY += deltaY;
+					fontHeight = fontPosY + deltaY;
+				}
+				else if (letter == 32)
 				{
 					fontPosX = fontPosX + 3 * deltaX;
 				}
 				else if (32 < letter && letter <= 126)
 				{
+					++length;
 					letter -= 32;
 					fontWidth = fontPosX + s_fontData[letter].size * deltaX;
 
@@ -213,6 +219,7 @@ namespace Emerald
 					fontPosX += s_fontData[letter].size * deltaX + deltaX;
 				}
 			}
+
 			if (m_isTextDirty)
 				CreateFontVertexBuffer(length * 6);
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -255,7 +262,18 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(char _text)
 	{
-		m_text += _text;
+		if (_text == 8 && m_text.size())
+		{
+			m_text.pop_back();
+		}
+		else if (32 < _text && _text <= 126)
+		{
+			m_text += _text;
+		}
+		else
+		{
+			m_text += _text;
+		}
 		m_isTextDirty = true;
 
 		return true;

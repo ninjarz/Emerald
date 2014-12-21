@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EEAction.cpp" />
+    <ClCompile Include="EEButton.cpp" />
     <ClCompile Include="EECamera.cpp" />
     <ClCompile Include="EECollision.cpp" />
     <ClCompile Include="EEColor.cpp" />
@@ -85,9 +86,14 @@
     <ClCompile Include="EEGeometry.cpp" />
     <ClCompile Include="EEGUI.cpp" />
     <ClCompile Include="EEHelper.cpp" />
+    <ClCompile Include="EELineEditer.cpp" />
     <ClCompile Include="EEMusic.cpp" />
     <ClCompile Include="EEParticle.cpp" />
+    <ClCompile Include="EEProgressBar.cpp" />
+    <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
+    <ClCompile Include="EEScene.cpp" />
+    <ClCompile Include="EESocket.cpp" />
     <ClCompile Include="EESort.cpp" />
     <ClCompile Include="EETCP.cpp" />
     <ClCompile Include="EETexture.cpp" />
@@ -97,15 +103,22 @@
     <ClCompile Include="EEShaderState.cpp" />
     <ClCompile Include="EESystem.cpp" />
     <ClCompile Include="EETimer.cpp" />
+    <ClCompile Include="EEUDP.cpp" />
+    <ClCompile Include="EEWaveCoder.cpp" />
+    <ClCompile Include="UDPClient.cpp" />
+    <ClCompile Include="UDPServer.cpp" />
     <ClCompile Include="源.cpp" />
     <ClCompile Include="源1.cpp" />
     <ClCompile Include="源2.cpp" />
-    <ClCompile Include="源3.cpp" />
+    <ClCompile Include="LineEditer.cpp" />
     <ClCompile Include="源4.cpp" />
     <ClCompile Include="源5.cpp" />
+    <ClCompile Include="TCPSever.cpp" />
+    <ClCompile Include="TCPClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EEAction.h" />
+    <ClInclude Include="EEButton.h" />
     <ClInclude Include="EECamera.h" />
     <ClInclude Include="EECollision.h" />
     <ClInclude Include="EEColor.h" />
@@ -115,9 +128,14 @@
     <ClInclude Include="EEGeometry.h" />
     <ClInclude Include="EEGUI.h" />
     <ClInclude Include="EEHelper.h" />
+    <ClInclude Include="EELineEditer.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEParticle.h" />
+    <ClInclude Include="EEProgressBar.h" />
+    <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
+    <ClInclude Include="EEScene.h" />
+    <ClInclude Include="EESocket.h" />
     <ClInclude Include="EESort.h" />
     <ClInclude Include="EETCP.h" />
     <ClInclude Include="EETexture.h" />
@@ -127,6 +145,8 @@
     <ClInclude Include="EEShaderState.h" />
     <ClInclude Include="EESystem.h" />
     <ClInclude Include="EETimer.h" />
+    <ClInclude Include="EEUDP.h" />
+    <ClInclude Include="EEWaveCoder.h" />
     <ClInclude Include="Emerald.h" />
   </ItemGroup>
   <ItemGroup>

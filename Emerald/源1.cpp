@@ -1,3 +1,4 @@
+//Music Demo
 #if 0
 #include "Emerald.h"
 
@@ -7,12 +8,12 @@
 int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
 	EEDesc desc;
-	desc.applicationName = L"Emerald";  //窗口名称
-	desc.isFullScreen = false;     //是否全屏
-	desc.width = 800;            //窗口宽度
-	desc.height = 450;           //窗口高度
-	desc.isSSAA = true;           //是开启抗锯齿
-	desc.isVsync = false;          //是否垂直同步
+	desc.applicationName = L"Emerald";	//窗口名称
+	desc.isFullScreen = false;			//是否全屏
+	desc.width = 800;					//窗口宽度
+	desc.height = 450;					//窗口高度
+	desc.isSSAA = true;					//是开启抗锯齿
+	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
 
 	
@@ -24,10 +25,10 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 	
 
 	EETexture upTex(L"Texture/界面/主界面/CG鉴赏.png");
-	EEQuad *quads[WAVEWIDTH];
+	EEQuad2D *quads[WAVEWIDTH];
 	for (int i = 0; i < WAVEWIDTH; ++i)
 	{
-		quads[i] = new EEQuad(Rect_Float(5.f * i, 400.f, 5.f * i + 5.f, 401.f), upTex);
+		quads[i] = new EEQuad2D(Rect_Float(5.f * i, 400.f, 5.f * i + 5.f, 401.f), upTex);
 	}
 
 	int num = music.GetSampled();

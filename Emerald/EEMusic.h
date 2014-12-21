@@ -32,6 +32,8 @@ extern "C"
 }
 #pragma comment(lib,"xaudio2.lib")
 #include <xaudio2.h>
+#include <vector>
+#include <string>
 
 
 namespace Emerald
@@ -50,6 +52,7 @@ namespace Emerald
 
 	public:
 		EEMusic();
+		EEMusic(const WAVEFORMATEX& _format);
 		EEMusic(const char* _fileName);
 		EEMusic(const EEMusic& _music);
 		~EEMusic();
@@ -59,11 +62,14 @@ namespace Emerald
 		bool Play(float _begin, float _end, int _times = 1);
 		bool Pause();
 		bool Stop();
+		bool AddBuffer(const char* _buffer, unsigned int _size);
+		bool LoadMusic(const char* _fileName);
 
 		bool SetVolume(float _volume);
 		bool SetSampleRate(int _rate);
 		bool SetFrequencyRatio(float _para);
 
+		const WAVEFORMATEX& GetFormat();
 		float GetVolume();
 		int GetSampleRate();
 		int GetTotalSamples();
@@ -72,8 +78,6 @@ namespace Emerald
 		char* GetSampleData(int _num);
 
 	protected:
-		bool LoadMusic(const char* _fileName);
-
 		IXAudio2SourceVoice *m_sourceVoice;
 		XAUDIO2_BUFFER m_buffer;
 		WAVEFORMATEX m_format;
@@ -81,7 +85,7 @@ namespace Emerald
 		int m_totalSamples;
 		int m_totalTimes;
 		int m_beginSamples;
-		char *m_data;
+		std::vector<std::string> m_data;
 	};
 }
 

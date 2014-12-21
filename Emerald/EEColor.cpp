@@ -14,6 +14,7 @@ namespace Emerald
 	const FLOAT4 EEColor::MAGENTA(1.0f, 0.0f, 1.0f, 1.0f);
 	const FLOAT4 EEColor::SILVER(0.75f, 0.75f, 0.75f, 1.0f);
 	const FLOAT4 EEColor::COLORS[9] = { EEColor::BLACK, EEColor::WHITE, EEColor::RED, EEColor::GREEN, EEColor::BLUE, EEColor::YELLOW, EEColor::CYAN, EEColor::MAGENTA, EEColor::SILVER };
+	const FLOAT4 EEColor::LUCENCY(0.0f, 0.0f, 0.0f, 0.0f);
 	
 	//----------------------------------------------------------------------------------------------------
 	EEColor::EEColor()

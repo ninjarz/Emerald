@@ -5,8 +5,6 @@
 #pragma comment(lib,"Winmm")
 #include <windows.h>
 #include <mmsystem.h>
-#include <vector>
-#include <string>
 #include "EEMusic.h"
 
 #define EE_RECORDER_SAMPLE_POOR 8000
@@ -34,19 +32,15 @@ namespace Emerald
 
 	public:
 		EERecorder();
+		EERecorder(DWORD_PTR _callBack);
 		~EERecorder();
 
 		void Start();
-		bool Play();
-
-	protected:
-		bool AddBuffer(const char* _buffer);
 
 	protected:
 		HWAVEIN m_waveIn;
 		WAVEINCAPS m_waveInCaps;
 		WAVEHDR m_waveInHdr[EE_RECORDER_FRAME_NUM];
-		std::vector<std::string> m_recordData;
 	};
 }
 

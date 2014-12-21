@@ -14,9 +14,11 @@
 #include "EEAction.h"
 #include "EEMusic.h"
 #include "EERecorder.h"
+#include "EEWaveCoder.h"
 #include "EEParticle.h"
 #include "EEFont.h"
 #include "EETCP.h"
+#include "EEUDP.h"
 
 using namespace Emerald;
 

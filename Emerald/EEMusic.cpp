@@ -1,6 +1,7 @@
 #include "EEMusic.h"
 #include "EEHelper.h"
 
+
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -41,12 +42,36 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic()
+		:
+		m_totalBytes(0),
+		m_totalSamples(0),
+		m_totalTimes(0),
+		m_beginSamples(0)
 	{
 		InitializeMusic();
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEMusic::EEMusic(const WAVEFORMATEX& _format)
+		:
+		m_format(_format),
+		m_totalBytes(0),
+		m_totalSamples(0),
+		m_totalTimes(0),
+		m_beginSamples(0)
+	{
+		InitializeMusic();
+
+		s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic(const char* _fileName)
+		:
+		m_totalBytes(0),
+		m_totalSamples(0),
+		m_totalTimes(0),
+		m_beginSamples(0)
 	{
 		InitializeMusic();
 
@@ -83,18 +108,30 @@ namespace Emerald
 			return false;
 
 		m_beginSamples = (int)(_begin * m_totalSamples);
-		ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
-		m_buffer.Flags = 0;
-		m_buffer.AudioBytes = m_totalBytes;
-		m_buffer.pAudioData = (BYTE*)m_data;
-		m_buffer.PlayBegin = m_beginSamples;
-		m_buffer.PlayLength = 0;
-		m_buffer.LoopBegin = 0;
-		m_buffer.LoopLength = 0;
-		m_buffer.LoopCount = 0;
-		m_buffer.pContext = NULL;
-		if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
-			return false;
+		unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
+		for (unsigned int i = 0; i < m_data.size(); ++i)
+		{
+			if (m_data[i].size() <= beginBytes)
+			{
+				beginBytes -= m_data[i].size();
+			}
+			else
+			{
+				ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
+				m_buffer.Flags = 0;
+				m_buffer.AudioBytes = m_data[i].size();
+				m_buffer.pAudioData = (BYTE*)&m_data[i][0];
+				m_buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
+				m_buffer.PlayLength = 0;
+				m_buffer.LoopBegin = 0;
+				m_buffer.LoopLength = 0;
+				m_buffer.LoopCount = 0;
+				m_buffer.pContext = NULL;
+				if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
+					return false;
+				beginBytes = 0;
+			}
+		}
 
 		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
 			return false;
@@ -109,36 +146,60 @@ namespace Emerald
 			return false;
 
 		m_beginSamples = (int)(_begin * m_totalSamples);
-		int sampleLen = (int)(_len * m_totalSamples);
-		for (int i = 0; i < _times - 1; ++i)
+		for (int times = 0; times < _times; ++times)
 		{
-			ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
-			m_buffer.Flags = XAUDIO2_END_OF_STREAM;
-			m_buffer.AudioBytes = m_totalBytes;
-			m_buffer.pAudioData = (BYTE*)m_data;
-			m_buffer.PlayBegin = m_beginSamples;
-			m_buffer.PlayLength = sampleLen;
-			m_buffer.LoopBegin = 0;
-			m_buffer.LoopLength = 0;
-			m_buffer.LoopCount = 0;
-			m_buffer.pContext = NULL;
-			if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
-				return false;
-		}
-		if (_times > 0)
-		{
-			ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
-			m_buffer.Flags = 0;
-			m_buffer.AudioBytes = m_totalBytes;
-			m_buffer.pAudioData = (BYTE*)m_data;
-			m_buffer.PlayBegin = m_beginSamples;
-			m_buffer.PlayLength = sampleLen;
-			m_buffer.LoopBegin = 0;
-			m_buffer.LoopLength = 0;
-			m_buffer.LoopCount = 0;
-			m_buffer.pContext = NULL;
-			if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
-				return false;
+			unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
+			unsigned int byteLen = (int)(_len * m_totalSamples) * (m_format.wBitsPerSample / 8);
+			for (unsigned int i = 0; i < m_data.size(); ++i)
+			{
+				if (m_data[i].size() <= beginBytes)
+				{
+					beginBytes -= m_data[i].size();
+				}
+				else if (m_data[i].size() - beginBytes <= byteLen)
+				{
+					ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
+					if (times == _times - 1)
+						m_buffer.Flags = 0;
+					else
+						m_buffer.Flags = XAUDIO2_END_OF_STREAM;
+					m_buffer.AudioBytes = m_data[i].size();
+					m_buffer.pAudioData = (BYTE*)&m_data[i][0];
+					m_buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
+					m_buffer.PlayLength = 0;
+					m_buffer.LoopBegin = 0;
+					m_buffer.LoopLength = 0;
+					m_buffer.LoopCount = 0;
+					m_buffer.pContext = NULL;
+					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
+						return false;
+					byteLen -= m_data[i].size() - beginBytes;
+					beginBytes = 0;
+				}
+				else if (byteLen != 0)//data.size() - beginBytes > byteLen && byteLen != 0
+				{
+					ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
+					if (times == _times - 1)
+						m_buffer.Flags = 0;
+					else
+						m_buffer.Flags = XAUDIO2_END_OF_STREAM;
+					m_buffer.AudioBytes = m_data[i].size();
+					m_buffer.pAudioData = (BYTE*)&m_data[i][0];
+					m_buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
+					m_buffer.PlayLength = byteLen / (m_format.wBitsPerSample / 8);
+					m_buffer.LoopBegin = 0;
+					m_buffer.LoopLength = 0;
+					m_buffer.LoopCount = 0;
+					m_buffer.pContext = NULL;
+					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
+						return false;
+					byteLen = 0;
+					beginBytes = 0;
+					break;
+				}
+				else
+					break;
+			}
 		}
 
 		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
@@ -162,79 +223,33 @@ namespace Emerald
 		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
 			return false;
 
+		if (FAILED(m_sourceVoice->Stop()))
+			return false;
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::SetVolume(float _volume)
+	bool EEMusic::AddBuffer(const char* _buffer, unsigned int _size)
 	{
-		if (FAILED(m_sourceVoice->SetVolume(_volume)))
+		m_data.push_back(std::string(_buffer, _size));
+		m_totalBytes += _size;
+		m_totalSamples += _size / m_format.nBlockAlign;
+		m_totalTimes += _size / m_format.nBlockAlign / m_format.nSamplesPerSec;
+
+		ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
+		m_buffer.Flags = 0;
+		m_buffer.AudioBytes = _size;
+		m_buffer.pAudioData = (BYTE*)&(m_data[m_data.size() - 1][0]);
+		m_buffer.PlayBegin = 0;
+		m_buffer.PlayLength = 0;
+		m_buffer.LoopBegin = 0;
+		m_buffer.LoopLength = 0;
+		m_buffer.LoopCount = 0;
+		m_buffer.pContext = NULL;
+		if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
 			return false;
 
 		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::SetSampleRate(int _rate)
-	{
-		if (FAILED(m_sourceVoice->SetSourceSampleRate(_rate)))
-			return false;
-		m_format.nSamplesPerSec = _rate;
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::SetFrequencyRatio(float _para)
-	{
-		if (FAILED(m_sourceVoice->SetFrequencyRatio(_para)))
-			return false;
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	float EEMusic::GetVolume()
-	{
-		float volume = 0;
-		m_sourceVoice->GetChannelVolumes(0, &volume);
-
-		return volume;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	int EEMusic::GetSampleRate()
-	{
-		return m_format.nSamplesPerSec;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	int EEMusic::GetTotalSamples()
-	{
-		return m_totalSamples;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	int EEMusic::GetSampled()
-	{
-		XAUDIO2_VOICE_STATE state;
-		m_sourceVoice->GetState(&state);
-
-		return (int)state.SamplesPlayed + m_beginSamples;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	float EEMusic::GetProgress()
-	{
-		return (float)GetSampled() / GetTotalSamples();
-	}
-
-	char* EEMusic::GetSampleData(int _num)
-	{
-		if (_num < m_totalSamples)
-			return m_data + m_format.nBlockAlign * _num;
-		else
-			return NULL;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -287,7 +302,8 @@ namespace Emerald
 		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
 		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
 		m_totalTimes = (int)(formatContext->duration / AV_TIME_BASE);
-		m_data = new char[m_totalBytes];
+		std::string data;
+		data.resize(m_totalBytes);
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
@@ -312,16 +328,17 @@ namespace Emerald
 						for (int i = 0; i < size; i += 2)
 						{
 							int pos = len + i * 2;
-							m_data[pos] = (char)frame->data[0][i];
-							m_data[pos + 1] = (char)frame->data[0][i + 1];
-							m_data[pos + 2] = (char)frame->data[1][i];
-							m_data[pos + 3] = (char)frame->data[1][i + 1];
+							data[pos] = (char)frame->data[0][i];
+							data[pos + 1] = (char)frame->data[0][i + 1];
+							data[pos + 2] = (char)frame->data[1][i];
+							data[pos + 3] = (char)frame->data[1][i + 1];
 						}
 						len += *frame->linesize * 2;
 					}
 					else
 					{
-						memcpy(m_data + len, frame->data[0], *frame->linesize);
+						data.append((char*)frame->data[0], *frame->linesize);
+						//memcpy((&data[0]) + len, frame->data[0], *frame->linesize);
 						len += *frame->linesize;
 					}
 				}
@@ -331,7 +348,9 @@ namespace Emerald
 		m_totalBytes = len;
 		m_totalSamples = len / blockAlign;
 		m_totalTimes = m_totalSamples / samplesPerSec;
-		
+		data.resize(m_totalBytes);
+		m_data.push_back(data);
+
 		m_format.wFormatTag = WAVE_FORMAT_PCM;																/* format type */
 		m_format.nChannels = channels;																		/* number of channels (i.e. mono, stereo...) */
 		m_format.nSamplesPerSec = samplesPerSec;															/* sample rate */
@@ -346,5 +365,87 @@ namespace Emerald
 		avformat_close_input(&formatContext);
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::SetVolume(float _volume)
+	{
+		if (FAILED(m_sourceVoice->SetVolume(_volume)))
+			return false;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::SetSampleRate(int _rate)
+	{
+		if (FAILED(m_sourceVoice->SetSourceSampleRate(_rate)))
+			return false;
+		m_format.nSamplesPerSec = _rate;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::SetFrequencyRatio(float _para)
+	{
+		if (FAILED(m_sourceVoice->SetFrequencyRatio(_para)))
+			return false;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const WAVEFORMATEX& EEMusic::GetFormat()
+	{
+		return m_format;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEMusic::GetVolume()
+	{
+		float volume = 0;
+		m_sourceVoice->GetChannelVolumes(0, &volume);
+
+		return volume;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EEMusic::GetSampleRate()
+	{
+		return m_format.nSamplesPerSec;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EEMusic::GetTotalSamples()
+	{
+		return m_totalSamples;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EEMusic::GetSampled()
+	{
+		XAUDIO2_VOICE_STATE state;
+		m_sourceVoice->GetState(&state);
+
+		return (int)state.SamplesPlayed + m_beginSamples;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEMusic::GetProgress()
+	{
+		return (float)GetSampled() / GetTotalSamples();
+	}
+
+	char* EEMusic::GetSampleData(int _num)
+	{
+		/*
+		if (_num < m_totalSamples)
+			return &m_data[0][0] + m_format.nBlockAlign * _num;
+		else
+			return NULL;
+			*/
+
+		return NULL;
 	}
 }

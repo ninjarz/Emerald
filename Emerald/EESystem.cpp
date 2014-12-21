@@ -128,6 +128,7 @@ namespace Emerald
 			m_applicationName,                                    //指向窗口类名字的指针
 			m_applicationName,                                    //指向窗口名字的指针
 			WS_POPUP,                                  //窗口的风格
+			//0,
 			posX, posY,                                           //窗口在屏幕上显示的起始位置
 			m_width, m_height,                                    //窗口的宽度和高度
 			NULL,                                                 //指向被创建窗口的的父窗口的句柄

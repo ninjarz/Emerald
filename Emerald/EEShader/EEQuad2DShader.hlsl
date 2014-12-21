@@ -45,11 +45,11 @@ void QuadPS(QuadVOut _pIn, out float4 _finalColor :SV_TARGET)
 	if (cb_isUseColor && cb_isUseTex)
 		_finalColor = g_tex0.Sample(texSampler, _pIn.tex) * cb_color;
 	else if (cb_isUseColor)
-		_finalColor = cb_isUseColor;
+		_finalColor = cb_color;
 	else if (cb_isUseTex)
 		_finalColor = g_tex0.Sample(texSampler, _pIn.tex);
 	else
-		_finalColor = cb_isUseColor;
+		_finalColor = cb_color;
 
 	_finalColor.w = _finalColor.w * cb_alpha;
 }

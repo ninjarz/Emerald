@@ -1,3 +1,4 @@
+//Game
 #if 0
 #include "Emerald.h"
 
@@ -5,18 +6,19 @@
 int main(int _argc, char** _argv)
 {
 	EEDesc desc;
-	desc.applicationName = L"Emerald";  //窗口名称
-	desc.isFullScreen = false;     //是否全屏
-	desc.width = 800;            //窗口宽度
-	desc.height = 450;           //窗口高度
-	desc.isSSAA = true;           //是开启抗锯齿
-	desc.isVsync = false;          //是否垂直同步
+	desc.applicationName = L"Emerald";	//窗口名称
+	desc.isFullScreen = false;			//是否全屏
+	desc.width = 800;					//窗口宽度
+	desc.height = 450;					//窗口高度
+	desc.isSSAA = true;					//是开启抗锯齿
+	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
 
 	EEMusic music;
 	music.Open("Music/jx.mp3");
 	//music.SetFrequencyRatio(2.0f);
-	music.Start(0.2f, 0.1f, 5);
+	//music.Play(0.2f, 0.1f, 5);
+	music.Play(0.2f, 0.1f, 2);
 
 	//order 10, time 0 - +∞
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");

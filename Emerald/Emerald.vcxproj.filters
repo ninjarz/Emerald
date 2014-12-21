@@ -25,6 +25,24 @@
     <Filter Include="源文件\Demo">
       <UniqueIdentifier>{815156d8-c045-4760-ba14-c71b37a5da13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EESocket">
+      <UniqueIdentifier>{e351efec-0b2b-4765-84ad-62189932fa61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EESocket">
+      <UniqueIdentifier>{add66267-2c68-4c51-92ea-f59c0d48b942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEGUI">
+      <UniqueIdentifier>{789f1190-9088-4b3b-8ee0-5145c99d1f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEGUI">
+      <UniqueIdentifier>{4d10cc43-a96b-4f01-b456-eff225f4a147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEGeometry">
+      <UniqueIdentifier>{ef0fba44-4fbd-4931-a593-350d0a834248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEGeometry">
+      <UniqueIdentifier>{b2d5991e-10cd-40b9-89f3-e0450dbd7679}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -51,16 +69,10 @@
     <ClCompile Include="EECamera.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="EEGUI.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
     <ClCompile Include="EEObject.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EECollision.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="EEGeometry.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EEShaderState.cpp">
@@ -93,14 +105,8 @@
     <ClCompile Include="EEFont.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="源3.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="源4.cpp">
       <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="EETCP.cpp">
-      <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EEHelper.cpp">
       <Filter>源文件\Emerald</Filter>
@@ -110,6 +116,54 @@
     </ClCompile>
     <ClCompile Include="源5.cpp">
       <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEWaveCoder.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="EETCP.cpp">
+      <Filter>源文件\Emerald\EESocket</Filter>
+    </ClCompile>
+    <ClCompile Include="EEUDP.cpp">
+      <Filter>源文件\Emerald\EESocket</Filter>
+    </ClCompile>
+    <ClCompile Include="EESocket.cpp">
+      <Filter>源文件\Emerald\EESocket</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPServer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSever.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPClient.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPClient.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEGUI.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="LineEditer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EELineEditer.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEProgressBar.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEButton.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEScene.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEGeometry.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EEQuad2D.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,16 +197,10 @@
     <ClInclude Include="EECamera.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
-    <ClInclude Include="EEGUI.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
     <ClInclude Include="EEObject.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EECollision.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
-    <ClInclude Include="EEGeometry.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EEShaderState.h">
@@ -176,11 +224,41 @@
     <ClInclude Include="EEFont.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
-    <ClInclude Include="EETCP.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
     <ClInclude Include="EERecorder.h">
       <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EEWaveCoder.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EETCP.h">
+      <Filter>头文件\Emerald\EESocket</Filter>
+    </ClInclude>
+    <ClInclude Include="EEUDP.h">
+      <Filter>头文件\Emerald\EESocket</Filter>
+    </ClInclude>
+    <ClInclude Include="EESocket.h">
+      <Filter>头文件\Emerald\EESocket</Filter>
+    </ClInclude>
+    <ClInclude Include="EEGUI.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EELineEditer.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEProgressBar.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEButton.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEScene.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEGeometry.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EEQuad2D.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
