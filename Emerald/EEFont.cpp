@@ -177,7 +177,7 @@ namespace Emerald
 
 			std::vector<EEFontVertex> vertices(m_text.size() * 6);
 			int length(0), index(0), letter(0);
-			for (int i = 0; i < m_text.size(); ++i)
+			for (unsigned int i = 0; i < m_text.size(); ++i)
 			{
 				letter = ((int)m_text[i]);
 				if (letter == '\r')
@@ -262,9 +262,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(char _text)
 	{
-		if (_text == 8 && m_text.size())
+		if (_text == 8)
 		{
-			m_text.pop_back();
+			if (m_text.size())
+				m_text.pop_back();
 		}
 		else if (32 < _text && _text <= 126)
 		{

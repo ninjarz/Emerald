@@ -1,10 +1,10 @@
-#ifndef _EE_QUAD2DSHADER_HLSL_
-#define _EE_QUAD2DSHADER_HLSL_
+#ifndef _EE_BOXSHADER_HLSL_
+#define _EE_BOXSHADER_HLSL_
 
 #include "EEObjectBuffer.hlsl"
 #include "EECameraBuffer.hlsl"
 
-cbuffer Quad2DBuffer  : register(b3)
+cbuffer BoxBuffer  : register(b3)
 {
 	int cb_isUseColor : packoffset(c0.x);
 	int cb_isUseTex : packoffset(c0.y);
@@ -18,29 +18,31 @@ SamplerState texSampler
 	Filter = ANISOTROPIC;
 };
 
-struct QuadVIn
+struct BoxVIn
 {
 	float3	pos:	POSITION;
+	float3	normal:	NORMAL;
 	float2	tex:	TEXCOORD;
 };
 
-struct QuadVOut
+struct BoxVOut
 {
 	float4	pos:	SV_POSITION;
+	float3	normal:	NORMAL;
 	float2	tex:	TEXCOORD;
 };
 
-QuadVOut QuadVS(QuadVIn _vIn)
+BoxVOut BoxVS(BoxVIn _vIn)
 {
-	QuadVOut vOut;
+	BoxVOut vOut;
 	vOut.pos = mul(float4(_vIn.pos, 1.0f), cb_rotationMatrix);
-	vOut.pos = mul(vOut.pos, cb_orthoLHMatrix);
+	vOut.pos = mul(vOut.pos, cb_worldViewProjMatrix);
 	vOut.tex = _vIn.tex;
 	return vOut;
 }
 
 [earlydepthstencil]
-void QuadPS(QuadVOut _pIn, out float4 _finalColor :SV_TARGET)
+void BoxPS(BoxVOut _pIn, out float4 _finalColor :SV_TARGET)
 {
 	if (cb_isUseColor && cb_isUseTex)
 		_finalColor = g_tex0.Sample(texSampler, _pIn.tex) * cb_color;

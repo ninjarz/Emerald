@@ -29,8 +29,6 @@ namespace Emerald
 			result = device->CreateBuffer(&bufferDesc, NULL, &s_objectBuffer);
 			if (FAILED(result))
 				return false;
-			deviceContext->VSSetConstantBuffers(0, 1, &s_objectBuffer);
-			deviceContext->PSSetConstantBuffers(0, 1, &s_objectBuffer);
 
 			s_isObjectInitialized = true;
 		}
@@ -43,6 +41,29 @@ namespace Emerald
 		:
 		m_parent(NULL),
 		m_position(0.0f),
+		m_isPositionDirty(true),
+		m_scale(1.0f),
+		m_isScaleDirty(false),
+		m_alpha(1.0f),
+		m_isAlphaDirty(false),
+		m_rotation(MATRIX::IDENTITY),
+		m_isRotationDirty(false),
+		m_color(1.0f, 1.0f, 1.0f, 1.0f),
+		m_isColorDirty(false),
+		m_localZOrder(0.0f),
+		m_isLocalZOrderDirty(false),
+		//state
+		m_state(EE_OBJECT_UP),
+		m_isTriggered(false)
+	{
+		InitializeObject();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEObject::EEObject(const FLOAT3& _position)
+		:
+		m_parent(NULL),
+		m_position(_position),
 		m_isPositionDirty(true),
 		m_scale(1.0f),
 		m_isScaleDirty(false),
@@ -250,6 +271,24 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	MATRIX EEObject::GetWorldMatrix()
+	{
+		return MatrixTranslation(GetPosition());
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	MATRIX EEObject::GetViewMatrix()
+	{
+		return EECore::s_EECore->GetViewMatrix();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	MATRIX EEObject::GetProjectionMatrix()
+	{
+		return EECore::s_EECore->GetProjectionMatrix();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	float EEObject::GetScaleX() const
 	{
 		return m_scale.x;
@@ -354,6 +393,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	MATRIX EEObject::GetFinalWorldMatrix() const
+	{
+		return MatrixTranslation(GetFinalPosition());
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	FLOAT3 EEObject::GetFinalScale() const
 	{
 		if (m_parent)
@@ -420,6 +465,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::MapObjectBuffer()
 	{
+		EECore::s_EECore->MapCameraBuffer();
+
 		HRESULT result;
 		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -428,10 +475,15 @@ namespace Emerald
 		if (FAILED(result))
 			return false;
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
-		objectBufferDesc->rotation = GetFinalRotation();
+		objectBufferDesc->worldMatrix = GetFinalWorldMatrix();
+		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetViewMatrix() * GetProjectionMatrix();
+		objectBufferDesc->rotationMatrix = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = GetFinalAlpha();
 		deviceContext->Unmap(s_objectBuffer, 0);
+
+		deviceContext->VSSetConstantBuffers(0, 1, &s_objectBuffer);
+		deviceContext->PSSetConstantBuffers(0, 1, &s_objectBuffer);
 
 		return true;
 	}
@@ -447,10 +499,15 @@ namespace Emerald
 		if (FAILED(result))
 			return false;
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
-		objectBufferDesc->rotation = GetFinalRotation();
+		objectBufferDesc->worldMatrix = GetFinalWorldMatrix();
+		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetViewMatrix() * GetProjectionMatrix();
+		objectBufferDesc->rotationMatrix = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = _alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
+
+		deviceContext->VSSetConstantBuffers(0, 1, &s_objectBuffer);
+		deviceContext->PSSetConstantBuffers(0, 1, &s_objectBuffer);
 
 		return true;
 	}
@@ -458,7 +515,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::UpdateObjectState()
 	{
-		
+		//virtual
 		return true;
 	}
 

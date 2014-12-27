@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EEAction.cpp" />
+    <ClCompile Include="EEBox.cpp" />
     <ClCompile Include="EEButton.cpp" />
     <ClCompile Include="EECamera.cpp" />
     <ClCompile Include="EECollision.cpp" />
@@ -96,6 +97,7 @@
     <ClCompile Include="EESocket.cpp" />
     <ClCompile Include="EESort.cpp" />
     <ClCompile Include="EETCP.cpp" />
+    <ClCompile Include="EETextEditer.cpp" />
     <ClCompile Include="EETexture.cpp" />
     <ClCompile Include="EEInput.cpp" />
     <ClCompile Include="EEMath.cpp" />
@@ -118,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EEAction.h" />
+    <ClInclude Include="EEBox.h" />
     <ClInclude Include="EEButton.h" />
     <ClInclude Include="EECamera.h" />
     <ClInclude Include="EECollision.h" />
@@ -138,6 +141,7 @@
     <ClInclude Include="EESocket.h" />
     <ClInclude Include="EESort.h" />
     <ClInclude Include="EETCP.h" />
+    <ClInclude Include="EETextEditer.h" />
     <ClInclude Include="EETexture.h" />
     <ClInclude Include="EEInput.h" />
     <ClInclude Include="EEMath.h" />
@@ -166,6 +170,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEFontShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEBoxShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

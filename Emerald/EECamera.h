@@ -3,37 +3,131 @@
 #define _EE_CAMERA_H_
 
 #include <d3d11.h>
+#include <map>
+#include <utility>
+#include "EEObject.h"
 #include "EEMath.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EECameraBufferDesc
+	//EEHCamera
 	//----------------------------------------------------------------------------------------------------
-	struct EECameraBufferDesc
+	typedef int EEHCamera;
+
+	//EECameraDesc
+	//----------------------------------------------------------------------------------------------------
+	struct EECameraDesc
 	{
-		MATRIX orthoLH;
+		FLOAT3	  position;
+		FLOAT3	  right;
+		FLOAT3	  up;
+		FLOAT3	  look;
+		FLOAT     distance;
 	};
 
 	//EECamera
 	//----------------------------------------------------------------------------------------------------
 	class EECamera
 	{
-	public:
-		static bool InitializeCameraBuffer();
+		friend class EECameraSystem;
 
 	protected:
-		static bool s_isCameraInitialized;
-		static ID3D11Buffer *s_cameraBuffer;
+		static int s_cameraCounter;
 
 	public:
 		EECamera();
+		EECamera(const EECameraDesc& _desc);
 		EECamera(const EECamera& _camera);
 		~EECamera();
 
+		void SetLens(float _fovY, float _aspectRatio, float _nearZ, float _farZ);
+
+		EEHCamera GetHCamera() const;
+		float GetFovY() const;
+		float GetFovX() const;
+		float GetAspectRatio() const;
+		float GetNearZ() const;
+		float GetFarZ() const;
+		bool IsViewDirty() const;
+		const MATRIX& GetViewMatrix();
+		bool IsLensDirty() const;
+		const MATRIX& GetProjectionMatrix();
+
+	protected:
+		EEHCamera m_handle;
+		//view
+		FLOAT3 m_position;
+		FLOAT3 m_right;
+		FLOAT3 m_up;
+		FLOAT3 m_look;
+		float m_distance;
+		FLOAT3 m_lookAt;
+		bool m_isViewDirty;
+		MATRIX m_viewMatrix;
+		//projection
+		float m_fovY;
+		float m_aspectRatio;
+		float m_nearZ;
+		float m_farZ;
+		bool m_isLensDirty;
+		MATRIX m_projectionMatrix;
+	};
+
+	//EECameraBufferDesc
+	//----------------------------------------------------------------------------------------------------
+	struct EECameraBufferDesc
+	{
+		MATRIX orthoLHMatrix;
+		MATRIX perspectiveFovLHMatrix;
+		MATRIX viewMatrix;
+	};
+
+	//EECameraSystem
+	//----------------------------------------------------------------------------------------------------
+	class EECameraSystem
+	{
+	public:
+		EECameraSystem();
+		EECameraSystem(const EECameraSystem& _system);
+		~EECameraSystem();
+
 		bool Initialize();
 		void Shutdown();
+
+		bool MapCameraBuffer();
+		EEHCamera CreateCamera(const EECameraDesc& _desc);
+		bool DeleteCamera(EEHCamera _camera);
+		void ClearCamera();
+		bool SetCamera(EEHCamera _camera);
+		EEHCamera GetCamera();
+		const MATRIX& GetViewMatrix();
+		const MATRIX& GetProjectionMatrix();
+
+		const MATRIX& GetOrthoLHMatrix();
+
+	protected:
+		bool InitializeCameraBuffer();
+
+	protected:
+		ID3D11Buffer *m_cameraBuffer;
+		bool m_isBufferDirty;
+		MATRIX m_orthoLHMatrix;
+		std::map<EEHCamera, EECamera*> m_cameras;
+		EEHCamera m_currCamera;
 	};
+
+	//EECamera_APIs
+	//----------------------------------------------------------------------------------------------------
+	bool EEMapCameraBuffer();
+	EEHCamera EECreateCamera(const EECameraDesc& _desc);
+	bool EEDeleteCamera(EEHCamera _camera);
+	void EEClearCamera();
+	bool EESetCamera(EEHCamera _camera);
+	EEHCamera EEGetCamera();
+	const MATRIX& EEGetViewMatrix();
+	const MATRIX& EEGetProjectionMatrix();
+	const MATRIX& EEGetOrthoLHMatrix();
 }
 
 #endif

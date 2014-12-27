@@ -3,6 +3,7 @@
 #define _EE_OBJECT_H_
 
 #include <d3d11.h>
+#include <d3dx11async.h>
 #include "EEMath.h"
 #include "EEColor.h"
 
@@ -13,7 +14,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	struct EEObjectBufferDesc
 	{
-		MATRIX rotation;
+		MATRIX worldMatrix;
+		MATRIX worldViewProjMatrix;
+		MATRIX rotationMatrix;
 		FLOAT4 color;
 		float alpha;
 		float tmp1;
@@ -44,6 +47,7 @@ namespace Emerald
 
 	public:
 		EEObject();
+		EEObject(const FLOAT3& _position);
 		EEObject(const EEObject& _object);
 		~EEObject();
 
@@ -84,6 +88,9 @@ namespace Emerald
 		virtual const FLOAT3& GetPosition() const;
 		virtual bool IsPositionDirty()  const;
 		virtual FLOAT3 GetCenter() const;
+		virtual MATRIX GetWorldMatrix();
+		virtual MATRIX GetViewMatrix();
+		virtual MATRIX GetProjectionMatrix();
 		//scale
 		virtual float GetScaleX() const;
 		virtual float GetScaleY() const;
@@ -106,6 +113,7 @@ namespace Emerald
 		//position
 		virtual FLOAT3 GetFinalPosition() const;
 		virtual FLOAT3 GetFinalCenter() const;
+		virtual MATRIX GetFinalWorldMatrix() const;
 		//scale
 		virtual FLOAT3 GetFinalScale() const;
 		//alpha
@@ -120,8 +128,10 @@ namespace Emerald
 		bool operator> (const EEObject& _object) const;
 
 	protected:
+		//cbuffer
 		virtual bool MapObjectBuffer();
 		virtual bool MapObjectBuffer(float _alpha);
+		//state
 		virtual bool UpdateObjectState();
 
 	protected:

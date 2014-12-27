@@ -4,6 +4,12 @@
 namespace Emerald
 {
 	//----------------------------------------------------------------------------------------------------
+	void EEComputeFrustumFromProjection(Frustum& _frustum, MATRIX& _matrix)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EECollision(int _x, int _y, int _z, int _w, const POINT& _point)
 	{
 		return _point.x >= _x && _point.x <= _z && _point.y >= _y && _point.y <= _w;

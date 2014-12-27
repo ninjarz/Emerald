@@ -12,6 +12,7 @@
 #include <boost/thread/mutex.hpp>
 #include "EEHelper.h"
 #include "EEMath.h"
+#include "EECamera.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -20,7 +21,6 @@ namespace Emerald
 	class EEInput;
 	class EETimer;
 	class EED3D;
-	class EECamera;
 	class EEShaderState;
 
 	//EEDesc
@@ -146,12 +146,22 @@ namespace Emerald
 	private:
 		EED3D *m_EED3D;
 
-		//EECore_Camera
+		//EECore_CameraSystem
 	public:
-		EECamera* GetEECamera();
+		EECameraSystem* GetEECameraSystem();
+
+		bool MapCameraBuffer();
+		EEHCamera CreateCamera(const EECameraDesc& _desc);
+		bool DeleteCamera(EEHCamera _camera);
+		void ClearCamera();
+		bool SetCamera(EEHCamera _camera);
+		EEHCamera GetCamera();
+		const MATRIX& GetViewMatrix();
+		const MATRIX& GetProjectionMatrix();
+		const MATRIX& GetOrthoLHMatrix();
 
 	private:
-		EECamera *m_EECamera;
+		EECameraSystem *m_EECameraSystem;
 
 		//EECore_ShaderState
 	public:

@@ -26,8 +26,8 @@ struct FontVOut
 FontVOut FontVS(FontVIn _vIn)
 {
 	FontVOut vOut;
-	vOut.pos = mul(float4(_vIn.pos, 1.0f), cb_rotation);
-	vOut.pos = mul(vOut.pos, cb_orthoLH);
+	vOut.pos = mul(float4(_vIn.pos, 1.0f), cb_rotationMatrix);
+	vOut.pos = mul(vOut.pos, cb_orthoLHMatrix);
 	vOut.tex = _vIn.tex;
 	return vOut;
 }

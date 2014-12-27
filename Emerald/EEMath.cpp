@@ -165,6 +165,34 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	MATRIX MatrixTranslation(const FLOAT3& _pos)
+	{
+		MATRIX result;
+
+		result.m[0][0] = 1.0f;
+		result.m[0][1] = 0.0f;
+		result.m[0][2] = 0.0f;
+		result.m[0][3] = 0.0f;
+
+		result.m[1][0] = 0.0f;
+		result.m[1][1] = 1.0f;
+		result.m[1][2] = 0.0f;
+		result.m[1][3] = 0.0f;
+
+		result.m[2][0] = 0.0f;
+		result.m[2][1] = 0.0f;
+		result.m[2][2] = 1.0f;
+		result.m[2][3] = 0.0f;
+
+		result.m[3][0] = _pos.x;
+		result.m[3][1] = _pos.y;
+		result.m[3][2] = _pos.z;
+		result.m[3][3] = 1.0f;
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixTranslation(const FLOAT _x, const FLOAT _y, const FLOAT _z)
 	{
 		MATRIX result;

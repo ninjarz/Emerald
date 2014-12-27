@@ -6,48 +6,50 @@ namespace Emerald
 {
 	//EECamera
 	//----------------------------------------------------------------------------------------------------
-	bool EECamera::s_isCameraInitialized = false;
-	ID3D11Buffer *EECamera::s_cameraBuffer = NULL;
-
-	//----------------------------------------------------------------------------------------------------
-	bool EECamera::InitializeCameraBuffer()
-	{
-		if (!s_isCameraInitialized)
-		{
-			HRESULT result;
-			ID3D11Device* device = EECore::s_EECore->GetDevice();
-			ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
-
-			EECameraBufferDesc cameraBufferDesc;
-			cameraBufferDesc.orthoLH = MatrixOrthoLH((FLOAT)EECore::s_EECore->GetWidth(), (FLOAT)EECore::s_EECore->GetHeight(), 0.0f, 1.0f);
-
-			D3D11_BUFFER_DESC bufferDesc;
-			bufferDesc.ByteWidth = sizeof(EECameraBufferDesc);
-			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			bufferDesc.MiscFlags = 0;
-			bufferDesc.StructureByteStride = 0;
-			D3D11_SUBRESOURCE_DATA vbData;
-			vbData.pSysMem = &cameraBufferDesc;
-			vbData.SysMemPitch = 0;
-			vbData.SysMemSlicePitch = 0;
-			result = device->CreateBuffer(&bufferDesc, &vbData, &s_cameraBuffer);
-			if (FAILED(result))
-				return false;
-
-			deviceContext->VSSetConstantBuffers(1, 1, &s_cameraBuffer);
-
-			s_isCameraInitialized = true;
-		}
-
-		return true;
-	}
+	int EECamera::s_cameraCounter = -1;
 
 	//----------------------------------------------------------------------------------------------------
 	EECamera::EECamera()
+		:
+		m_handle(++s_cameraCounter),
+		m_position(0),
+		m_right(0),
+		m_up(0),
+		m_look(0),
+		m_distance(0),
+		m_lookAt(0),
+		m_isViewDirty(true),
+		m_viewMatrix(0),
+		m_fovY(0),
+		m_aspectRatio(0),
+		m_nearZ(0),
+		m_farZ(0),
+		m_isLensDirty(true),
+		m_projectionMatrix(0)
 	{
+		SetLens(EE_PI * 0.5, (float)EECore::s_EECore->GetWidth() / (float)EECore::s_EECore->GetHeight(), 0.1f, 1000.0f);
+	}
 
+	//----------------------------------------------------------------------------------------------------
+	EECamera::EECamera(const EECameraDesc& _desc)
+		:
+		m_handle(++s_cameraCounter),
+		m_position(_desc.position),
+		m_right(_desc.right),
+		m_up(_desc.up),
+		m_look(_desc.look),
+		m_distance(_desc.distance),
+		m_lookAt(_desc.position + _desc.look * _desc.distance),
+		m_isViewDirty(true),
+		m_viewMatrix(0),
+		m_fovY(0),
+		m_aspectRatio(0),
+		m_nearZ(0),
+		m_farZ(0),
+		m_isLensDirty(true),
+		m_projectionMatrix(0)
+	{
+		SetLens(EE_PI * 0.5, (float)EECore::s_EECore->GetWidth() / (float)EECore::s_EECore->GetHeight(), 0.1f, 1000.0f);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -63,16 +65,285 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EECamera::Initialize()
+	void EECamera::SetLens(float _fovY, float _aspectRatio, float _nearZ, float _farZ)
 	{
+		m_fovY = _fovY;
+		m_aspectRatio = _aspectRatio;
+		m_nearZ = _nearZ;
+		m_farZ = _farZ;
+
+		m_isLensDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEHCamera EECamera::GetHCamera() const
+	{
+		return m_handle;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EECamera::GetFovY() const
+	{
+		return m_fovY;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EECamera::GetFovX() const
+	{
+		return atan(m_aspectRatio * tan(m_fovY * 0.5f)) * 2.f;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EECamera::GetAspectRatio() const
+	{
+		return m_aspectRatio;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EECamera::GetNearZ() const
+	{
+		return m_nearZ;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EECamera::GetFarZ() const
+	{
+		return m_farZ;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EECamera::IsViewDirty() const
+	{
+		return m_isViewDirty;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EECamera::GetViewMatrix()
+	{
+		if (m_isViewDirty)
+		{
+			m_right = m_up.CrossProduct(m_look).GetNormalization();
+			m_up = m_look.CrossProduct(m_right).GetNormalization();
+			m_look = m_look.GetNormalization();
+			FLOAT x = m_position.DotProduct(m_right);
+			FLOAT y = m_position.DotProduct(m_up);
+			FLOAT z = m_position.DotProduct(m_look);
+			m_viewMatrix(0, 0) = m_right.x;	m_viewMatrix(0, 1) = m_up.x;	m_viewMatrix(0, 2) = m_look.x;	m_viewMatrix(0, 3) = 0;
+			m_viewMatrix(1, 0) = m_right.y;	m_viewMatrix(1, 1) = m_up.y;	m_viewMatrix(1, 2) = m_look.y;	m_viewMatrix(1, 3) = 0;
+			m_viewMatrix(2, 0) = m_right.z;	m_viewMatrix(2, 1) = m_up.z;	m_viewMatrix(2, 2) = m_look.z;	m_viewMatrix(2, 3) = 0;
+			m_viewMatrix(3, 0) = -x;		m_viewMatrix(3, 1) = -y;		m_viewMatrix(3, 2) = -z;		m_viewMatrix(3, 3) = 1;
+
+			m_isLensDirty = false;
+		}
+
+		return m_viewMatrix;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EECamera::IsLensDirty() const
+	{
+		return m_isLensDirty;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EECamera::GetProjectionMatrix()
+	{
+		if (m_isLensDirty)
+		{
+			m_projectionMatrix = MatrixPerspectiveFovLH(m_fovY, m_aspectRatio, m_nearZ, m_farZ);
+
+			m_isLensDirty = false;
+		}
+
+		return m_projectionMatrix;
+	}
+
+	//EECameraSystem
+	//----------------------------------------------------------------------------------------------------
+	EECameraSystem::EECameraSystem()
+		:
+		m_cameraBuffer(NULL),
+		m_currCamera(0),
+		m_isBufferDirty(true),
+		m_orthoLHMatrix(MatrixOrthoLH((FLOAT)EECore::s_EECore->GetWidth(), (FLOAT)EECore::s_EECore->GetHeight(), 0.0f, 1.0f))
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EECameraSystem::EECameraSystem(const EECameraSystem& _system)
+		:
+		m_cameraBuffer(_system.m_cameraBuffer),
+		m_currCamera(_system.m_currCamera)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EECameraSystem::~EECameraSystem()
+	{
+
+	}
+	//----------------------------------------------------------------------------------------------------
+
+	bool EECameraSystem::Initialize()
+	{
+		ClearCamera();
 		InitializeCameraBuffer();
+		MapCameraBuffer();
 
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EECamera::Shutdown()
+	void EECameraSystem::Shutdown()
 	{
 
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EECameraSystem::MapCameraBuffer()
+	{
+		if (m_isBufferDirty || m_cameras[m_currCamera]->IsViewDirty() || m_cameras[m_currCamera]->IsLensDirty())
+		{
+			HRESULT result;
+			ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			EECameraBufferDesc *cameraBufferDesc;
+			result = deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			if (FAILED(result))
+				return false;
+			cameraBufferDesc = (EECameraBufferDesc*)mappedResource.pData;
+			cameraBufferDesc->orthoLHMatrix = m_orthoLHMatrix;
+			cameraBufferDesc->perspectiveFovLHMatrix = m_cameras[m_currCamera]->GetProjectionMatrix();
+			cameraBufferDesc->viewMatrix = m_cameras[m_currCamera]->GetViewMatrix();
+
+			deviceContext->VSSetConstantBuffers(1, 1, &m_cameraBuffer);
+
+			m_isBufferDirty = false;
+		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEHCamera EECameraSystem::CreateCamera(const EECameraDesc& _desc)
+	{
+		EECamera *camera = new EECamera(_desc);
+		m_cameras.insert(std::pair<EEHCamera, EECamera*>(camera->GetHCamera(), camera));
+		return camera->GetHCamera();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EECameraSystem::DeleteCamera(EEHCamera _camera)
+	{
+		m_cameras.erase(_camera);
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EECameraSystem::ClearCamera()
+	{
+		EECamera::s_cameraCounter = -1;
+		m_cameras.clear();
+
+		EECameraDesc desc;
+		desc.position = FLOAT3(0.0f, 0.0f, -30.0f);
+		desc.right = FLOAT3(1.0f, 0.0f, 0.0f);
+		desc.up = FLOAT3(0.0f, 1.0f, 0.0f);
+		desc.look = FLOAT3(0.0f, 0.0f, 1.0f);
+		desc.distance = 1.0f;
+		EECamera *camera = new EECamera(desc);
+		m_cameras.insert(std::pair<EEHCamera, EECamera*>(camera->GetHCamera(), camera));
+		m_currCamera = camera->GetHCamera();
+
+		m_isBufferDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EECameraSystem::SetCamera(EEHCamera _camera)
+	{
+		if (m_cameras.find(_camera) != m_cameras.end())
+		{
+			m_currCamera = _camera;
+			m_isBufferDirty = true;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEHCamera EECameraSystem::GetCamera()
+	{
+		return m_currCamera;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EECameraSystem::GetViewMatrix()
+	{
+		return m_cameras[m_currCamera]->GetViewMatrix();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EECameraSystem::GetProjectionMatrix()
+	{
+		return m_cameras[m_currCamera]->GetProjectionMatrix();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EECameraSystem::GetOrthoLHMatrix()
+	{
+		return m_orthoLHMatrix;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EECameraSystem::InitializeCameraBuffer()
+	{
+		HRESULT result;
+		ID3D11Device* device = EECore::s_EECore->GetDevice();
+		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+
+		D3D11_BUFFER_DESC bufferDesc;
+		bufferDesc.ByteWidth = sizeof(EECameraBufferDesc);
+		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bufferDesc.MiscFlags = 0;
+		bufferDesc.StructureByteStride = 0;
+		result = device->CreateBuffer(&bufferDesc, NULL, &m_cameraBuffer);
+		if (FAILED(result))
+			return false;
+
+		return true;
+	}
+
+	//EECamera_APIs
+	//----------------------------------------------------------------------------------------------------
+	bool EEMapCameraBuffer() { return EECore::s_EECore->GetEECameraSystem()->MapCameraBuffer(); }
+
+	//----------------------------------------------------------------------------------------------------
+	EEHCamera EECreateCamera(const EECameraDesc& _desc) { return EECore::s_EECore->GetEECameraSystem()->CreateCamera(_desc); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEDeleteCamera(EEHCamera _camera) { return EECore::s_EECore->GetEECameraSystem()->DeleteCamera(_camera); }
+
+	//----------------------------------------------------------------------------------------------------
+	void EEClearCamera() { return EECore::s_EECore->GetEECameraSystem()->ClearCamera(); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EESetCamera(EEHCamera _camera) { return EECore::s_EECore->GetEECameraSystem()->SetCamera(_camera); }
+
+	//----------------------------------------------------------------------------------------------------
+	EEHCamera EEGetCamera() { return EECore::s_EECore->GetEECameraSystem()->GetCamera(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EEGetViewMatrix() { return EECore::s_EECore->GetEECameraSystem()->GetViewMatrix(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EEGetProjectionMatrix() { return EECore::s_EECore->GetEECameraSystem()->GetProjectionMatrix(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const MATRIX& EEGetOrthoLHMatrix() { return EECore::s_EECore->GetEECameraSystem()->GetOrthoLHMatrix(); }
 }

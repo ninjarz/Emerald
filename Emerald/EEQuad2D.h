@@ -2,8 +2,6 @@
 #ifndef _EE_QUAD2D_H_
 #define _EE_QUAD2D_H_
 
-#include <d3d11.h>
-#include <d3dx11async.h>
 #include "EEObject.h"
 #include "EETexture.h"
 
@@ -33,10 +31,10 @@ namespace Emerald
 	class EEQuad2D : public EEObject
 	{
 	protected:
-		static bool InitializeQuad();
+		static bool InitializeQuad2D();
 
 	protected:
-		static bool s_isQuadInitialized;
+		static bool s_isQuad2DInitialized;
 		static ID3D11InputLayout *s_quadIL;
 		static ID3D11VertexShader *s_quadVS;
 		static ID3D11PixelShader  *s_quadPS;
@@ -73,6 +71,8 @@ namespace Emerald
 		virtual float GetWidht() const;
 		virtual float GetHeight() const;
 		virtual FLOAT3 GetCenter() const;
+		virtual MATRIX GetViewMatrix();
+		virtual MATRIX GetProjectionMatrix();
 		//texture
 		virtual EETexture* GetTexture();
 
@@ -81,8 +81,11 @@ namespace Emerald
 		virtual FLOAT3 GetFinalCenter() const;
 
 	protected:
+		//cbuffer
 		virtual bool MapQuad2DBuffer();
+		//state
 		virtual bool UpdateObjectState();
+		//vbuffer
 		bool CreateQuadVertexBuffer(int _verticesNum = 4);
 
 	protected:

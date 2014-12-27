@@ -43,10 +43,10 @@ namespace Emerald
 		if (!m_EED3D->Initialize(_desc.isSSAA, _desc.isVsync))
 			return false;
 
-		//EECore_Camera
-		m_EECamera = NULL;
-		m_EECamera = new EECamera;
-		if (!m_EECamera->Initialize())
+		//EECore_CameraSystem
+		m_EECameraSystem = NULL;
+		m_EECameraSystem = new EECameraSystem;
+		if (!m_EECameraSystem->Initialize())
 			return false;
 
 		//EECore_ShaderState
@@ -155,9 +155,19 @@ namespace Emerald
 	bool EECore::GetIsSSAA() const { return m_EED3D->GetIsSSAA(); }
 	bool EECore::GetIsVsync() const { return m_EED3D->GetIsVsync(); }
 
-	//EECore_Camera
+	//EECore_CameraSystem
 	//----------------------------------------------------------------------------------------------------
-	EECamera* EECore::GetEECamera() { return m_EECamera; }
+	EECameraSystem* EECore::GetEECameraSystem() { return m_EECameraSystem; }
+
+	bool EECore::MapCameraBuffer() { return m_EECameraSystem->MapCameraBuffer(); }
+	EEHCamera EECore::CreateCamera(const EECameraDesc& _desc) { return m_EECameraSystem->CreateCamera(_desc); }
+	bool EECore::DeleteCamera(EEHCamera _camera) { return m_EECameraSystem->DeleteCamera(_camera); }
+	void EECore::ClearCamera() { m_EECameraSystem->ClearCamera(); }
+	bool EECore::SetCamera(EEHCamera _camera) { return m_EECameraSystem->SetCamera(_camera); }
+	EEHCamera EECore::GetCamera() { return m_EECameraSystem->GetCamera(); }
+	const MATRIX& EECore::GetViewMatrix() { return m_EECameraSystem->GetViewMatrix(); }
+	const MATRIX& EECore::GetProjectionMatrix() { return m_EECameraSystem->GetProjectionMatrix(); }
+	const MATRIX& EECore::GetOrthoLHMatrix() { return m_EECameraSystem->GetOrthoLHMatrix(); }
 
 	//EECore_ShaderState
 	//----------------------------------------------------------------------------------------------------

@@ -6,5 +6,6 @@
 #include "EEButton.h"
 #include "EEProgressBar.h"
 #include "EELineEditer.h"
+#include "EETextEditer.h"
 
 #endif

@@ -165,6 +165,12 @@
     <ClCompile Include="EEQuad2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
+    <ClCompile Include="EETextEditer.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEBox.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -260,6 +266,12 @@
     <ClInclude Include="EEQuad2D.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
+    <ClInclude Include="EETextEditer.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEBox.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -272,6 +284,9 @@
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
     <None Include="EEShader\EEFontShader.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EEBoxShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
   </ItemGroup>

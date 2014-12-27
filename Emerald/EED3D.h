@@ -41,7 +41,7 @@ namespace Emerald
 		ID3D11RenderTargetView* GetRenderTargetView() const;
 		ID3D11DepthStencilView* GetDepthStencilView() const;
 
-	private:
+	protected:
 		ID3D11Device *m_device;
 		ID3D11DeviceContext *m_deviceContext;
 		float m_screenNear;

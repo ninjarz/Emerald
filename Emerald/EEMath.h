@@ -399,6 +399,10 @@ namespace Emerald
 		{
 		}
 
+		inline explicit FLOAT3(const INT _scaler) : x((FLOAT)_scaler), y((FLOAT)_scaler), z((FLOAT)_scaler)
+		{
+		}
+
 		inline FLOAT operator[] (const UINT i) const
 		{
 			if (i < 3)
@@ -902,7 +906,15 @@ namespace Emerald
 			m41 = _m41; m42 = _m42; m43 = _m43; m44 = _m44;
 		}
 
-		inline MATRIX(const FLOAT* _fArray)
+		inline explicit MATRIX(INT _data)
+		{
+			m11 = (FLOAT)_data;  m12 = (FLOAT)_data;  m13 = (FLOAT)_data;  m14 = (FLOAT)_data;
+			m21 = (FLOAT)_data;  m22 = (FLOAT)_data;  m23 = (FLOAT)_data;  m24 = (FLOAT)_data;
+			m31 = (FLOAT)_data;  m32 = (FLOAT)_data;  m33 = (FLOAT)_data;  m34 = (FLOAT)_data;
+			m41 = (FLOAT)_data;  m42 = (FLOAT)_data;  m43 = (FLOAT)_data;  m44 = (FLOAT)_data;
+		}
+
+		inline explicit MATRIX(const FLOAT* _fArray)
 		{
 			m11 = _fArray[0];  m12 = _fArray[1];  m13 = _fArray[2];  m14 = _fArray[3];
 			m21 = _fArray[4];  m22 = _fArray[5];  m23 = _fArray[6];  m24 = _fArray[7];
@@ -1075,6 +1087,7 @@ namespace Emerald
 	MATRIX MatrixRotationAxisN(const FLOAT4& axisN, const FLOAT radians);
 	MATRIX MatrixOrthoLH(FLOAT _Width, FLOAT _Height, FLOAT _nearZ, FLOAT _farZ);
 	MATRIX MatrixPerspectiveFovLH(const FLOAT fovY, const FLOAT aspectRatio, const FLOAT nearZ, const FLOAT farZ);
+	MATRIX MatrixTranslation(const FLOAT3& _pos);
 	MATRIX MatrixTranslation(const FLOAT x, const FLOAT y, const FLOAT z);
 	FLOAT MatrixMinorDeterminant(
 		const MATRIX& _matrix,
