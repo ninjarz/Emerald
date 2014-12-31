@@ -54,18 +54,18 @@ int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmds
 
 			for (int i = 0; i < WAVEWIDTH - 1; ++i)
 			{
-				Rect_Float rectA = quads[i + 1]->GetQuadRect();
-				Rect_Float rectB = quads[i + 1]->GetQuadRect();
+				Rect_Float rectA = quads[i + 1]->GetRect();
+				Rect_Float rectB = quads[i + 1]->GetRect();
 				rectA.y = rectB.y;
 				rectA.w = rectB.w;
-				quads[i + 1]->SetQuadRect(rectA);
+				quads[i + 1]->SetRect(rectA);
 			}
-			Rect_Float rectA = quads[WAVEWIDTH - 1]->GetQuadRect();
+			Rect_Float rectA = quads[WAVEWIDTH - 1]->GetRect();
 			rectA.w = 400.f + amplitudeMax - 128;
 			amplitudeMax = 128;
 			rectA.y = 400.f + amplitudeMin - 128;
 			amplitudeMin = 128;
-			quads[WAVEWIDTH - 1]->SetQuadRect(rectA);
+			quads[WAVEWIDTH - 1]->SetRect(rectA);
 		}
 
 		for (int i = 0; i < WAVEWIDTH; ++i)

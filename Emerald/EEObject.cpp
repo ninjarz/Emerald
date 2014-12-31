@@ -491,6 +491,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::MapObjectBuffer(float _alpha)
 	{
+		EECore::s_EECore->MapCameraBuffer();
+
 		HRESULT result;
 		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
 		D3D11_MAPPED_SUBRESOURCE mappedResource;

@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="EEAction.cpp" />
     <ClCompile Include="EEBox.cpp" />
     <ClCompile Include="EEButton.cpp" />
@@ -104,17 +105,19 @@
     <ClCompile Include="EEObject.cpp" />
     <ClCompile Include="EEShaderState.cpp" />
     <ClCompile Include="EESystem.cpp" />
+    <ClCompile Include="EEThread.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
-    <ClCompile Include="EEWaveCoder.cpp" />
+    <ClCompile Include="Thread.cpp" />
+    <None Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
     <ClCompile Include="UDPServer.cpp" />
     <ClCompile Include="源.cpp" />
     <ClCompile Include="源1.cpp" />
-    <ClCompile Include="源2.cpp" />
+    <ClCompile Include="DIVA.cpp" />
     <ClCompile Include="LineEditer.cpp" />
-    <ClCompile Include="源4.cpp" />
-    <ClCompile Include="源5.cpp" />
+    <ClCompile Include="TCPwithFont.cpp" />
+    <ClCompile Include="Recoder.cpp" />
     <ClCompile Include="TCPSever.cpp" />
     <ClCompile Include="TCPClient.cpp" />
   </ItemGroup>
@@ -148,6 +151,7 @@
     <ClInclude Include="EEObject.h" />
     <ClInclude Include="EEShaderState.h" />
     <ClInclude Include="EESystem.h" />
+    <ClInclude Include="EEThread.h" />
     <ClInclude Include="EETimer.h" />
     <ClInclude Include="EEUDP.h" />
     <ClInclude Include="EEWaveCoder.h" />

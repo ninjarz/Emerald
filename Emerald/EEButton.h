@@ -20,10 +20,10 @@ namespace Emerald
 	class EEButton : public EEQuad2D
 	{
 	public:
-		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, void(*_funcPtr)() = NULL);
-		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, void(*_funcPtr)() = NULL);
-		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, void(*_funcPtr)() = NULL);
-		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, void(*_funcPtr)() = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, DWORD_PTR _funcPtr = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, DWORD_PTR _funcPtr = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, DWORD_PTR _funcPtr = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, DWORD_PTR _funcPtr = NULL);
 		EEButton(const EEButton& _button);
 		~EEButton();
 
@@ -57,7 +57,7 @@ namespace Emerald
 		float m_currFadeTime;
 		float m_aimFadeTime;
 		//callback function
-		void(*m_callbackFunc)(void);
+		DWORD_PTR m_callbackFunc;
 		//the picture of the button
 		EETexture m_overTex, m_downTex;
 	};

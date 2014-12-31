@@ -427,7 +427,7 @@ namespace Emerald
 
 		if (FAILED(EECore::s_EECore->GetDevice()->CreateBuffer(&ibDesc, &ibData, &m_boxIB)))
 		{
-			MessageBox(NULL, L"CreateIndexBuffer failed!", L"Error", MB_OK);
+			MessageBoxW(NULL, L"CreateIndexBuffer failed!", L"Error", MB_OK);
 			return false;
 		}
 

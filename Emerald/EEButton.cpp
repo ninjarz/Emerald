@@ -7,7 +7,7 @@ namespace Emerald
 {
 	//EEButton
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, void(*_funcPtr)())
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, DWORD_PTR _funcPtr)
 		:
 		EEQuad2D(_rect, _upTex),
 		//type
@@ -30,7 +30,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, void(*_funcPtr)())
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, DWORD_PTR _funcPtr)
 		:
 		EEQuad2D(_rect, _upTex),
 		//type
@@ -53,7 +53,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, void(*_funcPtr)())
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, DWORD_PTR _funcPtr)
 		:
 		EEQuad2D(_rect, _tex),
 		//type
@@ -76,7 +76,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float &_rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView *_tex, void(*_funcPtr)())
+	EEButton::EEButton(EEButtonType _type, const Rect_Float &_rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView *_tex, DWORD_PTR _funcPtr)
 		:
 		EEQuad2D(_rect, _tex),
 		//type
@@ -212,7 +212,7 @@ namespace Emerald
 								{
 									if (m_callbackFunc)
 									{
-										(*m_callbackFunc)();
+										(*(void(*)())m_callbackFunc)();
 										m_isTriggered = false;
 									}
 								}
@@ -227,7 +227,7 @@ namespace Emerald
 									{
 										m_currFadeTime = m_aimFadeTime;
 										if (m_callbackFunc)
-											(*m_callbackFunc)();
+											(*(void(*)())m_callbackFunc)();
 										m_isTriggered = false;
 									}
 									//the scale value is changed in a sense

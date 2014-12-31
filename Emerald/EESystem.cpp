@@ -9,7 +9,7 @@ namespace Emerald
 	bool EESystem::Initialize(LPCWSTR _applicationName, bool _isFullScreen, int _width, int _height)
 	{
 		m_applicationName = new WCHAR[sizeof(_applicationName)];
-		memcpy((void*)m_applicationName, _applicationName, wcslen(_applicationName) * sizeof(WCHAR)+sizeof(WCHAR));
+		memcpy((void*)m_applicationName, _applicationName, wcslen(_applicationName) * sizeof(WCHAR) + sizeof(WCHAR));
 		m_isFullScreen = _isFullScreen;
 		m_width = _width;
 		m_height = _height;
@@ -160,7 +160,7 @@ namespace Emerald
 		m_rect.right = rb.x;
 		m_rect.bottom = rb.y;
 		//限制鼠标光标移动区域
-		//ClipCursor(&m_rect);
+		ClipCursor(&m_rect);
 
 		m_insideCentre.x = (m_rect.right - m_rect.left) / 2;
 		m_insideCentre.y = (m_rect.bottom - m_rect.top) / 2;

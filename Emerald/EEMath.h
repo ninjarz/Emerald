@@ -1104,6 +1104,8 @@ namespace Emerald
 
 	FLOAT3 Rand_FLOAT3();
 	FLOAT4 Rand_FLOAT4();
+
+	FLOAT EEDegreesToRadians(FLOAT _degrees);
 }
 
 #endif

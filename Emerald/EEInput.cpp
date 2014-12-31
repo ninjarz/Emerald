@@ -12,16 +12,16 @@ namespace Emerald
 		ZeroMemory(m_keys, sizeof(m_keys));
 
 		//initialize mouse
-		m_pos = Point(0, 0);
-		m_onDeltaX = 0;
-		m_onDeltaY = 0;
-		m_deltaM = 0;
+		m_mousePos = Point(0, 0);
+		m_mouseDeltaX = 0;
+		m_mouseDeltaY = 0;
+		m_mouseDeltaM = 0;
 		ULONG scrollLines;
 		SystemParametersInfo(SPI_GETWHEELSCROLLLINES, 0, &scrollLines, 0);
 		if (scrollLines)
-			m_deltaPerLine = WHEEL_DELTA / scrollLines;
+			m_mouseDeltaPerLine = WHEEL_DELTA / scrollLines;
 		else
-			m_deltaPerLine = 0;
+			m_mouseDeltaPerLine = 0;
 
 		return true;
 	}
@@ -140,16 +140,16 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEInput::MouseWheel(WPARAM _btnState, int _x, int _y)
 	{
-		m_deltaM += (short)HIWORD(_btnState);
+		m_mouseDeltaM += (short)HIWORD(_btnState);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEInput::OnMouseMove(WPARAM _btnState, int _x, int _y)
 	{
-		m_onDeltaX += _x - m_pos.x;
-		m_onDeltaY += _y - m_pos.y;
-		m_pos.x = _x;
-		m_pos.y = _y;
+		m_mouseDeltaX += _x - m_mousePos.x;
+		m_mouseDeltaY += _y - m_mousePos.y;
+		m_mousePos.x = _x;
+		m_mousePos.y = _y;
 	}
 
 	//EEInput_APIs
@@ -166,17 +166,23 @@ namespace Emerald
 	Point EEGetMousePosition() { return EECore::s_EECore->GetEEInput()->GetMousePosition(); }
 
 	//----------------------------------------------------------------------------------------------------
-	int EEGetOnDeltaX() { return EECore::s_EECore->GetEEInput()->GetOnDeltaX(); }
+	int EEGetMouseDeltaX() { return EECore::s_EECore->GetEEInput()->GetMouseDeltaX(); }
 
 	//----------------------------------------------------------------------------------------------------
-	int EEGetOnDeltaY() { return EECore::s_EECore->GetEEInput()->GetOnDeltaY(); }
+	int EEGetMouseDeltaY() { return EECore::s_EECore->GetEEInput()->GetMouseDeltaY(); }
 
 	//----------------------------------------------------------------------------------------------------
-	void EEClearOnDeltaX() { return EECore::s_EECore->GetEEInput()->ClearOnDeltaX(); }
+	int EEGetMouseDeltaM() { return EECore::s_EECore->GetEEInput()->GetMouseDeltaM(); }
 
 	//----------------------------------------------------------------------------------------------------
-	void EEClearOnDeltaY() { return EECore::s_EECore->GetEEInput()->ClearOnDeltaY(); }
+	void EEClearMouseDeltaX() { return EECore::s_EECore->GetEEInput()->ClearMouseDeltaX(); }
 
 	//----------------------------------------------------------------------------------------------------
-	void EEClearOnDeltaXY() { return EECore::s_EECore->GetEEInput()->ClearOnDeltaXY(); }
+	void EEClearMouseDeltaY() { return EECore::s_EECore->GetEEInput()->ClearMouseDeltaY(); }
+
+	//----------------------------------------------------------------------------------------------------
+	void EEClearMouseDeltaXY() { return EECore::s_EECore->GetEEInput()->ClearMouseDeltaXY(); }
+
+	//----------------------------------------------------------------------------------------------------
+	void EEClearMouseDeltaM() { return EECore::s_EECore->GetEEInput()->ClearMouseDeltaM(); }
 }

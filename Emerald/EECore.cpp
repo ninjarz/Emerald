@@ -1,4 +1,5 @@
 #include "EECore.h"
+#include "EEThread.h"
 #include "EESystem.h"
 #include "EEInput.h"
 #include "EETimer.h"
@@ -17,6 +18,12 @@ namespace Emerald
 	bool EECore::Initialize_All(const EEDesc& _desc)
 	{
 		srand((unsigned)time(NULL));
+
+		//EECore_ThreadSystem
+		m_EEThreadSystem = NULL;
+		m_EEThreadSystem = new EEThreadSystem;
+		if (!m_EEThreadSystem->Initialize())
+			return false;
 
 		//EECore_System
 		m_EESystem = NULL;
@@ -64,7 +71,11 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EECore::Shutdown()
 	{
-		
+		if (m_EEThreadSystem)
+		{
+			m_EEThreadSystem->Shutdown();
+			SAFE_DELETE(m_EEThreadSystem);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -84,6 +95,14 @@ namespace Emerald
 
 		return true;
 	}
+
+	//EECore_ThreadSystem
+	//----------------------------------------------------------------------------------------------------
+	EEThreadSystem* EECore::GetEEThreadSystem() const { return m_EEThreadSystem; }
+
+	bool EECore::AddThread(boost::thread* _thread) { return m_EEThreadSystem->AddThread(_thread); }
+	bool EECore::RemoveThread(boost::thread* _thread) { return m_EEThreadSystem->RemoveThread(_thread); }
+	void EECore::JoinAll() { m_EEThreadSystem->JoinAll(); }
 
 	//EECore_System
 	//----------------------------------------------------------------------------------------------------
@@ -118,11 +137,13 @@ namespace Emerald
 	UINT EECore::GetKey() { return m_EEInput->GetKey(); }
 	bool EECore::IsKeyInput() { return m_EEInput->IsKeyInput(); }
 	Point EECore::GetMousePosition() const { return m_EEInput->GetMousePosition(); }
-	int EECore::GetOnDeltaX() const { return m_EEInput->GetOnDeltaX(); }
-	int EECore::GetOnDeltaY() const { return m_EEInput->GetOnDeltaY(); }
-	void EECore::ClearOnDeltaX() { m_EEInput->ClearOnDeltaX(); }
-	void EECore::ClearOnDeltaY() { m_EEInput->ClearOnDeltaY(); }
-	void EECore::ClearOnDeltaXY() { m_EEInput->ClearOnDeltaXY(); };
+	int EECore::GetMouseDeltaX() const { return m_EEInput->GetMouseDeltaX(); }
+	int EECore::GetMouseDeltaY() const { return m_EEInput->GetMouseDeltaY(); }
+	int EECore::GetMouseDeltaM() const { return m_EEInput->GetMouseDeltaM(); }
+	void EECore::ClearMouseDeltaX() { m_EEInput->ClearMouseDeltaX(); }
+	void EECore::ClearMouseDeltaY() { m_EEInput->ClearMouseDeltaY(); }
+	void EECore::ClearMouseDeltaXY() { m_EEInput->ClearMouseDeltaXY(); };
+	void EECore::ClearMouseDeltaM() { m_EEInput->ClearMouseDeltaM(); };
 
 	//EECore_Timer
 	//----------------------------------------------------------------------------------------------------
@@ -192,8 +213,10 @@ namespace Emerald
 	void EEShutdown()
 	{
 		if (EECore::s_EECore)
+		{
 			EECore::s_EECore->Shutdown();
-		SAFE_DELETE(EECore::s_EECore);
+			SAFE_DELETE(EECore::s_EECore);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------

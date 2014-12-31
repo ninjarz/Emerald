@@ -1,5 +1,5 @@
 //LineEditer Demo
-#if 1
+#if 0
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -19,7 +19,6 @@ int main(int _argc, char** _argv)
 	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), "hello world", EEColor::YELLOW);
 	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
 	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
-	EEBox *box = new EEBox(FLOAT3(0.0f, 0.0f, 10.0f), 10.0f, 10.f, 10.f, button2Tex);
 
 	while (EERun())
 	{
@@ -29,7 +28,6 @@ int main(int _argc, char** _argv)
 		lineEditer->Process();
 		lineEditer2->Process();
 		helloworld.Process();
-		box->Process();
 
 		EEEndScene();
 	}

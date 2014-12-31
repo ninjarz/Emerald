@@ -93,9 +93,6 @@
     <ClCompile Include="源1.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="源2.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EESort.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -105,19 +102,10 @@
     <ClCompile Include="EEFont.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="源4.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEHelper.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EERecorder.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="源5.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="EEWaveCoder.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EETCP.cpp">
@@ -170,6 +158,24 @@
     </ClCompile>
     <ClCompile Include="EEBox.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraAction.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Recoder.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPwithFont.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="DIVA.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEThread.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +278,9 @@
     <ClInclude Include="EEBox.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
+    <ClInclude Include="EEThread.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -288,6 +297,9 @@
     </None>
     <None Include="EEShader\EEBoxShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEWaveCoder.cpp">
+      <Filter>源文件</Filter>
     </None>
   </ItemGroup>
 </Project>

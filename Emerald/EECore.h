@@ -17,6 +17,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	class EEThreadSystem;
 	class EESystem;
 	class EEInput;
 	class EETimer;
@@ -63,6 +64,17 @@ namespace Emerald
 	private:
 		MSG m_msg;
 
+		//EECore_ThreadSystem
+	public:
+		EEThreadSystem* GetEEThreadSystem() const;
+
+		bool AddThread(boost::thread* _thread);
+		bool RemoveThread(boost::thread* _thread);
+		void JoinAll();
+
+	private:
+		EEThreadSystem* m_EEThreadSystem;
+
 		//EECore_System
 	public:
 		EESystem* GetEESystem() const;
@@ -99,11 +111,13 @@ namespace Emerald
 		UINT GetKey();
 		bool IsKeyInput();
 		Point GetMousePosition() const;
-		int GetOnDeltaX() const;
-		int GetOnDeltaY() const;
-		void ClearOnDeltaX();
-		void ClearOnDeltaY();
-		void ClearOnDeltaXY();
+		int GetMouseDeltaX() const;
+		int GetMouseDeltaY() const;
+		int GetMouseDeltaM() const;
+		void ClearMouseDeltaX();
+		void ClearMouseDeltaY();
+		void ClearMouseDeltaXY();
+		void ClearMouseDeltaM();
 
 	private:
 		EEInput *m_EEInput;

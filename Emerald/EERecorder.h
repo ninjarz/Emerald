@@ -24,11 +24,12 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	class EERecorder : public EEMusic
 	{
-	public:
-		static std::vector<EERecorder*> s_recorders;
-
+	protected:
 		static void CALLBACK RecorderInProc(HWAVEIN _waveIn, UINT _msg, DWORD_PTR _instance, DWORD_PTR _param1, DWORD_PTR _param2);
 		static EERecorder* FindRecorder(HWAVEIN _waveIn);
+
+	protected:
+		static std::vector<EERecorder*> s_recorders;
 
 	public:
 		EERecorder();

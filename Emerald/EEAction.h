@@ -2,8 +2,7 @@
 #ifndef _EE_ACTION_H_
 #define _EE_ACTION_H_
 
-#include <boost/thread/thread.hpp>
-#include <boost/thread/mutex.hpp>
+#include "EEThread.h"
 #include "EEMath.h"
 #include "EEGUI.h"
 

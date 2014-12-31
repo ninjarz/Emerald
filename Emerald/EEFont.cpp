@@ -135,7 +135,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEFont::EEFont(const FLOAT3& _position, char* _text, const EEColor& _color)
+	EEFont::EEFont(const FLOAT3& _position, const EEColor& _color, char* _text)
 		:
 		EEObject(),
 		m_text(_text),
@@ -336,9 +336,9 @@ namespace Emerald
 
 	//EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
-	void EEPrint(const FLOAT3& _position, char* _text, const EEColor& _color)
+	void EEPrint(const FLOAT3& _position, const EEColor& _color, char* _text)
 	{
-		EEFont font(_position, _text, _color);
+		EEFont font(_position, _color, _text);
 		font.Process();
 	}
 }

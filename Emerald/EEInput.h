@@ -48,12 +48,14 @@ namespace Emerald
 
 		//EEInput_Mouse
 	public:
-		inline Point GetMousePosition() const	{ return m_pos; }
-		inline int GetOnDeltaX() const			{ return m_onDeltaX; }
-		inline int GetOnDeltaY() const			{ return m_onDeltaY; }
-		inline void ClearOnDeltaX()				{ m_onDeltaX = 0; }
-		inline void ClearOnDeltaY()				{ m_onDeltaY = 0; }
-		inline void ClearOnDeltaXY()			{ m_onDeltaX = 0; m_onDeltaY = 0; }
+		inline Point GetMousePosition() const	{ return m_mousePos; }
+		inline int GetMouseDeltaX() const		{ return m_mouseDeltaX; }
+		inline int GetMouseDeltaY() const		{ return m_mouseDeltaY; }
+		inline int GetMouseDeltaM() const		{ return m_mouseDeltaM; }
+		inline void ClearMouseDeltaX()			{ m_mouseDeltaX = 0; }
+		inline void ClearMouseDeltaY()			{ m_mouseDeltaY = 0; }
+		inline void ClearMouseDeltaXY()			{ m_mouseDeltaX = 0; m_mouseDeltaY = 0; }
+		inline void ClearMouseDeltaM()			{ m_mouseDeltaM = 0; }
 
 	private:
 		void MouseDown(WPARAM, int, int);
@@ -62,11 +64,24 @@ namespace Emerald
 		void OnMouseMove(WPARAM, int, int);
 
 	private:
-		Point m_pos;
-		int m_onDeltaX;
-		int m_onDeltaY;
-		int m_deltaM;
-		int m_deltaPerLine;//暂时没用
+		//normal
+		Point m_mousePos;
+		int m_mouseDeltaX;
+		int m_mouseDeltaY;
+		int m_mouseDeltaM;
+		/*
+		//with the left button held
+		Point m_mouseLeftPos;
+		int m_mouseLeftDeltaX;
+		int m_mouseLeftDeltaY;
+		int m_mouseLeftDeltaM;
+		//with the right button held
+		Point m_mouseRightPos;
+		int m_mouseRightDeltaX;
+		int m_mouseRightDeltaY;
+		int m_mouseRightDeltaM;
+		*/
+		int m_mouseDeltaPerLine; //暂时没用
 	};
 
 	//EEInput_APIs
@@ -74,12 +89,15 @@ namespace Emerald
 	bool EEIsKeyDown(UINT _para);
 	UINT EEGetKey();
 	bool EEIsKeyInput();
+
 	Point EEGetMousePosition();
-	int EEGetOnDeltaX();
-	int EEGetOnDeltaY();
-	void EEClearOnDeltaX();
-	void EEClearOnDeltaY();
-	void EEClearOnDeltaXY();
+	int EEGetMouseDeltaX();
+	int EEGetMouseDeltaY();
+	int EEGetMouseDeltaM();
+	void EEClearMouseDeltaX();
+	void EEClearMouseDeltaY();
+	void EEClearMouseDeltaXY();
+	void EEClearMouseDeltaM();
 }
 
 #endif

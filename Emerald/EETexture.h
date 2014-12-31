@@ -9,6 +9,7 @@
 namespace Emerald
 {
 	//EETextureType
+	//----------------------------------------------------------------------------------------------------
 	typedef enum EETextureType
 	{
 		EE_BMP = 1,

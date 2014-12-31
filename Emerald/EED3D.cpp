@@ -424,6 +424,9 @@ namespace Emerald
 			m_swapChain->Present(0, 0);
 		}
 
+		EECore::s_EECore->ClearMouseDeltaXY();
+		EECore::s_EECore->ClearMouseDeltaM();
+
 		return;
 	}
 

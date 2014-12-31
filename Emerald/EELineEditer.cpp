@@ -10,7 +10,7 @@ namespace Emerald
 	EELineEditer::EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
-		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), "", _fontColor)
+		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, "")
 	{
 		m_text.SetParent(this);
 	}
@@ -19,7 +19,7 @@ namespace Emerald
 	EELineEditer::EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _tex),
-		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), "", _fontColor)
+		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, "")
 	{
 		m_text.SetParent(this);
 	}

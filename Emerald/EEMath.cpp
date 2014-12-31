@@ -362,4 +362,10 @@ namespace Emerald
 	{
 		return FLOAT4((float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)), (float)(rand() / double(RAND_MAX)));
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT EEDegreesToRadians(FLOAT _degrees)
+	{
+		return _degrees * (EE_PI / 180.0f);
+	}
 }

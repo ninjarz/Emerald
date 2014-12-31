@@ -1,5 +1,5 @@
 //Game
-#if 0
+#if 1
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -18,7 +18,7 @@ int main(int _argc, char** _argv)
 	music.Open("Music/jx.mp3");
 	//music.SetFrequencyRatio(2.0f);
 	//music.Play(0.2f, 0.1f, 5);
-	music.Play(0.2f, 0.1f, 2);
+	//music.Play(0.2f, 0.1f, 2);
 
 	//order 10, time 0 - +∞
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
@@ -76,15 +76,15 @@ int main(int _argc, char** _argv)
 	mainScene->AddObject(TopQuad);
 
 	//order 7, time 3.5 - +∞
-	EETexture BottomTex(L"Texture\\主界面\\下框.png");
-	EEQuad2D *BottomQuad = new EEQuad2D(Rect_Float(0, (float)EEGetHeight() - 25.f, (float)EEGetWidth(), (float)EEGetHeight()), BottomTex);
+	EETexture BottonTex(L"Texture\\主界面\\下框.png");
+	EEQuad2D *BottomQuad = new EEQuad2D(Rect_Float(0, (float)EEGetHeight() - 25.f, (float)EEGetWidth(), (float)EEGetHeight()), BottonTex);
 	BottomQuad->SetLocalZOrder(7.f);
 	BottomQuad->SetAlpha(0.0f);
 	EEFade(BottomQuad, 1.0f, 1.0f, 3.5);
 	mainScene->AddObject(BottomQuad);
 
 	EETexture button1Tex(L"Texture/主界面/模式标签/自由模式.png");
-	EEButton *button1 = new EEButton(EE_BUTTON_SCALE, Rect_Float(40.f, 380.f, 100.f, 440.f), 1.3f, 0.2f, 0.2f, button1Tex, NULL);
+	EEButton *button1 = new EEButton(EE_BUTTON_SCALE, Rect_Float(40.f, 380.f, 100.f, 440.f), 1.3f, 0.2f, 0.2f, button1Tex, (DWORD_PTR)NULL);
 	button1->SetLocalZOrder(5.f);
 	button1->SetAlpha(0.0f);
 	EEFade(button1, 1.0f, 1.0f, 3.5);

@@ -44,7 +44,7 @@ namespace Emerald
 		static ID3D11PixelShader  *s_fontPS;
 
 	public:
-		EEFont(const FLOAT3& _position, char* _text, const EEColor& _color);
+		EEFont(const FLOAT3& _position, const EEColor& _color, char* _text);
 		EEFont(const EEFont& _font);
 		~EEFont();
 
@@ -69,7 +69,7 @@ namespace Emerald
 
 	//EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
-	void EEPrint(const FLOAT3& _position, char* _text, const EEColor& _color);
+	void EEPrint(const FLOAT3& _position, const EEColor& _color, char* _text);
 }
 
 

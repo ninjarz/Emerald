@@ -11,6 +11,14 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	//EECameraMode
+	//----------------------------------------------------------------------------------------------------
+	enum EECameraMode
+	{
+		EE_CAMERA_FIRST = 1,
+		EE_CAMERA_THIRD = 3,
+	};
+
 	//EEHCamera
 	//----------------------------------------------------------------------------------------------------
 	typedef int EEHCamera;
@@ -41,16 +49,35 @@ namespace Emerald
 		EECamera(const EECamera& _camera);
 		~EECamera();
 
+		void MoveLook(float _dist);
+		void MoveRight(float _dist);
+		void MoveUp(float _dist);
+		void MoveY(float _dist);
+		void MoveLook_XZ(float _dist);
+		void RotateRight(float _radians);
+		void RotateUp(float _radians);
+		void RotateY(float _radians);
+		void Zoom(float _dist);
+		//void ArcballX(float radians);
+		//void Zoom(float dist);
+
+		void SetPosition(float _x, float _y, float _z);
+		void SetPosition(const FLOAT3& _pos);
 		void SetLens(float _fovY, float _aspectRatio, float _nearZ, float _farZ);
 
 		EEHCamera GetHCamera() const;
+		const FLOAT3& GetPosition() const;
+		const FLOAT3& GetRight() const;
+		const FLOAT3& GetUp() const;
+		const FLOAT3& GetLook() const;
+		const FLOAT3& GetLookAt() const;
+		bool IsViewDirty() const;
+		const MATRIX& GetViewMatrix();
 		float GetFovY() const;
 		float GetFovX() const;
 		float GetAspectRatio() const;
 		float GetNearZ() const;
 		float GetFarZ() const;
-		bool IsViewDirty() const;
-		const MATRIX& GetViewMatrix();
 		bool IsLensDirty() const;
 		const MATRIX& GetProjectionMatrix();
 
@@ -95,15 +122,16 @@ namespace Emerald
 		bool Initialize();
 		void Shutdown();
 
+		bool Process(EECameraMode _mode);
 		bool MapCameraBuffer();
 		EEHCamera CreateCamera(const EECameraDesc& _desc);
 		bool DeleteCamera(EEHCamera _camera);
+
 		void ClearCamera();
 		bool SetCamera(EEHCamera _camera);
 		EEHCamera GetCamera();
 		const MATRIX& GetViewMatrix();
 		const MATRIX& GetProjectionMatrix();
-
 		const MATRIX& GetOrthoLHMatrix();
 
 	protected:
@@ -119,6 +147,7 @@ namespace Emerald
 
 	//EECamera_APIs
 	//----------------------------------------------------------------------------------------------------
+	bool EECameraProcess(EECameraMode _mode);
 	bool EEMapCameraBuffer();
 	EEHCamera EECreateCamera(const EECameraDesc& _desc);
 	bool EEDeleteCamera(EEHCamera _camera);
