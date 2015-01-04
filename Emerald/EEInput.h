@@ -2,6 +2,7 @@
 #ifndef _EE_INPUT_H_
 #define _EE_INPUT_H_
 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <WindowsX.h>
 #include <queue>

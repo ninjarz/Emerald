@@ -3,7 +3,10 @@
 #define _EE_SOCKET_H_
 
 #pragma comment(lib, "ws2_32.lib")
-#include <winsock.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <sstream>
+#include <string>
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -19,17 +22,19 @@ namespace Emerald
 		static bool s_isSocketInitialized;
 
 	public:
+		EESocket(char* _addr, char* _port);
 		EESocket(char* _addr, u_short _port);
-		EESocket(SOCKET _socket, const sockaddr_in& _port);
-		EESocket(const EESocket& _server);
+		EESocket(SOCKET _socket, const sockaddr_storage& _addr);
+		EESocket(SOCKET _socket, const sockaddr_in& _addr);
+		EESocket(const EESocket& _socket);
 		~EESocket();
 		
 		SOCKET GetSocket();
-		sockaddr_in GetAddr();
 
 	protected:
 		SOCKET m_socket;
-		sockaddr_in m_addr;
+		sockaddr_storage m_addr;
+		int m_addrLen;
 	};
 
 }

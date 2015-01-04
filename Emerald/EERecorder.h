@@ -3,6 +3,7 @@
 #define _EE_RECORDER_H_
 
 #pragma comment(lib,"Winmm")
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <mmsystem.h>
 #include "EEMusic.h"

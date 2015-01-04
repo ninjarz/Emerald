@@ -35,25 +35,25 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEInsertSort(std::vector<EEObject*>& _objects, EEObject* _object, bool _isInverse)
 	{
-		unsigned int i = 0;
+		auto it = _objects.begin();
 		if (_isInverse)
-		for (; i < _objects.size(); ++i)
+		for (; it != _objects.end(); ++it)
 		{
-			if (*_objects[i] > *_object)
-				++i;
+			if (**it > *_object)
+				continue;
 			else
 				break;
 		}
 		else
-		for (; i < _objects.size(); ++i)
+		for (; it != _objects.end(); ++it)
 		{
-			if (*_objects[i] < *_object)
-				++i;
+			if (**it < *_object)
+				continue;
 			else
 				break;
 		}
 
-		_objects.insert(_objects.begin() + i, _object);
+		_objects.insert(it, _object);
 	}
 
 }

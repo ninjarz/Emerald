@@ -200,6 +200,25 @@ namespace Emerald
 		return &m_downTex;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	void EEButton::OnMouseOver(const Point& _pos)
+	{
+		EEObject::OnMouseOver(_pos);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEButton::OnMouseClicked(const Point& _pos)
+	{
+		EEObject::OnMouseClicked(_pos);
+	}
+
+	 //----------------------------------------------------------------------------------------------------
+	void EEButton::OnMouseTriggered(const Point& _pos)
+	{
+		EEObject::OnMouseTriggered(_pos);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEButton::UpdateObjectState()
 	{
 		EEQuad2D::UpdateObjectState();

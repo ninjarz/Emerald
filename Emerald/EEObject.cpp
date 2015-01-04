@@ -449,6 +449,26 @@ namespace Emerald
 			return m_localZOrder;
 		}
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnMouseOver(const Point& _pos)
+	{
+		m_state = EE_OBJECT_OVER;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnMouseClicked(const Point& _pos)
+	{
+		m_state = EE_OBJECT_DOWN;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnMouseTriggered(const Point& _pos)
+	{
+		m_state = EE_OBJECT_OVER;
+		s_focusedObject = this;
+		m_isTriggered = true;
+	}
 	
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::operator< (const EEObject& _object) const

@@ -3,6 +3,7 @@
 #define _EE_SCENE_H_
 
 #include <vector>
+#include <list>
 #include "EEGeometry.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ namespace Emerald
 		bool Update();
 		bool Render();
 		void AddObject(EEObject* _object);
+		void RemoveObject(EEObject* _object);
 
 	protected:
 		//controls

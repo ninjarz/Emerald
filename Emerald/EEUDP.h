@@ -32,8 +32,9 @@ namespace Emerald
 		EEUDPServer(const EEUDPServer& _server);
 		~EEUDPServer();
 
+		bool Send(sockaddr_storage* _addr, const std::string _data);
 		bool Send(sockaddr_in* _addr, const std::string _data);
-		bool Recv(sockaddr_in* _addr, std::string& _data);
+		bool Recv(sockaddr_storage* _addr, std::string& _data);
 
 	protected:
 

@@ -24,6 +24,8 @@ namespace Emerald
 		bool Update();
 		bool Render();
 
+		const std::string& GetText();
+
 	protected:
 		EEFont m_text;
 	};

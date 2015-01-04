@@ -9,12 +9,7 @@ namespace Emerald
 		:
 		EESocket(_addr, _port)
 	{
-		m_socket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-
-		m_addr.sin_family = AF_INET;
-		m_addr.sin_addr.s_addr = inet_addr(_addr);
-		m_addr.sin_port = htons(_port);
-		memset(m_addr.sin_zero, 0x00, 8);
+		m_socket = socket(m_addr.ss_family, SOCK_DGRAM, IPPROTO_UDP);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -37,7 +32,7 @@ namespace Emerald
 		:
 		EEUDP(_addr, _port)
 	{
-		if (-1 == bind(m_socket, (sockaddr*)&m_addr, sizeof(sockaddr)))
+		if (-1 == bind(m_socket, (sockaddr*)&m_addr, m_addrLen))
 		{
 			MessageBoxW(NULL, L"UDP bind failed!", L"ERROR", MB_OK);
 		}
@@ -61,6 +56,25 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEUDPServer::Send(sockaddr_storage* _addr, const std::string _data)
+	{
+		switch (_addr->ss_family)
+		{
+		case AF_INET:
+			if (sendto(m_socket, _data.c_str(), _data.size(), 0, (sockaddr*)_addr, sizeof(sockaddr_in)) == -1)
+				return false;
+			break;
+
+		case AF_INET6:
+			if (sendto(m_socket, _data.c_str(), _data.size(), 0, (sockaddr*)_addr, sizeof(sockaddr_in6)) == -1)
+				return false;
+			break;
+		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEUDPServer::Send(sockaddr_in* _addr, const std::string _data)
 	{
 		if (sendto(m_socket, _data.c_str(), _data.size(), 0, (sockaddr*)_addr, sizeof(sockaddr_in)) == -1)
@@ -70,7 +84,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEUDPServer::Recv(sockaddr_in* _addr, std::string& _data)
+	bool EEUDPServer::Recv(sockaddr_storage* _addr, std::string& _data)
 	{
 		fd_set rds;
 		FD_ZERO(&rds);
@@ -90,7 +104,7 @@ namespace Emerald
 			{
 				if (FD_ISSET(m_socket, &rds))
 				{
-					int addrLen = sizeof(sockaddr);
+					int addrLen = sizeof(sockaddr_storage);
 					char buff[EE_UDP_SIZE_MAX];
 					size_t size = recvfrom(m_socket, buff, EE_UDP_SIZE_MAX, 0, (sockaddr*)_addr, &addrLen);
 					if (size != -1)
@@ -132,7 +146,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEUDPClient::Send(const std::string& _data)
 	{
-		if (sendto(m_socket, _data.c_str(), _data.size(), 0, (sockaddr*)&m_addr, sizeof(sockaddr_in)) == -1)
+		if (sendto(m_socket, _data.c_str(), _data.size(), 0, (sockaddr*)&m_addr, m_addrLen) == -1)
 			return false;
 
 		return true;
@@ -159,11 +173,11 @@ namespace Emerald
 			{
 				if (FD_ISSET(m_socket, &rds))
 				{
-					sockaddr_in addr;
-					int addrLen = sizeof(sockaddr);
+					sockaddr_storage addr;
+					int addrLen = sizeof(sockaddr_storage);
 					char buff[EE_UDP_SIZE_MAX];
 					size_t size = recvfrom(m_socket, buff, EE_UDP_SIZE_MAX, 0, (sockaddr*)&addr, &addrLen);
-					if (addr.sin_addr.S_un.S_addr == m_addr.sin_addr.S_un.S_addr)
+					//if (addr.sin_addr.S_un.S_addr == m_addr.sin_addr.S_un.S_addr)
 					{
 						if (size != -1)
 						{

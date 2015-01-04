@@ -11,12 +11,7 @@ namespace Emerald
 		:
 		EESocket(_addr, _port)
 	{
-		m_socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-		m_addr.sin_family = AF_INET;
-		m_addr.sin_addr.s_addr = inet_addr(_addr);
-		m_addr.sin_port = htons(_port);
-		memset(m_addr.sin_zero, 0x00, 8);
+		m_socket = socket(m_addr.ss_family, SOCK_STREAM, IPPROTO_TCP);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -39,7 +34,7 @@ namespace Emerald
 		:
 		EETCP(_addr, _port)
 	{
-		bind(m_socket, (sockaddr*)&m_addr, sizeof(sockaddr));
+		bind(m_socket, (sockaddr*)&m_addr, m_addrLen);
 		listen(m_socket, SOMAXCONN);
 
 		DWORD mode(1);
@@ -90,9 +85,9 @@ namespace Emerald
 				if (FD_ISSET(m_socket, &rds))
 				{
 					SOCKET clientSocket;
-					sockaddr_in clientAddr;
+					sockaddr_storage clientAddr;
 					int size = sizeof(clientAddr);
-					clientSocket = accept(m_socket, (struct sockaddr*)&clientAddr, &size);
+					clientSocket = accept(m_socket, (sockaddr*)&clientAddr, &size);
 					m_clients.insert(std::pair<SOCKET, EESocket>(clientSocket, EESocket(clientSocket, clientAddr)));
 					return clientSocket;
 				}
@@ -251,7 +246,7 @@ namespace Emerald
 		:
 		EETCP(_addr, _port)
 	{
-		connect(m_socket, (sockaddr*)&m_addr, sizeof(sockaddr));
+		connect(m_socket, (sockaddr*)&m_addr, m_addrLen);
 	}
 
 	//----------------------------------------------------------------------------------------------------

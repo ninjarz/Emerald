@@ -2,8 +2,10 @@
 #ifndef _EE_MATH_H_
 #define _EE_MATH_H_
 
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-#include <math.h>
+#include <cstdlib>
+#include <cmath>
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -15,6 +17,9 @@ namespace Emerald
 #define EE_1DIV2PI          0.159154943f
 #define EE_PIDIV2           1.570796327f
 #define EE_PIDIV4           0.785398163f
+
+	//----------------------------------------------------------------------------------------------------
+	//typedef int INT;
 
 	//----------------------------------------------------------------------------------------------------
 	//typedef unsigned int UINT;
@@ -1024,21 +1029,7 @@ namespace Emerald
 	};
 
 	//----------------------------------------------------------------------------------------------------
-	struct Point
-	{
-		int x, y;
-
-		inline Point() : x(0), y(0) {}
-		inline Point(int _x, int _y) : x(_x), y(_y) {}
-		inline ~Point() {}
-
-		inline Point& operator= (const Point& _point)
-		{
-			x = _point.x;
-			y = _point.y;
-			return *this;
-		}
-	};
+	typedef INT2 Point;
 
 	//----------------------------------------------------------------------------------------------------
 	struct Rect_Int

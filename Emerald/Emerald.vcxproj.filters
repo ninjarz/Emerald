@@ -43,6 +43,12 @@
     <Filter Include="源文件\Emerald\EEGeometry">
       <UniqueIdentifier>{b2d5991e-10cd-40b9-89f3-e0450dbd7679}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Demo\DIVA">
+      <UniqueIdentifier>{7d488e33-c436-43ca-be1c-fff7e4992df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Demo\YY">
+      <UniqueIdentifier>{220a982e-73a0-43cd-8342-19d831f187d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -168,14 +174,20 @@
     <ClCompile Include="TCPwithFont.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="DIVA.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEThread.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="Thread.cpp">
       <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="DIVA.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
+    <ClCompile Include="EEWaveCoder.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="YYClient.cpp">
+      <Filter>源文件\Demo\YY</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -297,9 +309,6 @@
     </None>
     <None Include="EEShader\EEBoxShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
-    </None>
-    <None Include="EEWaveCoder.cpp">
-      <Filter>源文件</Filter>
     </None>
   </ItemGroup>
 </Project>

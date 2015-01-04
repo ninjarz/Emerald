@@ -61,7 +61,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -109,7 +109,7 @@
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
     <ClCompile Include="Thread.cpp" />
-    <None Include="EEWaveCoder.cpp" />
+    <ClCompile Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
     <ClCompile Include="UDPServer.cpp" />
     <ClCompile Include="源.cpp" />
@@ -120,6 +120,7 @@
     <ClCompile Include="Recoder.cpp" />
     <ClCompile Include="TCPSever.cpp" />
     <ClCompile Include="TCPClient.cpp" />
+    <ClCompile Include="YYClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EEAction.h" />

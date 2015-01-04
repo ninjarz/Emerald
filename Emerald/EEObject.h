@@ -123,6 +123,11 @@ namespace Emerald
 		//localZOrder
 		virtual float GetFinalLocalZOrder() const;
 
+		//OnFunction
+		virtual void OnMouseOver(const Point& _pos);
+		virtual void OnMouseClicked(const Point& _pos);
+		virtual void OnMouseTriggered(const Point& _pos);
+
 		//operator
 		bool operator< (const EEObject& _object) const;
 		bool operator> (const EEObject& _object) const;

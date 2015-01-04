@@ -504,20 +504,18 @@ namespace Emerald
 			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 			{
 				if (m_state = EE_OBJECT_UP)
-					m_state = EE_OBJECT_DOWN;
+					OnMouseClicked(EECore::s_EECore->GetMousePosition());
 			}
 			//DOWN TO UP
 			else if (m_state == EE_OBJECT_DOWN)
 			{
 				//....
-				m_state = EE_OBJECT_OVER;
-				s_focusedObject = this;
-				m_isTriggered = true;
+				OnMouseTriggered(EECore::s_EECore->GetMousePosition());
 			}
 			//OVER
 			else
 			{
-				m_state = EE_OBJECT_OVER;
+				OnMouseOver(EECore::s_EECore->GetMousePosition());
 			}
 		}
 		else

@@ -5,6 +5,7 @@
 #include <d3d11.h>
 #include <d3dx11async.h>
 
+//It will be designed to be a smart pointer
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {

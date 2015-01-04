@@ -1,6 +1,24 @@
-//LineEditer Demo
+//CameraAction Demo
 #if 0
 #include "Emerald.h"
+
+using namespace std;
+
+void test()
+{
+	try
+	{
+		while (true)
+		{
+			std::cout << "asd";
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+		}
+	}
+	catch (boost::thread_interrupted&)
+	{
+		return;
+	}
+}
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(int _argc, char** _argv)
@@ -14,20 +32,18 @@ int main(int _argc, char** _argv)
 	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
 
-	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
-	EETexture button2Tex(L"Texture/主界面/模式标签/生涯模式.png");
-	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, "hello world");
-	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
-	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
+	std::cout << boost::this_thread::get_id() << std::endl;
+	std::cout << boost::thread::hardware_concurrency() << std::endl;
+	boost::thread *temp = new boost::thread(boost::bind(&test));
+	temp->interrupt();
+	//temp.detach();
+	//temp.join();
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
-		EEShowFPSInTitle(L"- -");
 
-		lineEditer->Process();
-		lineEditer2->Process();
-		helloworld.Process();
+		
 
 		EEEndScene();
 	}

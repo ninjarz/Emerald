@@ -74,4 +74,10 @@ namespace Emerald
 
 		return true;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	const std::string& EELineEditer::GetText()
+	{
+		return m_text.GetText();
+	}
 }

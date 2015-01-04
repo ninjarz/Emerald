@@ -222,12 +222,15 @@ namespace Emerald
 
 			if (m_isTextDirty)
 				CreateFontVertexBuffer(length * 6);
-			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-			deviceContext->Map(m_fontVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			memcpy(mappedResource.pData, &vertices[0], sizeof(EEFontVertex) * length * 6);
-			deviceContext->Unmap(m_fontVB, 0);
+			if (vertices.size())
+			{
+				ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
+				D3D11_MAPPED_SUBRESOURCE mappedResource;
+				ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+				deviceContext->Map(m_fontVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+				memcpy(mappedResource.pData, &vertices[0], sizeof(EEFontVertex)* length * 6);
+				deviceContext->Unmap(m_fontVB, 0);
+			}
 
 			m_isPositionDirty = false;
 			m_isScaleDirty = false;

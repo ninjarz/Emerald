@@ -1,4 +1,4 @@
-//LineEditer Demo
+//CameraAction Demo
 #if 0
 #include "Emerald.h"
 
@@ -13,21 +13,18 @@ int main(int _argc, char** _argv)
 	desc.isSSAA = true;					//是开启抗锯齿
 	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
-
+	
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
 	EETexture button2Tex(L"Texture/主界面/模式标签/生涯模式.png");
-	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, "hello world");
-	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
-	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
+	EEBox *box = new EEBox(FLOAT3(0.0f, 0.0f, 10.0f), 10.0f, 10.f, 10.f, button2Tex);
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 		EEShowFPSInTitle(L"- -");
 
-		lineEditer->Process();
-		lineEditer2->Process();
-		helloworld.Process();
+		EECameraProcess(EE_CAMERA_FIRST);
+		box->Process();
 
 		EEEndScene();
 	}

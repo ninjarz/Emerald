@@ -2,6 +2,7 @@
 #ifndef _EE_TIMER_H_
 #define _EE_TIMER_H_
 
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
 //----------------------------------------------------------------------------------------------------

@@ -35,6 +35,11 @@ namespace Emerald
 		EETexture* GetOverTex();
 		EETexture* GetDownTex();
 
+		//OnFunction
+		virtual void OnMouseOver(const Point& _pos);
+		virtual void OnMouseClicked(const Point& _pos);
+		virtual void OnMouseTriggered(const Point& _pos);
+
 	protected:
 		virtual bool UpdateObjectState();
 

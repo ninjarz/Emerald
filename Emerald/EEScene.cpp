@@ -72,4 +72,17 @@ namespace Emerald
 		//m_objects.push_back(_object);
 		EEInsertSort(m_objects, _object, true);
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEScene::RemoveObject(EEObject* _object)
+	{
+		for (auto it = m_objects.begin(); it != m_objects.end(); ++it)
+		{
+			if (*it = _object)
+			{
+				m_objects.erase(it);
+				break;
+			}
+		}
+	}
 }
