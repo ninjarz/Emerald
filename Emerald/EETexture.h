@@ -4,8 +4,9 @@
 
 #include <d3d11.h>
 #include <d3dx11async.h>
+#include "EESmartPtr.h"
 
-//It will be designed to be a smart pointer
+//It should be designed to be a smart pointer
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -25,7 +26,7 @@ namespace Emerald
 
 	//EETexture
 	//----------------------------------------------------------------------------------------------------
-	class EETexture
+	class EETexture : public EESmartPtr<ID3D11ShaderResourceView>
 	{
 	public:
 		EETexture();
@@ -40,8 +41,8 @@ namespace Emerald
 
 		ID3D11ShaderResourceView* GetTexture();
 
-	private:
-		ID3D11ShaderResourceView *m_texture;
+	//private:
+	//	ID3D11ShaderResourceView *m_texture;
 	};
 
 	//EETexture_APIs

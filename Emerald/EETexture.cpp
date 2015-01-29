@@ -8,7 +8,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture()
 		:
-		m_texture(NULL)
+		EESmartPtr()
 	{
 
 	}
@@ -16,13 +16,15 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture(LPCWSTR _file)
 		:
-		m_texture(NULL)
+		EESmartPtr()
 	{
-		D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &m_texture, 0);
+		D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &m_value, 0);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture(const char* _file, unsigned int _width, unsigned int _height)
+		:
+		EESmartPtr()
 	{
 		D3DX11_IMAGE_LOAD_INFO info;
 		info.Width = _width;
@@ -39,13 +41,13 @@ namespace Emerald
 		info.MipFilter;
 		info.pSrcInfo;
 
-		D3DX11CreateShaderResourceViewFromMemory(EECore::s_EECore->GetDevice(), _file, _width * _height, 0, 0, &m_texture, 0);
+		D3DX11CreateShaderResourceViewFromMemory(EECore::s_EECore->GetDevice(), _file, _width * _height, 0, 0, &m_value, 0);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture(ID3D11ShaderResourceView* _texture)
 		:
-		m_texture(_texture)
+		EESmartPtr(_texture)
 	{
 
 	}
@@ -53,7 +55,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture(const EETexture& _texture)
 		:
-		m_texture(_texture.m_texture)
+		EESmartPtr(_texture)
 	{
 
 	}
@@ -61,23 +63,23 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EETexture::~EETexture()
 	{
-		SAFE_RELEASE(m_texture);
+
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EETexture::LoadTextureFromFile(LPCWSTR _file)
 	{
-		if (FAILED(D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &m_texture, 0)))
+		ID3D11ShaderResourceView *tex;
+		if (FAILED(D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &tex, 0)))
 			return false;
+		SetValue(tex);
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EETexture::SetTexture(ID3D11ShaderResourceView* _texture)
+	bool EETexture::SetTexture(ID3D11ShaderResourceView *_texture)
 	{
-		SAFE_RELEASE(_texture);
-
-		m_texture = _texture;
+		SetValue(_texture);
 
 		return true;
 	}
@@ -85,7 +87,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	ID3D11ShaderResourceView* EETexture::GetTexture()
 	{
-		return m_texture;
+		return m_value;
 	}
 
 	//EETexture_APIs

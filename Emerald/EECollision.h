@@ -7,7 +7,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	struct Frustum
+	struct EEFrustum
 	{
 		FLOAT3 Origin;              // Origin of the frustum (and projection).
 		FLOAT4 Orientation;         // Unit quaternion representing rotation.
@@ -20,7 +20,7 @@ namespace Emerald
 	};
 
 	//----------------------------------------------------------------------------------------------------
-	void EEComputeFrustumFromProjection(Frustum& _frustum, MATRIX& _matrix);
+	void EEComputeFrustumFromProjection(EEFrustum& _frustum, MATRIX& _matrix);
 
 	//----------------------------------------------------------------------------------------------------
 	bool EECollision(int _x, int _y, int _z, int _w, const Point& _point);

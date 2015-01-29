@@ -38,7 +38,7 @@ namespace Emerald
 		{
 			thread->interrupt();
 			thread->join();
-			delete  thread;
+			delete thread;
 		}
 		m_threads.clear();
 	}

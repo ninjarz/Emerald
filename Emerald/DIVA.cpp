@@ -1,5 +1,5 @@
 //Game
-#if 0
+#if 1
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -14,8 +14,8 @@ int main(int _argc, char** _argv)
 	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
 
-	EEMusic music;
-	music.Open("Music/jx.mp3");
+	//EEMusic music;
+	//music.Open("Music/jx.mp3");
 	//music.SetFrequencyRatio(2.0f);
 	//music.Play(0.2f, 0.1f, 5);
 	//music.Play(0.2f, 0.1f, 2);
@@ -140,8 +140,9 @@ int main(int _argc, char** _argv)
 	while (EERun())
 	{
 		EEBeginScene(EEColor::WHITE);
+		//EEShowFPSInTitle(L"- -");
 
-		progressbar->SetProgress(music.GetProgress());
+		//progressbar->SetProgress(music.GetProgress());
 		EEProcess(mainScene);
 
 		EEEndScene();

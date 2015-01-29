@@ -3,7 +3,7 @@
 #define _EE_BUTTON_H_
 
 #include "EEGeometry.h"
-
+#include <boost/any.hpp>
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {

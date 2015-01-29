@@ -4,7 +4,7 @@
 namespace Emerald
 {
 	//----------------------------------------------------------------------------------------------------
-	void EEComputeFrustumFromProjection(Frustum& _frustum, MATRIX& _matrix)
+	void EEComputeFrustumFromProjection(EEFrustum& _frustum, MATRIX& _matrix)
 	{
 
 	}

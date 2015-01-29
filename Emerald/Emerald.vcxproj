@@ -95,6 +95,7 @@
     <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
     <ClCompile Include="EEScene.cpp" />
+    <ClCompile Include="EESmartPtr.cpp" />
     <ClCompile Include="EESocket.cpp" />
     <ClCompile Include="EESort.cpp" />
     <ClCompile Include="EETCP.cpp" />
@@ -109,7 +110,7 @@
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
     <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="EEWaveCoder.cpp" />
+    <None Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
     <ClCompile Include="UDPServer.cpp" />
     <ClCompile Include="源.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
     <ClInclude Include="EEScene.h" />
+    <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />
     <ClInclude Include="EESort.h" />
     <ClInclude Include="EETCP.h" />

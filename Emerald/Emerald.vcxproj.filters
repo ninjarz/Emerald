@@ -183,11 +183,11 @@
     <ClCompile Include="DIVA.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
-    <ClCompile Include="EEWaveCoder.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
     <ClCompile Include="YYClient.cpp">
       <Filter>源文件\Demo\YY</Filter>
+    </ClCompile>
+    <ClCompile Include="EESmartPtr.cpp">
+      <Filter>源文件\Emerald</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +293,9 @@
     <ClInclude Include="EEThread.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
+    <ClInclude Include="EESmartPtr.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -309,6 +312,9 @@
     </None>
     <None Include="EEShader\EEBoxShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEWaveCoder.cpp">
+      <Filter>源文件\Emerald</Filter>
     </None>
   </ItemGroup>
 </Project>

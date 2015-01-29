@@ -1,7 +1,7 @@
 #include "EEWaveCoder.h"
 
 //contradict with ...
-#pragma comment(lib, "Lib/G729a.lib")
+#pragma comment(lib, "Lib/G729aD.lib")
 #include <Windows.h>
 #include "Include/G729a.h"
 

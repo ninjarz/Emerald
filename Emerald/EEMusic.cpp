@@ -425,10 +425,15 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	int EEMusic::GetSampled()
 	{
-		XAUDIO2_VOICE_STATE state;
-		m_sourceVoice->GetState(&state);
+		if (m_sourceVoice)
+		{
+			XAUDIO2_VOICE_STATE state;
+			m_sourceVoice->GetState(&state);
 
-		return (int)state.SamplesPlayed + m_beginSamples;
+			return (int)state.SamplesPlayed + m_beginSamples;
+		}
+
+		return -1;
 	}
 
 	//----------------------------------------------------------------------------------------------------
