@@ -23,6 +23,7 @@ namespace Emerald
 
 		bool AddThread(boost::thread* _thread);
 		bool RemoveThread(boost::thread* _thread);
+		bool RemoveThread();
 		void JoinAll();
 
 	private:
@@ -34,6 +35,7 @@ namespace Emerald
 	void EEThreadSleep(int _millisecs);
 	bool EEAddThread(boost::thread* _thread);
 	bool EERemoveThread(boost::thread* _thread);
+	bool EERemoveThread();
 	void EEJoinAll();
 }
 

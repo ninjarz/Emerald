@@ -71,6 +71,20 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEThreadSystem::RemoveThread()
+	{
+		for (boost::thread* thread : m_threads)
+		{
+			thread->interrupt();
+			thread->join();
+			delete thread;
+		}
+		m_threads.clear();
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEThreadSystem::JoinAll()
 	{
 		for (auto it = m_threads.begin(), end = m_threads.end(); it != end; ++it)
@@ -92,6 +106,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EERemoveThread(boost::thread* _thread) { return EECore::s_EECore->GetEEThreadSystem()->RemoveThread(_thread); }
 
+	//----------------------------------------------------------------------------------------------------
+	bool EERemoveThread() { return EECore::s_EECore->GetEEThreadSystem()->RemoveThread(); }
+	
 	//----------------------------------------------------------------------------------------------------
 	void EEJoinAll() { EECore::s_EECore->GetEEThreadSystem()->JoinAll(); }
 }

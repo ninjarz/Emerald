@@ -97,10 +97,11 @@ namespace Emerald
 		EEParticle* GenerateParticle();
 		void RecastParticle(EEParticle* _particle);
 
-		//position
-		virtual FLOAT3 GetCenter() const;
+		//localZOrder
+		virtual void SetLocalZOrder(float _localZOrder);
 
 		//position
+		virtual FLOAT3 GetCenter() const;
 		virtual FLOAT3 GetFinalCenter() const;
 
 	protected:

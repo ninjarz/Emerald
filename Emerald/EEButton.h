@@ -2,8 +2,9 @@
 #ifndef _EE_BUTTON_H_
 #define _EE_BUTTON_H_
 
+#include <functional>
 #include "EEGeometry.h"
-#include <boost/any.hpp>
+//#include <boost/any.hpp>
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -20,10 +21,10 @@ namespace Emerald
 	class EEButton : public EEQuad2D
 	{
 	public:
-		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, DWORD_PTR _funcPtr = NULL);
-		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, DWORD_PTR _funcPtr = NULL);
-		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, DWORD_PTR _funcPtr = NULL);
-		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, DWORD_PTR _funcPtr = NULL);
+		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, std::function<void(void)> _funcPtr = []{});
+		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, std::function<void(void)> _funcPtr = []{});
+		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, std::function<void(void)> _funcPtr = []{});
+		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, std::function<void(void)> _funcPtr = []{});
 		EEButton(const EEButton& _button);
 		~EEButton();
 
@@ -62,7 +63,8 @@ namespace Emerald
 		float m_currFadeTime;
 		float m_aimFadeTime;
 		//callback function
-		DWORD_PTR m_callbackFunc;
+		//DWORD_PTR m_callbackFunc;
+		std::function<void(void)> m_callbackFunc;
 		//the picture of the button
 		EETexture m_overTex, m_downTex;
 	};

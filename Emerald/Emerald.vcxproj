@@ -88,6 +88,7 @@
     <ClCompile Include="EEGeometry.cpp" />
     <ClCompile Include="EEGUI.cpp" />
     <ClCompile Include="EEHelper.cpp" />
+    <ClCompile Include="EEIntBoard.cpp" />
     <ClCompile Include="EELineEditer.cpp" />
     <ClCompile Include="EEMusic.cpp" />
     <ClCompile Include="EEParticle.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="EEGeometry.h" />
     <ClInclude Include="EEGUI.h" />
     <ClInclude Include="EEHelper.h" />
+    <ClInclude Include="EEIntBoard.h" />
     <ClInclude Include="EELineEditer.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEParticle.h" />

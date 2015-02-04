@@ -24,7 +24,7 @@ namespace Emerald
 			m_counter(_smartPtr.m_counter),
 			m_value(_smartPtr.m_value)
 		{
-			std::cout << *m_counter << std::endl;
+			//std::cout << *m_counter << std::endl;
 			++*m_counter;
 		}
 		~EESmartPtr()
@@ -54,7 +54,7 @@ namespace Emerald
 	protected:
 		void DecCounter()
 		{
-			std::cout << *m_counter << std::endl;
+			//std::cout << *m_counter << std::endl;
 			if (--*m_counter == 0)
 			{
  				delete m_counter;
@@ -62,6 +62,7 @@ namespace Emerald
 				if (m_value)
 				{
 					delete m_value;
+					//m_value->Release();
 					m_value = nullptr;
 				}
 			}

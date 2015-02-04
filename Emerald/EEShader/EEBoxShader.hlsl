@@ -35,8 +35,7 @@ struct BoxVOut
 BoxVOut BoxVS(BoxVIn _vIn)
 {
 	BoxVOut vOut;
-	vOut.pos = mul(float4(_vIn.pos, 1.0f), cb_rotationMatrix);
-	vOut.pos = mul(vOut.pos, cb_worldViewProjMatrix);
+	vOut.pos = mul(float4(_vIn.pos, 1.0f), cb_worldViewProjMatrix);
 	vOut.tex = _vIn.tex;
 	return vOut;
 }

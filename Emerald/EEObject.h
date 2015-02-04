@@ -88,6 +88,7 @@ namespace Emerald
 		virtual const FLOAT3& GetPosition() const;
 		virtual bool IsPositionDirty()  const;
 		virtual FLOAT3 GetCenter() const;
+		virtual FLOAT3 GetRowCenter() const;
 		virtual MATRIX GetWorldMatrix();
 		virtual MATRIX GetViewMatrix();
 		virtual MATRIX GetProjectionMatrix();

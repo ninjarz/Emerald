@@ -116,6 +116,23 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEQuad2D::EEQuad2D()
+		:
+		EEObject(),
+		m_quadRect(),
+		m_quadWidth(0.0f),
+		m_quadHeight(0.0f),
+		m_quadVB(NULL),
+		m_quadTex(),
+		m_isUseColor(true),
+		m_isUseTex(false)
+	{
+		InitializeQuad2D();
+
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const FLOAT3& _position)
 		:
 		EEObject(_position),
@@ -261,18 +278,30 @@ namespace Emerald
 	{
 		UpdateObjectState();
 
-		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty)
 		{
-			Rect_Float finalRect = GetFinalRect();
+			m_isPositionDirty = false;
+		}
+
+		if (m_isScaleDirty || m_isLocalZOrderDirty)
+		{
+			FLOAT3 scale = (GetFinalScale() - 1.0f) * 0.5f;
+
+			Rect_Float rect(
+				- m_quadWidth * scale.x,
+				- m_quadHeight * scale.y,
+				m_quadWidth + m_quadWidth * scale.x,
+				m_quadHeight + m_quadHeight * scale.y
+				);
 
 			EEQuad2DVertex quadVertices[4];
-			quadVertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
+			quadVertices[0].pos = FLOAT3(rect.x, rect.y, m_localZOrder * 0.0001f);
 			quadVertices[0].tex = FLOAT2(0, 0);
-			quadVertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
+			quadVertices[1].pos = FLOAT3(rect.z, rect.y, m_localZOrder * 0.0001f);
 			quadVertices[1].tex = FLOAT2(1, 0);
-			quadVertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
+			quadVertices[2].pos = FLOAT3(rect.x, rect.w, m_localZOrder * 0.0001f);
 			quadVertices[2].tex = FLOAT2(0, 1);
-			quadVertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
+			quadVertices[3].pos = FLOAT3(rect.z, rect.w, m_localZOrder * 0.0001f);
 			quadVertices[3].tex = FLOAT2(1, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -282,7 +311,6 @@ namespace Emerald
 			memcpy(mappedResource.pData, quadVertices, sizeof(quadVertices));
 			deviceContext->Unmap(m_quadVB, 0);
 
-			m_isPositionDirty = false;
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
 		}
@@ -397,6 +425,22 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEQuad2D::SetIsUseColor(bool _isUseColor)
+	{
+		m_isUseColor = _isUseColor;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEQuad2D::SetIsUseTex(bool _isUseTex)
+	{
+		m_isUseTex = _isUseTex;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	const Rect_Float& EEQuad2D::GetRect() const
 	{
 		return m_quadRect;
@@ -418,6 +462,12 @@ namespace Emerald
 	FLOAT3 EEQuad2D::GetCenter() const
 	{
 		return FLOAT3(m_position.x + m_quadWidth / 2, m_position.y + m_quadHeight / 2, 0.0f);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT3 EEQuad2D::GetRowCenter() const
+	{
+		return FLOAT3(m_quadWidth / 2, m_quadHeight / 2, 0.0f);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -498,12 +548,13 @@ namespace Emerald
 		if (m_state != EE_OBJECT_DOWN)
 			m_state = EE_OBJECT_UP;
 		//the mouse is within the rect
-		if (EECollision(m_quadRect, EECore::s_EECore->GetMousePosition()))
+		//!!! GetFinalRect should be optimized
+		if (EECollision(GetFinalRect(), EECore::s_EECore->GetMousePosition()))
 		{
 			//DOWN
 			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 			{
-				if (m_state = EE_OBJECT_UP)
+				if (m_state == EE_OBJECT_UP)
 					OnMouseClicked(EECore::s_EECore->GetMousePosition());
 			}
 			//DOWN TO UP

@@ -41,6 +41,7 @@ namespace Emerald
 		static ID3D11Buffer *s_quad2DBuffer;
 
 	public:
+		EEQuad2D();
 		EEQuad2D(const FLOAT3& _position);
 		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height);
 		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex);
@@ -65,12 +66,15 @@ namespace Emerald
 		//texture
 		virtual bool SetTexture(const EETexture& _tex);
 		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
+		virtual bool SetIsUseColor(bool _isUseColor);
+		virtual bool SetIsUseTex(bool _isUseTex);
 
 		//position
 		virtual const Rect_Float& GetRect() const;
 		virtual float GetWidht() const;
 		virtual float GetHeight() const;
 		virtual FLOAT3 GetCenter() const;
+		virtual FLOAT3 GetRowCenter() const;
 		virtual MATRIX GetViewMatrix();
 		virtual MATRIX GetProjectionMatrix();
 		//texture

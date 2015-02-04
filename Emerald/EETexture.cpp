@@ -18,7 +18,9 @@ namespace Emerald
 		:
 		EESmartPtr()
 	{
-		D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &m_value, 0);
+		ID3D11ShaderResourceView* texture;
+		D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &texture, 0);
+		m_value = new EETextureData(texture);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -41,15 +43,17 @@ namespace Emerald
 		info.MipFilter;
 		info.pSrcInfo;
 
-		D3DX11CreateShaderResourceViewFromMemory(EECore::s_EECore->GetDevice(), _file, _width * _height, 0, 0, &m_value, 0);
+		ID3D11ShaderResourceView* texture;
+		D3DX11CreateShaderResourceViewFromMemory(EECore::s_EECore->GetDevice(), _file, _width * _height, 0, 0, &texture, 0);
+		m_value = new EETextureData(texture);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture(ID3D11ShaderResourceView* _texture)
 		:
-		EESmartPtr(_texture)
+		EESmartPtr()
 	{
-
+		m_value = new EETextureData(_texture);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -69,17 +73,17 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EETexture::LoadTextureFromFile(LPCWSTR _file)
 	{
-		ID3D11ShaderResourceView *tex;
-		if (FAILED(D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &tex, 0)))
+		ID3D11ShaderResourceView *texture;
+		if (FAILED(D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &texture, 0)))
 			return false;
-		SetValue(tex);
+		SetValue(new EETextureData(texture));
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EETexture::SetTexture(ID3D11ShaderResourceView *_texture)
 	{
-		SetValue(_texture);
+		SetValue(new EETextureData(_texture));
 
 		return true;
 	}
@@ -87,7 +91,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	ID3D11ShaderResourceView* EETexture::GetTexture()
 	{
-		return m_value;
+		if (m_value)
+			return m_value->texture;
+
+		return nullptr;
 	}
 
 	//EETexture_APIs

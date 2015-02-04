@@ -48,7 +48,7 @@ namespace Emerald
 		m_isAlphaDirty(false),
 		m_rotation(MATRIX::IDENTITY),
 		m_isRotationDirty(false),
-		m_color(1.0f, 1.0f, 1.0f, 1.0f),
+		m_color(0.0f, 0.0f, 0.0f, 0.0f),
 		m_isColorDirty(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(false),
@@ -268,6 +268,11 @@ namespace Emerald
 	FLOAT3 EEObject::GetCenter() const
 	{
 		return m_position;
+	}
+
+	FLOAT3 EEObject::GetRowCenter() const
+	{
+		return FLOAT3(0.0f, 0.0f, 0.0f);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -496,7 +501,7 @@ namespace Emerald
 			return false;
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
 		objectBufferDesc->worldMatrix = GetFinalWorldMatrix();
-		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetViewMatrix() * GetProjectionMatrix();
+		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetFinalRotation() * GetViewMatrix() * GetProjectionMatrix();
 		objectBufferDesc->rotationMatrix = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = GetFinalAlpha();
@@ -522,7 +527,7 @@ namespace Emerald
 			return false;
 		objectBufferDesc = (EEObjectBufferDesc*)mappedResource.pData;
 		objectBufferDesc->worldMatrix = GetFinalWorldMatrix();
-		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetViewMatrix() * GetProjectionMatrix();
+		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetFinalRotation() * GetViewMatrix() * GetProjectionMatrix();
 		objectBufferDesc->rotationMatrix = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
 		objectBufferDesc->alpha = _alpha;

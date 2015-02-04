@@ -23,10 +23,28 @@ namespace Emerald
 		EE_WMP = 7,
 	} EETextureType;
 
+	//EETextureData
+	class EETextureData
+	{
+	public:
+		EETextureData() : texture(nullptr) {}
+		EETextureData(ID3D11ShaderResourceView* _texture) : texture(_texture) {}
+		~EETextureData()
+		{
+			if (texture)
+			{
+				texture->Release();
+				texture = nullptr;
+			}
+		}
+
+	public:
+		ID3D11ShaderResourceView *texture;
+	};
 
 	//EETexture
 	//----------------------------------------------------------------------------------------------------
-	class EETexture : public EESmartPtr<ID3D11ShaderResourceView>
+	class EETexture : public EESmartPtr<EETextureData>
 	{
 	public:
 		EETexture();

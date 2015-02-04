@@ -7,5 +7,6 @@
 #include "EEProgressBar.h"
 #include "EELineEditer.h"
 #include "EETextEditer.h"
+#include "EEIntBoard.h"
 
 #endif

@@ -160,6 +160,7 @@ namespace Emerald
 	{
 		FLOAT durationTime = m_particleInfo.durationTime + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaDurationTime;
 		FLOAT3 position = (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaPosition;
+		position.z = 0.0f;
 		FLOAT3 positionSpeed = m_particleInfo.direction + (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaDirection;
 		EEColor color = m_particleInfo.beginColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaBeginColor;
 		EEColor colorSpeed = (m_particleInfo.endColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaEndColor - color) / durationTime;
@@ -188,6 +189,7 @@ namespace Emerald
 	{
 		FLOAT durationTime = m_particleInfo.durationTime + (float)((rand() / double(RAND_MAX)) * 2.0f - 1.0f) * m_particleInfo.deltaDurationTime;
 		FLOAT3 position = (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaPosition;
+		position.z = 0.0f;
 		FLOAT3 positionSpeed = m_particleInfo.direction + (Rand_FLOAT3() * 2.0f - 1.0f) * m_particleInfo.deltaDirection;
 		EEColor color = m_particleInfo.beginColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaBeginColor;
 		EEColor colorSpeed = (m_particleInfo.endColor + (Rand_FLOAT4() * 2.0f - 1.0f) * m_particleInfo.deltaEndColor - color) / durationTime;
@@ -206,6 +208,17 @@ namespace Emerald
 			scaleSpeed,
 			m_particleInfo.texture
 			);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEParticleEmitter::SetLocalZOrder(float _localZOrder)
+	{
+		EEObject::SetLocalZOrder(_localZOrder);
+		for (EEParticle* particle : m_particles)
+		{
+			//I do it in a wrong way... Use typeid
+			((EEParticle2D*)particle)->SetLocalZOrder(_localZOrder);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------

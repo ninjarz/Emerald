@@ -7,7 +7,7 @@ namespace Emerald
 {
 	//EEButton
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, DWORD_PTR _funcPtr)
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, std::function<void(void)> _funcPtr)
 		:
 		EEQuad2D(_rect, _upTex),
 		//type
@@ -30,7 +30,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, DWORD_PTR _funcPtr)
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, std::function<void(void)> _funcPtr)
 		:
 		EEQuad2D(_rect, _upTex),
 		//type
@@ -53,7 +53,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, DWORD_PTR _funcPtr)
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, std::function<void(void)> _funcPtr)
 		:
 		EEQuad2D(_rect, _tex),
 		//type
@@ -76,7 +76,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(EEButtonType _type, const Rect_Float &_rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView *_tex, DWORD_PTR _funcPtr)
+	EEButton::EEButton(EEButtonType _type, const Rect_Float &_rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView *_tex, std::function<void(void)> _funcPtr)
 		:
 		EEQuad2D(_rect, _tex),
 		//type
@@ -231,7 +231,8 @@ namespace Emerald
 								{
 									if (m_callbackFunc)
 									{
-										(*(void(*)())m_callbackFunc)();
+										//(*(void(*)())m_callbackFunc)();
+										m_callbackFunc();
 										m_isTriggered = false;
 									}
 								}
@@ -246,7 +247,7 @@ namespace Emerald
 									{
 										m_currFadeTime = m_aimFadeTime;
 										if (m_callbackFunc)
-											(*(void(*)())m_callbackFunc)();
+											m_callbackFunc();
 										m_isTriggered = false;
 									}
 									//the scale value is changed in a sense
@@ -282,18 +283,30 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Update_THREE()
 	{
-		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty)
 		{
-			Rect_Float finalRect = GetFinalRect_THREE();
+			m_isPositionDirty = false;
+		}
+
+		if (m_isScaleDirty || m_isLocalZOrderDirty)
+		{
+			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale - 1.0f) * 0.5f;
+
+			Rect_Float rect(
+				-m_quadWidth * scale.x,
+				-m_quadHeight * scale.y,
+				m_quadWidth + m_quadWidth * scale.x,
+				m_quadHeight + m_quadHeight * scale.y
+				);
 
 			EEQuad2DVertex vertices[4];
-			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
+			vertices[0].pos = FLOAT3(rect.x, rect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
-			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
+			vertices[1].pos = FLOAT3(rect.z, rect.y, m_localZOrder * 0.0001f);
 			vertices[1].tex = FLOAT2(1, 0);
-			vertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
+			vertices[2].pos = FLOAT3(rect.x, rect.w, m_localZOrder * 0.0001f);
 			vertices[2].tex = FLOAT2(0, 1);
-			vertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
+			vertices[3].pos = FLOAT3(rect.z, rect.w, m_localZOrder * 0.0001f);
 			vertices[3].tex = FLOAT2(1, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -377,18 +390,30 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Update_SCALE()
 	{
-		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty)
 		{
-			Rect_Float finalRect = GetFinalRect_SCALE();
+			m_isPositionDirty = false;
+		}
+
+		if (m_isScaleDirty || m_isLocalZOrderDirty)
+		{
+			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
+
+			Rect_Float rect(
+				-m_quadWidth * scale.x,
+				-m_quadHeight * scale.y,
+				m_quadWidth + m_quadWidth * scale.x,
+				m_quadHeight + m_quadHeight * scale.y
+				);
 
 			EEQuad2DVertex vertices[4];
-			vertices[0].pos = FLOAT3(finalRect.x, finalRect.y, m_localZOrder * 0.0001f);
+			vertices[0].pos = FLOAT3(rect.x, rect.y, m_localZOrder * 0.0001f);
 			vertices[0].tex = FLOAT2(0, 0);
-			vertices[1].pos = FLOAT3(finalRect.z, finalRect.y, m_localZOrder * 0.0001f);
+			vertices[1].pos = FLOAT3(rect.z, rect.y, m_localZOrder * 0.0001f);
 			vertices[1].tex = FLOAT2(1, 0);
-			vertices[2].pos = FLOAT3(finalRect.x, finalRect.w, m_localZOrder * 0.0001f);
+			vertices[2].pos = FLOAT3(rect.x, rect.w, m_localZOrder * 0.0001f);
 			vertices[2].tex = FLOAT2(0, 1);
-			vertices[3].pos = FLOAT3(finalRect.z, finalRect.w, m_localZOrder * 0.0001f);
+			vertices[3].pos = FLOAT3(rect.z, rect.w, m_localZOrder * 0.0001f);
 			vertices[3].tex = FLOAT2(1, 1);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();

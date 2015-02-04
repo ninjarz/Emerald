@@ -189,6 +189,9 @@
     <ClCompile Include="EESmartPtr.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
+    <ClCompile Include="EEIntBoard.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="EESmartPtr.h">
       <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EEIntBoard.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

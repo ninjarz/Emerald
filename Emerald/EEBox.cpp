@@ -200,7 +200,12 @@ namespace Emerald
 	{
 		UpdateObjectState();
 
-		if (m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isPositionDirty)
+		{
+			m_isPositionDirty = false;
+		}
+
+		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
 			EEBoxVertex vertices[24];
 
@@ -294,7 +299,6 @@ namespace Emerald
 			memcpy(mappedResource.pData, vertices, sizeof(vertices));
 			deviceContext->Unmap(m_boxVB, 0);
 
-			m_isPositionDirty = false;
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
 		}

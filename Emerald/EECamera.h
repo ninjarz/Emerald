@@ -140,7 +140,9 @@ namespace Emerald
 	protected:
 		ID3D11Buffer *m_cameraBuffer;
 		bool m_isBufferDirty;
+		//2D
 		MATRIX m_orthoLHMatrix;
+		//3D
 		std::map<EEHCamera, EECamera*> m_cameras;
 		EEHCamera m_currCamera;
 	};

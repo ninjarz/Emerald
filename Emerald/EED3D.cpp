@@ -70,7 +70,7 @@ namespace Emerald
 			return false;
 		}
 
-		unsigned int numModes;
+		unsigned int numModes = 0;
 		hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 		if (FAILED(hr))
 		{
