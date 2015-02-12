@@ -5,7 +5,7 @@
 #include <d3d11.h>
 #include <d3dx11async.h>
 #include "EESmartPtr.h"
-
+#include <iostream>
 //It should be designed to be a smart pointer
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -27,8 +27,21 @@ namespace Emerald
 	class EETextureData
 	{
 	public:
-		EETextureData() : texture(nullptr) {}
-		EETextureData(ID3D11ShaderResourceView* _texture) : texture(_texture) {}
+		EETextureData() : texture(nullptr), width(0), height(0) {}
+		EETextureData(ID3D11ShaderResourceView* _texture) : texture(_texture), width(0), height(0)
+		{
+			ID3D11Resource *resource;
+			texture->GetResource(&resource);
+			D3D11_RESOURCE_DIMENSION resourceDimension;
+			resource->GetType(&resourceDimension);
+			if (resourceDimension == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
+			{
+				D3D11_TEXTURE2D_DESC texture2DDesc;
+				((ID3D11Texture2D*)resource)->GetDesc(&texture2DDesc);
+				width = texture2DDesc.Width;
+				height = texture2DDesc.Height;
+			}
+		}
 		~EETextureData()
 		{
 			if (texture)
@@ -40,6 +53,8 @@ namespace Emerald
 
 	public:
 		ID3D11ShaderResourceView *texture;
+		int width;
+		int height;
 	};
 
 	//EETexture

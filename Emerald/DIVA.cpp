@@ -1,5 +1,6 @@
 //Game
-#if 1
+#include "DIVAHelper.h"
+#if _DIVA_
 #include "Emerald.h"
 
 int MainScene();
@@ -34,7 +35,7 @@ int MainScene()
 	round1Quad.SetLocalZOrder(9.f);
 	round1Quad.SetAlpha(0.0f);
 	EEFade(&round1Quad, 1.0f, 1.0f, 1.0f);
-	EERotateYX(&round1Quad, 16.0f, 2 * EE_2PI, 1.0f, true);
+	EERotateYX(&round1Quad, 16.0f, 1.5f * EE_2PI, 1.0f, true);
 	mainScene.AddObject(&round1Quad);
 
 	//order 9, time 2 - +∞
@@ -43,7 +44,7 @@ int MainScene()
 	round2Quad.SetLocalZOrder(9.f);
 	round2Quad.SetAlpha(0.0f);
 	EEFade(&round2Quad, 1.0f, 1.0f, 2.0f);
-	EERotateYX(&round2Quad, 16.0f, -2 * EE_2PI, 2.0f, true);
+	EERotateYX(&round2Quad, 16.0f, -1.5f * EE_2PI, 2.0f, true);
 	mainScene.AddObject(&round2Quad);
 
 	//order 8, time 3.5 - +∞
@@ -96,7 +97,7 @@ int MainScene()
 	mainScene.AddObject(&BottomQuad);
 
 	EETexture button1Tex(L"Texture/主界面/模式标签/自由模式.png");
-	EEButton button1(EE_BUTTON_SCALE, Rect_Float(40.f, 380.f, 100.f, 440.f), 1.3f, 0.2f, 0.2f, button1Tex, [&flag](){ EERemoveThread(); flag = 1; });
+	EEButton button1(EE_BUTTON_SCALE, Rect_Float(40.f, 380.f, 100.f, 440.f), 1.3f, 0.2f, 0.2f, button1Tex, [&flag](){ flag = 1; });
 	button1.SetLocalZOrder(5.f);
 	button1.SetAlpha(0.0f);
 	EEFade(&button1, 1.0f, 1.0f, 3.5);
@@ -116,11 +117,38 @@ int MainScene()
 	EEFade(&button3, 1.0f, 1.0f, 3.5);
 	mainScene.AddObject(&button3);
 
+	EEQuad2D musicPos(Rect_Float(580.f, 305.f, 800.f, 370.f));
 	EETexture musicFrameTex(L"Texture/主界面/播放器/时间轴.png");
 	EETexture musicProgressTex(L"Texture/主界面/播放器/进度.png");
-	EEProgressbar progressbar(Rect_Float(580.f, 335.f, 770.f, 340.f), Rect_Float(0.0f, 0.0f, 190.f, 5.f), musicProgressTex, musicFrameTex);
+	//width:190 height:5
+	EEProgressbar progressbar(Rect_Float(820.f, 335.f, 1100.f, 340.f), Rect_Float(0.0f, 0.0f, 190.f, 5.f), musicProgressTex, musicFrameTex);
 	progressbar.SetLocalZOrder(5.f);
+	mainScene.AddObject(&musicPos);
 	mainScene.AddObject(&progressbar);
+	musicPos.SetOverFunc(
+		[&progressbar]
+	{
+		FLOAT3 pos = progressbar.GetPosition();
+		if (pos.x > 580.0f)
+		{
+			pos.x -= (float)(EEGetDeltaTime() * 1000);
+			if (pos.x < 580.f)
+				pos.x = 580.f;
+			progressbar.SetPosition(pos);
+		}
+	});
+	musicPos.SetUpFunc(
+		[&progressbar]
+	{
+		FLOAT3 pos = progressbar.GetPosition();
+		if (pos.x < 820.0f)
+		{
+			pos.x += (float)(EEGetDeltaTime() * 1000);
+			if (pos.x > 820.0f)
+				pos.x = 820.0f;
+			progressbar.SetPosition(pos);
+		}
+	});
 
 	EETexture particleTex(L"Texture/主界面/随机上升的音符效果（线性减淡）.png");
 	EEParticleInfo info;
@@ -156,18 +184,35 @@ int MainScene()
 		EEBeginScene(EEColor::WHITE);
 		//EEShowFPSInTitle(L"- -");
 
-		intBoard.SetValue((intBoard.GetValue() + 1));
+		intBoard.SetValue(EEGetFPS());
 		EEProcess(&mainScene);
 
 		EEEndScene();
 	}
 
+	EERemoveThread();
 	return flag;
 }
 
 int FreeMode()
 {
-	return 0;
+	int flag = 0;
+
+	//order 10, time 0 - +∞
+	EETexture bgTex(L"Texture/FreeMode/frame.png");
+	EEScene freeMode(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
+	freeMode.SetLocalZOrder(10.0f);
+
+	while (EERun() && flag == 0)
+	{
+		EEBeginScene(EEColor::WHITE);
+
+		EEProcess(&freeMode);
+
+		EEEndScene();
+	}
+
+	return flag;
 }
 
 

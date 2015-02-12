@@ -1072,6 +1072,62 @@ namespace Emerald
 	};
 
 	//----------------------------------------------------------------------------------------------------
+	struct Quaternion
+	{
+		FLOAT t, x, y, z;
+
+		inline Quaternion operator* (const Quaternion& _right) const
+		{
+			Quaternion result;
+			float d1, d2, d3, d4;
+
+			//t
+			d1 = t * _right.t;
+			d2 = -x * _right.x;
+			d3 = -y * _right.y;
+			d4 = -z * _right.z;
+			result.t = d1 + d2 + d3 + d4;
+
+			//x
+			d1 = t * _right.x;
+			d2 = x * _right.t;
+			d3 = y * _right.z;
+			d4 = -z * _right.y;
+			result.x = d1 + d2 + d3 + d4;
+
+			//y
+			d1 = t * _right.y;
+			d2 = -x * _right.z;
+			d3 = y * _right.t;
+			d4 = z * _right.x;
+			result.y = d1 + d2 + d3 + d4;
+
+			//z
+			d1 = t * _right.z;
+			d2 = x * _right.y;
+			d3 = -y * _right.x;
+			d4 = z * _right.t;
+			result.z = d1 + d2 + d3 + d4;
+
+			return result;
+		}
+
+		inline FLOAT Normalise(void)
+		{
+			FLOAT length = sqrt(t * t + x * x + y * y + z * z);
+			if (length > 0.0f)
+			{
+				FLOAT invLength = 1.0f / length;
+				t *= invLength;
+				x *= invLength;
+				y *= invLength;
+				z *= invLength;
+			}
+			return length;
+		}
+	};
+
+	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixRotationAxis(const FLOAT3& axis, const FLOAT radians);
 	MATRIX MatrixRotationAxis(const FLOAT4& axis, const FLOAT radians);
 	MATRIX MatrixRotationAxisN(const FLOAT3& axisN, const FLOAT radians);
@@ -1086,6 +1142,8 @@ namespace Emerald
 		const UINT _c0, const UINT _c1, const UINT _c2);
 	FLOAT MatrixDeterminant(const MATRIX& _matrix);
 	MATRIX MatrixInverse(const MATRIX& _matrix);
+
+	Quaternion QuaternionRotationAxis(const FLOAT3& _axis, const FLOAT _radians);
 
 	//----------------------------------------------------------------------------------------------------
 	FLOAT3 operator* (const FLOAT3, const MATRIX);

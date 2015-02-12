@@ -7,6 +7,14 @@ namespace Emerald
 {
 	//EEScene
 	//----------------------------------------------------------------------------------------------------
+	EEScene::EEScene(const Rect_Float &_rect)
+		:
+		EEQuad2D(_rect)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEScene::EEScene(const Rect_Float &_rect, const EETexture& _tex)
 		:
 		EEQuad2D(_rect, _tex)

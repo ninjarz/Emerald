@@ -2,7 +2,6 @@
 #ifndef _EE_BUTTON_H_
 #define _EE_BUTTON_H_
 
-#include <functional>
 #include "EEGeometry.h"
 //#include <boost/any.hpp>
 //----------------------------------------------------------------------------------------------------

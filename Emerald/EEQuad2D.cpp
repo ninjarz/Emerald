@@ -547,6 +547,7 @@ namespace Emerald
 	{
 		if (m_state != EE_OBJECT_DOWN)
 			m_state = EE_OBJECT_UP;
+
 		//the mouse is within the rect
 		//!!! GetFinalRect should be optimized
 		if (EECollision(GetFinalRect(), EECore::s_EECore->GetMousePosition()))
@@ -571,7 +572,7 @@ namespace Emerald
 		}
 		else
 		{
-			m_state = EE_OBJECT_UP;
+			OnMouseUp(EECore::s_EECore->GetMousePosition());
 		}
 
 		return true;

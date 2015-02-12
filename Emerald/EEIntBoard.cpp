@@ -64,7 +64,7 @@ namespace Emerald
 
 		if (m_isValueDirty)
 		{
-			int value = m_value;
+			int value = m_value >= 0 ? m_value : -m_value;
 			for (int i = 0; i < m_range; ++i)
 			{
 				m_num[i].SetTexture(m_numTexs[value % 10]);

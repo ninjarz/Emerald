@@ -6,6 +6,7 @@
 #include "EEMath.h"
 #include "EEGUI.h"
 
+//memo:save the return value of actions to object
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {

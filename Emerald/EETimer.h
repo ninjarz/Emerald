@@ -34,6 +34,7 @@ namespace Emerald
 		void Tick();				//计时一次，每一帧调用一次
 		double GetTotalTime() const;	//返回定时器从开始计时到现在的总时间（不包含暂停时间），单位：秒
 		double GetDeltaTime() const;	//返回本次计时与上次计时之间的时间差，单位：秒
+		int GetFPS() const;
 		void ShowFPSInTitle();
 		void ShowFPSInTitle(LPCWSTR _title);
 
@@ -60,6 +61,7 @@ namespace Emerald
 	void EETimerTick();
 	double EEGetTotalTime();
 	double EEGetDeltaTime();
+	int EEGetFPS();
 	void EEShowFPSInTitle();
 	void EEShowFPSInTitle(LPCWSTR _title);
 }

@@ -43,15 +43,15 @@ namespace Emerald
 		m_position(0.0f),
 		m_isPositionDirty(true),
 		m_scale(1.0f),
-		m_isScaleDirty(false),
+		m_isScaleDirty(true),
 		m_alpha(1.0f),
-		m_isAlphaDirty(false),
+		m_isAlphaDirty(true),
 		m_rotation(MATRIX::IDENTITY),
-		m_isRotationDirty(false),
+		m_isRotationDirty(true),
 		m_color(0.0f, 0.0f, 0.0f, 0.0f),
-		m_isColorDirty(false),
+		m_isColorDirty(true),
 		m_localZOrder(0.0f),
-		m_isLocalZOrderDirty(false),
+		m_isLocalZOrderDirty(true),
 		//state
 		m_state(EE_OBJECT_UP),
 		m_isTriggered(false)
@@ -66,15 +66,15 @@ namespace Emerald
 		m_position(_position),
 		m_isPositionDirty(true),
 		m_scale(1.0f),
-		m_isScaleDirty(false),
+		m_isScaleDirty(true),
 		m_alpha(1.0f),
-		m_isAlphaDirty(false),
+		m_isAlphaDirty(true),
 		m_rotation(MATRIX::IDENTITY),
-		m_isRotationDirty(false),
-		m_color(1.0f, 1.0f, 1.0f, 1.0f),
-		m_isColorDirty(false),
+		m_isRotationDirty(true),
+		m_color(0.0f, 0.0f, 0.0f, 0.0f),
+		m_isColorDirty(true),
 		m_localZOrder(0.0f),
-		m_isLocalZOrderDirty(false),
+		m_isLocalZOrderDirty(true),
 		//state
 		m_state(EE_OBJECT_UP),
 		m_isTriggered(false)
@@ -107,6 +107,14 @@ namespace Emerald
 	EEObject::~EEObject()
 	{
 
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::Update()
+	{
+		OnUpdate();
+
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -220,6 +228,46 @@ namespace Emerald
 	{
 		m_localZOrder = _localZOrder;
 		m_isLocalZOrderDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetUpdateFunc(std::function<void(void)> _funcPtr)
+	{
+		m_updateFunc = _funcPtr;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetUpFunc(std::function<void(void)> _funcPtr)
+	{
+		m_upFunc = _funcPtr;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetOverFunc(std::function<void(void)> _funcPtr)
+	{
+		m_overFunc = _funcPtr;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetClickedFunc(std::function<void(void)> _funcPtr)
+	{
+		m_clickedFunc = _funcPtr;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetTriggeredFunc(std::function<void(void)> _funcPtr)
+	{
+		m_TriggeredFunc = _funcPtr;
+
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -456,23 +504,45 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnUpdate()
+	{
+		if (m_updateFunc)
+			m_updateFunc();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnMouseUp(const Point& _pos)
+	{
+		m_state = EE_OBJECT_UP;
+		if (m_upFunc)
+			m_upFunc();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEObject::OnMouseOver(const Point& _pos)
 	{
 		m_state = EE_OBJECT_OVER;
+		if (m_overFunc)
+			m_overFunc();
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::OnMouseClicked(const Point& _pos)
 	{
 		m_state = EE_OBJECT_DOWN;
+		if (m_clickedFunc)
+			m_clickedFunc();
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::OnMouseTriggered(const Point& _pos)
 	{
 		m_state = EE_OBJECT_OVER;
+		if (m_TriggeredFunc)
+			m_TriggeredFunc();
 		s_focusedObject = this;
 		m_isTriggered = true;
+
 	}
 	
 	//----------------------------------------------------------------------------------------------------

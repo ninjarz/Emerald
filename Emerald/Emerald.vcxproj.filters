@@ -192,6 +192,9 @@
     <ClCompile Include="EEIntBoard.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Picking.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="EEIntBoard.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="DIVAHelper.h">
+      <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

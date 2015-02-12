@@ -1,7 +1,7 @@
 #include "EED3D.h"
 #include "EECore.h"
 
-//#define _FIX_DEBUG_
+//#define _PIX_DEBUG_
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald

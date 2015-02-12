@@ -304,6 +304,22 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	Quaternion QuaternionRotationAxis(const FLOAT3& _axis, const FLOAT _radians)
+	{
+		Quaternion result;
+		FLOAT3 axis = _axis.GetNormalization();
+		FLOAT ccc = cos(0.5 * _radians);
+		FLOAT sss = sin(0.5 * _radians);
+
+		result.t = ccc;
+		result.x = sss * axis.x;
+		result.y = sss * axis.y;
+		result.z = sss * axis.z;
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	FLOAT3 operator* (const FLOAT3 float3, const MATRIX matrix)
 	{
 		FLOAT3 result;

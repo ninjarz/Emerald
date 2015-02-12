@@ -4,6 +4,7 @@
 
 #include <d3d11.h>
 #include <d3dx11async.h>
+#include <functional>
 #include "EEMath.h"
 #include "EEColor.h"
 
@@ -51,7 +52,7 @@ namespace Emerald
 		EEObject(const EEObject& _object);
 		~EEObject();
 
-		virtual bool Update() = NULL;
+		virtual bool Update();
 		virtual bool Render() = NULL;
 		virtual bool Process();
 
@@ -77,6 +78,12 @@ namespace Emerald
 		virtual void SetColor(const EEColor& _color);
 		//localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
+		//callback function
+		virtual bool SetUpdateFunc(std::function<void(void)> _funcPtr);
+		virtual bool SetUpFunc(std::function<void(void)> _funcPtr);
+		virtual bool SetOverFunc(std::function<void(void)> _funcPtr);
+		virtual bool SetClickedFunc(std::function<void(void)> _funcPtr);
+		virtual bool SetTriggeredFunc(std::function<void(void)> _funcPtr);
 
 		//parent
 		virtual EEObject* GetParent();
@@ -125,6 +132,8 @@ namespace Emerald
 		virtual float GetFinalLocalZOrder() const;
 
 		//OnFunction
+		virtual void OnUpdate();
+		virtual void OnMouseUp(const Point& _pos);
 		virtual void OnMouseOver(const Point& _pos);
 		virtual void OnMouseClicked(const Point& _pos);
 		virtual void OnMouseTriggered(const Point& _pos);
@@ -157,6 +166,12 @@ namespace Emerald
 		//state
 		EEObjectState m_state;
 		bool m_isTriggered;
+		//callback function
+		std::function<void(void)> m_updateFunc;
+		std::function<void(void)> m_upFunc;
+		std::function<void(void)> m_overFunc;
+		std::function<void(void)> m_clickedFunc;
+		std::function<void(void)> m_TriggeredFunc;
 	};
 
 	//EEObject_APIs

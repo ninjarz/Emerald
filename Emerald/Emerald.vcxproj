@@ -110,6 +110,7 @@
     <ClCompile Include="EEThread.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
+    <ClCompile Include="Picking.cpp" />
     <ClCompile Include="Thread.cpp" />
     <None Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
@@ -125,6 +126,7 @@
     <ClCompile Include="YYClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DIVAHelper.h" />
     <ClInclude Include="EEAction.h" />
     <ClInclude Include="EEBox.h" />
     <ClInclude Include="EEButton.h" />

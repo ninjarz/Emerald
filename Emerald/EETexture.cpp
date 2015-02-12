@@ -18,9 +18,25 @@ namespace Emerald
 		:
 		EESmartPtr()
 	{
-		ID3D11ShaderResourceView* texture;
-		D3DX11CreateShaderResourceViewFromFileW(EECore::s_EECore->GetDevice(), _file, 0, 0, &texture, 0);
+		ID3D11Device *device = EECore::s_EECore->GetDevice();
+		ID3D11ShaderResourceView *texture = nullptr;
+
+		D3DX11CreateShaderResourceViewFromFileW(device, _file, 0, 0, &texture, 0);
 		m_value = new EETextureData(texture);
+
+		/*
+		ID3D11Texture2D *texture2D;
+		ID3D11Resource *resource;
+		D3DX11CreateTextureFromFileW(device, _file, 0, 0, &resource, 0);
+
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC descSRV;
+		descSRV.Format = texture2D->;
+		descSRV.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		descSRV.Texture2D.MipLevels = 1;
+		descSRV.Texture2D.MostDetailedMip = 0;
+		device->CreateShaderResourceView(texture2D, &SRVDesc, &m_startOffsetBufferSRV);
+		*/
 	}
 
 	//----------------------------------------------------------------------------------------------------

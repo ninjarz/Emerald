@@ -88,7 +88,8 @@ namespace Emerald
 			TranslateMessage(&m_msg);
 			DispatchMessage(&m_msg);
 		}
-		if (m_msg.message == WM_QUIT || IsKeyDown(VK_ESCAPE))
+
+		if (m_msg.message == WM_QUIT || (m_msg.message == WM_KEYDOWN && m_msg.wParam == VK_ESCAPE))
 		{
 			return false;
 		}
