@@ -308,8 +308,8 @@ namespace Emerald
 	{
 		Quaternion result;
 		FLOAT3 axis = _axis.GetNormalization();
-		FLOAT ccc = cos(0.5 * _radians);
-		FLOAT sss = sin(0.5 * _radians);
+		FLOAT ccc = cos(0.5f * _radians);
+		FLOAT sss = sin(0.5f * _radians);
 
 		result.t = ccc;
 		result.x = sss * axis.x;

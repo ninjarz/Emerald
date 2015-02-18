@@ -38,7 +38,7 @@ void FontPS(FontVOut _pIn, out float4 _finalColor :SV_TARGET)
 	if (sampledColor.r == 0.0f)
 		clip(-1);
 	_finalColor = sampledColor * cb_color;
-	_finalColor.w = _finalColor.w * cb_alpha;
+	_finalColor.w *= cb_alpha;
 }
 
 #endif

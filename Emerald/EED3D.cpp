@@ -271,7 +271,7 @@ namespace Emerald
 			return false;
 		}
 
-#ifndef _FIX_DEBUG_
+#ifndef _PIX_DEBUG_
 		hr = m_device->CreateRenderTargetView(backBufferPtr,                                    //视图对应资源
 			NULL,                                             //视图描述，先前已经定义了后置缓存的数据类型
 			&m_renderTargetView);                             //要创建的视图（指针的地址）

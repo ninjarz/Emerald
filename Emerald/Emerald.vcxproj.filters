@@ -49,6 +49,18 @@
     <Filter Include="源文件\Demo\YY">
       <UniqueIdentifier>{220a982e-73a0-43cd-8342-19d831f187d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EETexture">
+      <UniqueIdentifier>{7a8e9807-242d-4562-aa0e-d6542b6eb12e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEFont">
+      <UniqueIdentifier>{da2467d0-2142-4504-8fc7-35ebc8576fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EETexture">
+      <UniqueIdentifier>{8d9e9538-4b50-45e9-b854-3b194f7cc393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEFont">
+      <UniqueIdentifier>{3af591e6-f252-4605-a06e-562cffd690e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -84,9 +96,6 @@
     <ClCompile Include="EEShaderState.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="EETexture.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
     <ClCompile Include="EEAction.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -103,9 +112,6 @@
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EEParticle.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="EEFont.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EEHelper.cpp">
@@ -195,6 +201,18 @@
     <ClCompile Include="Picking.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="EETexture.cpp">
+      <Filter>源文件\Emerald\EETexture</Filter>
+    </ClCompile>
+    <ClCompile Include="EEBitmap.cpp">
+      <Filter>源文件\Emerald\EETexture</Filter>
+    </ClCompile>
+    <ClCompile Include="FontTest.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEFont.cpp">
+      <Filter>源文件\Emerald\EEFont</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -236,9 +254,6 @@
     <ClInclude Include="EEShaderState.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
-    <ClInclude Include="EETexture.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
     <ClInclude Include="EEAction.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
@@ -249,9 +264,6 @@
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EEParticle.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
-    <ClInclude Include="EEFont.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EERecorder.h">
@@ -307,6 +319,15 @@
     </ClInclude>
     <ClInclude Include="DIVAHelper.h">
       <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="EETexture.h">
+      <Filter>头文件\Emerald\EETexture</Filter>
+    </ClInclude>
+    <ClInclude Include="EEBitmap.h">
+      <Filter>头文件\Emerald\EETexture</Filter>
+    </ClInclude>
+    <ClInclude Include="EEFont.h">
+      <Filter>头文件\Emerald\EEFont</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

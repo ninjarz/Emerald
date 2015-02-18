@@ -20,8 +20,8 @@ namespace Emerald
 	{
 		ID3D11Device *device = EECore::s_EECore->GetDevice();
 		ID3D11ShaderResourceView *texture = nullptr;
-
 		D3DX11CreateShaderResourceViewFromFileW(device, _file, 0, 0, &texture, 0);
+
 		m_value = new EETextureData(texture);
 
 		/*
@@ -40,28 +40,47 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETexture::EETexture(const char* _file, unsigned int _width, unsigned int _height)
+	EETexture::EETexture(const unsigned char* _buffer, unsigned int _width, unsigned int _height)
 		:
 		EESmartPtr()
 	{
-		D3DX11_IMAGE_LOAD_INFO info;
-		info.Width = _width;
-		info.Height = _height;
-		info.Depth = 0;
-		info.FirstMipLevel = 0;
-		info.MipLevels = D3DX11_DEFAULT;
-		info.Usage = D3D11_USAGE_DEFAULT;
-		info.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		info.CpuAccessFlags = D3D11_CPU_ACCESS_READ;
-		info.MiscFlags = 0;
-		info.Format;
-		info.Filter;
-		info.MipFilter;
-		info.pSrcInfo;
+		ID3D11Device *device = EECore::s_EECore->GetDevice();
 
-		ID3D11ShaderResourceView* texture;
-		D3DX11CreateShaderResourceViewFromMemory(EECore::s_EECore->GetDevice(), _file, _width * _height, 0, 0, &texture, 0);
-		m_value = new EETextureData(texture);
+		D3D11_TEXTURE2D_DESC tex2DDesc;
+		ZeroMemory(&tex2DDesc, sizeof(D3D11_TEXTURE2D_DESC));
+		tex2DDesc.Width = _width;
+		tex2DDesc.Height = _height;
+		tex2DDesc.MipLevels = 1;
+		tex2DDesc.ArraySize = 1;
+		//tex2DDesc.Format = DXGI_FORMAT_R32_UINT;
+		tex2DDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		tex2DDesc.SampleDesc.Count = 1;
+		tex2DDesc.SampleDesc.Quality = 0;
+		tex2DDesc.Usage = D3D11_USAGE_DEFAULT;
+		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		tex2DDesc.CPUAccessFlags = 0;
+		tex2DDesc.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA data;
+		data.pSysMem = _buffer;
+		data.SysMemPitch = sizeof(unsigned int) * _width;
+		data.SysMemSlicePitch = sizeof(unsigned int) * _width * _height;
+
+		ID3D11Texture2D *texture2D = nullptr;
+		HRESULT result;
+		if (!FAILED(result = device->CreateTexture2D(&tex2DDesc, &data, &texture2D)))
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+			SRVDesc.Format = tex2DDesc.Format;
+			SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			SRVDesc.Texture2D.MipLevels = 1;
+			SRVDesc.Texture2D.MostDetailedMip = 0;
+			ID3D11ShaderResourceView *texture = nullptr;
+			if (!FAILED(device->CreateShaderResourceView(texture2D, &SRVDesc, &texture)))
+			{
+				m_value = new EETextureData(texture);
+				SAFE_RELEASE(texture2D);
+			}
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------

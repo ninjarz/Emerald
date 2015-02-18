@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="EEAction.cpp" />
+    <ClCompile Include="EEBitmap.cpp" />
     <ClCompile Include="EEBox.cpp" />
     <ClCompile Include="EEButton.cpp" />
     <ClCompile Include="EECamera.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="EEThread.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
+    <ClCompile Include="FontTest.cpp" />
     <ClCompile Include="Picking.cpp" />
     <ClCompile Include="Thread.cpp" />
     <None Include="EEWaveCoder.cpp" />
@@ -128,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="DIVAHelper.h" />
     <ClInclude Include="EEAction.h" />
+    <ClInclude Include="EEBitmap.h" />
     <ClInclude Include="EEBox.h" />
     <ClInclude Include="EEButton.h" />
     <ClInclude Include="EECamera.h" />

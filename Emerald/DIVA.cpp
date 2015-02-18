@@ -16,7 +16,13 @@ int MainScene()
 	//music.Play(0.2f, 0.1f, 2);
 
 	//order 10, time 0 - +∞
-	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
+	//EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
+	char texBuffer[16] = { 100, 0, 0, 128,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		100, 0, 0, 128,
+	};
+	EETexture bgTex(texBuffer, 2, 2);
 	EEScene mainScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
 	mainScene.SetLocalZOrder(10.0f);
 	//EERotateYX(mainScene, 16.0f, 2 * EE_2PI, 1.0f, true);
@@ -181,7 +187,7 @@ int MainScene()
 
 	while (EERun() && flag == 0)
 	{
-		EEBeginScene(EEColor::WHITE);
+		EEBeginScene(EEColor::BLACK);
 		//EEShowFPSInTitle(L"- -");
 
 		intBoard.SetValue(EEGetFPS());

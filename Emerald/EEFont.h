@@ -2,6 +2,9 @@
 #ifndef _EE_FONT_H_
 #define _EE_FONT_H_
 
+#pragma comment(lib, "freetype253MT_D.lib")
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include <string>
 #include "EEObject.h"
 #include "EETexture.h"
@@ -32,6 +35,7 @@ namespace Emerald
 	{
 	public:
 		static bool InitializeFont();
+		static EEBitmap GetFontBitmap(wchar_t _char);
 
 	public:
 		static bool s_isFontInitialized;
@@ -42,6 +46,9 @@ namespace Emerald
 		static ID3D11InputLayout *s_fontIL;
 		static ID3D11VertexShader *s_fontVS;
 		static ID3D11PixelShader  *s_fontPS;
+
+		static FT_Library s_library;
+		static FT_Face s_face;
 
 	public:
 		EEFont(const FLOAT3& _position, const EEColor& _color, char* _text);
@@ -55,6 +62,8 @@ namespace Emerald
 
 		bool SetText(char* _text);
 
+		virtual MATRIX GetViewMatrix();
+		virtual MATRIX GetProjectionMatrix();
 		const std::string& GetText();
 		bool IsTextDirty();
 
@@ -69,6 +78,7 @@ namespace Emerald
 
 	//EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEGetFontBitmap(wchar_t _char);
 	void EEPrint(const FLOAT3& _position, const EEColor& _color, char* _text);
 }
 

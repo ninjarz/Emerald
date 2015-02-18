@@ -5,6 +5,8 @@
 #include <d3d11.h>
 #include <d3dx11async.h>
 #include "EESmartPtr.h"
+#include "EEBitmap.h"
+
 #include <iostream>
 //It should be designed to be a smart pointer
 //----------------------------------------------------------------------------------------------------
@@ -64,7 +66,7 @@ namespace Emerald
 	public:
 		EETexture();
 		EETexture(LPCWSTR _file);
-		EETexture(const char* _file, unsigned int _width, unsigned int _height);
+		EETexture(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
 		EETexture(ID3D11ShaderResourceView* _texture);
 		EETexture(const EETexture& _texture);
 		~EETexture();
