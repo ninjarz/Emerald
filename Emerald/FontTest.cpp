@@ -1,5 +1,5 @@
 //Font Demo
-#if 1
+#if 0
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -16,7 +16,7 @@ int main(int _argc, char** _argv)
 
 
 	EEBitmap bitmap1 = EEGetFontBitmap(L'°¡');
-	EEBitmap bitmap2 = EEGetFontBitmap(L'Ñ½');
+	EEBitmap bitmap2 = EEGetFontBitmap(L'?');
 	EEBitmap bitmap = EEBitmapCombineHorizontal(bitmap1, bitmap2);
 
 	EETexture fonttex(bitmap.GetData(), bitmap.GetWidth(), bitmap.GetHeight());

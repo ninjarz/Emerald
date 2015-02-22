@@ -213,6 +213,9 @@
     <ClCompile Include="EEFont.cpp">
       <Filter>源文件\Emerald\EEFont</Filter>
     </ClCompile>
+    <ClCompile Include="EESlide.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -287,9 +290,6 @@
     <ClInclude Include="EELineEditer.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
-    <ClInclude Include="EEProgressBar.h">
-      <Filter>头文件\Emerald\EEGUI</Filter>
-    </ClInclude>
     <ClInclude Include="EEButton.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
@@ -328,6 +328,15 @@
     </ClInclude>
     <ClInclude Include="EEFont.h">
       <Filter>头文件\Emerald\EEFont</Filter>
+    </ClInclude>
+    <ClInclude Include="EESlide.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEFloatBoard.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEProgressbar.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

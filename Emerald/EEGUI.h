@@ -4,9 +4,11 @@
 
 #include "EEScene.h"
 #include "EEButton.h"
-#include "EEProgressBar.h"
+#include "EEProgressbar.h"
 #include "EELineEditer.h"
 #include "EETextEditer.h"
 #include "EEIntBoard.h"
+#include "EESlide.h"
+#include "EEFloatBoard.h"
 
 #endif

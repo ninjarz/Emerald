@@ -84,6 +84,50 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EETexture::EETexture(EEBitmap& _bitmap)
+		:
+		EESmartPtr()
+	{
+		ID3D11Device *device = EECore::s_EECore->GetDevice();
+
+		D3D11_TEXTURE2D_DESC tex2DDesc;
+		ZeroMemory(&tex2DDesc, sizeof(D3D11_TEXTURE2D_DESC));
+		tex2DDesc.Width = _bitmap.GetWidth();
+		tex2DDesc.Height = _bitmap.GetHeight();
+		tex2DDesc.MipLevels = 1;
+		tex2DDesc.ArraySize = 1;
+		//tex2DDesc.Format = DXGI_FORMAT_R32_UINT;
+		tex2DDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		tex2DDesc.SampleDesc.Count = 1;
+		tex2DDesc.SampleDesc.Quality = 0;
+		tex2DDesc.Usage = D3D11_USAGE_DEFAULT;
+		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		tex2DDesc.CPUAccessFlags = 0;
+		tex2DDesc.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA data;
+		data.pSysMem = _bitmap.GetData();
+		data.SysMemPitch = sizeof(unsigned int)* _bitmap.GetWidth();
+		data.SysMemSlicePitch = sizeof(unsigned int)* _bitmap.GetWidth() * _bitmap.GetHeight();
+
+		ID3D11Texture2D *texture2D = nullptr;
+		HRESULT result;
+		if (!FAILED(result = device->CreateTexture2D(&tex2DDesc, &data, &texture2D)))
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+			SRVDesc.Format = tex2DDesc.Format;
+			SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			SRVDesc.Texture2D.MipLevels = 1;
+			SRVDesc.Texture2D.MostDetailedMip = 0;
+			ID3D11ShaderResourceView *texture = nullptr;
+			if (!FAILED(device->CreateShaderResourceView(texture2D, &SRVDesc, &texture)))
+			{
+				m_value = new EETextureData(texture);
+				SAFE_RELEASE(texture2D);
+			}
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture(ID3D11ShaderResourceView* _texture)
 		:
 		EESmartPtr()

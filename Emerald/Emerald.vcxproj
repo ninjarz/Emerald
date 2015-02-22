@@ -97,6 +97,7 @@
     <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
     <ClCompile Include="EEScene.cpp" />
+    <ClCompile Include="EESlide.cpp" />
     <ClCompile Include="EESmartPtr.cpp" />
     <ClCompile Include="EESocket.cpp" />
     <ClCompile Include="EESort.cpp" />
@@ -146,7 +147,7 @@
     <ClInclude Include="EELineEditer.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEParticle.h" />
-    <ClInclude Include="EEProgressBar.h" />
+    <ClInclude Include="EEProgressbar.h" />
     <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
     <ClInclude Include="EEScene.h" />
@@ -166,6 +167,8 @@
     <ClInclude Include="EEUDP.h" />
     <ClInclude Include="EEWaveCoder.h" />
     <ClInclude Include="Emerald.h" />
+    <ClInclude Include="EESlide.h" />
+    <ClInclude Include="EEFloatBoard.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEQuad2DShader.hlsl">

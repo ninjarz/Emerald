@@ -26,6 +26,7 @@ namespace Emerald
 	} EETextureType;
 
 	//EETextureData
+	//----------------------------------------------------------------------------------------------------
 	class EETextureData
 	{
 	public:
@@ -67,6 +68,7 @@ namespace Emerald
 		EETexture();
 		EETexture(LPCWSTR _file);
 		EETexture(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
+		EETexture(EEBitmap& _bitmap);
 		EETexture(ID3D11ShaderResourceView* _texture);
 		EETexture(const EETexture& _texture);
 		~EETexture();
