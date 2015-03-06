@@ -42,7 +42,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EELineEditer::Update()
 	{
-		EEQuad2D::Update();
+		if (!EEQuad2D::Update())
+			return false;
 
 		if (m_isTriggered)
 		{
@@ -69,10 +70,11 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EELineEditer::Render()
 	{
-		EEQuad2D::Render();
-		m_text.Render();
+		if (!EEQuad2D::Render())
+			return false;
 
-		return true;
+		return m_text.Render();
+
 	}
 
 	//----------------------------------------------------------------------------------------------------

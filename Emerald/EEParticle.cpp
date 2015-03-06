@@ -8,7 +8,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEParticle2D::EEParticle2D(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture)
 		:
-		m_isAlive(true),
 		m_durationTime(_durationTime),
 		EEQuad2D(_position, _width, _height, _texture),
 		m_positionSpeed(_positionSpeed),
@@ -23,7 +22,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEParticle2D::EEParticle2D(const EEParticle2D& _particle)
 		:
-		m_isAlive(_particle.m_isAlive),
 		m_durationTime(_particle.m_durationTime),
 		EEQuad2D(_particle),
 		m_positionSpeed(_particle.m_positionSpeed),
@@ -147,9 +145,9 @@ namespace Emerald
 	{
 		for (EEParticle* particle : m_particles)
 		{
-			particle->Render();
 			if (!particle->IsAlive())
 				RecastParticle(particle);
+			particle->Render();
 		}
 
 		return true;

@@ -198,6 +198,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEBox::Update()
 	{
+		if (!EEObject::Update())
+			return false;
+
 		UpdateObjectState();
 
 		if (m_isPositionDirty)
@@ -309,6 +312,9 @@ namespace Emerald
 	 //----------------------------------------------------------------------------------------------------
 	bool EEBox::Render()
 	{
+		if (!EEObject::Render())
+			return false;
+
 		MapObjectBuffer();
 		MapBoxBuffer();
 
@@ -331,11 +337,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEBox::MapBoxBuffer()
 	{
-		HRESULT result;
 		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		result = deviceContext->Map(s_boxBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result))
+		if (FAILED(deviceContext->Map(s_boxBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
 			return false;
 		EEBoxBufferDesc *boxBufferDesc = (EEBoxBufferDesc*)mappedResource.pData;
 		boxBufferDesc->isUseColor = m_isUseColor;

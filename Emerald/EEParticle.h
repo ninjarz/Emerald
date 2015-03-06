@@ -72,8 +72,6 @@ namespace Emerald
 		bool IsAlive();
 
 	protected:
-		//life
-		bool m_isAlive;
 		FLOAT m_durationTime;
 		//position
 		FLOAT3 m_positionSpeed;

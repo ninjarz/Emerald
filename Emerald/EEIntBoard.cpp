@@ -42,7 +42,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEIntBoard::Update()
 	{
-		EEQuad2D::Update();
+		if (!EEQuad2D::Update())
+			return false;
 
 		if (m_isRangeDirty)
 		{
@@ -86,7 +87,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEIntBoard::Render()
 	{
-		//EEQuad2D::Render();
+		if (!EEQuad2D::Render())
+			return false;
 
 		for (int i = 0; i < m_range; ++i)
 		{

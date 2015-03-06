@@ -14,7 +14,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETexture::EETexture(LPCWSTR _file)
+	EETexture::EETexture(wchar_t* _file)
 		:
 		EESmartPtr()
 	{
@@ -24,19 +24,17 @@ namespace Emerald
 
 		m_value = new EETextureData(texture);
 
-		/*
-		ID3D11Texture2D *texture2D;
+		
 		ID3D11Resource *resource;
 		D3DX11CreateTextureFromFileW(device, _file, 0, 0, &resource, 0);
 
-
-		D3D11_SHADER_RESOURCE_VIEW_DESC descSRV;
-		descSRV.Format = texture2D->;
-		descSRV.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		descSRV.Texture2D.MipLevels = 1;
-		descSRV.Texture2D.MostDetailedMip = 0;
-		device->CreateShaderResourceView(texture2D, &SRVDesc, &m_startOffsetBufferSRV);
-		*/
+		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		if (FAILED(deviceContext->Map(resource, 0, D3D11_MAP_READ, 0, &mappedResource)))
+			return;
+		(char*)mappedResource.pData;
+		deviceContext->Unmap(resource, 0);
+		
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -110,8 +108,7 @@ namespace Emerald
 		data.SysMemSlicePitch = sizeof(unsigned int)* _bitmap.GetWidth() * _bitmap.GetHeight();
 
 		ID3D11Texture2D *texture2D = nullptr;
-		HRESULT result;
-		if (!FAILED(result = device->CreateTexture2D(&tex2DDesc, &data, &texture2D)))
+		if (!FAILED(device->CreateTexture2D(&tex2DDesc, &data, &texture2D)))
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
 			SRVDesc.Format = tex2DDesc.Format;
@@ -168,6 +165,61 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	int EETexture::GetWidth()
+	{
+		if (m_value)
+			return m_value->width;
+
+		return 0;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EETexture::GetHeight()
+	{
+		if (m_value)
+			return m_value->height;
+
+		return 0;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EETexture::GetBitmap(EEBitmap& _bitmap)
+	{
+		if (m_value)
+		{
+			if (m_value->texture)
+			{
+				// I spent a lot of time on it...
+				ID3D11Resource *src = NULL;
+				m_value->texture->GetResource(&src);
+				D3D11_TEXTURE2D_DESC tex2DDesc;
+				((ID3D11Texture2D *)src)->GetDesc(&tex2DDesc);
+				tex2DDesc.BindFlags = 0;
+				tex2DDesc.Usage = D3D11_USAGE_STAGING;
+				tex2DDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+
+				ID3D11Texture2D *cpuBuf = nullptr;
+				if (SUCCEEDED(EECore::s_EECore->GetDevice()->CreateTexture2D(&tex2DDesc, NULL, &cpuBuf)))
+				{
+					EECore::s_EECore->GetDeviceContext()->CopyResource(cpuBuf, src);
+
+					ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+					D3D11_MAPPED_SUBRESOURCE mappedResource;
+					if (FAILED(deviceContext->Map(cpuBuf, 0, D3D11_MAP_READ, 0, &mappedResource)))
+						return false;
+					unsigned char* tmp = (unsigned char*)mappedResource.pData;
+					_bitmap.SetData(tmp, m_value->width, m_value->height);
+					deviceContext->Unmap(cpuBuf, 0);
+					SAFE_RELEASE(cpuBuf);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	ID3D11ShaderResourceView* EETexture::GetTexture()
 	{
 		if (m_value)
@@ -182,7 +234,7 @@ namespace Emerald
 	{
 		ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
 		ID3D11Resource *texture = NULL;
-		_texture.GetTexture()->GetResource(&texture);
+		_texture.GetTexture()->GetResource(&texture); // safety check
 		switch (_type)
 		{
 		case EE_BMP:

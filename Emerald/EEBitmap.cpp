@@ -1,5 +1,6 @@
 #include "EEBitmap.h"
 
+#include "EECore.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -16,9 +17,38 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEBitmap::EEBitmap(wchar_t* _file)
+		:
+		m_data(),
+		m_width(0),
+		m_height(0)
+	{
+		/*
+		D3DX11CreateTextureFromFileW();
+
+		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		if (FAILED(deviceContext->Map(s_boxBuffer, 0, D3D11_MAP_READ, 0, &mappedResource)))
+			return false;
+		(char*)mappedResource.pData;
+		deviceContext->Unmap(s_boxBuffer, 0);
+		*/
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEBitmap::EEBitmap(unsigned int _width, unsigned int _height)
+		:
+		m_data(_width * _height << 2, (unsigned char)0),
+		m_width(_width),
+		m_height(_height)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEBitmap::EEBitmap(const unsigned char* _buffer, unsigned int _width, unsigned int _height)
 		:
-		m_data(_buffer, _buffer + _width * _height * 4),
+		m_data(_buffer, _buffer + (_width * _height << 2)),
 		m_width(_width),
 		m_height(_height)
 	{
@@ -48,6 +78,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	int EEBitmap::GetDataSize()
+	{
+		return m_data.size();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	int EEBitmap::GetWidth() const
 	{
 		return m_width;
@@ -57,6 +93,12 @@ namespace Emerald
 	int EEBitmap::GetHeight() const
 	{
 		return m_height;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEBitmap::IsEmpty() const
+	{
+		return m_data.empty();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -88,8 +130,9 @@ namespace Emerald
 		{
 			height = m_height - _y;
 		}
-		unsigned int* src = (unsigned int*)m_data.data();
-		std::vector<unsigned int> buffer(width * height, (unsigned int)0);
+		unsigned int *src = (unsigned int*)m_data.data();
+		EEBitmap submap(width, height);
+		unsigned int *buffer = (unsigned int*)submap.GetData();
 		unsigned int z(_x + width);
 		unsigned int w(_y + height);
 		unsigned int dstIndex(0);
@@ -100,7 +143,18 @@ namespace Emerald
 				buffer[dstIndex++] = src[i * m_width + j];
 			}
 		}
-		return EEBitmap((unsigned char*)buffer.data(), width, height);
+		return submap;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEBitmap::SetData(const unsigned char* _buffer, unsigned int _width, unsigned int _height)
+	{
+		m_data.clear();
+		m_data.assign(_buffer, _buffer + (_width * _height << 2));
+		m_width = _width;
+		m_height = _height;
+
+		return true;
 	}
 
 	//EEBitmap_APIs
@@ -118,7 +172,8 @@ namespace Emerald
 		if (heightL >= heightR)
 		{
 			int height = heightL;
-			std::vector<unsigned int> buffer(width * height, (unsigned int)0);
+			EEBitmap result(width, height);
+			unsigned int *buffer = (unsigned int*)result.GetData();
 			for (int i = 0; i < heightR; ++i)
 			{
 				int dstIndex = i * width;
@@ -129,12 +184,13 @@ namespace Emerald
 			{
 				memcpy(&buffer[i * width], &srcL[i * widthL], widthL << 2);
 			}
-			return EEBitmap((unsigned char*)buffer.data(), width, height);
+			return result;
 		}
 		else
 		{
 			int height = heightR;
-			std::vector<unsigned int> buffer(width * height, (unsigned int)0);
+			EEBitmap result(width, height);
+			unsigned int *buffer = (unsigned int*)result.GetData();
 			for (int i = 0; i < heightL; ++i)
 			{
 				int dstIndex = i * width;
@@ -145,7 +201,7 @@ namespace Emerald
 			{
 				memcpy(&buffer[i * width + widthL], &srcR[i * widthR], widthR << 2);
 			}
-			return EEBitmap((unsigned char*)buffer.data(), width, height);
+			return result;
 		}
 	}
 
@@ -167,7 +223,8 @@ namespace Emerald
 
 		int width = widthT >= widthB ? widthT : widthB;
 		int height = heightT + heightB;
-		std::vector<unsigned int> buffer(width * height, (unsigned int)0);
+		EEBitmap result(width, height);
+		unsigned int *buffer = (unsigned int*)result.GetData();
 		for (int i = 0; i < heightT; ++i)
 		{
 			memcpy(&buffer[i * width], &srcT[i * widthT], widthT << 2);
@@ -176,38 +233,75 @@ namespace Emerald
 		{
 			memcpy(&buffer[i * width], &srcB[(i - heightT) * widthB], widthB << 2);
 		}
-		return EEBitmap((unsigned char*)buffer.data(), width, height);
+		return result;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEBitmapDivideHorizontal(EEBitmap& _bitmap, unsigned int _amount, std::vector<EEBitmap>& _bitmaps)
 	{
-		if (!_amount)
+		if (!_amount || _bitmap.IsEmpty())
 			return;
 		_bitmaps.clear();
 
 		unsigned int* src = (unsigned int*)_bitmap.GetData();
+		int width = _bitmap.GetWidth();
 		int height = _bitmap.GetHeight();
-		int divideHeight = height / _amount;
+		int divideHeight = height % _amount ? height / _amount + 1 : height / _amount;
 		for (unsigned int i = 0; i < _amount; ++i)
 		{
 			if (height >= divideHeight)
 			{
 				height -= divideHeight;
-				std::vector<unsigned int> buffer(_bitmap.GetWidth() * divideHeight, (unsigned int)0);
-				memcpy(&buffer[_bitmap.GetWidth() * i * divideHeight], buffer.data(), buffer.size() << 2);
-				_bitmaps.push_back(EEBitmap((unsigned char*)buffer.data(), _bitmap.GetWidth(), divideHeight));
+				_bitmaps.push_back(EEBitmap(width, divideHeight));
+				memcpy(_bitmaps[i].GetData(), &src[width * i * divideHeight], _bitmaps[i].GetDataSize());
 			}
 			else if (height > 0)
 			{
-				std::vector<unsigned int> buffer(_bitmap.GetWidth() * height, (unsigned int)0);
-				memcpy(&buffer[_bitmap.GetWidth() * i * divideHeight], buffer.data(), buffer.size() << 2);
-				_bitmaps.push_back(EEBitmap((unsigned char*)buffer.data(), _bitmap.GetWidth(), height));
+				_bitmaps.push_back(EEBitmap(width, height));
+				memcpy(_bitmaps[i].GetData(), &src[width * i * height], _bitmaps[i].GetDataSize());
 				return;
 			}
 			else
 				return;
 		}
-		
+	}
+
+	void EEBitmapDivideVertical(EEBitmap& _bitmap, unsigned int _amount, std::vector<EEBitmap>& _bitmaps)
+	{
+		if (!_amount || _bitmap.IsEmpty())
+			return;
+		_bitmaps.clear();
+
+		unsigned int* src = (unsigned int*)_bitmap.GetData();
+		int width = _bitmap.GetWidth();
+		int divideWidth = width % _amount ? width / _amount + 1 : width / _amount;
+		int height = _bitmap.GetHeight();
+		for (unsigned int i = 0; i < _amount; ++i)
+		{
+			if (width >= divideWidth)
+			{
+				width -= divideWidth;
+				_bitmaps.push_back(EEBitmap(divideWidth, height));
+				unsigned int *buffer = (unsigned int*)_bitmaps[i].GetData();
+				int srcIndex = i * divideWidth;
+				for (int j = 0; j < height; ++j)
+				{
+					memcpy(&buffer[j * divideWidth], &src[_bitmap.GetWidth() * j + srcIndex], divideWidth << 2);
+				}
+			}
+			else if (width > 0)
+			{
+				_bitmaps.push_back(EEBitmap(width, height));
+				unsigned int *buffer = (unsigned int*)_bitmaps[i].GetData();
+				int srcIndex = i * divideWidth;
+				for (int j = 0; j < height; ++j)
+				{
+					memcpy(&buffer[j * width], &src[_bitmap.GetWidth() * j + srcIndex], width << 2);
+				}
+				break;
+			}
+			else
+				break;
+		}
 	}
 }

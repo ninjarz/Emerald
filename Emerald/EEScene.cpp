@@ -50,7 +50,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScene::Update()
 	{
-		EEQuad2D::Update();
+		if (!EEQuad2D::Update())
+			return false;
+
 		for (UINT i = 0; i < m_objects.size(); ++i)
 		{
 			m_objects[i]->Update();
@@ -62,7 +64,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScene::Render()
 	{
-		EEQuad2D::Render();
+		if (!EEQuad2D::Render())
+			return false;
+
 		for (UINT i = 0; i < m_objects.size(); ++i)
 		{
 			m_objects[i]->Render();

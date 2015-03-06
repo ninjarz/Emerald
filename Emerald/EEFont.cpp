@@ -234,6 +234,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::Update()
 	{
+		if (!EEObject::Update())
+			return false;
+
 		if ((m_isPositionDirty || m_isScaleDirty || m_isLocalZOrderDirty || m_isTextDirty) && m_text.size())
 		{
 			float fontPosX = 0.f;
@@ -312,6 +315,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::Render()
 	{
+		if (!EEObject::Render())
+			return false;
+
 		if (m_text.size())
 		{
 			MapObjectBuffer();

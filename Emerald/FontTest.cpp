@@ -18,9 +18,11 @@ int main(int _argc, char** _argv)
 	EEBitmap bitmap1 = EEGetFontBitmap(L'°¡');
 	EEBitmap bitmap2 = EEGetFontBitmap(L'?');
 	EEBitmap bitmap = EEBitmapCombineHorizontal(bitmap1, bitmap2);
+	std::vector<EEBitmap> bitmaps;
+	EEBitmapDivideVertical(bitmap, 3, bitmaps);
 
-	EETexture fonttex(bitmap.GetData(), bitmap.GetWidth(), bitmap.GetHeight());
-	EEScene mainScene(Rect_Float(0, 0, (float)bitmap.GetWidth(), (float)bitmap.GetHeight()), fonttex);
+	EETexture fonttex(bitmaps[1]);
+	EEScene mainScene(Rect_Float(0, 0, (float)fonttex.GetWidth(), (float)fonttex.GetHeight()), fonttex);
 	mainScene.SetLocalZOrder(10.0f);
 
 

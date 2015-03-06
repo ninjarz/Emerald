@@ -10,6 +10,7 @@
 namespace Emerald
 {
 	bool EEIsBigEndian();
+	void ResumeSpeed();
 }
 
 #endif

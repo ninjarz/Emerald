@@ -19,6 +19,8 @@ int MainScene()
 
 	//order 10, time 0 - +∞
 	EETexture bgTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg");
+	EEBitmap tmpbit;
+	bgTex.GetBitmap(tmpbit);
 	EEScene mainScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
 	mainScene.SetLocalZOrder(10.0f);
 	//EERotateYX(mainScene, 16.0f, 2 * EE_2PI, 1.0f, true);
@@ -427,12 +429,59 @@ int FreePlay()
 	hpSlide.SetLocalZOrder(7.f);
 	freePlay.AddObject(&hpSlide);
 
+	//pause
+	EETexture pauseTex[5] = {
+		L"Texture/Project Diva Freedom/自由模式/Count Down/Pause-CountDown-1.png",
+		L"Texture/Project Diva Freedom/自由模式/Count Down/Pause-CountDown-2.png",
+		L"Texture/Project Diva Freedom/自由模式/Count Down/Pause-CountDown-3.png",
+		L"Texture/Project Diva Freedom/自由模式/Count Down/Pause-CountDown-4.png",
+		L"Texture/Project Diva Freedom/自由模式/Count Down/Pause-CountDown-5.png",
+	};
+	EEQuad2D pauseFrameQuad(Rect_Float((float)EEGetWidth() * 0.040625f, (float)EEGetHeight() * 0.3333f, (float)EEGetWidth() * 0.959375f, (float)EEGetHeight() * 0.5833f), pauseTex[0]);
+	pauseFrameQuad.SetLocalZOrder(8.f);
+	freePlay.AddObject(&pauseFrameQuad);
+	EESlide pauseSlide(Rect_Float((float)EEGetWidth() * 0.28375f, (float)EEGetHeight() * 0.3589f, (float)EEGetWidth() * 0.71625f, (float)EEGetHeight() * 0.5589f), &pauseTex[1], 4);
+	pauseSlide.SetLocalZOrder(7.f);
+	freePlay.AddObject(&pauseSlide);
+
+	//ct
+	EETexture ctTex[8] = {
+		L"Texture/Project Diva Freedom/自由模式/CT/CT(线性减淡).png",
+		L"Texture/Project Diva Freedom/自由模式/CT/CT-START.png",
+		L"Texture/Project Diva Freedom/自由模式/CT/CT-END.png",
+		L"Texture/Project Diva Freedom/自由模式/CT/CT-SUCCESS.png",
+		L"Texture/Project Diva Freedom/自由模式/CT/CT-SUCCESS1.png",
+		L"Texture/Project Diva Freedom/自由模式/CT/CT-NO SUCCESS.png",
+		L"Texture/Project Diva Freedom/自由模式/CT/TinyCT-Picture（线性减淡）.png",
+		L"Texture/Project Diva Freedom/自由模式/CT/TinyCT-Words.png",
+	};
+	EEQuad2D ctFrameQuad(Rect_Float((float)EEGetWidth() * 0.043f, (float)EEGetHeight() * 0.62f, (float)EEGetWidth() * 0.957f, (float)EEGetHeight() * 0.772f), ctTex[0]);
+	ctFrameQuad.SetLocalZOrder(8.f);
+	freePlay.AddObject(&ctFrameQuad);
+	EESlide ctSlide(Rect_Float((float)EEGetWidth() * 0.2619f, (float)EEGetHeight() * 0.661f, (float)EEGetWidth() * 0.7388f, (float)EEGetHeight() * 0.732f), &ctTex[1], 2);
+	ctSlide.SetLocalZOrder(7.f);
+	freePlay.AddObject(&ctSlide);
+	EESlide ctSuccessSlide(Rect_Float((float)EEGetWidth() * 0.29f, (float)EEGetHeight() * 0.424f, (float)EEGetWidth() * 0.71f, (float)EEGetHeight() * 0.576f), &ctTex[3], 2);
+	ctSuccessSlide.SetLocalZOrder(7.f);
+	freePlay.AddObject(&ctSuccessSlide);
+	//EESlide ctUnsuccessSlide(Rect_Float((float)EEGetWidth() * 0.29f, (float)EEGetHeight() * 0.424f, (float)EEGetWidth() * 0.71f, (float)EEGetHeight() * 0.576f), &ctTex[5], 1);
+	//ctUnsuccessSlide.SetLocalZOrder(7.f);
+	//freePlay.AddObject(&ctUnsuccessSlide);
+	EEQuad2D ctTinyFrameQuad(Rect_Float((float)EEGetWidth() * 0.8713f, (float)EEGetHeight() * 0.1011f, (float)EEGetWidth() * 0.9925f, (float)EEGetHeight() * 0.1578f), ctTex[6]);
+	ctTinyFrameQuad.SetLocalZOrder(8.f);
+	freePlay.AddObject(&ctTinyFrameQuad);
+	EEQuad2D ctTinyQuad(Rect_Float((float)EEGetWidth() * 0.88f, (float)EEGetHeight() * 0.1156f, (float)EEGetWidth() * 0.983125f, (float)EEGetHeight() * 0.1422f), ctTex[7]);
+	ctTinyQuad.SetLocalZOrder(7.f);
+	freePlay.AddObject(&ctTinyQuad);
+
+	//exit
 
 
 	while(EERun() && flag == 0)
 	{
 		EEBeginScene(EEColor::WHITE);
 
+		pauseSlide.SetCurrentSlide(EEGetFPS() % 4);
 		hpSlide.SetCurrentSlide(EEGetFPS() % 20);
 		EEProcess(&freePlay);
 
@@ -458,7 +507,7 @@ int main(int _argc, char** _argv)
 	int flag = 0;
 	while (flag == 0)
 	{
-		switch (FreePlay())
+		switch (MainScene())
 		{
 		case 0:
 			flag = 1;

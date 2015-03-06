@@ -39,6 +39,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject::EEObject()
 		:
+		m_isAlive(true),
 		m_parent(NULL),
 		m_position(0.0f),
 		m_isPositionDirty(true),
@@ -62,6 +63,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject::EEObject(const FLOAT3& _position)
 		:
+		m_isAlive(true),
 		m_parent(NULL),
 		m_position(_position),
 		m_isPositionDirty(true),
@@ -85,6 +87,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject::EEObject(const EEObject& _object)
 		:
+		m_isAlive(_object.m_isAlive),
 		m_parent(_object.m_parent),
 		m_position(_object.m_position),
 		m_isPositionDirty(_object.m_isPositionDirty),
@@ -112,9 +115,25 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::Update()
 	{
-		OnUpdate();
+		if (m_isAlive)
+		{
+			OnUpdate();
+			return true;
+		}
 
-		return true;
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::Render()
+	{
+		if (m_isAlive)
+		{
+			OnRender();
+			return true;
+		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -268,6 +287,11 @@ namespace Emerald
 		m_TriggeredFunc = _funcPtr;
 
 		return true;
+	}
+
+	bool EEObject::IsAlive()
+	{
+		return m_isAlive;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -508,6 +532,13 @@ namespace Emerald
 	{
 		if (m_updateFunc)
 			m_updateFunc();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnRender()
+	{
+		if (m_renderFunc)
+			m_renderFunc();
 	}
 
 	//----------------------------------------------------------------------------------------------------

@@ -66,7 +66,7 @@ namespace Emerald
 	{
 	public:
 		EETexture();
-		EETexture(LPCWSTR _file);
+		EETexture(wchar_t* _file);
 		EETexture(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
 		EETexture(EEBitmap& _bitmap);
 		EETexture(ID3D11ShaderResourceView* _texture);
@@ -75,6 +75,10 @@ namespace Emerald
 		
 		bool LoadTextureFromFile(LPCWSTR _file);
 		bool SetTexture(ID3D11ShaderResourceView* _texture);
+
+		int GetWidth();
+		int GetHeight();
+		bool GetBitmap(EEBitmap& _bitmap);
 
 		ID3D11ShaderResourceView* GetTexture();
 

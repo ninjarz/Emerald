@@ -10,5 +10,6 @@
 #include "EEIntBoard.h"
 #include "EESlide.h"
 #include "EEFloatBoard.h"
+#include "EEAnimation2D.h"
 
 #endif

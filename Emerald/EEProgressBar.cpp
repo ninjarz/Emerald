@@ -50,6 +50,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEProgressbar::Update()
 	{
+		if (!EEObject::Update())
+			return false;
+
 		if (m_isPositionDirty)
 		{
 			m_isPositionDirty = false;

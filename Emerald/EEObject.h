@@ -53,7 +53,7 @@ namespace Emerald
 		~EEObject();
 
 		virtual bool Update();
-		virtual bool Render() = NULL;
+		virtual bool Render();
 		virtual bool Process();
 
 		//parent
@@ -85,6 +85,8 @@ namespace Emerald
 		virtual bool SetClickedFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetTriggeredFunc(std::function<void(void)> _funcPtr);
 
+		//life
+		bool IsAlive();
 		//parent
 		virtual EEObject* GetParent();
 		//position
@@ -133,6 +135,7 @@ namespace Emerald
 
 		//OnFunction
 		virtual void OnUpdate();
+		virtual void OnRender();
 		virtual void OnMouseUp(const Point& _pos);
 		virtual void OnMouseOver(const Point& _pos);
 		virtual void OnMouseClicked(const Point& _pos);
@@ -150,6 +153,8 @@ namespace Emerald
 		virtual bool UpdateObjectState();
 
 	protected:
+		//life
+		bool m_isAlive;
 		EEObject *m_parent;
 		FLOAT3 m_position;
 		bool m_isPositionDirty;
@@ -168,6 +173,7 @@ namespace Emerald
 		bool m_isTriggered;
 		//callback function
 		std::function<void(void)> m_updateFunc;
+		std::function<void(void)> m_renderFunc;
 		std::function<void(void)> m_upFunc;
 		std::function<void(void)> m_overFunc;
 		std::function<void(void)> m_clickedFunc;

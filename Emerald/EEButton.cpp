@@ -129,6 +129,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Update()
 	{
+		if (!EEObject::Update())
+			return false;
+
 		UpdateObjectState();
 
 		switch (m_type)
@@ -149,6 +152,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEButton::Render()
 	{
+		if (!EEObject::Render())
+			return false;
+
 		switch (m_type)
 		{
 		case EE_BUTTON_THREE:

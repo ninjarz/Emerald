@@ -1,5 +1,5 @@
 #include "EEFloatBoard.h"
-/*
+
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -43,7 +43,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFloatBoard::Update()
 	{
-		EEQuad2D::Update();
+		if (!EEQuad2D::Update())
+			return false;
 
 		if (m_isRangeDirty)
 		{
@@ -51,7 +52,7 @@ namespace Emerald
 			m_num.resize(m_intRange + m_decimalRange + 1);
 
 			int width = (int)(m_quadWidth / m_num.size()); //the size should not be zero
-			for (int i = 0; i < m_num.size(); ++i)
+			for (unsigned int i = 0; i < m_num.size(); ++i)
 			{
 				m_num[i].SetParent(this);
 				m_num[i].SetLocalZOrder(m_localZOrder); //It is wrong~~
@@ -65,17 +66,25 @@ namespace Emerald
 
 		if (m_isValueDirty)
 		{
-			int value = m_value >= 0 ? m_value : -m_value;
-			for (int i = 0; i < m_range; ++i)
+			float value = m_value >= 0 ? m_value : -m_value;
+			int intValue = (int)value;
+			for (int i = 0; i < m_intRange; ++i)
 			{
-				m_num[i].SetTexture(m_numTexs[value % 10]);
-				value /= 10;
+				m_num[i].SetTexture(m_numTexs[intValue % 10]);
+				intValue /= 10;
+			}
+			m_num[m_intRange].SetTexture(m_numTexs[10]);
+			float decimalValue = value - intValue;
+			for (unsigned int i = m_intRange + 1; i < m_num.size(); ++i)
+			{
+				m_num[i].SetTexture(m_numTexs[intValue % 10]);
+				intValue /= 10;
 			}
 
 			m_isValueDirty = false;
 		}
 
-		for (int i = 0; i < m_range; ++i)
+		for (unsigned int i = 0; i < m_num.size(); ++i)
 		{
 			m_num[i].Update();
 		}
@@ -85,11 +94,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEIntBoard::Render()
+	bool EEFloatBoard::Render()
 	{
-		//EEQuad2D::Render();
+		if (!EEQuad2D::Render())
+			return false;
 
-		for (int i = 0; i < m_range; ++i)
+		for (unsigned int i = 0; i < m_num.size(); ++i)
 		{
 			m_num[i].Render();
 		}
@@ -98,7 +108,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEIntBoard::SetValue(int _value)
+	bool EEFloatBoard::SetValue(float _value)
 	{
 		m_value = _value;
 		m_isValueDirty = true;
@@ -107,26 +117,48 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEIntBoard::SetRange(int _range)
+	bool EEFloatBoard::SetIntRange(int _range)
 	{
-		m_range = _range;
+		m_intRange = _range;
 		m_isRangeDirty = true;
 
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	int EEIntBoard::GetValue()
+	bool EEFloatBoard::SetDecimalRange(int _range)
+	{
+		m_decimalRange = _range;
+		m_isRangeDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFloatBoard::SetRange(int _intRange, int _decimalRange)
+	{
+		m_intRange = _intRange;
+		m_decimalRange = _decimalRange;
+		m_isRangeDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEFloatBoard::GetValue()
 	{
 		return m_value;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	int EEIntBoard::GetRange()
+	int EEFloatBoard::GetIntRange()
 	{
-		return m_range;
+		return m_intRange;
 	}
 
-
+	//----------------------------------------------------------------------------------------------------
+	int EEFloatBoard::GetDecimalRange()
+	{
+		return m_decimalRange;
+	}
 }
-*/

@@ -276,6 +276,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEQuad2D::Update()
 	{
+		if (!EEObject::Update())
+			return false;
+
 		UpdateObjectState();
 
 		if (m_isPositionDirty)
@@ -321,6 +324,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEQuad2D::Render()
 	{
+		if (!EEObject::Render())
+			return false;
+
 		MapObjectBuffer();
 		MapQuad2DBuffer();
 

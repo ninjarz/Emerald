@@ -61,6 +61,9 @@
     <Filter Include="源文件\Emerald\EEFont">
       <UniqueIdentifier>{3af591e6-f252-4605-a06e-562cffd690e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\Effect">
+      <UniqueIdentifier>{46afe6ed-3887-4d20-8bb5-b90081e6426a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -216,6 +219,12 @@
     <ClCompile Include="EESlide.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
+    <ClCompile Include="EEFloatBoard.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEAnimation2D.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -336,6 +345,9 @@
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
     <ClInclude Include="EEProgressbar.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEAnimation2D.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
