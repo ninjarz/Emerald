@@ -18,7 +18,7 @@ namespace Emerald
 	public:
 		EEUDP(char* _addr, u_short _port);
 		EEUDP(const EEUDP& _server);
-		~EEUDP();
+		virtual ~EEUDP();
 
 	protected:
 	};
@@ -30,7 +30,7 @@ namespace Emerald
 	public:
 		EEUDPServer(char* _addr, u_short _port);
 		EEUDPServer(const EEUDPServer& _server);
-		~EEUDPServer();
+		virtual ~EEUDPServer();
 
 		bool Send(sockaddr_storage* _addr, const std::string _data);
 		bool Send(sockaddr_in* _addr, const std::string _data);
@@ -47,7 +47,7 @@ namespace Emerald
 	public:
 		EEUDPClient(char* _addr, u_short _port);
 		EEUDPClient(const EEUDPClient& _client);
-		~EEUDPClient();
+		virtual ~EEUDPClient();
 
 		bool Send(const std::string& _data);
 		bool Recv(std::string& _data);

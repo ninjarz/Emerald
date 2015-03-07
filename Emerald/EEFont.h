@@ -53,7 +53,7 @@ namespace Emerald
 	public:
 		EEFont(const FLOAT3& _position, const EEColor& _color, char* _text);
 		EEFont(const EEFont& _font);
-		~EEFont();
+		virtual ~EEFont();
 
 		virtual bool Update();
 		virtual bool Render();

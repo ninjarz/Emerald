@@ -14,7 +14,7 @@ namespace Emerald
 	public:
 		EEFloatBoard(const Rect_Float& _boardRect, int _intRange, int _decimalRange, EETexture* _textures);
 		EEFloatBoard(const EEFloatBoard& _floatBoard);
-		~EEFloatBoard();
+		virtual ~EEFloatBoard();
 
 		bool Update();
 		bool Render();

@@ -31,12 +31,6 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEShaderState::~EEShaderState()
-	{
-		Shutdown();
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	bool EEShaderState::Initialize()
 	{
 		ID3D11Device *device = EECore::s_EECore->GetDevice();

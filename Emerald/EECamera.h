@@ -47,7 +47,7 @@ namespace Emerald
 		EECamera();
 		EECamera(const EECameraDesc& _desc);
 		EECamera(const EECamera& _camera);
-		~EECamera();
+		virtual ~EECamera();
 
 		void MoveLook(float _dist);
 		void MoveRight(float _dist);
@@ -117,7 +117,7 @@ namespace Emerald
 	public:
 		EECameraSystem();
 		EECameraSystem(const EECameraSystem& _system);
-		~EECameraSystem();
+		inline virtual ~EECameraSystem() { Shutdown(); }
 
 		bool Initialize();
 		void Shutdown();
@@ -143,7 +143,7 @@ namespace Emerald
 		//2D
 		MATRIX m_orthoLHMatrix;
 		//3D
-		std::map<EEHCamera, EECamera*> m_cameras;
+		std::map<EEHCamera, EECamera> m_cameras;
 		EEHCamera m_currCamera;
 	};
 

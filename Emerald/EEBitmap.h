@@ -19,7 +19,7 @@ namespace Emerald
 		EEBitmap(unsigned int _width, unsigned int _height);
 		EEBitmap(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
 		EEBitmap(const EEBitmap& _bitmap);
-		~EEBitmap();
+		virtual ~EEBitmap();
 
 		unsigned char* GetData();
 		int GetDataSize();

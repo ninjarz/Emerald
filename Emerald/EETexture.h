@@ -45,7 +45,7 @@ namespace Emerald
 				height = texture2DDesc.Height;
 			}
 		}
-		~EETextureData()
+		virtual ~EETextureData()
 		{
 			if (texture)
 			{
@@ -71,7 +71,7 @@ namespace Emerald
 		EETexture(EEBitmap& _bitmap);
 		EETexture(ID3D11ShaderResourceView* _texture);
 		EETexture(const EETexture& _texture);
-		~EETexture();
+		virtual ~EETexture();
 		
 		bool LoadTextureFromFile(LPCWSTR _file);
 		bool SetTexture(ID3D11ShaderResourceView* _texture);

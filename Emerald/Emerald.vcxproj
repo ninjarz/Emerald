@@ -93,6 +93,7 @@
     <ClCompile Include="EEHelper.cpp" />
     <ClCompile Include="EEIntBoard.cpp" />
     <ClCompile Include="EELineEditer.cpp" />
+    <ClCompile Include="EEMemoryLeak.cpp" />
     <ClCompile Include="EEMusic.cpp" />
     <ClCompile Include="EEParticle.cpp" />
     <ClCompile Include="EEProgressBar.cpp" />
@@ -148,11 +149,13 @@
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEIntBoard.h" />
     <ClInclude Include="EELineEditer.h" />
+    <ClInclude Include="EEMemoryLeak.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEParticle.h" />
     <ClInclude Include="EEProgressbar.h" />
     <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
+    <ClInclude Include="EERipple.h" />
     <ClInclude Include="EEScene.h" />
     <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />

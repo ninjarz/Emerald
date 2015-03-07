@@ -19,7 +19,7 @@ namespace Emerald
 		EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor);
 		EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor);
 		EELineEditer(const EELineEditer& _lineEditer);
-		~EELineEditer();
+		virtual ~EELineEditer();
 
 		bool Update();
 		bool Render();

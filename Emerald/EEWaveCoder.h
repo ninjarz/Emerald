@@ -16,7 +16,7 @@ namespace Emerald
 
 	public:
 		EEWaveCoder();
-		~EEWaveCoder();
+		virtual ~EEWaveCoder();
 
 		static bool WaveEncode(char *_dataIn, int _inLen, char *_dataOut, int *_outLen);
 		static bool WaveDecode(char *_dataIn, int _inLen, char *_dataOut, int *_outLen);

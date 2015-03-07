@@ -61,7 +61,7 @@
     <Filter Include="源文件\Emerald\EEFont">
       <UniqueIdentifier>{3af591e6-f252-4605-a06e-562cffd690e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Emerald\Effect">
+    <Filter Include="头文件\Emerald\EEEffect">
       <UniqueIdentifier>{46afe6ed-3887-4d20-8bb5-b90081e6426a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -225,6 +225,9 @@
     <ClCompile Include="EEAnimation2D.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
+    <ClCompile Include="EEMemoryLeak.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -349,6 +352,12 @@
     </ClInclude>
     <ClInclude Include="EEAnimation2D.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EERipple.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="EEMemoryLeak.h">
+      <Filter>头文件\Emerald</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

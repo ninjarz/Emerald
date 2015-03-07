@@ -27,7 +27,7 @@ namespace Emerald
 			//std::cout << *m_counter << std::endl;
 			++*m_counter;
 		}
-		~EESmartPtr()
+		virtual ~EESmartPtr()
 		{
 			DecCounter();
 		}

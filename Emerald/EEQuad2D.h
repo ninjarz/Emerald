@@ -50,7 +50,7 @@ namespace Emerald
 		EEQuad2D(const Rect_Float& _rect, const EETexture& _tex);
 		EEQuad2D(const Rect_Float& _rect, ID3D11ShaderResourceView* _tex);
 		EEQuad2D(const EEQuad2D& _quad);
-		~EEQuad2D();
+		virtual ~EEQuad2D();
 
 		virtual bool Update();
 		virtual bool Render();

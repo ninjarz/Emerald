@@ -25,8 +25,9 @@ namespace Emerald
 		{
 		}
 
-		inline ~EEInput()
+		inline virtual ~EEInput()
 		{
+			Shutdown();
 		}
 
 		bool Initialize();

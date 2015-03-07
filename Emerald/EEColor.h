@@ -29,7 +29,7 @@ namespace Emerald
 		EEColor(FLOAT _red, FLOAT _green, FLOAT _yellow, FLOAT _alpha);
 		EEColor(const FLOAT4& _color);
 		EEColor(const EEColor& _color);
-		~EEColor();
+		virtual ~EEColor();
 
 		bool SetColor(const FLOAT4& _color);
 

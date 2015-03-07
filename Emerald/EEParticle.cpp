@@ -126,7 +126,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEParticleEmitter::~EEParticleEmitter()
 	{
-
+		for (EEParticle* paticle : m_particles)
+			SAFE_DELETE(paticle);
+		m_particles.clear();
 	}
 
 	//----------------------------------------------------------------------------------------------------

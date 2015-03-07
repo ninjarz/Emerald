@@ -40,7 +40,33 @@ namespace Emerald
 
 		inline EEParticleInfo& operator= (const EEParticleInfo& _info)
 		{
-			memcpy(this, &_info, sizeof(EEParticleInfo));
+			// do not use memcpy!!!
+			//memcpy(this, &_info, sizeof(EEParticleInfo));
+
+			//amount
+			amount = _info.amount;
+			//life
+			durationTime = _info.durationTime;
+			deltaDurationTime = _info.deltaDurationTime;
+			//position
+			position = _info.position;
+			deltaPosition = _info.deltaPosition;
+			width = _info.width;
+			height = _info.height;
+			direction = _info.direction;
+			deltaDirection = _info.deltaDirection;
+			//color
+			beginColor = _info.beginColor;
+			deltaBeginColor = _info.deltaBeginColor;
+			endColor = _info.endColor;
+			deltaEndColor = _info.deltaEndColor;
+			//scale
+			beginScale = _info.beginScale;
+			deltaBeginScale = _info.deltaBeginScale;
+			endScale = _info.endScale;
+			deltaEndScale = _info.deltaEndScale;
+			//texture
+			texture = _info.texture;
 		}
 	};
 
@@ -49,6 +75,8 @@ namespace Emerald
 	class EEParticle
 	{
 	public:
+		inline virtual ~EEParticle() {};
+
 		virtual bool Update() = NULL;
 		virtual bool Render() = NULL;
 		virtual void LoadDate(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture) = NULL;
@@ -63,7 +91,7 @@ namespace Emerald
 	public:
 		EEParticle2D(FLOAT _durationTime, const FLOAT3& _position, FLOAT _width, FLOAT _height, const FLOAT3& _positionSpeed, const EEColor& _color, const EEColor& _colorSpeed, FLOAT _scale, FLOAT _scaleSpeed, const EETexture& _texture);
 		EEParticle2D(const EEParticle2D& _particle);
-		~EEParticle2D();
+		virtual ~EEParticle2D();
 
 		virtual bool Update();
 		virtual bool Render();
@@ -88,7 +116,7 @@ namespace Emerald
 	public:
 		EEParticleEmitter(const EEParticleInfo& _info);
 		EEParticleEmitter(const EEParticleEmitter& _emitter);
-		~EEParticleEmitter();
+		virtual ~EEParticleEmitter();
 
 		virtual bool Update();
 		virtual bool Render();

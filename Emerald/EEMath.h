@@ -1039,7 +1039,7 @@ namespace Emerald
 	public:
 		inline Rect_Int() : x(0), y(0), z(0), w(0) {}
 		inline Rect_Int(int _x, int _y, int _z, int _w) : x(_x), y(_y), z(_z), w(_w) {}
-		inline ~Rect_Int() {}
+		inline virtual ~Rect_Int() {}
 
 		inline Rect_Int& operator= (const Rect_Int& _rect)
 		{
@@ -1059,7 +1059,7 @@ namespace Emerald
 	public:
 		inline Rect_Float() : x(0), y(0), z(0), w(0) {}
 		inline Rect_Float(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
-		inline ~Rect_Float() {}
+		inline virtual ~Rect_Float() {}
 
 		inline Rect_Float& operator= (const Rect_Float& _rect)
 		{

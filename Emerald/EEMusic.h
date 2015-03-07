@@ -55,7 +55,7 @@ namespace Emerald
 		EEMusic(const WAVEFORMATEX& _format);
 		EEMusic(const char* _fileName);
 		EEMusic(const EEMusic& _music);
-		~EEMusic();
+		virtual ~EEMusic();
 
 		bool Open(const char* _fileName);
 		bool Play(float _begin = 0.0f);

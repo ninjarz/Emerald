@@ -71,11 +71,13 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EECore::Shutdown()
 	{
-		if (m_EEThreadSystem)
-		{
-			m_EEThreadSystem->Shutdown();
-			SAFE_DELETE(m_EEThreadSystem);
-		}
+		SAFE_DELETE(m_EEShaderState);
+		SAFE_DELETE(m_EECameraSystem);
+		SAFE_DELETE(m_EED3D);
+		SAFE_DELETE(m_EETimer);
+		SAFE_DELETE(m_EEInput);
+		SAFE_DELETE(m_EESystem);
+		SAFE_DELETE(m_EEThreadSystem);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -213,11 +215,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEShutdown()
 	{
-		if (EECore::s_EECore)
-		{
-			EECore::s_EECore->Shutdown();
-			SAFE_DELETE(EECore::s_EECore);
-		}
+		SAFE_DELETE(EECore::s_EECore);
 	}
 
 	//----------------------------------------------------------------------------------------------------

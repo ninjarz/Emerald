@@ -16,7 +16,7 @@ namespace Emerald
 	public:
 		EEThreadSystem();
 		EEThreadSystem(const EEThreadSystem& _system);
-		~EEThreadSystem();
+		inline virtual ~EEThreadSystem() { Shutdown(); }
 
 		bool Initialize();
 		void Shutdown();

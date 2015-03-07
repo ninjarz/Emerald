@@ -8,7 +8,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EESystem::Initialize(LPCWSTR _applicationName, bool _isFullScreen, int _width, int _height)
 	{
-		m_applicationName = new WCHAR[sizeof(_applicationName)];
+		m_applicationName = new WCHAR[wcslen(_applicationName) + 1];
 		memcpy((void*)m_applicationName, _applicationName, wcslen(_applicationName) * sizeof(WCHAR) + sizeof(WCHAR));
 		m_isFullScreen = _isFullScreen;
 		m_width = _width;
@@ -23,6 +23,7 @@ namespace Emerald
 	void EESystem::Shutdown()
 	{
 		ShutdownWindows();
+		SAFE_DELETE_ARRAY(m_applicationName);
 	}
 
 	//----------------------------------------------------------------------------------------------------

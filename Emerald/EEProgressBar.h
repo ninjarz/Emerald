@@ -16,7 +16,7 @@ namespace Emerald
 		EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(void)> _funcPtr = []{});
 		EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(void)> _funcPtr = []{});
 		EEProgressbar(const EEProgressbar& _progressbar);
-		~EEProgressbar();
+		virtual ~EEProgressbar();
 
 		bool Update();
 		bool Render();

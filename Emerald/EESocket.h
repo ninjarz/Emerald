@@ -27,7 +27,7 @@ namespace Emerald
 		EESocket(SOCKET _socket, const sockaddr_storage& _addr);
 		EESocket(SOCKET _socket, const sockaddr_in& _addr);
 		EESocket(const EESocket& _socket);
-		~EESocket();
+		virtual ~EESocket();
 		
 		SOCKET GetSocket();
 

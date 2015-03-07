@@ -35,7 +35,7 @@ namespace Emerald
 	public:
 		EERecorder();
 		EERecorder(DWORD_PTR _callBack);
-		~EERecorder();
+		virtual ~EERecorder();
 
 		void Start();
 

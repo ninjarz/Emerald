@@ -18,7 +18,7 @@ namespace Emerald
 	public:
 		EETCP(char* _addr , u_short _port);
 		EETCP(const EETCP& _server);
-		~EETCP();
+		virtual ~EETCP();
 
 	protected:
 	};
@@ -30,7 +30,7 @@ namespace Emerald
 	public:
 		EETCPServer(char* _addr, u_short _port);
 		EETCPServer(const EETCPServer& _server);
-		~EETCPServer();
+		virtual ~EETCPServer();
 
 		virtual bool Process();
 		SOCKET Accept();
@@ -51,7 +51,7 @@ namespace Emerald
 	public:
 		EETCPClient(char* _addr, u_short _port);
 		EETCPClient(const EETCPClient& _client);
-		~EETCPClient();
+		virtual ~EETCPClient();
 
 		bool Send(const std::string& _data);
 		bool Recv(std::string& _data);

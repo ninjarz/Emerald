@@ -25,7 +25,7 @@ namespace Emerald
 		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, std::function<void(void)> _funcPtr = []{});
 		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, ID3D11ShaderResourceView* _tex, std::function<void(void)> _funcPtr = []{});
 		EEButton(const EEButton& _button);
-		~EEButton();
+		virtual ~EEButton();
 
 		bool Update();
 		bool Render();

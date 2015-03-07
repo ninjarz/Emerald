@@ -15,7 +15,7 @@ namespace Emerald
 	public:
 		EED3D();
 		EED3D(const EED3D&);
-		~EED3D();
+		inline virtual ~EED3D() { Shutdown(); }
 
 		bool Initialize(bool _isSSAA, bool _isVsync);
 		void Shutdown();

@@ -21,8 +21,9 @@ namespace Emerald
 		{
 		}
 
-		~EETimer()
+		virtual ~EETimer()
 		{
+			Shutdown();
 		}
 
 		bool Initialize();

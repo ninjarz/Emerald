@@ -54,8 +54,9 @@ namespace Emerald
 		{
 		}
 
-		inline ~EECore()
+		inline virtual ~EECore()
 		{
+			Shutdown();
 		}
 
 		bool Initialize_All(const EEDesc& _EEDesc);

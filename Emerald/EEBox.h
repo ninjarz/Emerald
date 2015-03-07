@@ -47,7 +47,7 @@ namespace Emerald
 		EEBox(const FLOAT3& _pos, FLOAT _width, FLOAT _height, FLOAT _depth);
 		EEBox(const FLOAT3& _pos, FLOAT _width, FLOAT _height, FLOAT _depth, const EETexture& _tex);
 		EEBox(const EEBox& _box);
-		~EEBox();
+		virtual ~EEBox();
 
 		virtual bool Update();
 		virtual bool Render();

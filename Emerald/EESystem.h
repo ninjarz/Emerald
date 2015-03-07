@@ -22,8 +22,9 @@ namespace Emerald
 		{
 		}
 
-		inline ~EESystem()
+		inline virtual ~EESystem()
 		{
+			Shutdown();
 		}
 
 		bool Initialize(LPCWSTR _applicationName, bool _isFullScreen, int _width, int _height);

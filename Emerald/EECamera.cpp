@@ -54,6 +54,22 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	EECamera::EECamera(const EECamera& _camera)
+		:
+		m_handle(_camera.m_handle),
+		m_position(_camera.m_position),
+		m_right(_camera.m_right),
+		m_up(_camera.m_up),
+		m_look(_camera.m_look),
+		m_distance(_camera.m_distance),
+		m_lookAt(_camera.m_distance),
+		m_isViewDirty(_camera.m_isViewDirty),
+		m_viewMatrix(_camera.m_viewMatrix),
+		m_fovY(_camera.m_fovY),
+		m_aspectRatio(_camera.m_aspectRatio),
+		m_nearZ(_camera.m_nearZ),
+		m_farZ(_camera.m_farZ),
+		m_isLensDirty(_camera.m_isLensDirty),
+		m_projectionMatrix(_camera.m_projectionMatrix)
 	{
 
 	}
@@ -307,11 +323,6 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EECameraSystem::~EECameraSystem()
-	{
-
-	}
-	//----------------------------------------------------------------------------------------------------
 
 	bool EECameraSystem::Initialize()
 	{
@@ -337,48 +348,48 @@ namespace Emerald
 		{
 			if (EECore::s_EECore->IsKeyDown('A'))
 			{
-				m_cameras[m_currCamera]->MoveLook_XZ(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
-				m_cameras[m_currCamera]->MoveRight(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveLook_XZ(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveRight(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
 			}
 			else if (EECore::s_EECore->IsKeyDown('D'))
 			{
-				m_cameras[m_currCamera]->MoveLook_XZ(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
-				m_cameras[m_currCamera]->MoveRight(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveLook_XZ(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveRight(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
 			}
 			else
-				m_cameras[m_currCamera]->MoveLook_XZ(speed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveLook_XZ(speed * (float)EECore::s_EECore->GetDeltaTime());
 		}
 		else if (EECore::s_EECore->IsKeyDown('S'))
 		{
 			if (EECore::s_EECore->IsKeyDown('A'))
 			{
-				m_cameras[m_currCamera]->MoveLook_XZ(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
-				m_cameras[m_currCamera]->MoveRight(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveLook_XZ(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveRight(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
 			}
 			else if (EECore::s_EECore->IsKeyDown('D'))
 			{
-				m_cameras[m_currCamera]->MoveLook_XZ(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
-				m_cameras[m_currCamera]->MoveRight(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveLook_XZ(-inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveRight(inclineSpeed * (float)EECore::s_EECore->GetDeltaTime());
 			}
 			else
-				m_cameras[m_currCamera]->MoveLook_XZ(-speed * (float)EECore::s_EECore->GetDeltaTime());
+				m_cameras[m_currCamera].MoveLook_XZ(-speed * (float)EECore::s_EECore->GetDeltaTime());
 		}
 		else if (EECore::s_EECore->IsKeyDown('A'))
 		{
-			m_cameras[m_currCamera]->MoveRight(-speed * (float)EECore::s_EECore->GetDeltaTime());
+			m_cameras[m_currCamera].MoveRight(-speed * (float)EECore::s_EECore->GetDeltaTime());
 		}
 		else if (EECore::s_EECore->IsKeyDown('D'))
 		{
-			m_cameras[m_currCamera]->MoveRight(speed * (float)EECore::s_EECore->GetDeltaTime());
+			m_cameras[m_currCamera].MoveRight(speed * (float)EECore::s_EECore->GetDeltaTime());
 		}
 
 		if (EECore::s_EECore->IsKeyDown(VK_SPACE))
 		{
-			m_cameras[m_currCamera]->MoveY(speed * (float)EECore::s_EECore->GetDeltaTime());
+			m_cameras[m_currCamera].MoveY(speed * (float)EECore::s_EECore->GetDeltaTime());
 		}
 		else if (EECore::s_EECore->IsKeyDown('C'))
 		{
-			m_cameras[m_currCamera]->MoveY(-speed * (float)EECore::s_EECore->GetDeltaTime());
+			m_cameras[m_currCamera].MoveY(-speed * (float)EECore::s_EECore->GetDeltaTime());
 		}
 
 		switch (_mode)
@@ -386,17 +397,17 @@ namespace Emerald
 		case EE_CAMERA_FIRST:
 			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 			{
-				m_cameras[m_currCamera]->RotateY(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaX()));
-				m_cameras[m_currCamera]->RotateRight(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaY()));
+				m_cameras[m_currCamera].RotateY(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaX()));
+				m_cameras[m_currCamera].RotateRight(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaY()));
 			}
 			break;
 		case EE_CAMERA_THIRD:
 			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 			{
 				//m_cameras[m_currCamera]->SetPosition();
-				m_cameras[m_currCamera]->RotateY(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaX()));
-				m_cameras[m_currCamera]->RotateRight(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaY()));
-				m_cameras[m_currCamera]->RotateRight(EEDegreesToRadians((float)EECore::s_EECore->GetMouseDeltaM()) / 120 * 8);
+				m_cameras[m_currCamera].RotateY(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaX()));
+				m_cameras[m_currCamera].RotateRight(EEDegreesToRadians(0.2f * (float)EECore::s_EECore->GetMouseDeltaY()));
+				m_cameras[m_currCamera].RotateRight(EEDegreesToRadians((float)EECore::s_EECore->GetMouseDeltaM()) / 120 * 8);
 			}
 			break;
 
@@ -410,7 +421,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EECameraSystem::MapCameraBuffer()
 	{
-		if (m_isBufferDirty || m_cameras[m_currCamera]->IsViewDirty() || m_cameras[m_currCamera]->IsLensDirty())
+		if (m_isBufferDirty || m_cameras[m_currCamera].IsViewDirty() || m_cameras[m_currCamera].IsLensDirty())
 		{
 			HRESULT result;
 			ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
@@ -421,8 +432,8 @@ namespace Emerald
 				return false;
 			cameraBufferDesc = (EECameraBufferDesc*)mappedResource.pData;
 			cameraBufferDesc->orthoLHMatrix = m_orthoLHMatrix;
-			cameraBufferDesc->perspectiveFovLHMatrix = m_cameras[m_currCamera]->GetProjectionMatrix();
-			cameraBufferDesc->viewMatrix = m_cameras[m_currCamera]->GetViewMatrix();
+			cameraBufferDesc->perspectiveFovLHMatrix = m_cameras[m_currCamera].GetProjectionMatrix();
+			cameraBufferDesc->viewMatrix = m_cameras[m_currCamera].GetViewMatrix();
 
 			deviceContext->VSSetConstantBuffers(1, 1, &m_cameraBuffer);
 
@@ -435,9 +446,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEHCamera EECameraSystem::CreateCamera(const EECameraDesc& _desc)
 	{
-		EECamera *camera = new EECamera(_desc);
-		m_cameras.insert(std::pair<EEHCamera, EECamera*>(camera->GetHCamera(), camera));
-		return camera->GetHCamera();
+		EECamera camera(_desc);
+		m_cameras.insert(std::pair<EEHCamera, EECamera>(camera.GetHCamera(), camera));
+		return camera.GetHCamera();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -459,9 +470,9 @@ namespace Emerald
 		desc.up = FLOAT3(0.0f, 1.0f, 0.0f);
 		desc.look = FLOAT3(0.0f, 0.0f, 1.0f);
 		desc.distance = 1.0f;
-		EECamera *camera = new EECamera(desc);
-		m_cameras.insert(std::pair<EEHCamera, EECamera*>(camera->GetHCamera(), camera));
-		m_currCamera = camera->GetHCamera();
+		EECamera camera(desc);
+		m_cameras.insert(std::pair<EEHCamera, EECamera>(camera.GetHCamera(), camera));
+		m_currCamera = camera.GetHCamera();
 
 		m_isBufferDirty = true;
 	}
@@ -489,13 +500,13 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	const MATRIX& EECameraSystem::GetViewMatrix()
 	{
-		return m_cameras[m_currCamera]->GetViewMatrix();
+		return m_cameras[m_currCamera].GetViewMatrix();
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	const MATRIX& EECameraSystem::GetProjectionMatrix()
 	{
-		return m_cameras[m_currCamera]->GetProjectionMatrix();
+		return m_cameras[m_currCamera].GetProjectionMatrix();
 	}
 
 	//----------------------------------------------------------------------------------------------------

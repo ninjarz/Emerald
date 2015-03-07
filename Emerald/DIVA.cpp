@@ -2,6 +2,9 @@
 #include "DIVAHelper.h"
 #if _DIVA_
 #include "Emerald.h"
+#define _EE_MEMORYLEAK_ON_
+#include "EEMemoryLeak.h"
+
 
 int MainScene();
 int FreeMode();
@@ -495,6 +498,7 @@ int FreePlay()
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(int _argc, char** _argv)
 {
+	//_CrtSetBreakAlloc(336);
 	EEDesc desc;
 	desc.applicationName = L"Emerald";	//窗口名称
 	desc.isFullScreen = false;			//是否全屏

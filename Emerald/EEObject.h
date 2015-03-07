@@ -50,7 +50,7 @@ namespace Emerald
 		EEObject();
 		EEObject(const FLOAT3& _position);
 		EEObject(const EEObject& _object);
-		~EEObject();
+		virtual ~EEObject();
 
 		virtual bool Update();
 		virtual bool Render();

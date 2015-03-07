@@ -18,7 +18,7 @@ namespace Emerald
 		EEScene(const Rect_Float &_rect, const EETexture& _tex);
 		EEScene(const Rect_Float &_rect, ID3D11ShaderResourceView *_tex);
 		EEScene(const EEScene &_scene);
-		~EEScene();
+		virtual ~EEScene();
 
 		bool Update();
 		bool Render();

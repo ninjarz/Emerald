@@ -14,7 +14,7 @@ namespace Emerald
 	public:
 		EEShaderState();
 		EEShaderState(const EEShaderState& _shaderState);
-		~EEShaderState();
+		inline virtual ~EEShaderState() { Shutdown(); }
 
 		bool Initialize();
 		void Shutdown();

@@ -33,11 +33,6 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EED3D::~EED3D()
-	{
-
-	}
-
 	bool EED3D::Initialize(bool _isSSAA, bool _isVsync)
 	{
 		m_isSSAA = _isSSAA;
