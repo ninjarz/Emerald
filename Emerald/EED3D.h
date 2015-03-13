@@ -31,15 +31,15 @@ namespace Emerald
 		bool SetIsSSAA(bool _para);
 		bool SetIsVsync(bool _para);
 
-		ID3D11Device* GetDevice() const;
-		ID3D11DeviceContext* GetDeviceContext() const;
+		ID3D11Device* GetDevice();
+		ID3D11DeviceContext* GetDeviceContext();
 		float GetScreenNear() const;
 		float GetScreenDeep() const;
 		bool GetIsSSAA() const;
 		bool GetIsVsync() const;
 		void GetVideoCardInfo(char*, int&);
-		ID3D11RenderTargetView* GetRenderTargetView() const;
-		ID3D11DepthStencilView* GetDepthStencilView() const;
+		ID3D11RenderTargetView* GetRenderTargetView();
+		ID3D11DepthStencilView* GetDepthStencilView();
 
 	protected:
 		ID3D11Device *m_device;

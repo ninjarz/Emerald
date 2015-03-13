@@ -172,12 +172,15 @@ namespace Emerald
 	bool EECore::SetIsSSAA(bool _para) { m_EED3D->SetIsSSAA(_para); return true; }
 	bool EECore::SetIsVsync(bool _para) { m_EED3D->SetIsVsync(_para); return true; }
 
-	ID3D11Device* EECore::GetDevice() const { return m_EED3D->GetDevice(); }
-	ID3D11DeviceContext* EECore::GetDeviceContext() const { return m_EED3D->GetDeviceContext(); }
+	ID3D11Device* EECore::GetDevice() { return m_EED3D->GetDevice(); }
+	ID3D11DeviceContext* EECore::GetDeviceContext() { return m_EED3D->GetDeviceContext(); }
 	float EECore::GetScreenNear() const { return m_EED3D->GetScreenNear(); }
 	float EECore::GetScreenDeep() const { return m_EED3D->GetScreenDeep(); }
 	bool EECore::GetIsSSAA() const { return m_EED3D->GetIsSSAA(); }
 	bool EECore::GetIsVsync() const { return m_EED3D->GetIsVsync(); }
+	void EECore::GetVideoCardInfo(char* _cardName, int& _memory) { m_EED3D->GetVideoCardInfo(_cardName, _memory); }
+	ID3D11RenderTargetView* EECore::GetRenderTargetView() { return m_EED3D->GetRenderTargetView(); }
+	ID3D11DepthStencilView* EECore::GetDepthStencilView() { return m_EED3D->GetDepthStencilView(); }
 
 	//EECore_CameraSystem
 	//----------------------------------------------------------------------------------------------------

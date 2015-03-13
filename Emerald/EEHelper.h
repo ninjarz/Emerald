@@ -31,3 +31,19 @@ namespace Emerald
 //0000 0001(2) = 1/255.0f
 //1111 1111(2) = 1.0f
 //...
+
+//Shader
+//----------------------------------------------------------------------------------------------------
+//texture, Texture1D, Texture1DArray, Texture2D, Texture2DArray, Texture3D, TextureCube. The element size must fit into 4 32-bit quantities.
+
+//Compute Shader
+//----------------------------------------------------------------------------------------------------
+//SV_GroupIndex, SV_DispatchThreadID, SV_GroupThreadID, SV_GroupID
+//Dispatch(x, y, z)
+//numthreads(a, b, c) ; In cs_5_0, the max of c is 64 and the max of a * b * c is 1024
+//SV_GroupID : Refer to Dispatch box[x'][y'][z']
+//SV_GroupThreadID : Inside the SV_GroupID, refer to Group box[a'][b'][c']
+//SV_GroupIndex : Inside the SV_GroupID, Refer to a' + b' * a + c' * b * a
+//SV_DispatchThreadID : Global index, Refer to SV_GroupID * numthreads + SV_GroupThreadID
+//
+//NOTE, out of bound reads always return 0 in CS

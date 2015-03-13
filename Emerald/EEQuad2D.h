@@ -37,7 +37,7 @@ namespace Emerald
 		static bool s_isQuad2DInitialized;
 		static ID3D11InputLayout *s_quadIL;
 		static ID3D11VertexShader *s_quadVS;
-		static ID3D11PixelShader  *s_quadPS;
+		static ID3D11PixelShader *s_quadPS;
 		static ID3D11Buffer *s_quad2DBuffer;
 
 	public:

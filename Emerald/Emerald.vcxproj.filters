@@ -64,6 +64,12 @@
     <Filter Include="头文件\Emerald\EEEffect">
       <UniqueIdentifier>{46afe6ed-3887-4d20-8bb5-b90081e6426a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Emerald\EEEffect">
+      <UniqueIdentifier>{6cad0488-1226-4d80-b214-900f58fbbf12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EERippleShader">
+      <UniqueIdentifier>{7946b3a7-28c9-49f4-8480-cf944e706294}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -228,6 +234,15 @@
     <ClCompile Include="EEMemoryLeak.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
+    <ClCompile Include="EEEffect.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="EERipple.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Ripple.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -359,6 +374,9 @@
     <ClInclude Include="EEMemoryLeak.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
+    <ClInclude Include="EEEffect.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -378,6 +396,18 @@
     </None>
     <None Include="EEWaveCoder.cpp">
       <Filter>源文件\Emerald</Filter>
+    </None>
+    <None Include="EEShader\EEShaderHelper.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EERippleShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EERippleShader</Filter>
+    </None>
+    <None Include="EEShader\EERippleDisturb.hlsl">
+      <Filter>头文件\Emerald\EEShader\EERippleShader</Filter>
+    </None>
+    <None Include="EEShader\EERippleSpread.hlsl">
+      <Filter>头文件\Emerald\EEShader\EERippleShader</Filter>
     </None>
   </ItemGroup>
 </Project>

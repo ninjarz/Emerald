@@ -86,6 +86,7 @@
     <ClCompile Include="EEColor.cpp" />
     <ClCompile Include="EECore.cpp" />
     <ClCompile Include="EED3D.cpp" />
+    <ClCompile Include="EEEffect.cpp" />
     <ClCompile Include="EEFloatBoard.cpp" />
     <ClCompile Include="EEFont.cpp" />
     <ClCompile Include="EEGeometry.cpp" />
@@ -99,6 +100,7 @@
     <ClCompile Include="EEProgressBar.cpp" />
     <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
+    <ClCompile Include="EERipple.cpp" />
     <ClCompile Include="EEScene.cpp" />
     <ClCompile Include="EESlide.cpp" />
     <ClCompile Include="EESmartPtr.cpp" />
@@ -117,6 +119,7 @@
     <ClCompile Include="EEUDP.cpp" />
     <ClCompile Include="FontTest.cpp" />
     <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="Ripple.cpp" />
     <ClCompile Include="Thread.cpp" />
     <None Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
@@ -143,6 +146,7 @@
     <ClInclude Include="EEColor.h" />
     <ClInclude Include="EECore.h" />
     <ClInclude Include="EED3D.h" />
+    <ClInclude Include="EEEffect.h" />
     <ClInclude Include="EEFont.h" />
     <ClInclude Include="EEGeometry.h" />
     <ClInclude Include="EEGUI.h" />
@@ -198,6 +202,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEBoxShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EERippleShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEShaderHelper.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EERippleDisturb.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="EEShader\EERippleSpread.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

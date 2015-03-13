@@ -1,6 +1,8 @@
 #ifndef _EE_CAMERABUFFER_HLSL_
 #define _EE_CAMERABUFFER_HLSL_
 
+#include "EEShaderHelper.hlsl"
+
 cbuffer CameraBuffer : register(b1)
 {
 	row_major matrix cb_orthoLHMatrix : packoffset(c0);

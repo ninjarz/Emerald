@@ -19,6 +19,7 @@
 #include "EEFont.h"
 #include "EETCP.h"
 #include "EEUDP.h"
+#include "EERipple.h"
 
 using namespace Emerald;
 

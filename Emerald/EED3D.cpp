@@ -444,10 +444,10 @@ namespace Emerald
 	bool EED3D::SetIsVsync(bool _para) { m_isVsync = _para; return true; };
 
 	//----------------------------------------------------------------------------------------------------
-	ID3D11Device* EED3D::GetDevice() const { return m_device; };
+	ID3D11Device* EED3D::GetDevice() { return m_device; };
 
 	//----------------------------------------------------------------------------------------------------
-	ID3D11DeviceContext* EED3D::GetDeviceContext() const { return m_deviceContext; };
+	ID3D11DeviceContext* EED3D::GetDeviceContext() { return m_deviceContext; };
 
 	//----------------------------------------------------------------------------------------------------
 	float EED3D::GetScreenNear() const { return  m_screenNear; };
@@ -462,18 +462,18 @@ namespace Emerald
 	bool EED3D::GetIsVsync() const { return  m_isVsync; }; 
 
 	//----------------------------------------------------------------------------------------------------
-	void EED3D::GetVideoCardInfo(char* cardName, int& memory)
+	void EED3D::GetVideoCardInfo(char* _cardName, int& _memory)
 	{
-		strcpy_s(cardName, 128, m_videoCardDescription);
-		memory = m_videoCardMemory;
+		strcpy_s(_cardName, 128, m_videoCardDescription);
+		_memory = m_videoCardMemory;
 		return;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	ID3D11RenderTargetView* EED3D::GetRenderTargetView() const { return m_renderTargetView; }
+	ID3D11RenderTargetView* EED3D::GetRenderTargetView() { return m_renderTargetView; }
 
 	//----------------------------------------------------------------------------------------------------
-	ID3D11DepthStencilView* EED3D::GetDepthStencilView() const { return m_depthStencilView; }
+	ID3D11DepthStencilView* EED3D::GetDepthStencilView() { return m_depthStencilView; }
 
 	//EED3D_APIs
 	//----------------------------------------------------------------------------------------------------

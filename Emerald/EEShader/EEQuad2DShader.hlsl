@@ -11,7 +11,7 @@ cbuffer Quad2DBuffer  : register(b3)
 	float cb_tmp32 : packoffset(c0.z);
 	float cb_tmp33 : packoffset(c0.w);
 };
-Texture2D g_tex0 : register(ps, t0);
+Texture2D<float4> g_tex0 : register(ps, t0);
 
 SamplerState texSampler
 {
@@ -41,12 +41,22 @@ QuadVOut QuadVS(QuadVIn _vIn)
 [earlydepthstencil]
 void QuadPS(QuadVOut _pIn, out float4 _finalColor :SV_TARGET)
 {
+	//uint width, height;
+	//g_tex0.GetDimensions(width, height);
+	//g_tex0.Length.x
+
 	if (cb_isUseColor && cb_isUseTex)
 		_finalColor = g_tex0.Sample(texSampler, _pIn.tex) * cb_color;
+		//_finalColor = g_tex0[Float2ToUint2(_pIn.tex, g_tex0.Length.x, g_tex0.Length.y)] * cb_color;
+		//_finalColor = UintToFloat4(g_tex0[Float2ToUint2(_pIn.tex, g_tex0.Length.x, g_tex0.Length.y)]) * cb_color;
+		//_finalColor = UintToFloat4(Float4ToUint(g_tex0[Float2ToUint2(_pIn.tex, g_tex0.Length.x, g_tex0.Length.y)])) * cb_color;
 	else if (cb_isUseColor)
 		_finalColor = cb_color;
 	else if (cb_isUseTex)
 		_finalColor = g_tex0.Sample(texSampler, _pIn.tex);
+		//_finalColor = g_tex0[Float2ToUint2(_pIn.tex, g_tex0.Length.x, g_tex0.Length.y)];
+		//_finalColor = UintToFloat4(g_tex0[Float2ToUint2(_pIn.tex, g_tex0.Length.x, g_tex0.Length.y)]);
+		//_finalColor = UintToFloat4(Float4ToUint(g_tex0[Float2ToUint2(_pIn.tex, g_tex0.Length.x, g_tex0.Length.y)]));
 	else
 		_finalColor = cb_color;
 

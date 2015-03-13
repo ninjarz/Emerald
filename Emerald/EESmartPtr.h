@@ -43,6 +43,7 @@ namespace Emerald
 			return *this;
 		}
 
+	protected:
 		void SetValue(_T *_value)
 		{
 			DecCounter();
@@ -51,7 +52,6 @@ namespace Emerald
 			m_value = _value;
 		}
 
-	protected:
 		void DecCounter()
 		{
 			//std::cout << *m_counter << std::endl;

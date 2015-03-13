@@ -139,10 +139,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::Process()
 	{
-		Update();
-		Render();
+		if (Update())
+			return Render();
 
-		return true;
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -651,8 +651,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEProcess(EEObject* _object)
 	{
-		_object->Process();
-
-		return true;
+		return _object->Process();
 	}
 }
