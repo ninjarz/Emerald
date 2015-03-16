@@ -14,7 +14,7 @@ namespace Emerald
 	{
 		int isUseColor;
 		int isUseTex;
-		float tmp2;
+		int texIndex;
 		float tmp3;
 	};
 
@@ -68,6 +68,7 @@ namespace Emerald
 		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
 		virtual bool SetIsUseColor(bool _isUseColor);
 		virtual bool SetIsUseTex(bool _isUseTex);
+		virtual bool SetTexIndex(int _index);
 
 		//position
 		virtual const Rect_Float& GetRect() const;
@@ -102,6 +103,7 @@ namespace Emerald
 		EETexture m_quadTex;
 		bool m_isUseColor;
 		bool m_isUseTex;
+		int m_texIndex;
 	};
 }
 

@@ -93,6 +93,7 @@ namespace Emerald
 
 		if (m_msg.message == WM_QUIT || (m_msg.message == WM_KEYDOWN && m_msg.wParam == VK_ESCAPE))
 		{
+			Stop();
 			return false;
 		}
 
@@ -158,6 +159,7 @@ namespace Emerald
 	void EECore::Tick() { return m_EETimer->Tick(); }
 	double EECore::GetTotalTime() const { return m_EETimer->GetTotalTime(); }
 	double EECore::GetDeltaTime() const { return m_EETimer->GetDeltaTime(); }
+	int EECore::GetFPS(){ return m_EETimer->GetFPS(); }
 	void EECore::ShowFPSInTitle() { return m_EETimer->ShowFPSInTitle(); }
 	void EECore::ShowFPSInTitle(LPCWSTR _title) { return m_EETimer->ShowFPSInTitle(_title); }
 

@@ -40,6 +40,16 @@ namespace Emerald
 		float tmp2;
 	};
 
+	//EERippleBufferDesc
+	//----------------------------------------------------------------------------------------------------
+	struct EERippleBufferDesc
+	{
+		float refractiveIndex;
+		float tmp1;
+		float tmp2;
+		float tmp3;
+	};
+
 	//EERippleC
 	//----------------------------------------------------------------------------------------------------
 	class EERippleC : public EEEffect
@@ -51,11 +61,13 @@ namespace Emerald
 		static bool s_isRippleCInitialized;
 		static ID3D11Buffer *s_disturbBuffer;
 		static ID3D11Buffer *s_spreadBuffer;
+		static ID3D11Buffer *s_rippleBuffer;
 		static ID3D11ComputeShader *s_disturbCS;
 		static ID3D11ComputeShader *s_spreadCS;
 		static ID3D11ComputeShader *s_rippleCS;
 
 	public:
+		EERippleC();
 		EERippleC(EETexture& _target);
 
 		virtual bool Update();
@@ -64,6 +76,7 @@ namespace Emerald
 
 		bool SetSpreadFactor(int _factor);
 		bool SetFadeFactor(int _factor);
+		bool SetRefractiveIndex(float _index);
 
 	protected:
 		EETexture m_target;
@@ -72,6 +85,9 @@ namespace Emerald
 		unsigned int m_currWeightMap;
 		int m_spreadFactor;
 		int m_fadeFactor;
+		float m_refractiveIndex;
+		float m_updateTime;
+		float m_spreadInterval; //0.f is the best choice
 	};
 
 }

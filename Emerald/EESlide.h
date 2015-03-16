@@ -13,13 +13,13 @@ namespace Emerald
 	class EESlide : public EEQuad2D
 	{
 	public:
-		EESlide(const Rect_Float& _rect, const EETexture* _texs, int _amount);
+		EESlide(const Rect_Float& _rect, EETexture* _texs, int _amount);
 
 		bool SetCurrentSlide(int _num);
 
 
 	protected:
-		std::vector<EETexture> m_slides;
+
 	};
 }
 

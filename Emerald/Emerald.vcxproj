@@ -76,9 +76,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraAction.cpp" />
+    <ClCompile Include="DirectXTex\BC.cpp" />
+    <ClCompile Include="DirectXTex\BC4BC5.cpp" />
+    <ClCompile Include="DirectXTex\BC6HBC7.cpp" />
+    <ClCompile Include="DirectXTex\BCDirectCompute.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexCompress.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexCompressGPU.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexConvert.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexD3D11.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexDDS.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexFlipRotate.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexImage.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexMipmaps.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexMisc.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexNormalMaps.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexPMAlpha.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexResize.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexTGA.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexUtil.cpp" />
+    <ClCompile Include="DirectXTex\DirectXTexWIC.cpp" />
     <ClCompile Include="EEAction.cpp" />
     <ClCompile Include="EEAnimation2D.cpp" />
     <ClCompile Include="EEBitmap.cpp" />
+    <ClCompile Include="EEBlur.cpp" />
     <ClCompile Include="EEBox.cpp" />
     <ClCompile Include="EEButton.cpp" />
     <ClCompile Include="EECamera.cpp" />
@@ -121,6 +141,7 @@
     <ClCompile Include="Picking.cpp" />
     <ClCompile Include="Ripple.cpp" />
     <ClCompile Include="Thread.cpp" />
+    <None Include="DirectXTex\DirectXTex.inl" />
     <None Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
     <ClCompile Include="UDPServer.cpp" />
@@ -135,10 +156,18 @@
     <ClCompile Include="YYClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXTex\BC.h" />
+    <ClInclude Include="DirectXTex\BCDirectCompute.h" />
+    <ClInclude Include="DirectXTex\DDS.h" />
+    <ClInclude Include="DirectXTex\DirectXTex.h" />
+    <ClInclude Include="DirectXTex\DirectXTexP.h" />
+    <ClInclude Include="DirectXTex\Filters.h" />
+    <ClInclude Include="DirectXTex\scoped.h" />
     <ClInclude Include="DIVAHelper.h" />
     <ClInclude Include="EEAction.h" />
     <ClInclude Include="EEAnimation2D.h" />
     <ClInclude Include="EEBitmap.h" />
+    <ClInclude Include="EEBlur.h" />
     <ClInclude Include="EEBox.h" />
     <ClInclude Include="EEButton.h" />
     <ClInclude Include="EECamera.h" />
@@ -161,6 +190,7 @@
     <ClInclude Include="EERecorder.h" />
     <ClInclude Include="EERipple.h" />
     <ClInclude Include="EEScene.h" />
+    <ClInclude Include="EESlider.h" />
     <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />
     <ClInclude Include="EESort.h" />

@@ -31,34 +31,28 @@ namespace Emerald
 	class EETextureData
 	{
 	public:
-		EETextureData() : texture(nullptr), textureUAV(nullptr), width(0), height(0) {}
-		EETextureData(ID3D11Resource* _resource) : texture(nullptr), textureUAV(nullptr), width(0), height(0)
+		EETextureData() : resource(nullptr), texture(nullptr), textureUAV(nullptr), width(0), height(0) {}
+		EETextureData(ID3D11Resource* _resource) : resource(_resource), texture(nullptr), textureUAV(nullptr), width(0), height(0)
 		{
-			if (_resource)
+			if (resource)
 			{
 				D3D11_RESOURCE_DIMENSION resourceDimension;
-				_resource->GetType(&resourceDimension);
+				resource->GetType(&resourceDimension);
 				if (resourceDimension == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
 				{
 					D3D11_TEXTURE2D_DESC texture2DDesc;
-					((ID3D11Texture2D*)_resource)->GetDesc(&texture2DDesc);
+					((ID3D11Texture2D*)resource)->GetDesc(&texture2DDesc);
+					width = texture2DDesc.Width;
+					height = texture2DDesc.Height;
+					number = texture2DDesc.ArraySize;
 
-					D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
-					SRVDesc.Format = texture2DDesc.Format;
-					SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-					SRVDesc.Texture2D.MipLevels = 1;
-					SRVDesc.Texture2D.MostDetailedMip = 0;
-					if (SUCCEEDED(EECore::s_EECore->GetDevice()->CreateShaderResourceView(_resource, &SRVDesc, &texture)))
-					{
-					}
+					//SRV
+					if (FAILED(EECore::s_EECore->GetDevice()->CreateShaderResourceView(_resource, NULL, &texture)))
+						return;
 
-					D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
-					UAVDesc.Format = texture2DDesc.Format;
-					UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
-					UAVDesc.Texture2D.MipSlice = 0;
-					if (SUCCEEDED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(_resource, &UAVDesc, &textureUAV)))
-					{
-					}
+					//UAV
+					if (FAILED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(_resource, NULL, &textureUAV)))
+						return;
 				}
 			}
 		}
@@ -66,7 +60,6 @@ namespace Emerald
 		{
 			if (_texture)
 			{
-				ID3D11Resource *resource;
 				texture->GetResource(&resource);
 				D3D11_RESOURCE_DIMENSION resourceDimension;
 				resource->GetType(&resourceDimension);
@@ -76,32 +69,27 @@ namespace Emerald
 					((ID3D11Texture2D*)resource)->GetDesc(&texture2DDesc);
 					width = texture2DDesc.Width;
 					height = texture2DDesc.Height;
+					number = texture2DDesc.ArraySize;
 
-					D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
-					UAVDesc.Format = texture2DDesc.Format;
-					UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
-					UAVDesc.Texture2D.MipSlice = 0;
-					if (SUCCEEDED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(resource, &UAVDesc, &textureUAV)))
-					{
-
-					}
+					if (FAILED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(resource, NULL, &textureUAV)))
+						return;
 				}
 			}
 		}
 		virtual ~EETextureData()
 		{
-			if (texture)
-			{
-				texture->Release();
-				texture = nullptr;
-			}
+			SAFE_RELEASE(resource);
+			SAFE_RELEASE(texture);
+			SAFE_RELEASE(textureUAV);
 		}
 
 	public:
+		ID3D11Resource *resource;
 		ID3D11ShaderResourceView *texture;
 		ID3D11UnorderedAccessView *textureUAV;
 		int width;
 		int height;
+		int number;
 	};
 
 	//EETexture
@@ -119,15 +107,18 @@ namespace Emerald
 		EETexture(const EETexture& _texture);
 		virtual ~EETexture();
 		
-		bool LoadTextureFromFile(LPCWSTR _file);
+		bool SetTexture(LPCWSTR _file);
 		bool SetTexture(unsigned int _width, unsigned int _height);
+		bool SetTexture(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
 		bool SetTexture(unsigned int _width, unsigned int _height, DXGI_FORMAT _format);
 		bool SetTexture(ID3D11Resource* _resource);
 		bool SetTexture(ID3D11ShaderResourceView* _texture);
 
 		int GetWidth();
 		int GetHeight();
-		bool GetBitmap(EEBitmap& _bitmap);
+		int GetNumber();
+		bool GetBitmap(EEBitmap& _bitmap, unsigned int _mipLevel = 0);
+		ID3D11Resource* GetResource();
 		ID3D11ShaderResourceView* GetTexture();
 		ID3D11UnorderedAccessView* GetTextureUAV();
 
@@ -137,7 +128,8 @@ namespace Emerald
 
 	//EETexture_APIs
 	//----------------------------------------------------------------------------------------------------
-	bool SaveTextureToFile(EETexture& _texture, LPCWSTR _fileName, EETextureType _type);
+	bool EESaveTextureToFile(EETexture& _texture, LPCWSTR _fileName, EETextureType _type);
+	EETexture EETextureCombine(EETexture* _texture, unsigned int _num);
 }
 
 #endif

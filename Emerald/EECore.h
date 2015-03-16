@@ -135,6 +135,7 @@ namespace Emerald
 		void Tick();
 		double GetTotalTime() const;
 		double GetDeltaTime() const;
+		int GetFPS();
 		void ShowFPSInTitle();
 		void ShowFPSInTitle(LPCWSTR _title);
 

@@ -206,7 +206,8 @@ namespace Emerald
 			swapChainDesc.SampleDesc.Count = 1;                                      //多重采样（反锯齿）中每点像素的采样点个数
 			swapChainDesc.SampleDesc.Quality = 0;                                      //质量等级，0等级表示不使用多重采样
 		}
-		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;        //Usage
+		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;        //Usage
+		//swapChainDesc.BufferUsage = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
 		swapChainDesc.BufferCount = 1;                                      //缓冲区个数  
 		swapChainDesc.OutputWindow = EECore::s_EECore->GetHWnd();                                 //主窗口句柄
 		if (EECore::s_EECore->GetIsFullScreen())                                                  //是否窗口化
@@ -249,12 +250,9 @@ namespace Emerald
 			MessageBoxW(NULL, L"Create swap chain failed!", L"ERROR", MB_OK);
 			return false;
 		}
-		pDxgiFactory->Release();
-		pDxgiFactory = NULL;
-		pDxgiAdapter->Release();
-		pDxgiAdapter = NULL;
-		pDxgiDevice->Release();
-		pDxgiDevice = NULL;
+		SAFE_RELEASE(pDxgiFactory);
+		SAFE_RELEASE(pDxgiAdapter);
+		SAFE_RELEASE(pDxgiDevice);
 
 		//创建渲染目标视图(将后置缓存绑定到渲染目标视图上)
 		ID3D11Texture2D* backBufferPtr;
@@ -267,6 +265,8 @@ namespace Emerald
 		}
 
 #ifndef _PIX_DEBUG_
+		D3D11_TEXTURE2D_DESC texture2DDesc;
+		backBufferPtr->GetDesc(&texture2DDesc);
 		hr = m_device->CreateRenderTargetView(backBufferPtr,                                    //视图对应资源
 			NULL,                                             //视图描述，先前已经定义了后置缓存的数据类型
 			&m_renderTargetView);                             //要创建的视图（指针的地址）

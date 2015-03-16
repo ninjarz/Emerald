@@ -18,6 +18,7 @@ namespace Emerald
 		m_currTime = 0;
 		m_prevTime = 0;
 		m_isStopped = false;
+		m_FPS = 0;
 
 		Tick();
 		Stop();

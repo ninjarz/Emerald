@@ -40,7 +40,7 @@ namespace Emerald
 				return false;
 			}
 
-			s_fontTex.LoadTextureFromFile(L"EEFont/EEFont.dds");
+			s_fontTex.SetTexture(L"EEFont/EEFont.dds");
 			std::ifstream fIn("EEFont/EEFontData.txt");
 			if (fIn.is_open())
 			{

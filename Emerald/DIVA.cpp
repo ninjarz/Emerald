@@ -511,7 +511,7 @@ int main(int _argc, char** _argv)
 	int flag = 0;
 	while (flag == 0)
 	{
-		switch (MainScene())
+		switch (FreePlay())
 		{
 		case 0:
 			flag = 1;

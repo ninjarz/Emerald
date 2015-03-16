@@ -125,7 +125,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(),
 		m_isUseColor(true),
-		m_isUseTex(false)
+		m_isUseTex(false),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -142,7 +143,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(),
 		m_isUseColor(true),
-		m_isUseTex(false)
+		m_isUseTex(false),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -159,7 +161,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(),
 		m_isUseColor(true),
-		m_isUseTex(false)
+		m_isUseTex(false),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -176,7 +179,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(_tex),
 		m_isUseColor(false),
-		m_isUseTex(true)
+		m_isUseTex(true),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -193,7 +197,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(),
 		m_isUseColor(true),
-		m_isUseTex(false)
+		m_isUseTex(false),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -210,7 +215,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(),
 		m_isUseColor(true),
-		m_isUseTex(false)
+		m_isUseTex(false),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -228,7 +234,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(_tex),
 		m_isUseColor(false),
-		m_isUseTex(true)
+		m_isUseTex(true),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -245,7 +252,8 @@ namespace Emerald
 		m_quadVB(NULL),
 		m_quadTex(_tex),
 		m_isUseColor(false),
-		m_isUseTex(true)
+		m_isUseTex(true),
+		m_texIndex(0)
 	{
 		InitializeQuad2D();
 
@@ -262,7 +270,8 @@ namespace Emerald
 		m_quadVB(_quad.m_quadVB),
 		m_quadTex(_quad.m_quadTex),
 		m_isUseColor(_quad.m_isUseColor),
-		m_isUseTex(_quad.m_isUseTex)
+		m_isUseTex(_quad.m_isUseTex),
+		m_texIndex(_quad.m_texIndex)
 	{
 
 	}
@@ -446,6 +455,13 @@ namespace Emerald
 		return true;
 	}
 
+	bool EEQuad2D::SetTexIndex(int _index)
+	{
+		m_texIndex = _index;
+
+		return true;
+	}
+
 	//----------------------------------------------------------------------------------------------------
 	const Rect_Float& EEQuad2D::GetRect() const
 	{
@@ -540,6 +556,7 @@ namespace Emerald
 		EEQuad2DBufferDesc *quad2DBufferDesc = (EEQuad2DBufferDesc*)mappedResource.pData;
 		quad2DBufferDesc->isUseColor = m_isUseColor;
 		quad2DBufferDesc->isUseTex = m_isUseTex;
+		quad2DBufferDesc->texIndex = m_texIndex;
 		deviceContext->Unmap(s_quad2DBuffer, 0);
 
 		deviceContext->VSSetConstantBuffers(3, 1, &s_quad2DBuffer);
