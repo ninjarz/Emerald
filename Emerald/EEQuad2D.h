@@ -51,6 +51,7 @@ namespace Emerald
 		EEQuad2D(const Rect_Float& _rect, ID3D11ShaderResourceView* _tex);
 		EEQuad2D(const EEQuad2D& _quad);
 		virtual ~EEQuad2D();
+		virtual inline EEObject* Clone() { return new EEQuad2D(*this); }
 
 		virtual bool Update();
 		virtual bool Render();
@@ -66,6 +67,7 @@ namespace Emerald
 		//texture
 		virtual bool SetTexture(const EETexture& _tex);
 		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
+		virtual bool SetTexRect(Rect_Float& _texRect);
 		virtual bool SetIsUseColor(bool _isUseColor);
 		virtual bool SetIsUseTex(bool _isUseTex);
 		virtual bool SetTexIndex(int _index);
@@ -80,6 +82,7 @@ namespace Emerald
 		virtual MATRIX GetProjectionMatrix();
 		//texture
 		virtual EETexture* GetTexture();
+		virtual int GetTexIndex();
 
 		//position
 		virtual Rect_Float GetFinalRect() const;
@@ -101,6 +104,7 @@ namespace Emerald
 		ID3D11Buffer *m_quadVB;
 		//the texture of the quad if need
 		EETexture m_quadTex;
+		Rect_Float m_texRect;
 		bool m_isUseColor;
 		bool m_isUseTex;
 		int m_texIndex;

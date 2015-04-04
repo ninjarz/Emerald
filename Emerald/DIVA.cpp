@@ -7,7 +7,7 @@
 
 
 int MainScene();
-int FreeMode();
+int SelectMusic();
 int SimpleSet();
 int FreePlay();
 
@@ -22,8 +22,6 @@ int MainScene()
 
 	//order 10, time 0 - +∞
 	EETexture bgTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg");
-	EEBitmap tmpbit;
-	bgTex.GetBitmap(tmpbit);
 	EEScene mainScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
 	mainScene.SetLocalZOrder(10.0f);
 	//EERotateYX(mainScene, 16.0f, 2 * EE_2PI, 1.0f, true);
@@ -42,7 +40,7 @@ int MainScene()
 	round1Quad.SetLocalZOrder(9.f);
 	round1Quad.SetAlpha(0.0f);
 	EEFade(&round1Quad, 1.0f, 1.0f, 1.0f);
-	EERotateYX(&round1Quad, 16.0f, 1.5f * EE_2PI, 1.0f, true);
+	EERotateYX(&round1Quad, 25.0f, 1.5f * EE_2PI, 1.0f, true);
 	mainScene.AddObject(&round1Quad);
 
 	//order 9, time 2 - +∞
@@ -51,7 +49,7 @@ int MainScene()
 	round2Quad.SetLocalZOrder(9.f);
 	round2Quad.SetAlpha(0.0f);
 	EEFade(&round2Quad, 1.0f, 1.0f, 2.0f);
-	EERotateYX(&round2Quad, 16.0f, -1.5f * EE_2PI, 2.0f, true);
+	EERotateYX(&round2Quad, 25.0f, -1.5f * EE_2PI, 2.0f, true);
 	mainScene.AddObject(&round2Quad);
 
 	//order 8, time 3.5 - +∞
@@ -60,15 +58,15 @@ int MainScene()
 	road1Quad.SetLocalZOrder(8.f);
 	road1Quad.SetAlpha(0.0f);
 	EEFade(&road1Quad, 1.0f, 1.0f, 3.5f);
-	//mainScene.AddObject(&road1Quad);
+	mainScene.AddObject(&road1Quad);
 
 	//order 8, time 3.0 - +∞
 	EETexture road2Tex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\线2.png");
 	EEQuad2D road2Quad(Rect_Float((float)EEGetWidth() * 0.340625f, (float)EEGetHeight() * 0.1333f, (float)EEGetWidth() * 0.658125f, (float)EEGetHeight() * 0.7456f), road2Tex);
 	road2Quad.SetLocalZOrder(8.f);
 	road2Quad.SetAlpha(0.0f);
-	EEFade(&road2Quad, 1.0f, 1.0f, 3.0f);
-	//mainScene.AddObject(&road2Quad);
+	EEFade(&road2Quad, 1.0f, 1.0f, 3.5f);
+	mainScene.AddObject(&road2Quad);
 
 	//order 7, time 3.5 - +∞
 	EETexture TopTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\顶.png");
@@ -224,31 +222,326 @@ int MainScene()
 
 		EEEndScene();
 	}
+	EETimerStop();
+	EERemoveThread();
+
+	float finishTime = 1.4f;
+	float deltaTime = 0.4f;
+	switch (flag)
+	{
+	case 1:
+		EEFade(&nameQuad, deltaTime, 0.0f);
+		EEFade(&road1Quad, deltaTime, 0.0f);
+		EEFade(&road2Quad, deltaTime, 0.0f);
+		EEFade(&particle, deltaTime, 0.0f);
+
+		round1Quad.SetRotation(MATRIX::IDENTITY);
+		round2Quad.SetRotation(MATRIX::IDENTITY);
+		EEMoveBy(&round1Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
+		EEMoveBy(&round2Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
+
+		EEMoveBy(&TopQuad, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
+		EEMoveBy(&dpQuad, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
+		EEMoveBy(&intBoard, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
+
+		EEMoveBy(&bottomQuad, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+		EEMoveBy(&button1, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+		EEMoveBy(&button2, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+		EEMoveBy(&button3, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+		EEMoveBy(&button4, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+		EEMoveBy(&button5, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+		EEMoveBy(&button6, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+
+		EEFade(&mainScene, deltaTime, 0.0f, 1.0f);
+		EESetRuntime(finishTime);
+		while (EERun())
+		{
+			EEBeginScene(EEColor::BLACK);
+
+			intBoard.SetValue(EEGetFPS());
+			EEProcess(&mainScene);
+
+			EEEndScene();
+		}
+		break;
+	}
+
 
 	EERemoveThread();
 	return flag;
 }
 
-int FreeMode()
+int SelectMusic()
 {
-	FreePlay();
-
 	int flag = 0;
+	int difficult = 0;
 
-	//order 10, time 0 - +∞
-	EETexture bgTex(L"Texture/FreeMode/frame.png");
-	EEScene freeMode(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
-	freeMode.SetLocalZOrder(10.0f);
+	//scene
+	EEScene selectScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()));
+	selectScene.SetLocalZOrder(10.0f);
+	selectScene.SetAlpha(0.0f);
+	EEFade(&selectScene, 0.4f, 1.0f);
+
+	//bg
+	EETexture bgTex[4] = {
+		L"Texture\\Project Diva Freedom\\Song Choosing\\Easy\\Easy-Background.jpg",
+		L"Texture\\Project Diva Freedom\\Song Choosing\\Normal\\Normal-Background.jpg",
+		L"Texture\\Project Diva Freedom\\Song Choosing\\Hard\\Hard-Background.jpg",
+		L"Texture\\Project Diva Freedom\\Song Choosing\\Extreme\\Extreme-Background.jpg",
+	};
+	EESlide bgSlide(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex, 4);
+	bgSlide.SetLocalZOrder(9.9f);
+	selectScene.AddObject(&bgSlide);
+
+	//circle
+	EETexture circleTex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Shiny Circle（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Shiny Circle（颜色减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Shiny Circle（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Shiny Circle（颜色减淡）.png",
+	};
+	EESlide circleSlide(Rect_Float((float)EEGetWidth() * -0.2925f, (float)EEGetHeight() * -0.1522f, (float)EEGetWidth() * 0.395f, (float)EEGetHeight() * 1.0711f), circleTex, 4);
+	circleSlide.SetLocalZOrder(9.f);
+	EERotateYX(&circleSlide, 25.0f, 1.5f * EE_2PI, 1.0f, true);
+	selectScene.AddObject(&circleSlide);
+
+	//line1
+	EETexture line1Tex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Line（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Line（滤色）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Line（滤色）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Line（滤色）.png",
+	};
+	EESlide line1Slide(Rect_Float((float)EEGetWidth() * 0.15f, (float)EEGetHeight() * 0.1556f, (float)EEGetWidth() * 0.509375f, (float)EEGetHeight() * 0.8444f), line1Tex, 4);
+	line1Slide.SetLocalZOrder(8.f);
+	selectScene.AddObject(&line1Slide);
+
+	//line2
+	EETexture line2Tex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Line2（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Line2（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Line2（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Line2（滤色）.png",
+	};
+	EESlide line2Slide(Rect_Float((float)EEGetWidth() * -0.169375f, (float)EEGetHeight() * 0.1056f, (float)EEGetWidth() * 0.56f, (float)EEGetHeight() * 0.9233f), line2Tex, 4);
+	line2Slide.SetLocalZOrder(8.f);
+	selectScene.AddObject(&line2Slide);
+
+	//star
+	EETexture starTex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Star（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Star（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Star（线性减淡）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Star（线性减淡）.png",
+	};
+	EESlide starSlide(Rect_Float((float)EEGetWidth() * -0.08375f, (float)EEGetHeight() * 0.2722f, (float)EEGetWidth() * 0.185625f, (float)EEGetHeight() * 0.6467f), starTex, 4);
+	starSlide.SetLocalZOrder(9.f);
+	selectScene.AddObject(&starSlide);
+
+	//chooseFrame
+	EETexture chooseFrameTex(L"Texture/Project Diva Freedom/Song Choosing/Song Choosing-Frame.png");
+	EEButton chooseFrameQuad(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), chooseFrameTex, chooseFrameTex, chooseFrameTex, [&flag] { flag = 1; });
+	chooseFrameQuad.SetLocalZOrder(7.f);
+	selectScene.AddObject(&chooseFrameQuad);
+	//chooseFrame2
+	EETexture chooseFrame2Tex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Song Choosing Frame-2.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Song Choosing Frame-2.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Song Choosing Frame-2.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Song Choosing Frame-2.png",
+	};
+	EESlide chooseFrame2Slide(Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), chooseFrame2Tex, 4);
+	chooseFrame2Slide.SetLocalZOrder(6.9f);
+	selectScene.AddObject(&chooseFrame2Slide);
+	//chooseFrame3
+	EETexture chooseFrame3Tex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Song Choosing Frame-3.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Song Choosing Frame-3.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Song Choosing Frame-3.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Song Choosing Frame-3.png",
+	};
+	EESlide chooseFrame3Slide(Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), chooseFrame3Tex, 4);
+	chooseFrame3Slide.SetLocalZOrder(6.8f);
+	selectScene.AddObject(&chooseFrame3Slide);
+	//chooseFrame4
+	EETexture chooseFrame4Tex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Song Choosing Frame-4.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Song Choosing Frame-4.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Song Choosing Frame-4.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Song Choosing Frame-4.png",
+	};
+	EESlide chooseFrame4Slide(Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), chooseFrame4Tex, 4);
+	chooseFrame4Slide.SetLocalZOrder(6.7f);
+	selectScene.AddObject(&chooseFrame4Slide);
+	//chooseBright
+	EETexture chooseBrightTex[4] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Easy/Easy-Bright（滤色）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Normal/Normal-Bright（滤色）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Hard/Hard-Bright（滤色）.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Extreme/Extreme-Bright（滤色）.png",
+	};
+	EESlide chooseBrightSlide(Rect_Float((float)EEGetWidth() * 0.f, (float)EEGetHeight() * 0.3944f, (float)EEGetWidth() * 0.57f, (float)EEGetHeight() * 0.4711f), chooseBrightTex, 4);
+	chooseBrightSlide.SetLocalZOrder(7.1f);
+	selectScene.AddObject(&chooseBrightSlide);
+
+	//ItemsZone
+	EETexture itemsZoneTex(L"Texture/Project Diva Freedom/Song Choosing/Items Zone.png");
+	EEQuad2D itemsZoneQuad(Rect_Float((float)EEGetWidth() * 0.643125f, (float)EEGetHeight() * 0.0211f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.0967f), itemsZoneTex);
+	itemsZoneQuad.SetLocalZOrder(5.f);
+	selectScene.AddObject(&itemsZoneQuad);
+
+	//ItemsButton
+	EETexture itemsButtonTex[2] = {
+		L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button1.png",
+		L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button2.png"
+	};
+	EEButton itemsButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.649375f, (float)EEGetHeight() * 0.0244f, (float)EEGetWidth() * 0.74875f, (float)EEGetHeight() * 0.0867f), itemsButtonTex[1], itemsButtonTex[1], itemsButtonTex[0]);
+	itemsButton.SetLocalZOrder(4.f);
+	selectScene.AddObject(&itemsButton);
+
+	//topFrame
+	EETexture topFrameTex(L"Texture/Project Diva Freedom/Song Choosing/Top-Frame.png");
+	EEQuad2D topFrameQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.0f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.0456f), topFrameTex);
+	topFrameQuad.SetLocalZOrder(5.f);
+	selectScene.AddObject(&topFrameQuad);
+
+	//bottomFrame
+	EETexture bottomFrameTex(L"Texture/Project Diva Freedom/Song Choosing/Bottom-Frame.png");
+	EEQuad2D bottomFrameQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.7922f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 1.0f), bottomFrameTex);
+	bottomFrameQuad.SetLocalZOrder(5.f);
+	selectScene.AddObject(&bottomFrameQuad);
+
+	//difficultyFrame
+	EETexture difficultyFrameTex(L"Texture/Project Diva Freedom/Song Choosing/Difficulty Choosing-Frame.png");
+	EEQuad2D difficultyFrameQuad(Rect_Float((float)EEGetWidth() * 0.510625f, (float)EEGetHeight() * 0.0967f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.1889f), difficultyFrameTex);
+	difficultyFrameQuad.SetLocalZOrder(5.f);
+	selectScene.AddObject(&difficultyFrameQuad);
+	//difficulty2Frame
+	EETexture difficultyFrame2Tex(L"Texture/Project Diva Freedom/Song Choosing/Difficulty.png");
+	EEQuad2D difficultyFrame2Quad(Rect_Float((float)EEGetWidth() * 0.51375f, (float)EEGetHeight() * 0.1278f, (float)EEGetWidth() * 0.9975f, (float)EEGetHeight() * 0.1822f), difficultyFrame2Tex);
+	difficultyFrame2Quad.SetLocalZOrder(4.f);
+	selectScene.AddObject(&difficultyFrame2Quad);
+	//DifficultyButton
+	//EasyButton
+	EETexture easyButtonTex(L"Texture/Project Diva Freedom/Song Choosing/Difficulty Easy-Bright.png");
+	EEButton easyButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.51f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.638125f, (float)EEGetHeight() * 0.1889f), easyButtonTex, easyButtonTex, easyButtonTex);
+	easyButton.SetLocalZOrder(3.f);
+	easyButton.SetAlpha(1.0f);
+	selectScene.AddObject(&easyButton);
+	//NormalButton
+	EETexture normalButtonTex(L"Texture/Project Diva Freedom/Song Choosing/Difficulty Normal-Bright.png");
+	EEButton normalButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.6325f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.760625f, (float)EEGetHeight() * 0.1889f), normalButtonTex, normalButtonTex, normalButtonTex);
+	normalButton.SetLocalZOrder(3.f);
+	normalButton.SetAlpha(0.0f);
+	selectScene.AddObject(&normalButton);
+	//HardButton
+	EETexture hardButtonTex(L"Texture/Project Diva Freedom/Song Choosing/Difficulty hard-Bright.png");
+	EEButton hardButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.7525f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.880625f, (float)EEGetHeight() * 0.1889f), hardButtonTex, hardButtonTex, hardButtonTex);
+	hardButton.SetLocalZOrder(3.f);
+	hardButton.SetAlpha(0.0f);
+	selectScene.AddObject(&hardButton);
+	//ExtremeButton
+	EETexture extremeButtonTex(L"Texture/Project Diva Freedom/Song Choosing/Difficulty Extreme-Bright.png");
+	EEButton extremeButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.87375f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 1.001875f, (float)EEGetHeight() * 0.1889f), extremeButtonTex, extremeButtonTex, extremeButtonTex);
+	extremeButton.SetLocalZOrder(3.f);
+	extremeButton.SetAlpha(0.0f);
+	selectScene.AddObject(&extremeButton);
+	easyButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton, 
+		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
+		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
+		&chooseBrightSlide]
+	{
+		difficult = 0;
+		easyButton.SetAlpha(1.0f);
+		normalButton.SetAlpha(0.0f);
+		hardButton.SetAlpha(0.0f);
+		extremeButton.SetAlpha(0.0f);
+
+		bgSlide.SetCurrentSlide(difficult);
+		circleSlide.SetCurrentSlide(difficult);
+		line1Slide.SetCurrentSlide(difficult);
+		line2Slide.SetCurrentSlide(difficult);
+		starSlide.SetCurrentSlide(difficult);
+		chooseFrame2Slide.SetCurrentSlide(difficult);
+		chooseFrame3Slide.SetCurrentSlide(difficult);
+		chooseFrame4Slide.SetCurrentSlide(difficult);
+		chooseBrightSlide.SetCurrentSlide(difficult);
+	});
+	normalButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton,
+		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
+		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
+		&chooseBrightSlide]
+	{
+		difficult = 1;
+		easyButton.SetAlpha(0.0f);
+		normalButton.SetAlpha(1.0f);
+		hardButton.SetAlpha(0.0f);
+		extremeButton.SetAlpha(0.0f);
+
+		bgSlide.SetCurrentSlide(difficult);
+		circleSlide.SetCurrentSlide(difficult);
+		line1Slide.SetCurrentSlide(difficult);
+		line2Slide.SetCurrentSlide(difficult);
+		starSlide.SetCurrentSlide(difficult);
+		chooseFrame2Slide.SetCurrentSlide(difficult);
+		chooseFrame3Slide.SetCurrentSlide(difficult);
+		chooseFrame4Slide.SetCurrentSlide(difficult);
+		chooseBrightSlide.SetCurrentSlide(difficult);
+	});
+	hardButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton,
+		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
+		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
+		&chooseBrightSlide]
+	{
+		difficult = 2;
+		easyButton.SetAlpha(0.0f);
+		normalButton.SetAlpha(0.0f);
+		hardButton.SetAlpha(1.0f);
+		extremeButton.SetAlpha(0.0f);
+
+		bgSlide.SetCurrentSlide(difficult);
+		circleSlide.SetCurrentSlide(difficult);
+		line1Slide.SetCurrentSlide(difficult);
+		line2Slide.SetCurrentSlide(difficult);
+		starSlide.SetCurrentSlide(difficult);
+		chooseFrame2Slide.SetCurrentSlide(difficult);
+		chooseFrame3Slide.SetCurrentSlide(difficult);
+		chooseFrame4Slide.SetCurrentSlide(difficult);
+		chooseBrightSlide.SetCurrentSlide(difficult);
+	});
+	extremeButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton,
+		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
+		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
+		&chooseBrightSlide]
+	{
+		difficult = 3;
+		easyButton.SetAlpha(0.0f);
+		normalButton.SetAlpha(0.0f);
+		hardButton.SetAlpha(0.0f);
+		extremeButton.SetAlpha(1.0f);
+
+		bgSlide.SetCurrentSlide(difficult);
+		circleSlide.SetCurrentSlide(difficult);
+		line1Slide.SetCurrentSlide(difficult);
+		line2Slide.SetCurrentSlide(difficult);
+		starSlide.SetCurrentSlide(difficult);
+		chooseFrame2Slide.SetCurrentSlide(difficult);
+		chooseFrame3Slide.SetCurrentSlide(difficult);
+		chooseFrame4Slide.SetCurrentSlide(difficult);
+		chooseBrightSlide.SetCurrentSlide(difficult);
+	});
+
 
 	while (EERun() && flag == 0)
 	{
-		EEBeginScene(EEColor::WHITE);
+		EEBeginScene(EEColor::BLACK);
 
-		EEProcess(&freeMode);
+		EEProcess(&selectScene);
 
 		EEEndScene();
 	}
 
+	EETimerStop();
 	EERemoveThread();
 	return flag;
 }
@@ -289,7 +582,7 @@ int SimpleSet()
 
 	EETexture start1Tex(L"Texture/Project Diva Freedom/简单设置/开始按钮-1.png");
 	EETexture start2Tex(L"Texture/Project Diva Freedom/简单设置/开始按钮-2.png");
-	EEButton startButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.394375f, (float)EEGetHeight() * 0.8133f, (float)EEGetWidth() * 0.605625f, (float)EEGetHeight() * 0.9278f), start1Tex, start1Tex, start2Tex);
+	EEButton startButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.394375f, (float)EEGetHeight() * 0.8133f, (float)EEGetWidth() * 0.605625f, (float)EEGetHeight() * 0.9278f), start1Tex, start1Tex, start2Tex, [&flag] { flag = 1; });
 	startButton.SetLocalZOrder(9.f);
 	simpleSet.AddObject(&startButton);
 
@@ -342,6 +635,7 @@ int SimpleSet()
 		EEEndScene();
 	}
 
+	EETimerStop();
 	EERemoveThread();
 	return flag;
 }
@@ -509,20 +803,27 @@ int main(int _argc, char** _argv)
 	EEInitialize(desc);
 
 	int flag = 0;
-	while (flag == 0)
+	while (flag = MainScene())
 	{
-		switch (FreePlay())
+		switch (flag)
 		{
-		case 0:
-			flag = 1;
-			break;
-
 		case 1:
-			switch (FreeMode())
+			while (flag = SelectMusic())
 			{
-			case 0:
-				break;
-
+				switch (flag)
+				{
+				case 1:
+					while (flag = SimpleSet())
+					{
+						switch (flag)
+						{
+						case 1:
+							FreePlay();
+							break;
+						}
+					}
+					break;
+				}
 			}
 			break;
 		}

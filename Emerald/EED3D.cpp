@@ -444,6 +444,23 @@ namespace Emerald
 	bool EED3D::SetIsVsync(bool _para) { m_isVsync = _para; return true; };
 
 	//----------------------------------------------------------------------------------------------------
+	bool EED3D::SetRenderTarget(EETexture* _target) 
+	{
+		if (_target)
+		{
+			ID3D11RenderTargetView *target[1] = { _target->GetTextureRTV() };
+			m_deviceContext->OMSetRenderTargets(1, target, nullptr);
+		}
+		else
+		{
+			ID3D11RenderTargetView *target[1] = { m_renderTargetView };
+			m_deviceContext->OMSetRenderTargets(1, target, m_depthStencilView);
+		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	ID3D11Device* EED3D::GetDevice() { return m_device; };
 
 	//----------------------------------------------------------------------------------------------------
@@ -484,6 +501,9 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	void EEEndScene() { EECore::s_EECore->GetEED3D()->EndScene(); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EESetRenderTarget(EETexture* _target) { return EECore::s_EECore->GetEED3D()->SetRenderTarget(_target); }
 
 	//----------------------------------------------------------------------------------------------------
 	ID3D11Device* EEGetDevice() { return EECore::s_EECore->GetEED3D()->GetDevice(); }

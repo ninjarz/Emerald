@@ -48,6 +48,7 @@ namespace Emerald
 		EEBox(const FLOAT3& _pos, FLOAT _width, FLOAT _height, FLOAT _depth, const EETexture& _tex);
 		EEBox(const EEBox& _box);
 		virtual ~EEBox();
+		virtual inline EEObject* Clone() { return new EEBox(*this); }
 
 		virtual bool Update();
 		virtual bool Render();

@@ -2,6 +2,7 @@
 #ifndef _EE_FONT_H_
 #define _EE_FONT_H_
 
+//debug and release
 #pragma comment(lib, "freetype253MT_D.lib")
 #include <ft2build.h>
 #include FT_FREETYPE_H

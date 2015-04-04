@@ -124,6 +124,7 @@ namespace Emerald
 		m_quadHeight(0.0f),
 		m_quadVB(NULL),
 		m_quadTex(),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(true),
 		m_isUseTex(false),
 		m_texIndex(0)
@@ -142,6 +143,7 @@ namespace Emerald
 		m_quadHeight(0.0f),
 		m_quadVB(NULL),
 		m_quadTex(),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(true),
 		m_isUseTex(false),
 		m_texIndex(0)
@@ -160,6 +162,7 @@ namespace Emerald
 		m_quadHeight(_height),
 		m_quadVB(NULL),
 		m_quadTex(),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(true),
 		m_isUseTex(false),
 		m_texIndex(0)
@@ -178,6 +181,7 @@ namespace Emerald
 		m_quadHeight(_height),
 		m_quadVB(NULL),
 		m_quadTex(_tex),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(false),
 		m_isUseTex(true),
 		m_texIndex(0)
@@ -196,6 +200,7 @@ namespace Emerald
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
 		m_quadTex(),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(true),
 		m_isUseTex(false),
 		m_texIndex(0)
@@ -214,6 +219,7 @@ namespace Emerald
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
 		m_quadTex(),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(true),
 		m_isUseTex(false),
 		m_texIndex(0)
@@ -233,6 +239,7 @@ namespace Emerald
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
 		m_quadTex(_tex),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(false),
 		m_isUseTex(true),
 		m_texIndex(0)
@@ -251,6 +258,7 @@ namespace Emerald
 		m_quadHeight(_rect.w - _rect.y),
 		m_quadVB(NULL),
 		m_quadTex(_tex),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
 		m_isUseColor(false),
 		m_isUseTex(true),
 		m_texIndex(0)
@@ -269,6 +277,7 @@ namespace Emerald
 		m_quadHeight(_quad.m_quadHeight),
 		m_quadVB(_quad.m_quadVB),
 		m_quadTex(_quad.m_quadTex),
+		m_texRect(_quad.m_texRect),
 		m_isUseColor(_quad.m_isUseColor),
 		m_isUseTex(_quad.m_isUseTex),
 		m_texIndex(_quad.m_texIndex)
@@ -308,13 +317,13 @@ namespace Emerald
 
 			EEQuad2DVertex quadVertices[4];
 			quadVertices[0].pos = FLOAT3(rect.x, rect.y, m_localZOrder * 0.0001f);
-			quadVertices[0].tex = FLOAT2(0, 0);
+			quadVertices[0].tex = FLOAT2(m_texRect.x, m_texRect.y);
 			quadVertices[1].pos = FLOAT3(rect.z, rect.y, m_localZOrder * 0.0001f);
-			quadVertices[1].tex = FLOAT2(1, 0);
+			quadVertices[1].tex = FLOAT2(m_texRect.z, m_texRect.y);
 			quadVertices[2].pos = FLOAT3(rect.x, rect.w, m_localZOrder * 0.0001f);
-			quadVertices[2].tex = FLOAT2(0, 1);
+			quadVertices[2].tex = FLOAT2(m_texRect.x, m_texRect.w);
 			quadVertices[3].pos = FLOAT3(rect.z, rect.w, m_localZOrder * 0.0001f);
-			quadVertices[3].tex = FLOAT2(1, 1);
+			quadVertices[3].tex = FLOAT2(m_texRect.z, m_texRect.w);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -440,6 +449,14 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEQuad2D::SetTexRect(Rect_Float& _texRect)
+	{
+		m_texRect = _texRect;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEQuad2D::SetIsUseColor(bool _isUseColor)
 	{
 		m_isUseColor = _isUseColor;
@@ -508,6 +525,11 @@ namespace Emerald
 	EETexture* EEQuad2D::GetTexture()
 	{
 		return &m_quadTex;
+	}
+
+	int EEQuad2D::GetTexIndex()
+	{
+		return m_texIndex;
 	}
 
 	//----------------------------------------------------------------------------------------------------

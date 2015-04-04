@@ -41,31 +41,31 @@ namespace Emerald
 			}
 
 			s_fontTex.SetTexture(L"EEFont/EEFont.dds");
-			std::ifstream fIn("EEFont/EEFontData.txt");
-			if (fIn.is_open())
+			std::ifstream fin("EEFont/EEFontData.txt");
+			if (fin.is_open())
 			{
 				s_fontData = new EEFontData[95];
 
 				char temp;
 				for (int i = 0; i < 95; i++)
 				{
-					fIn.get(temp);
+					fin.get(temp);
 					while (temp != ' ')
 					{
-						fIn.get(temp);
+						fin.get(temp);
 					}
-					fIn.get(temp);
+					fin.get(temp);
 					while (temp != ' ')
 					{
-						fIn.get(temp);
+						fin.get(temp);
 					}
 
-					fIn >> s_fontData[i].left;
-					fIn >> s_fontData[i].right;
-					fIn >> s_fontData[i].size;
+					fin >> s_fontData[i].left;
+					fin >> s_fontData[i].right;
+					fin >> s_fontData[i].size;
 				}
 
-				fIn.close();
+				fin.close();
 			}
 			else
 				return false;

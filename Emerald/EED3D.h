@@ -3,6 +3,7 @@
 #define _EE_D3D_H_
 
 #include <d3d11.h>
+#include "EETexture.h"
 #include "EEMath.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -30,6 +31,7 @@ namespace Emerald
 		bool SetScreenDeep(float _para);
 		bool SetIsSSAA(bool _para);
 		bool SetIsVsync(bool _para);
+		bool SetRenderTarget(EETexture* _target = nullptr);
 
 		ID3D11Device* GetDevice();
 		ID3D11DeviceContext* GetDeviceContext();
@@ -62,6 +64,7 @@ namespace Emerald
 	void EEBeginScene(float, float, float, float);
 	void EEBeginScene(const FLOAT4&);
 	void EEEndScene();
+	bool EESetRenderTarget(EETexture* _target = nullptr);
 
 	ID3D11Device* EEGetDevice();
 	ID3D11DeviceContext* EEGetDeviceContext();

@@ -8,7 +8,8 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEBlurC
+	//EEBlurC (Gaussian blur)
+	//----------------------------------------------------------------------------------------------------
 	class EEBlurC : public EEEffect
 	{
 	public:
@@ -16,7 +17,8 @@ namespace Emerald
 
 
 	protected:
-
+		EETexture m_target;
+		EETexture m_backup;
 	};
 
 }

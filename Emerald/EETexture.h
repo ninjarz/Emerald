@@ -31,8 +31,8 @@ namespace Emerald
 	class EETextureData
 	{
 	public:
-		EETextureData() : resource(nullptr), texture(nullptr), textureUAV(nullptr), width(0), height(0) {}
-		EETextureData(ID3D11Resource* _resource) : resource(_resource), texture(nullptr), textureUAV(nullptr), width(0), height(0)
+		EETextureData() : resource(nullptr), texture(nullptr), textureUAV(nullptr), textureRTV(nullptr), width(0), height(0) {}
+		EETextureData(ID3D11Resource* _resource) : resource(_resource), texture(nullptr), textureUAV(nullptr), textureRTV(nullptr), width(0), height(0)
 		{
 			if (resource)
 			{
@@ -53,12 +53,16 @@ namespace Emerald
 					//UAV
 					if (FAILED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(_resource, NULL, &textureUAV)))
 						return;
+
+					//RTV
+					if (FAILED(EECore::s_EECore->GetDevice()->CreateRenderTargetView(_resource, NULL, &textureRTV)))
+						return;
 				}
 			}
 		}
-		EETextureData(ID3D11ShaderResourceView* _texture) : texture(_texture), textureUAV(nullptr), width(0), height(0)
+		EETextureData(ID3D11ShaderResourceView* _texture) : resource(nullptr), texture(_texture), textureUAV(nullptr), textureRTV(nullptr), width(0), height(0)
 		{
-			if (_texture)
+			if (texture)
 			{
 				texture->GetResource(&resource);
 				D3D11_RESOURCE_DIMENSION resourceDimension;
@@ -71,7 +75,12 @@ namespace Emerald
 					height = texture2DDesc.Height;
 					number = texture2DDesc.ArraySize;
 
+					//UAV
 					if (FAILED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(resource, NULL, &textureUAV)))
+						return;
+
+					//RTV
+					if (FAILED(EECore::s_EECore->GetDevice()->CreateRenderTargetView(resource, NULL, &textureRTV)))
 						return;
 				}
 			}
@@ -87,6 +96,7 @@ namespace Emerald
 		ID3D11Resource *resource;
 		ID3D11ShaderResourceView *texture;
 		ID3D11UnorderedAccessView *textureUAV;
+		ID3D11RenderTargetView *textureRTV;
 		int width;
 		int height;
 		int number;
@@ -121,6 +131,7 @@ namespace Emerald
 		ID3D11Resource* GetResource();
 		ID3D11ShaderResourceView* GetTexture();
 		ID3D11UnorderedAccessView* GetTextureUAV();
+		ID3D11RenderTargetView* GetTextureRTV();
 
 	//private:
 	//	ID3D11ShaderResourceView *m_texture;

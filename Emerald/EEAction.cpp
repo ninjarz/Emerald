@@ -10,7 +10,8 @@ namespace Emerald
 	boost::thread* EEMoveBy(EEObject* _object, float _time, const FLOAT2& _dir, float _delay, bool _isInfinite)
 	{
 		boost::thread *thr = new  boost::thread(boost::bind(&EEMoveByProcess, _object, _time, _dir, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
-		EECore::s_EECore->AddThread(thr);
+		_object->AddThread(thr);
+		//EECore::s_EECore->AddThread(thr);
 		return thr;
 	}
 
@@ -73,7 +74,7 @@ namespace Emerald
 	boost::thread* EEScale(EEObject* _object, float _time, float _degree, float _delay)
 	{
 		boost::thread *thr = new  boost::thread(boost::bind(&EEScaleProcess, _object, _time, _degree, _delay, (float)EECore::s_EECore->GetTotalTime()));
-		EECore::s_EECore->AddThread(thr);
+		_object->AddThread(thr);
 		return thr;
 	}
 
@@ -136,7 +137,7 @@ namespace Emerald
 	boost::thread* EERotateYX(EEObject* _object, float _time, float _radiansYX, float _delay, bool _isInfinite)
 	{
 		boost::thread *thr = new  boost::thread(boost::bind(&EERotateYXProcess, _object, _time, _radiansYX, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
-		EECore::s_EECore->AddThread(thr);
+		_object->AddThread(thr);
 		return thr;
 	}
 
@@ -205,7 +206,7 @@ namespace Emerald
 	boost::thread* EERotate(EEObject* _object, float _time, float _radians, const FLOAT3& _center, float _delay, bool _isInfinite)
 	{
 		boost::thread *thr = new  boost::thread(boost::bind(&EERotateProcess, _object, _time, _radians, _center, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
-		EECore::s_EECore->AddThread(thr);
+		_object->AddThread(thr);
 		return thr;
 	}
 
@@ -273,7 +274,7 @@ namespace Emerald
 	boost::thread* EERotateBy(EEObject* _object, float _time, float _radians, const FLOAT2& _center, float _delay, bool _isInfinite)
 	{
 		boost::thread *thr = new  boost::thread(boost::bind(&EERotateByProcess, _object, _time, _radians, _center, _delay, _isInfinite, (float)EECore::s_EECore->GetTotalTime()));
-		EECore::s_EECore->AddThread(thr);
+		_object->AddThread(thr);
 		return thr;
 	}
 
@@ -340,7 +341,7 @@ namespace Emerald
 	boost::thread* EEFade(EEObject* _object, float _time, float _degree, float _delay)
 	{
 		boost::thread *thr = new  boost::thread(boost::bind(&EEFadeProcess, _object, _time, _degree, _delay, (float)EECore::s_EECore->GetTotalTime()));
-		EECore::s_EECore->AddThread(thr);
+		_object->AddThread(thr);
 		return thr;
 	}
 

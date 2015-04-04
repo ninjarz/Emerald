@@ -91,7 +91,7 @@ namespace Emerald
 	{
 		while (m_keyInput.empty())
 		{
-			//may be I should just handle the message, but the timer too
+			//may be I should just handle the message, but running the timer
 			EECore::s_EECore->Run();
 		}
 

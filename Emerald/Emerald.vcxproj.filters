@@ -73,6 +73,21 @@
     <Filter Include="DirectXTex">
       <UniqueIdentifier>{1b806810-c0f9-452f-90ad-5e340dc7b86f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEBlurShader">
+      <UniqueIdentifier>{6d8434a0-eaf5-4952-8c4e-ddddc506429b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEAction">
+      <UniqueIdentifier>{37ae220f-a93c-4a03-b8dc-1be98b95ddcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEAction">
+      <UniqueIdentifier>{16ff7ac9-b400-49b0-85e1-f5042ca2bb40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEParticle">
+      <UniqueIdentifier>{1254664b-9530-4203-bbfd-0049d41607a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEParticle">
+      <UniqueIdentifier>{094316f0-c2d1-4899-95f0-5ab0bbc75d16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -108,9 +123,6 @@
     <ClCompile Include="EEShaderState.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="EEAction.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
     <ClCompile Include="EEMusic.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -121,9 +133,6 @@
       <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EESort.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="EEParticle.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EEHelper.cpp">
@@ -231,9 +240,6 @@
     <ClCompile Include="EEFloatBoard.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="EEAnimation2D.cpp">
-      <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
     <ClCompile Include="EEMemoryLeak.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -306,6 +312,30 @@
     <ClCompile Include="DirectXTex\DirectXTexWIC.cpp">
       <Filter>DirectXTex</Filter>
     </ClCompile>
+    <ClCompile Include="EEAverage.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Slide.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEAnimation.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EEAction.cpp">
+      <Filter>源文件\Emerald\EEAction</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="DNSServer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEDNS.cpp">
+      <Filter>源文件\Emerald\EESocket</Filter>
+    </ClCompile>
+    <ClCompile Include="EEParticle.cpp">
+      <Filter>源文件\Emerald\EEParticle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -347,16 +377,10 @@
     <ClInclude Include="EEShaderState.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
-    <ClInclude Include="EEAction.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
     <ClInclude Include="EEMusic.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EESort.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
-    <ClInclude Include="EEParticle.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EERecorder.h">
@@ -428,9 +452,6 @@
     <ClInclude Include="EEProgressbar.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
-    <ClInclude Include="EEAnimation2D.h">
-      <Filter>头文件\Emerald\EEGUI</Filter>
-    </ClInclude>
     <ClInclude Include="EERipple.h">
       <Filter>头文件\Emerald\EEEffect</Filter>
     </ClInclude>
@@ -467,6 +488,21 @@
     <ClInclude Include="DirectXTex\scoped.h">
       <Filter>DirectXTex</Filter>
     </ClInclude>
+    <ClInclude Include="EEAverage.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="EEAnimation.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEAction.h">
+      <Filter>头文件\Emerald\EEAction</Filter>
+    </ClInclude>
+    <ClInclude Include="EEDNS.h">
+      <Filter>头文件\Emerald\EESocket</Filter>
+    </ClInclude>
+    <ClInclude Include="EEParticle.h">
+      <Filter>头文件\Emerald\EEParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -501,6 +537,12 @@
     </None>
     <None Include="DirectXTex\DirectXTex.inl">
       <Filter>DirectXTex</Filter>
+    </None>
+    <None Include="EEShader\EERippleHelper.hlsl">
+      <Filter>头文件\Emerald\EEShader\EERippleShader</Filter>
+    </None>
+    <None Include="EEShader\EEBlurShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEBlurShader</Filter>
     </None>
   </ItemGroup>
 </Project>

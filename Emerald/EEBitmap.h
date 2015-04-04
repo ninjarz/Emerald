@@ -18,6 +18,7 @@ namespace Emerald
 		EEBitmap(wchar_t* _file);
 		EEBitmap(unsigned int _width, unsigned int _height);
 		EEBitmap(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
+		EEBitmap(const unsigned char* _buffer, unsigned int _width, unsigned int _height, unsigned int _rowPitch);
 		EEBitmap(const EEBitmap& _bitmap);
 		virtual ~EEBitmap();
 
@@ -29,6 +30,7 @@ namespace Emerald
 		EEBitmap GetSubmap(int _x, int _y, int _width = -1, int _height = -1) const;
 
 		bool SetData(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
+		bool SetData(const unsigned char* _buffer, unsigned int _width, unsigned int _height, unsigned int _rowPitch);
 
 	protected:
 		std::vector<unsigned char> m_data;

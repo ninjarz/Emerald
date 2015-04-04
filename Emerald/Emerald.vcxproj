@@ -43,8 +43,8 @@
     <LibraryPath>E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;E:\freetype-2.5.3\objs\win32\vc2010;$(LibraryPath);$(DXSDK_DIR)Lib\x86;E:\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(DXSDK_DIR)Include;E:\boost_1_55_0\boost_1_55_0;E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;E:\boost_1_55_0\boost_1_55_0\stage\lib;E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\freetype-2.5.3\include;$(IncludePath);$(DXSDK_DIR)Include;E:\boost_1_55_0\boost_1_55_0;E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include</IncludePath>
+    <LibraryPath>$(LibraryPath);E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;E:\freetype-2.5.3\objs\win32\vc2010;$(DXSDK_DIR)Lib\x86;E:\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animation.cpp" />
     <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
@@ -95,8 +96,10 @@
     <ClCompile Include="DirectXTex\DirectXTexTGA.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexUtil.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexWIC.cpp" />
+    <ClCompile Include="DNSServer.cpp" />
     <ClCompile Include="EEAction.cpp" />
-    <ClCompile Include="EEAnimation2D.cpp" />
+    <ClCompile Include="EEAnimation.cpp" />
+    <ClCompile Include="EEAverage.cpp" />
     <ClCompile Include="EEBitmap.cpp" />
     <ClCompile Include="EEBlur.cpp" />
     <ClCompile Include="EEBox.cpp" />
@@ -106,6 +109,7 @@
     <ClCompile Include="EEColor.cpp" />
     <ClCompile Include="EECore.cpp" />
     <ClCompile Include="EED3D.cpp" />
+    <ClCompile Include="EEDNS.cpp" />
     <ClCompile Include="EEEffect.cpp" />
     <ClCompile Include="EEFloatBoard.cpp" />
     <ClCompile Include="EEFont.cpp" />
@@ -140,6 +144,7 @@
     <ClCompile Include="FontTest.cpp" />
     <ClCompile Include="Picking.cpp" />
     <ClCompile Include="Ripple.cpp" />
+    <ClCompile Include="Slide.cpp" />
     <ClCompile Include="Thread.cpp" />
     <None Include="DirectXTex\DirectXTex.inl" />
     <None Include="EEWaveCoder.cpp" />
@@ -165,7 +170,8 @@
     <ClInclude Include="DirectXTex\scoped.h" />
     <ClInclude Include="DIVAHelper.h" />
     <ClInclude Include="EEAction.h" />
-    <ClInclude Include="EEAnimation2D.h" />
+    <ClInclude Include="EEAnimation.h" />
+    <ClInclude Include="EEAverage.h" />
     <ClInclude Include="EEBitmap.h" />
     <ClInclude Include="EEBlur.h" />
     <ClInclude Include="EEBox.h" />
@@ -175,6 +181,7 @@
     <ClInclude Include="EEColor.h" />
     <ClInclude Include="EECore.h" />
     <ClInclude Include="EED3D.h" />
+    <ClInclude Include="EEDNS.h" />
     <ClInclude Include="EEEffect.h" />
     <ClInclude Include="EEFont.h" />
     <ClInclude Include="EEGeometry.h" />
@@ -250,6 +257,16 @@
       <FileType>Document</FileType>
     </None>
     <None Include="EEShader\EERippleSpread.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EERippleHelper.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEBlurShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

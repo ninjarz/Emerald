@@ -47,6 +47,8 @@ namespace Emerald
 
 	public:
 		inline EECore()
+			:
+			m_runTime(-1.0f)
 		{
 		}
 
@@ -62,9 +64,11 @@ namespace Emerald
 		bool Initialize_All(const EEDesc& _EEDesc);
 		void Shutdown();
 		int Run();
+		void SetRunTime(float _time);
 
 	private:
 		MSG m_msg;
+		float m_runTime;
 
 		//EECore_ThreadSystem
 	public:
@@ -203,6 +207,7 @@ namespace Emerald
 	bool EEInitialize(const EEDesc& _EEDesc = { L"Emerald", false, 800, 450, true, false });
 	void EEShutdown();
 	int EERun();
+	void EESetRuntime(float _time);
 }
 
 #endif

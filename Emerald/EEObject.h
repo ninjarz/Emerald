@@ -5,6 +5,7 @@
 #include <d3d11.h>
 #include <d3dx11async.h>
 #include <functional>
+#include <boost/thread/thread.hpp>
 #include "EEMath.h"
 #include "EEColor.h"
 
@@ -51,11 +52,14 @@ namespace Emerald
 		EEObject(const FLOAT3& _position);
 		EEObject(const EEObject& _object);
 		virtual ~EEObject();
+		virtual inline EEObject* Clone() { return new EEObject(*this); }
 
 		virtual bool Update();
 		virtual bool Render();
 		virtual bool Process();
 
+		//life
+		virtual void SetIsAlive(bool _isAlive);
 		//parent
 		virtual void SetParent(EEObject* _parent);
 		//position
@@ -84,6 +88,8 @@ namespace Emerald
 		virtual bool SetOverFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetClickedFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetTriggeredFunc(std::function<void(void)> _funcPtr);
+		//action
+		virtual void AddThread(boost::thread* _thread);
 
 		//life
 		bool IsAlive();
@@ -178,6 +184,8 @@ namespace Emerald
 		std::function<void(void)> m_overFunc;
 		std::function<void(void)> m_clickedFunc;
 		std::function<void(void)> m_TriggeredFunc;
+		//action
+		std::vector<boost::thread*> m_threads;
 	};
 
 	//EEObject_APIs

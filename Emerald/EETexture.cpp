@@ -1,6 +1,7 @@
 #include "EETexture.h"
 #include "EECore.h"
 #include "DirectXTex/DirectXTex.h"
+//#include "DirectXTex/DirectXTexP.h"
 using namespace DirectX;
 
 //----------------------------------------------------------------------------------------------------
@@ -114,7 +115,7 @@ namespace Emerald
 			ID3D11ShaderResourceView *texture = nullptr;
 			hr = CreateShaderResourceViewEx(device,
 				image.GetImages(), image.GetImageCount(), image.GetMetadata(),
-				D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS, 0, 0, false,
+				D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET, 0, 0, false,
 				&texture);
 			SetValue(new EETextureData(texture));
 
@@ -140,7 +141,7 @@ namespace Emerald
 		tex2DDesc.SampleDesc.Count = 1;
 		tex2DDesc.SampleDesc.Quality = 0;
 		tex2DDesc.Usage = D3D11_USAGE_DEFAULT;
-		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET;
 		tex2DDesc.CPUAccessFlags = 0;
 		tex2DDesc.MiscFlags = 0;
 
@@ -176,7 +177,7 @@ namespace Emerald
 		tex2DDesc.SampleDesc.Count = 1;
 		tex2DDesc.SampleDesc.Quality = 0;
 		tex2DDesc.Usage = D3D11_USAGE_DEFAULT;
-		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET;
 		tex2DDesc.CPUAccessFlags = 0;
 		tex2DDesc.MiscFlags = 0;
 		D3D11_SUBRESOURCE_DATA data;
@@ -216,7 +217,7 @@ namespace Emerald
 		tex2DDesc.SampleDesc.Count = 1;
 		tex2DDesc.SampleDesc.Quality = 0;
 		tex2DDesc.Usage = D3D11_USAGE_DEFAULT;
-		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+		tex2DDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET;
 		tex2DDesc.CPUAccessFlags = 0;
 		tex2DDesc.MiscFlags = 0;
 
@@ -305,7 +306,8 @@ namespace Emerald
 					if (FAILED(deviceContext->Map(cpuBuf, _mipLevel, D3D11_MAP_READ, 0, &mappedResource)))
 						return false;
 					unsigned char* tmp = (unsigned char*)mappedResource.pData;
-					_bitmap.SetData(tmp, m_value->width, m_value->height);
+					//It have not been verified yet
+					_bitmap.SetData(tmp, m_value->width, m_value->height, mappedResource.RowPitch);
 					deviceContext->Unmap(cpuBuf, 0);
 					SAFE_RELEASE(cpuBuf);
 					return true;
@@ -339,6 +341,15 @@ namespace Emerald
 	{
 		if (m_value)
 			return m_value->textureUAV;
+
+		return nullptr;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	ID3D11RenderTargetView* EETexture::GetTextureRTV()
+	{
+		if (m_value)
+			return m_value->textureRTV;
 
 		return nullptr;
 	}
@@ -407,7 +418,7 @@ namespace Emerald
 		texArrayDesc.SampleDesc.Count = 1;
 		texArrayDesc.SampleDesc.Quality = 0;
 		texArrayDesc.Usage = D3D11_USAGE_DEFAULT;
-		texArrayDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+		texArrayDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_RENDER_TARGET;
 		texArrayDesc.CPUAccessFlags = 0;
 		texArrayDesc.MiscFlags = 0;
 
@@ -419,29 +430,38 @@ namespace Emerald
 		for (UINT i = 0; i < _num; ++i)
 		{
 			ID3D11Texture2D *src = (ID3D11Texture2D*)_texture[i].GetResource();
-			D3D11_TEXTURE2D_DESC texDesc;
-			src->GetDesc(&texDesc);
-			texDesc.BindFlags = 0;
-			texDesc.Usage = D3D11_USAGE_STAGING;
-			texDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+			D3D11_TEXTURE2D_DESC subtexDesc;
+			src->GetDesc(&subtexDesc);
+			subtexDesc.BindFlags = 0;
+			subtexDesc.Usage = D3D11_USAGE_STAGING;
+			subtexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 			ID3D11Texture2D *cpuBuf = nullptr;
-			if (FAILED(EECore::s_EECore->GetDevice()->CreateTexture2D(&texDesc, NULL, &cpuBuf)))
+			if (FAILED(EECore::s_EECore->GetDevice()->CreateTexture2D(&subtexDesc, NULL, &cpuBuf)))
 				continue;
 			deviceContext->CopyResource(cpuBuf, src);
+
 			//For each mipmap level
 			for (UINT j = 0; j < texArrayDesc.MipLevels; ++j)
 			{
 				D3D11_MAPPED_SUBRESOURCE mappedTex2D;
 				if (FAILED(deviceContext->Map(cpuBuf, j, D3D11_MAP_READ, 0, &mappedTex2D)))
-				{
 					break;
-				}
+				//Resizing is needed... !!! If the size of the src is smaller than the first frame, there will be a choke.
+				Image tmp;
+				tmp.width = subtexDesc.Width;
+				tmp.height = subtexDesc.Height;
+				tmp.format = subtexDesc.Format;
+				tmp.rowPitch = mappedTex2D.RowPitch;
+				tmp.slicePitch = mappedTex2D.DepthPitch;
+				tmp.pixels = (uint8_t*)mappedTex2D.pData;
+				ScratchImage result;
+				Resize(tmp, texArrayDesc.Width, texArrayDesc.Height, 0, result);
 
-				//Add to the array (RowPitch and DepthPitch are incorrect?)
+				//Add to the array
 				deviceContext->UpdateSubresource(
 					texArray,
 					D3D11CalcSubresource(j, i, texArrayDesc.MipLevels),
-					0, mappedTex2D.pData, mappedTex2D.RowPitch, mappedTex2D.DepthPitch);
+					0, result.GetImages()->pixels, result.GetImages()->rowPitch, result.GetImages()->slicePitch);
 
 				deviceContext->Unmap(cpuBuf, j);
 			}

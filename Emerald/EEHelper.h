@@ -47,3 +47,9 @@ namespace Emerald
 //SV_DispatchThreadID : Global index, Refer to SV_GroupID * numthreads + SV_GroupThreadID
 //
 //NOTE, out of bound reads always return 0 in CS
+
+//Map
+//----------------------------------------------------------------------------------------------------
+//RowPitch and DepthPitch that mapped from resource are not match its size.
+//
+//

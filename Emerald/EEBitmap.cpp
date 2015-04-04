@@ -29,7 +29,7 @@ namespace Emerald
 		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		if (FAILED(deviceContext->Map(s_boxBuffer, 0, D3D11_MAP_READ, 0, &mappedResource)))
-			return false;
+		return false;
 		(char*)mappedResource.pData;
 		deviceContext->Unmap(s_boxBuffer, 0);
 		*/
@@ -53,6 +53,16 @@ namespace Emerald
 		m_height(_height)
 	{
 
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEBitmap::EEBitmap(const unsigned char* _buffer, unsigned int _width, unsigned int _height, unsigned int _rowPitch)
+		:
+		m_data(),
+		m_width(_width),
+		m_height(_height)
+	{
+		SetData(_buffer, _width, _height, _rowPitch);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -153,6 +163,26 @@ namespace Emerald
 		m_data.assign(_buffer, _buffer + (_width * _height << 2));
 		m_width = _width;
 		m_height = _height;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEBitmap::SetData(const unsigned char* _buffer, unsigned int _width, unsigned int _height, unsigned int _rowPitch)
+	{
+		m_data.clear();
+		m_data.resize(_width * _height << 2);
+		m_width = _width;
+		m_height = _height;
+
+		unsigned char* dst = m_data.data();
+		unsigned int rowSpan = _width << 2;
+		for (int i = 0; i < m_height; ++i)
+		{
+			memcpy(dst, _buffer, rowSpan);
+			dst += rowSpan;
+			_buffer += _rowPitch;
+		}
 
 		return true;
 	}

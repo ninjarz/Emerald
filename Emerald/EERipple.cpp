@@ -1,6 +1,9 @@
 #include "EERipple.h"
 #include "EECore.h"
 
+#define GROUPDIX_X 32.f
+#define GROUPDIX_Y 32.f
+
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -208,7 +211,7 @@ namespace Emerald
 
 			//Dispatch
 			deviceContext->CSSetShader(s_spreadCS, NULL, 0);
-			deviceContext->Dispatch((int)ceilf(m_target.GetWidth() / 32.f), (int)ceilf(m_target.GetHeight() / 32.f), 1);
+			deviceContext->Dispatch((int)ceilf(m_target.GetWidth() / GROUPDIX_X), (int)ceilf(m_target.GetHeight() / GROUPDIX_Y), 1);
 
 			//Clear
 			ID3D11ShaderResourceView *nullSRV[1] = { nullptr };
@@ -245,7 +248,7 @@ namespace Emerald
 
 		//Dispatch
 		deviceContext->CSSetShader(s_rippleCS, NULL, 0);
-		deviceContext->Dispatch((int)ceilf(m_target.GetWidth() / 32.f), (int)ceilf(m_target.GetHeight() / 32.f), 1);
+		deviceContext->Dispatch((int)ceilf(m_target.GetWidth() / GROUPDIX_X), (int)ceilf(m_target.GetHeight() / GROUPDIX_Y), 1);
 
 		//Clear
 		ID3D11ShaderResourceView *nullSRV[2] = { nullptr, nullptr };
@@ -282,7 +285,7 @@ namespace Emerald
 
 		//Dispatch
 		deviceContext->CSSetShader(s_disturbCS, NULL, 0);
-		deviceContext->Dispatch((int)ceilf(m_target.GetWidth() / 32.f), (int)ceilf(m_target.GetHeight() / 32.f), 1);
+		deviceContext->Dispatch((int)ceilf(m_target.GetWidth() / GROUPDIX_X), (int)ceilf(m_target.GetHeight() / GROUPDIX_Y), 1);
 
 		//Clear
 		ID3D11UnorderedAccessView *nullUAV[1] = { nullptr };
