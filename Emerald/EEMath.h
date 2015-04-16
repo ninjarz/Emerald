@@ -400,6 +400,10 @@ namespace Emerald
 		{
 		}
 
+		inline FLOAT3(const INT2& _xy, const FLOAT _z) : x((float)_xy.x), y((float)_xy.y), z(_z)
+		{
+		}
+
 		inline FLOAT3(const FLOAT _x, const FLOAT2& _yx) : x(_x), y(_yx.x), z(_yx.y)
 		{
 		}

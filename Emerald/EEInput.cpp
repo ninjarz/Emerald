@@ -117,6 +117,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEInput::KeyUp(UINT _input)
 	{
+		if (m_keys[_input])
+			m_mouseInput.push(_input);
 		m_keys[_input] = false;
 
 		return;
@@ -124,6 +126,24 @@ namespace Emerald
 
 	//EEInput_Mouse
 	//----------------------------------------------------------------------------------------------------
+	UINT EEInput::GetMouse()
+	{
+		while (m_mouseInput.empty())
+		{
+			EECore::s_EECore->Run();
+		}
+
+		UINT mouse = m_mouseInput.front();
+		m_mouseInput.pop();
+		return mouse;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEInput::IsMouseInput()
+	{
+		return !m_mouseInput.empty();
+	}
+
 	void EEInput::MouseDown(WPARAM _btnState, int _x, int _y)
 	{
 		SetCapture(EECore::s_EECore->GetHWnd());
@@ -185,4 +205,10 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	void EEClearMouseDeltaM() { return EECore::s_EECore->GetEEInput()->ClearMouseDeltaM(); }
+
+	//----------------------------------------------------------------------------------------------------
+	UINT EEGetMouse() { return EECore::s_EECore->GetEEInput()->GetMouse(); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEIsMouseInput() { return EECore::s_EECore->GetEEInput()->IsMouseInput(); }
 }

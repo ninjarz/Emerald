@@ -229,9 +229,9 @@ namespace Emerald
 				if (!animation->IsAlive())
 				{
 					animation->SetPosition(_pos);
-					animation->SetIsAlive(true);
 					animation->Start();
 					flag = true;
+					break;
 				}
 			}
 
@@ -240,7 +240,6 @@ namespace Emerald
 				m_animations.push_back(new EEAnimation(*m_backup));
 				EEAnimation* animation = m_animations.back();
 				animation->SetPosition(_pos);
-				animation->SetIsAlive(true);
 				animation->Start();
 			}
 

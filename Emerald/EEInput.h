@@ -58,6 +58,8 @@ namespace Emerald
 		inline void ClearMouseDeltaY()			{ m_mouseDeltaY = 0; }
 		inline void ClearMouseDeltaXY()			{ m_mouseDeltaX = 0; m_mouseDeltaY = 0; }
 		inline void ClearMouseDeltaM()			{ m_mouseDeltaM = 0; }
+		UINT GetMouse();
+		bool IsMouseInput();
 
 	private:
 		void MouseDown(WPARAM, int, int);
@@ -71,6 +73,7 @@ namespace Emerald
 		int m_mouseDeltaX;
 		int m_mouseDeltaY;
 		int m_mouseDeltaM;
+		std::queue<UINT> m_mouseInput;
 		/*
 		//with the left button held
 		Point m_mouseLeftPos;
@@ -100,6 +103,8 @@ namespace Emerald
 	void EEClearMouseDeltaY();
 	void EEClearMouseDeltaXY();
 	void EEClearMouseDeltaM();
+	UINT EEGetMouse();
+	bool EEIsMouseInput();
 }
 
 #endif

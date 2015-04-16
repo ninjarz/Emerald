@@ -50,24 +50,32 @@ int main(int _argc, char** _argv)
 		L"Texture/Project Diva Freedom/自由模式/HIT/hit-4（线性减淡）.png",
 		L"Texture/Project Diva Freedom/自由模式/HIT/sad-01.png",
 	};
-	EESlide hitSlide(Rect_Float(300, 200, 428, 328), hitTex, 29);
+	EESlide hitSlide(Rect_Float(-64, -64, 64, 64), hitTex, 29);
 	hitSlide.SetInterval(0.5f / 29.f);
 	EEAnimationFrame frame0;
 	frame0.object = &hitSlide;
 	frame0.duration = 0.3f;
 	
-	EEQuad2D quad1(Rect_Float(300, 200, 428, 328), hitTex[29]);
+	EEQuad2D quad1(Rect_Float(-64, -64, 64, 64), hitTex[29]);
+	quad1.SetAlpha(0.0f);
 	EEAnimationFrame frame1;
 	frame1.object = &quad1;
-	frame1.duration = 0.3f;
-	//frame1.actions.push_back(boost::bind(EEMoveBy, _1, 2.0f, FLOAT2(100.0f, 100.0f), _2, false));
+	frame1.duration = 0.2f;
+	frame1.actions.push_back(boost::bind(EEFade, _1, 0.1f, 0.3f, _2));
+	frame1.actions.push_back(boost::bind(EEFade, _1, 0.1f, 0.0f, _2));
+
+	EEQuad2D quad2(Rect_Float(-64, -64, 64, 64), hitTex[30]);
+	EEAnimationFrame frame2;
+	frame2.object = &quad2;
+	frame2.duration = 0.1f;
 	
 
 	EEAnimation animation;
 	animation.AddFrame(frame0);
 	animation.AddFrame(frame1);
+	animation.AddFrame(frame2);
 	animation.Start();
-	animation.SetIsLoop(true);
+	//animation.SetIsLoop(true);
 
 	EEAnimationEmitter emitter;
 	emitter.SetAnimation(animation);
@@ -75,17 +83,21 @@ int main(int _argc, char** _argv)
 	emitter.Emit(FLOAT3(100.f, 100.f, 0.f));
 	emitter.Emit(FLOAT3(200.f, 0.f, 0.f));
 
-
-
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 		//EEShowFPSInTitle(L"- -");
 
 		animation.Process();
+		
 		emitter.Process();
+		if (EEIsMouseInput())
+		{
+			EEGetMouse();
+			emitter.Emit(FLOAT3(EEGetMousePosition(), 0.0f));
+		}
 
-		printf("%d ", EEGetFPS());
+		//printf("%d ", EEGetFPS());
 		EEEndScene();
 	}
 

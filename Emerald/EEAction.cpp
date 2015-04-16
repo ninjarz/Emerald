@@ -353,42 +353,56 @@ namespace Emerald
 			float progress = _startTime;
 			float speed = (_degree - _object->GetAlpha()) / _time;
 
-			while (1)
+			if (remainTime <= 0.f)
 			{
-				EEThreadSleep(20);
+				_object->SetAlpha(_degree);
+				return;
+			}
+			else if (_delay < 0.f)
+			{
+				float deltaAlpha = speed * (-_delay);
+				_object->SetAlpha(_object->GetAlpha() + deltaAlpha);
+			}
+			else
+			{
+				while (1)
+				{
+					EEThreadSleep(10);
 
-				float currTime = (float)EECore::s_EECore->GetTotalTime();
-				float deltaTime = currTime - progress;
-				progress = currTime;
-				if (remainTime <= deltaTime + _time)
-				{
-					remainTime = _time;
-					break;
-				}
-				else
-				{
-					remainTime -= deltaTime;
+					float currTime = (float)EECore::s_EECore->GetTotalTime();
+					float deltaTime = currTime - progress;
+					progress = currTime;
+					if (remainTime <= deltaTime + _time)
+					{
+						progress -= _time - (remainTime - deltaTime);
+						remainTime = _time;
+						break;
+					}
+					else
+					{
+						remainTime -= deltaTime;
+					}
 				}
 			}
 
 			while (1)
 			{
-				EEThreadSleep(20);
+				EEThreadSleep(10);
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
 				progress = currTime;
 				if (remainTime <= deltaTime)
 				{
-					float deltaScale = speed * remainTime;
-					_object->SetAlpha(_object->GetAlpha() + deltaScale);
+					float deltaAlpha = speed * remainTime;
+					_object->SetAlpha(_object->GetAlpha() + deltaAlpha);
 					remainTime = 0.f;
 					return;
 				}
 				else
 				{
-					float deltaScale = speed * deltaTime;
-					_object->SetAlpha(_object->GetAlpha() + deltaScale);
+					float deltaAlpha = speed * deltaTime;
+					_object->SetAlpha(_object->GetAlpha() + deltaAlpha);
 					remainTime -= deltaTime;
 				}
 			}
