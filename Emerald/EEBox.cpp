@@ -118,7 +118,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEBox::EEBox(const FLOAT3& _pos, const FLOAT3& _size)
 		:
-		EEObject(_pos),
+		EEObject3D(_pos),
 		m_size(_size),
 		m_boxVB(NULL),
 		m_boxIB(NULL),
@@ -135,7 +135,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEBox::EEBox(const FLOAT3& _pos, const FLOAT3& _size, const EETexture& _tex)
 		:
-		EEObject(_pos),
+		EEObject3D(_pos),
 		m_size(_size),
 		m_boxVB(NULL),
 		m_boxIB(NULL),
@@ -152,7 +152,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEBox::EEBox(const FLOAT3& _pos, FLOAT _width, FLOAT _height, FLOAT _depth)
 		:
-		EEObject(_pos),
+		EEObject3D(_pos),
 		m_size(_width, _height, _depth),
 		m_boxVB(NULL),
 		m_boxIB(NULL),
@@ -169,7 +169,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEBox::EEBox(const FLOAT3& _pos, FLOAT _width, FLOAT _height, FLOAT _depth, const EETexture& _tex)
 		:
-		EEObject(_pos),
+		EEObject3D(_pos),
 		m_size(_width, _height, _depth),
 		m_boxVB(NULL),
 		m_boxIB(NULL),

@@ -27,6 +27,18 @@ namespace Emerald
 
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	EESlide::EESlide(const EESlide& _slide)
+		:
+		EEQuad2D(_slide),
+		m_updateTime(_slide.m_updateTime),
+		m_changeInterval(_slide.m_changeInterval),
+		m_isLoop(_slide.m_isLoop)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EESlide::Update()
 	{
 		if (!EEObject::Update())
@@ -54,4 +66,9 @@ namespace Emerald
 		return SetTexIndex(_num);
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	void EESlide::SetInterval(float _interval)
+	{
+		m_changeInterval = _interval;
+	}
 }

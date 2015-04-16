@@ -4,6 +4,7 @@
 
 //the part of 2D need to recast
 #include "EEQuad2D.h"
+#include "EELine2D.h"
 #include "EEBox.h"
 
 

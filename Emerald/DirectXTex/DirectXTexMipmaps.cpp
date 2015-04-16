@@ -12,7 +12,8 @@
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
 //-------------------------------------------------------------------------------------
-
+// for win7!!!!!!!!!!
+#define  _WIN32_WINNT   0x0601
 #include "directxtexp.h"
 
 #include "filters.h"

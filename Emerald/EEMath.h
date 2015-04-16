@@ -396,6 +396,14 @@ namespace Emerald
 		{
 		}
 
+		inline FLOAT3(const FLOAT2& _xy, const FLOAT _z) : x(_xy.x), y(_xy.y), z(_z)
+		{
+		}
+
+		inline FLOAT3(const FLOAT _x, const FLOAT2& _yx) : x(_x), y(_yx.x), z(_yx.y)
+		{
+		}
+
 		inline explicit FLOAT3(const FLOAT _fArray[3]) : x(_fArray[0]), y(_fArray[1]), z(_fArray[2])
 		{
 		}
@@ -1126,6 +1134,10 @@ namespace Emerald
 			return length;
 		}
 	};
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t);
+	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t);
 
 	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixRotationAxis(const FLOAT3& axis, const FLOAT radians);

@@ -2,7 +2,7 @@
 #ifndef _EE_BOX_H_
 #define _EE_BOX_H_
 
-#include "EEObject.h"
+#include "EEObject3D.h"
 #include "EETexture.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ namespace Emerald
 
 	//EEBox
 	//----------------------------------------------------------------------------------------------------
-	class EEBox : public EEObject
+	class EEBox : public EEObject3D
 	{
 	protected:
 		static bool InitializeBox();

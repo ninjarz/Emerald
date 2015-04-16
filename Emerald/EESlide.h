@@ -15,10 +15,13 @@ namespace Emerald
 	public:
 		EESlide(const Rect_Float& _rect, EETexture& _texs, float _interval = 0.0f, bool _isLoop = true);
 		EESlide(const Rect_Float& _rect, EETexture* _texs, int _amount, float _interval = 0.0f, bool _isLoop = true);
+		EESlide(const EESlide& _slide);
+		virtual inline EEObject* Clone() { return new EESlide(*this); }
 
 		virtual bool Update();
 
 		bool SetCurrentSlide(int _num);
+		void SetInterval(float _interval);
 
 	protected:
 		float m_updateTime;

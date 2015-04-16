@@ -9,7 +9,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEAnimationFrame
+	// EEAnimationFrame
 	//----------------------------------------------------------------------------------------------------
 	struct EEAnimationFrame
 	{
@@ -38,12 +38,14 @@ namespace Emerald
 		}
 	};
 
-	//EEAnimation
+	// EEAnimation
 	//----------------------------------------------------------------------------------------------------
 	class EEAnimation : public EEObject
 	{
 	public:
 		EEAnimation();
+		EEAnimation(const EEAnimation& _animation);
+		virtual ~EEAnimation();
 		virtual inline EEObject* Clone() { return new EEAnimation(*this); }
 
 		virtual bool Update();
@@ -52,11 +54,34 @@ namespace Emerald
 		bool Start();
 		bool AddFrame(const EEAnimationFrame& _frame);
 
+		void SetIsLoop(bool _isLoop);
+
 	protected:
 		std::queue<EEAnimationFrame*> m_frames;
 		std::vector<EEAnimationFrame*> m_backup;
 		float m_startTime;
 		bool m_isLoop;
+	};
+
+	// EEAnimationEmitter
+	// The more efficient way is to store only one animation and copy it to every frames
+	//----------------------------------------------------------------------------------------------------
+	class EEAnimationEmitter : public EEObject
+	{
+	public:
+		EEAnimationEmitter();
+		EEAnimationEmitter(const EEAnimationEmitter& _emitter);
+		virtual ~EEAnimationEmitter();
+
+		virtual bool Update();
+		virtual bool Render();
+
+		bool Emit(const FLOAT3& _pos);
+		bool SetAnimation(const EEAnimation& _animation);
+
+	protected:
+		std::vector<EEAnimation*> m_animations;
+		EEAnimation* m_backup;
 	};
 }
 

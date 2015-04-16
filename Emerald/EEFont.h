@@ -2,8 +2,12 @@
 #ifndef _EE_FONT_H_
 #define _EE_FONT_H_
 
-//debug and release
+// freetype-2.5.3
+#ifdef _DEBUG
 #pragma comment(lib, "freetype253MT_D.lib")
+#else
+#pragma comment(lib, "freetype253MT.lib")
+#endif
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <string>
@@ -14,7 +18,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEFontData
+	// EEFontData
 	//----------------------------------------------------------------------------------------------------
 	struct EEFontData
 	{
@@ -22,7 +26,7 @@ namespace Emerald
 		int size;
 	};
 
-	//EEFontVertex
+	// EEFontVertex
 	//----------------------------------------------------------------------------------------------------
 	struct EEFontVertex
 	{
@@ -30,7 +34,7 @@ namespace Emerald
 		FLOAT2 tex;
 	};
 
-	//EEFont
+	// EEFont
 	//----------------------------------------------------------------------------------------------------
 	class EEFont : public EEObject
 	{
@@ -77,7 +81,7 @@ namespace Emerald
 		ID3D11Buffer *m_fontVB;
 	};
 
-	//EEFont_APIS
+	// EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
 	EEBitmap EEGetFontBitmap(wchar_t _char);
 	void EEPrint(const FLOAT3& _position, const EEColor& _color, char* _text);

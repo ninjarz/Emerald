@@ -34,15 +34,29 @@ namespace Emerald
 		std::string data;
 		if (Recv(&addr, data) || data.size() >= sizeof(EEDNSHeader))
 		{
-			//header
+			/*addrinfo* addrinfo;
+			sockaddr_storage host;
+			if (getaddrinfo("8.8.8.8", "53", NULL, &addrinfo) != 0) {
+				memcpy(&host, addrinfo->ai_addr, addrinfo->ai_addrlen);
+				freeaddrinfo(addrinfo);
+			}
+			if (EEGetIP(addr) != "8.8.8.8")
+				Send(&host, data);*/
+
+			printf("Recv from:%s %d\n", EEGetIP(addr).data(), EEGetPort(addr));
+			// header
 			EEDNSHeader header;
+			header.QR = 1;
 			header.Load(data.data());
 			printf("ID:%d \tFLAG:%d\n", header.ID, header.FLAG);
 			printf("QDCOUNT:%d \tANCOUNT:%d\n", header.QDCOUNT, header.ANCOUNT);
 			printf("NSCOUNT:%d \tARCOUNT:%d\n", header.NSCOUNT, header.ARCOUNT);
 
+			// store the client
+			//m_clients.insert(std::pair<unsigned int, sockaddr_storage>(header.ID, addr));
+
 			char *content = (char*)data.data() + header.Size();
-			//question
+			// question
 			std::vector<EEDNSQuestion> questions(header.QDCOUNT);
 			for (EEDNSQuestion &question : questions)
 			{
@@ -53,19 +67,26 @@ namespace Emerald
 				question.CLASS = ntohs(*(unsigned short*)content);
 				content += 2;
 
-				printf("NAME:%s\n", question.Name());
+				printf("NAME:%s\n", question.Name().data());
 			}
 
-			//make answers
+			// make answers
 			std::vector<EEDNSAnswer> answers(header.QDCOUNT);
 			for (EEDNSAnswer &answer : answers)
 			{
+				++header.ANCOUNT;
 				answer.NAME += (char)0xc0;
-				
-				answer.TYPE;
-				answer.CLASS;
+				answer.NAME += (char)(header.Size());
+				answer.TYPE = 1;
+				answer.CLASS = 1;
+				answer.TTL = 60;
+				answer.RDLENGTH = 4;
+				answer.RDATA.resize(answer.RDLENGTH);
+				unsigned int *data = (unsigned int*)&answer.RDATA[0];
+				*data = inet_addr("123.125.114.144");
 			}
-
+			std::string result = header.NetString() + questions[0].NetString() + answers[0].NetString();
+			Send(&addr, result);
 			return true;
 		}
 
@@ -80,10 +101,10 @@ namespace Emerald
 		{
 			std::string name;
 			std::string ip;
-			fin >> name >> ip;
+			fin >> ip >> name;
 			while (!fin.eof())
 			{
-				//m_hosts.insert(name, ip);
+				m_hosts.insert(std::pair<std::string, std::string>(name, ip));
 				fin >> ip >> name;
 			}
 			fin.close();

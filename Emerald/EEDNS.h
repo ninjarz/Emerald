@@ -6,6 +6,21 @@
 #include "EEHelper.h"
 #include "EEUDP.h"
 
+/*	
+message:
+
+    +---------------------+
+    |        Header       |
+    +---------------------+
+    |       Question      | the question for the name server
+    +---------------------+
+    |        Answer       | RRs answering the question
+    +---------------------+
+    |      Authority      | RRs pointing toward an authority
+    +---------------------+
+    |      Additional     | RRs holding additional information
+    +---------------------+	
+*/
 /*
 The header contains the following fields:
 
@@ -141,20 +156,55 @@ QTYPE           a two octet code which specifies the type of the query.
 QCLASS          a two octet code that specifies the class of the query.
                 For example, the QCLASS field is IN for the Internet.	
 */
-/*	
-message:
+/*
+Resource record format:
+                                    1  1  1  1  1  1
+      0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                                               |
+    /                                               /
+    /                      NAME                     /
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                      TYPE                     |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                     CLASS                     |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                      TTL                      |
+    |                                               |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                   RDLENGTH                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--|
+    /                     RDATA                     /
+    /                                               /
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
-    +---------------------+
-    |        Header       |
-    +---------------------+
-    |       Question      | the question for the name server
-    +---------------------+
-    |        Answer       | RRs answering the question
-    +---------------------+
-    |      Authority      | RRs pointing toward an authority
-    +---------------------+
-    |      Additional     | RRs holding additional information
-    +---------------------+	
+where:
+
+NAME            a domain name to which this resource record pertains.
+
+TYPE            two octets containing one of the RR type codes.  This
+                field specifies the meaning of the data in the RDATA
+                field.
+
+CLASS           two octets which specify the class of the data in the
+                RDATA field.
+
+TTL             a 32 bit unsigned integer that specifies the time
+                interval (in seconds) that the resource record may be
+                cached before it should be discarded.  Zero values are
+                interpreted to mean that the RR can only be used for the
+                transaction in progress, and should not be cached.
+
+RDLENGTH        an unsigned 16 bit integer that specifies the length in
+                octets of the RDATA field.
+
+RDATA           a variable length string of octets that describes the
+                resource.  The format of this information varies
+                according to the TYPE and CLASS of the resource record.
+                For example, the if the TYPE is A and the CLASS is IN,
+                the RDATA field is a 4 octet ARPA Internet address.
+	
 */
 /*
 MX RDATA format:
@@ -228,6 +278,19 @@ namespace Emerald
 
 			return false;
 		}
+		inline std::string NetString()
+		{
+			std::string result;
+			result.resize(12);
+			unsigned short *dst = (unsigned short *)&result[0];
+			dst[0] = htons(ID);
+			dst[1] = htons(FLAG);
+			dst[2] = htons(QDCOUNT);
+			dst[3] = htons(ANCOUNT);
+			dst[4] = htons(NSCOUNT);
+			dst[5] = htons(ARCOUNT);
+			return result;
+		}
 	};
 
 	//EEDNSQuestion
@@ -261,14 +324,14 @@ namespace Emerald
 			result += NAME;
 			result += '\0';
 			result.resize(result.size() + 4);
-			unsigned short *dst = (unsigned short *)result[result.size() - 5];
+			unsigned short *dst = (unsigned short *)&result[result.size() - 4];
 			dst[0] = htons(TYPE);
 			dst[1] = htons(CLASS);
 			return result;
 		}
 	};
 
-	//EEDNSAnswer
+	// EEDNSAnswer
 	//----------------------------------------------------------------------------------------------------
 	struct EEDNSAnswer
 	{
@@ -277,25 +340,25 @@ namespace Emerald
 		unsigned short CLASS;
 		unsigned int TTL;
 		unsigned short RDLENGTH;
-		//unsigned short 
+		std::string RDATA;
 
 		inline std::string NetString()
 		{
 			std::string result;
 			result += NAME;
-			result += '\0';
 			result.resize(result.size() + 10);
-			unsigned short *dst0 = (unsigned short *)result[result.size() - 11];
+			unsigned short *dst0 = (unsigned short *)&result[result.size() - 10];
 			dst0[0] = htons(TYPE);
 			dst0[1] = htons(CLASS);
 			dst0[4] = htons(RDLENGTH);
-			unsigned int *dst1 = (unsigned int*)dst0[2];
+			unsigned int *dst1 = (unsigned int*)&dst0[2];
 			dst1[0] = htonl(TTL);
+			result += RDATA;
 			return result;
 		}
 	};
 
-	//EEDNSServer
+	// EEDNSServer
 	//----------------------------------------------------------------------------------------------------
 	class EEDNSServer : public EEUDPServer
 	{
@@ -308,6 +371,7 @@ namespace Emerald
 		bool LoadHostes(wchar_t* _file);
 
 	protected:
+		//std::vector<std::string>
 		std::map<std::string, std::string> m_hosts;
 		std::map<unsigned int, sockaddr_storage> m_clients;
 	};

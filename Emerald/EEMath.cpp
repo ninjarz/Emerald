@@ -17,6 +17,20 @@ namespace Emerald
 		0, 0, 0, 1);
 
 	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t)
+	{
+		float tt = 1 - _t;
+		return _p0 * tt * tt + _p1 * 2 * _t * tt + _p2 * _t * _t;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t)
+	{
+		float tt = 1 - _t;
+		return _p0 * (tt * tt * tt) + _p1 * (3 * _t * tt * tt) + _p2 * (3 * _t * _t * tt) + _p3 * (_t * _t * _t);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixRotationAxis(const FLOAT3& axis, const FLOAT radians)
 	{
 		FLOAT3 axisN = axis.GetNormalization();

@@ -223,7 +223,8 @@ int MainScene()
 		EEEndScene();
 	}
 	EETimerStop();
-	EERemoveThread();
+	round1Quad.RemoveThread();
+	round2Quad.RemoveThread();
 
 	float finishTime = 1.4f;
 	float deltaTime = 0.4f;
@@ -736,9 +737,11 @@ int FreePlay()
 	};
 	EEQuad2D pauseFrameQuad(Rect_Float((float)EEGetWidth() * 0.040625f, (float)EEGetHeight() * 0.3333f, (float)EEGetWidth() * 0.959375f, (float)EEGetHeight() * 0.5833f), pauseTex[0]);
 	pauseFrameQuad.SetLocalZOrder(8.f);
+	pauseFrameQuad.SetIsAlive(false);
 	freePlay.AddObject(&pauseFrameQuad);
 	EESlide pauseSlide(Rect_Float((float)EEGetWidth() * 0.28375f, (float)EEGetHeight() * 0.3589f, (float)EEGetWidth() * 0.71625f, (float)EEGetHeight() * 0.5589f), &pauseTex[1], 4);
 	pauseSlide.SetLocalZOrder(7.f);
+	pauseSlide.SetIsAlive(false);
 	freePlay.AddObject(&pauseSlide);
 
 	//ct
@@ -754,21 +757,26 @@ int FreePlay()
 	};
 	EEQuad2D ctFrameQuad(Rect_Float((float)EEGetWidth() * 0.043f, (float)EEGetHeight() * 0.62f, (float)EEGetWidth() * 0.957f, (float)EEGetHeight() * 0.772f), ctTex[0]);
 	ctFrameQuad.SetLocalZOrder(8.f);
+	ctFrameQuad.SetIsAlive(false);
 	freePlay.AddObject(&ctFrameQuad);
 	EESlide ctSlide(Rect_Float((float)EEGetWidth() * 0.2619f, (float)EEGetHeight() * 0.661f, (float)EEGetWidth() * 0.7388f, (float)EEGetHeight() * 0.732f), &ctTex[1], 2);
 	ctSlide.SetLocalZOrder(7.f);
+	ctSlide.SetIsAlive(false);
 	freePlay.AddObject(&ctSlide);
 	EESlide ctSuccessSlide(Rect_Float((float)EEGetWidth() * 0.29f, (float)EEGetHeight() * 0.424f, (float)EEGetWidth() * 0.71f, (float)EEGetHeight() * 0.576f), &ctTex[3], 2);
 	ctSuccessSlide.SetLocalZOrder(7.f);
+	ctSuccessSlide.SetIsAlive(false);
 	freePlay.AddObject(&ctSuccessSlide);
 	//EESlide ctUnsuccessSlide(Rect_Float((float)EEGetWidth() * 0.29f, (float)EEGetHeight() * 0.424f, (float)EEGetWidth() * 0.71f, (float)EEGetHeight() * 0.576f), &ctTex[5], 1);
 	//ctUnsuccessSlide.SetLocalZOrder(7.f);
 	//freePlay.AddObject(&ctUnsuccessSlide);
 	EEQuad2D ctTinyFrameQuad(Rect_Float((float)EEGetWidth() * 0.8713f, (float)EEGetHeight() * 0.1011f, (float)EEGetWidth() * 0.9925f, (float)EEGetHeight() * 0.1578f), ctTex[6]);
 	ctTinyFrameQuad.SetLocalZOrder(8.f);
+	ctTinyFrameQuad.SetIsAlive(false);
 	freePlay.AddObject(&ctTinyFrameQuad);
 	EEQuad2D ctTinyQuad(Rect_Float((float)EEGetWidth() * 0.88f, (float)EEGetHeight() * 0.1156f, (float)EEGetWidth() * 0.983125f, (float)EEGetHeight() * 0.1422f), ctTex[7]);
 	ctTinyQuad.SetLocalZOrder(7.f);
+	ctTinyQuad.SetIsAlive(false);
 	freePlay.AddObject(&ctTinyQuad);
 
 	//exit
@@ -801,7 +809,7 @@ int main(int _argc, char** _argv)
 	desc.isSSAA = true;					//是开启抗锯齿
 	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
-
+	FreePlay();
 	int flag = 0;
 	while (flag = MainScene())
 	{

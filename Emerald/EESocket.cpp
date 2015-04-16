@@ -112,9 +112,33 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	SOCKET EESocket::GetSocket()
+	SOCKET EESocket::Socket()
 	{
 		return m_socket;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	std::string EESocket::IP()
+	{
+		return std::string(inet_ntoa(((sockaddr_in*)&m_addr)->sin_addr));
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	u_short EESocket::Port()
+	{
+		return ((sockaddr_in*)&m_addr)->sin_port;
+	}
+
+	// EESocket_APIs
+	//----------------------------------------------------------------------------------------------------
+	std::string EEGetIP(sockaddr_storage& _addr)
+	{
+		return std::string(inet_ntoa(((sockaddr_in*)&_addr)->sin_addr));
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	u_short EEGetPort(sockaddr_storage& _addr)
+	{
+		return ((sockaddr_in*)&_addr)->sin_port;
+	}
 }

@@ -88,6 +88,12 @@
     <Filter Include="源文件\Emerald\EEParticle">
       <UniqueIdentifier>{094316f0-c2d1-4899-95f0-5ab0bbc75d16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEObject">
+      <UniqueIdentifier>{1274e6eb-1f87-43ae-b966-c2cc34d98426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEObject">
+      <UniqueIdentifier>{b7d91fcf-65b4-42ea-969f-f8aeb0760a9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -112,9 +118,6 @@
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EECamera.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="EEObject.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EECollision.cpp">
@@ -324,9 +327,6 @@
     <ClCompile Include="EEAction.cpp">
       <Filter>源文件\Emerald\EEAction</Filter>
     </ClCompile>
-    <ClCompile Include="animation.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="DNSServer.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -335,6 +335,27 @@
     </ClCompile>
     <ClCompile Include="EEParticle.cpp">
       <Filter>源文件\Emerald\EEParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="NoteMap.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
+    <ClCompile Include="EELine2D.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Line2d.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEObject.cpp">
+      <Filter>源文件\Emerald\EEObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EEObject2D.cpp">
+      <Filter>源文件\Emerald\EEObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EEObject3D.cpp">
+      <Filter>源文件\Emerald\EEObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -366,9 +387,6 @@
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EECamera.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
-    <ClInclude Include="EEObject.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EECollision.h">
@@ -503,6 +521,21 @@
     <ClInclude Include="EEParticle.h">
       <Filter>头文件\Emerald\EEParticle</Filter>
     </ClInclude>
+    <ClInclude Include="EELine2D.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EEObject.h">
+      <Filter>头文件\Emerald\EEObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EEObject2D.h">
+      <Filter>头文件\Emerald\EEObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EEObject3D.h">
+      <Filter>头文件\Emerald\EEObject</Filter>
+    </ClInclude>
+    <ClInclude Include="NoteMap.h">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -543,6 +576,9 @@
     </None>
     <None Include="EEShader\EEBlurShader.hlsl">
       <Filter>头文件\Emerald\EEShader\EEBlurShader</Filter>
+    </None>
+    <None Include="EEShader\EELine2DShader.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #ifndef _EE_QUAD2D_H_
 #define _EE_QUAD2D_H_
 
-#include "EEObject.h"
+#include "EEObject2D.h"
 #include "EETexture.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ namespace Emerald
 
 	//EEQuad2D
 	//----------------------------------------------------------------------------------------------------
-	class EEQuad2D : public EEObject
+	class EEQuad2D : public EEObject2D
 	{
 	protected:
 		static bool InitializeQuad2D();
@@ -78,31 +78,29 @@ namespace Emerald
 		virtual float GetHeight() const;
 		virtual FLOAT3 GetCenter() const;
 		virtual FLOAT3 GetRowCenter() const;
-		virtual MATRIX GetViewMatrix();
-		virtual MATRIX GetProjectionMatrix();
-		//texture
+		// texture
 		virtual EETexture* GetTexture();
 		virtual int GetTexIndex();
 
-		//position
+		// position
 		virtual Rect_Float GetFinalRect() const;
 		virtual FLOAT3 GetFinalCenter() const;
 
 	protected:
-		//cbuffer
+		// cbuffer
 		virtual bool MapQuad2DBuffer();
-		//state
+		// state
 		virtual bool UpdateObjectState();
-		//vbuffer
+		// vbuffer
 		bool CreateQuadVertexBuffer(int _verticesNum = 4);
 
 	protected:
-		//the size of the quad
+		// the size of the quad
 		Rect_Float m_quadRect;
 		float m_quadWidth, m_quadHeight;
-		//the vertex buffer of the quad
+		// the vertex buffer of the quad
 		ID3D11Buffer *m_quadVB;
-		//the texture of the quad if need
+		// the texture of the quad
 		EETexture m_quadTex;
 		Rect_Float m_texRect;
 		bool m_isUseColor;

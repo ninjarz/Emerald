@@ -90,6 +90,7 @@ namespace Emerald
 		virtual bool SetTriggeredFunc(std::function<void(void)> _funcPtr);
 		//action
 		virtual void AddThread(boost::thread* _thread);
+		virtual bool RemoveThread();
 
 		//life
 		bool IsAlive();

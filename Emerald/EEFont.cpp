@@ -41,7 +41,7 @@ namespace Emerald
 			}
 
 			s_fontTex.SetTexture(L"EEFont/EEFont.dds");
-			std::ifstream fin("EEFont/EEFontData.txt");
+			std::ifstream fin(L"EEFont/EEFontData.txt");
 			if (fin.is_open())
 			{
 				s_fontData = new EEFontData[95];

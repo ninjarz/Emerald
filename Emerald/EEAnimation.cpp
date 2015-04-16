@@ -10,10 +10,42 @@ namespace Emerald
 		:
 		EEObject(),
 		m_frames(),
+		m_backup(),
 		m_startTime((float)EECore::s_EECore->GetTotalTime()),
 		m_isLoop(false)
 	{
 
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	EEAnimation::EEAnimation(const EEAnimation& _animation)
+		:
+		EEObject(_animation),
+		m_frames(),
+		m_backup(),
+		m_startTime(_animation.m_startTime),
+		m_isLoop(_animation.m_isLoop)
+	{
+		for (EEAnimationFrame* frame : _animation.m_backup)
+		{
+			m_backup.push_back(new EEAnimationFrame(*frame));
+			m_backup.back()->object->SetParent(this);
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEAnimation::~EEAnimation()
+	{
+		while (!m_frames.empty())
+		{
+			EEAnimationFrame* frame = m_frames.front();
+			SAFE_DELETE(frame);
+			m_frames.pop();
+		}
+		for (EEAnimationFrame* frame : m_backup)
+		{
+			SAFE_DELETE(frame);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -42,7 +74,7 @@ namespace Emerald
 			{
 				if (!frame->isRunning)
 				{
-					for (std::function<boost::thread*(EEObject*, float)>& action : frame->actions)
+					for (auto& action : frame->actions)
 					{
 						action(frame->object, -deltaTime);
 					}
@@ -51,6 +83,7 @@ namespace Emerald
 				return frame->object->Update();
 			}
 		}
+		// reset
 		else if (m_isLoop)
 		{
 			for (EEAnimationFrame* frame : m_backup)
@@ -74,7 +107,8 @@ namespace Emerald
 
 		if (!m_frames.empty())
 		{
-			return m_frames.front()->object->Render();
+			if (m_frames.front()->isRunning)
+				return m_frames.front()->object->Render();
 		}
 
 
@@ -84,6 +118,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEAnimation::Start()
 	{
+		if (IsAlive() && !m_frames.empty())
+			return false;
+
 		// set to start
 		SetIsAlive(true);
 		m_startTime = (float)EECore::s_EECore->GetTotalTime();
@@ -114,6 +151,111 @@ namespace Emerald
 			m_backup.back()->id = m_backup.size() - 1;
 			m_backup.back()->object->SetParent(this);
 		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEAnimation::SetIsLoop(bool _isLoop)
+	{
+		m_isLoop = _isLoop;
+	}
+
+	// EEAnimationEmitter
+	//----------------------------------------------------------------------------------------------------
+	EEAnimationEmitter::EEAnimationEmitter()
+		:
+		m_animations(),
+		m_backup(nullptr)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEAnimationEmitter::EEAnimationEmitter(const EEAnimationEmitter& _emitter)
+		:
+		m_animations(),
+		m_backup(new EEAnimation(*_emitter.m_backup))
+	{
+
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	EEAnimationEmitter::~EEAnimationEmitter()
+	{
+		for (EEAnimation* animation : m_animations)
+		{
+			SAFE_DELETE(animation);
+		}
+		SAFE_DELETE(m_backup);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEAnimationEmitter::Update()
+	{
+		if (!EEObject::Update())
+			return false;
+
+		for (EEAnimation* animation : m_animations)
+		{
+			animation->Update();
+		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEAnimationEmitter::Render()
+	{
+		if (!EEObject::Render())
+			return false;
+
+		for (EEAnimation* animation : m_animations)
+		{
+			animation->Render();
+		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEAnimationEmitter::Emit(const FLOAT3& _pos)
+	{
+		if (m_backup)
+		{
+			bool flag = false;
+			for (EEAnimation* animation : m_animations)
+			{
+				if (!animation->IsAlive())
+				{
+					animation->SetPosition(_pos);
+					animation->SetIsAlive(true);
+					animation->Start();
+					flag = true;
+				}
+			}
+
+			if (!flag)
+			{
+				m_animations.push_back(new EEAnimation(*m_backup));
+				EEAnimation* animation = m_animations.back();
+				animation->SetPosition(_pos);
+				animation->SetIsAlive(true);
+				animation->Start();
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEAnimationEmitter::SetAnimation(const EEAnimation& _animation)
+	{
+		SAFE_DELETE(m_backup);
+
+		m_backup = new EEAnimation(_animation);
 
 		return true;
 	}

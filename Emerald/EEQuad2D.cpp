@@ -118,7 +118,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D()
 		:
-		EEObject(),
+		EEObject2D(),
 		m_quadRect(),
 		m_quadWidth(0.0f),
 		m_quadHeight(0.0f),
@@ -137,7 +137,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const FLOAT3& _position)
 		:
-		EEObject(_position),
+		EEObject2D(_position),
 		m_quadRect(_position.x, _position.y, _position.x, _position.y),
 		m_quadWidth(0.0f),
 		m_quadHeight(0.0f),
@@ -156,7 +156,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height)
 		:
-		EEObject(_position),
+		EEObject2D(_position),
 		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
 		m_quadWidth(_width),
 		m_quadHeight(_height),
@@ -175,7 +175,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
 		:
-		EEObject(_position),
+		EEObject2D(_position),
 		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
 		m_quadWidth(_width),
 		m_quadHeight(_height),
@@ -194,7 +194,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float &_rect)
 		:
-		EEObject(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -213,7 +213,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float& _rect, const EEColor& _color)
 		:
-		EEObject(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -233,7 +233,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float &_rect, const EETexture& _tex)
 		:
-		EEObject(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -252,7 +252,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex)
 		:
-		EEObject(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -271,18 +271,23 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const EEQuad2D& _quad)
 		:
-		EEObject(_quad),
+		EEObject2D(_quad),
 		m_quadRect(_quad.m_quadRect),
 		m_quadWidth(_quad.m_quadWidth),
 		m_quadHeight(_quad.m_quadHeight),
-		m_quadVB(_quad.m_quadVB),
+		m_quadVB(nullptr),  // nullptr
 		m_quadTex(_quad.m_quadTex),
 		m_texRect(_quad.m_texRect),
 		m_isUseColor(_quad.m_isUseColor),
 		m_isUseTex(_quad.m_isUseTex),
 		m_texIndex(_quad.m_texIndex)
 	{
-
+		D3D11_BUFFER_DESC bufferDesc;
+		_quad.m_quadVB->GetDesc(&bufferDesc);
+		if (SUCCEEDED(EECore::s_EECore->GetDevice()->CreateBuffer(&bufferDesc, NULL, &m_quadVB)))
+		{
+			EECore::s_EECore->GetDeviceContext()->CopyResource(m_quadVB, _quad.m_quadVB);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -507,18 +512,6 @@ namespace Emerald
 	FLOAT3 EEQuad2D::GetRowCenter() const
 	{
 		return FLOAT3(m_quadWidth / 2, m_quadHeight / 2, 0.0f);
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	MATRIX EEQuad2D::GetViewMatrix()
-	{
-		return MATRIX::IDENTITY;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	MATRIX EEQuad2D::GetProjectionMatrix()
-	{
-		return EECore::s_EECore->GetOrthoLHMatrix();
 	}
 
 	//----------------------------------------------------------------------------------------------------

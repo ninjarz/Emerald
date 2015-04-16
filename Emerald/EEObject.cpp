@@ -109,13 +109,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject::~EEObject()
 	{
-		for (boost::thread* thread : m_threads)
-		{
-			thread->interrupt();
-			thread->join();
-			delete thread;
-		}
-		m_threads.clear();
+		RemoveThread();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -305,6 +299,20 @@ namespace Emerald
 	void EEObject::AddThread(boost::thread* _thread)
 	{
 		m_threads.push_back(_thread);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::RemoveThread()
+	{
+		for (boost::thread* thread : m_threads)
+		{
+			thread->interrupt();
+			thread->join();
+			delete thread;
+		}
+		m_threads.clear();
+
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

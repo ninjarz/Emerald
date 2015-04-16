@@ -75,7 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
@@ -117,9 +117,12 @@
     <ClCompile Include="EEGUI.cpp" />
     <ClCompile Include="EEHelper.cpp" />
     <ClCompile Include="EEIntBoard.cpp" />
+    <ClCompile Include="EELine2D.cpp" />
     <ClCompile Include="EELineEditer.cpp" />
     <ClCompile Include="EEMemoryLeak.cpp" />
     <ClCompile Include="EEMusic.cpp" />
+    <ClCompile Include="EEObject2D.cpp" />
+    <ClCompile Include="EEObject3D.cpp" />
     <ClCompile Include="EEParticle.cpp" />
     <ClCompile Include="EEProgressBar.cpp" />
     <ClCompile Include="EEQuad2D.cpp" />
@@ -142,6 +145,8 @@
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
     <ClCompile Include="FontTest.cpp" />
+    <ClCompile Include="Line2d.cpp" />
+    <ClCompile Include="NoteMap.cpp" />
     <ClCompile Include="Picking.cpp" />
     <ClCompile Include="Ripple.cpp" />
     <ClCompile Include="Slide.cpp" />
@@ -188,9 +193,12 @@
     <ClInclude Include="EEGUI.h" />
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEIntBoard.h" />
+    <ClInclude Include="EELine2D.h" />
     <ClInclude Include="EELineEditer.h" />
     <ClInclude Include="EEMemoryLeak.h" />
     <ClInclude Include="EEMusic.h" />
+    <ClInclude Include="EEObject2D.h" />
+    <ClInclude Include="EEObject3D.h" />
     <ClInclude Include="EEParticle.h" />
     <ClInclude Include="EEProgressbar.h" />
     <ClInclude Include="EEQuad2D.h" />
@@ -216,6 +224,7 @@
     <ClInclude Include="Emerald.h" />
     <ClInclude Include="EESlide.h" />
     <ClInclude Include="EEFloatBoard.h" />
+    <ClInclude Include="NoteMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEQuad2DShader.hlsl">
@@ -267,6 +276,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEBlurShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EELine2DShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

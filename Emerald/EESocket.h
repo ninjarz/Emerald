@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EESocket
+	// EESocket
 	//----------------------------------------------------------------------------------------------------
 	class EESocket
 	{
@@ -29,7 +29,9 @@ namespace Emerald
 		EESocket(const EESocket& _socket);
 		virtual ~EESocket();
 		
-		SOCKET GetSocket();
+		SOCKET Socket();
+		std::string IP();
+		u_short Port();
 
 	protected:
 		SOCKET m_socket;
@@ -37,6 +39,10 @@ namespace Emerald
 		int m_addrLen;
 	};
 
+	// EESocket_APIs
+	//----------------------------------------------------------------------------------------------------
+	std::string EEGetIP(sockaddr_storage& _addr);
+	u_short EEGetPort(sockaddr_storage& _addr);
 }
 
 #endif
