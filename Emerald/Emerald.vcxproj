@@ -124,6 +124,7 @@
     <ClCompile Include="EEObject2D.cpp" />
     <ClCompile Include="EEObject3D.cpp" />
     <ClCompile Include="EEParticle.cpp" />
+    <ClCompile Include="EEPoints2D.cpp" />
     <ClCompile Include="EEProgressBar.cpp" />
     <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
@@ -148,6 +149,8 @@
     <ClCompile Include="Line2d.cpp" />
     <ClCompile Include="NoteMap.cpp" />
     <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="Points.cpp" />
+    <ClCompile Include="Progress.cpp" />
     <ClCompile Include="Ripple.cpp" />
     <ClCompile Include="Slide.cpp" />
     <ClCompile Include="Thread.cpp" />
@@ -200,6 +203,7 @@
     <ClInclude Include="EEObject2D.h" />
     <ClInclude Include="EEObject3D.h" />
     <ClInclude Include="EEParticle.h" />
+    <ClInclude Include="EEPoints2D.h" />
     <ClInclude Include="EEProgressbar.h" />
     <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
@@ -281,6 +285,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EELine2DShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEPoints2DShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

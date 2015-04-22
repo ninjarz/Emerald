@@ -94,6 +94,9 @@
     <Filter Include="源文件\Emerald\EEObject">
       <UniqueIdentifier>{b7d91fcf-65b4-42ea-969f-f8aeb0760a9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Demo\NewFilter1">
+      <UniqueIdentifier>{9a10a4b0-5f83-443b-bc77-841e2e1de006}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -357,6 +360,15 @@
     <ClCompile Include="Animation.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="Progress.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEPoints2D.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Points.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -536,6 +548,9 @@
     <ClInclude Include="NoteMap.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
+    <ClInclude Include="EEPoints2D.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -578,6 +593,9 @@
       <Filter>头文件\Emerald\EEShader\EEBlurShader</Filter>
     </None>
     <None Include="EEShader\EELine2DShader.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EEPoints2DShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
     </None>
   </ItemGroup>

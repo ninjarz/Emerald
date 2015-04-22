@@ -2,6 +2,8 @@
 #ifndef _EE_HELPER_H_
 #define _EE_HELPER_H_
 
+#include <string>
+
 #define SAFE_RELEASE(x)      { if(x) { (x)->Release(); (x)=nullptr; } }
 #define SAFE_DELETE(x)       { if(x) { delete (x);     (x)=nullptr; } }
 #define SAFE_DELETE_ARRAY(x) { if(x) { delete[] (x);   (x)=nullptr; } }
@@ -11,6 +13,7 @@ namespace Emerald
 {
 	bool EEIsBigEndian();
 	void ResumeSpeed();
+	std::string EEOpenFile();
 }
 
 #endif

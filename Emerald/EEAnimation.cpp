@@ -187,6 +187,7 @@ namespace Emerald
 		{
 			SAFE_DELETE(animation);
 		}
+		m_animations.clear();
 		SAFE_DELETE(m_backup);
 	}
 

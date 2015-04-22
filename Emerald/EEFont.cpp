@@ -34,12 +34,14 @@ namespace Emerald
 			{
 				return false;
 			}
-			error = FT_Set_Pixel_Sizes(s_face, 0, 16);
+			error = FT_Set_Pixel_Sizes(s_face, 0, 160);
 			if (error)
 			{
 				return false;
 			}
 
+
+			//----------------------------------------------------------------------------------------------------
 			s_fontTex.SetTexture(L"EEFont/EEFont.dds");
 			std::ifstream fin(L"EEFont/EEFontData.txt");
 			if (fin.is_open())

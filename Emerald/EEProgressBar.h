@@ -30,6 +30,8 @@ namespace Emerald
 		EETexture* GetProgressTex();
 		EETexture* GetFrameTex();
 
+		virtual void OnMouseTriggered(const Point& _pos);
+
 	private:
 		//the quad of the frame
 		EEQuad2D m_progressFrame;

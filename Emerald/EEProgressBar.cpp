@@ -53,6 +53,8 @@ namespace Emerald
 		if (!EEObject::Update())
 			return false;
 
+		UpdateObjectState();
+
 		if (m_isPositionDirty)
 		{
 			m_isPositionDirty = false;
@@ -60,7 +62,7 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isProgressDirty)
 		{
-			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale - 1.0f) * 0.5f;
+			FLOAT3 scale = (GetFinalScale() - 1.0f) * 0.5f;
 
 			Rect_Float rect(
 				-m_quadWidth * scale.x,
@@ -89,23 +91,20 @@ namespace Emerald
 			memcpy(mappedResource.pData, vertices, sizeof(vertices));
 			deviceContext->Unmap(m_quadVB, 0);
 
+			if (m_isProgressDirty)
+			{
+				if (m_callbackFunc)
+				{
+					m_callbackFunc();
+				}
+			}
+
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
-			//the progress has been updated here
 			m_isProgressDirty = false;
 		}
 
 		m_progressFrame.Update();
-
-		if (m_progress >= 1.0f)
-		{
-			if (m_callbackFunc)
-			{
-				//(*m_callbackFunc)();
-				m_callbackFunc();
-				m_callbackFunc = []{};
-			}
-		}
 
 		return true;
 	}
@@ -159,5 +158,13 @@ namespace Emerald
 	EETexture* EEProgressbar::GetFrameTex()
 	{
 		return m_progressFrame.GetTexture();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEProgressbar::OnMouseTriggered(const Point& _pos)
+	{
+		EEObject::OnMouseTriggered(_pos);
+
+		SetProgress((_pos.x - m_position.x) / m_quadWidth);
 	}
 }

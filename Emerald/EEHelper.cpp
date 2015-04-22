@@ -31,4 +31,28 @@ namespace Emerald
 			::CloseHandle(hMyHandle);
 		}
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::string EEOpenFile()
+	{
+		std::string filePos;
+		filePos.resize(100);
+		OPENFILENAMEA ofn = { 0 };
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner = NULL;
+		ofn.lpstrFilter = "文本文件(*.txt)\0*.txt\0CPP(*.cpp)\0*.cpp\0所有文件(*.*)\0*.*\0";
+		ofn.lpstrInitialDir = NULL;
+		ofn.lpstrFile = &filePos[0];
+		ofn.nMaxFile = 100;
+		ofn.nFilterIndex = 0;
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER;
+
+		int result = GetOpenFileNameA(&ofn);
+		if (result) 
+		{
+			//return filePos;
+		}
+
+		return filePos;
+	}
 }

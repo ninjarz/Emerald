@@ -25,6 +25,7 @@ namespace Emerald
 		{
 			SAFE_DELETE(object);
 		}
+		inline void SetObject(EEObject& _obj) { SAFE_DELETE(object);  object = _obj.Clone(); }
 
 		EEAnimationFrame& operator= (const EEAnimationFrame& _frame)
 		{
