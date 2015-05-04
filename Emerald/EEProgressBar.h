@@ -13,8 +13,8 @@ namespace Emerald
 	class EEProgressbar : public EEQuad2D
 	{
 	public:
-		EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(void)> _funcPtr = []{});
-		EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(void)> _funcPtr = []{});
+		EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr = [](float){});
+		EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr = [](float){});
 		EEProgressbar(const EEProgressbar& _progressbar);
 		virtual ~EEProgressbar();
 
@@ -24,7 +24,7 @@ namespace Emerald
 		//localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
 		bool SetProgress(float _progress);
-		bool SetCallbackFunc(void(*_funcPtr)());
+		bool SetCallbackFunc(void(*_funcPtr)(float));
 
 		float GetProgress();
 		EETexture* GetProgressTex();
@@ -40,7 +40,7 @@ namespace Emerald
 		bool m_isProgressDirty;
 		//callback function
 		//void(*m_callbackFunc)(void);
-		std::function<void(void)> m_callbackFunc;
+		std::function<void(float)> m_callbackFunc;
 	};
 }
 

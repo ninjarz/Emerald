@@ -37,10 +37,13 @@ namespace Emerald
 		virtual bool Update();
 		virtual bool Render();
 
+		void AddPoints(std::vector<FLOAT2>& _points);
+
 	protected:
 		bool CreatePointsVertexBuffer();
 
 	protected:
+		bool m_isPointsDirty;
 		std::vector<FLOAT2> m_points;
 		ID3D11Buffer *m_pointsVB;
 	};

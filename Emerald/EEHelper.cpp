@@ -55,4 +55,45 @@ namespace Emerald
 
 		return filePos;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::wstring AnsiToUnicode(const char* _str)
+	{
+		int len = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, _str, -1, NULL, 0);
+		if (len <= 1)
+		{
+			return std::wstring();
+		}
+		std::wstring result;
+		// memo: len - 1
+		result.resize(len);
+		MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, _str, -1, &result[0], len);
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::wstring AnsiToUnicode(const std::string& _str)
+	{
+		return AnsiToUnicode(_str.data());
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::string UnicodeToAnsi(const wchar_t* _str)
+	{
+		int len = WideCharToMultiByte(CP_ACP, 0, _str, -1, NULL, 0, NULL, NULL);
+		if (len <= 1)
+		{
+			return std::string();
+		}
+		std::string result;
+		result.resize(len);
+		WideCharToMultiByte(CP_ACP, 0, _str, -1, &result[0], len, NULL, NULL);
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::string UnicodeToAnsi(const std::wstring& _str)
+	{
+		return UnicodeToAnsi(_str.data());
+	}
 }

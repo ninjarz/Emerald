@@ -94,7 +94,7 @@
     <Filter Include="源文件\Emerald\EEObject">
       <UniqueIdentifier>{b7d91fcf-65b4-42ea-969f-f8aeb0760a9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Demo\NewFilter1">
+    <Filter Include="源文件\Demo\Homework">
       <UniqueIdentifier>{9a10a4b0-5f83-443b-bc77-841e2e1de006}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -367,7 +367,7 @@
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
     <ClCompile Include="Points.cpp">
-      <Filter>源文件\Demo</Filter>
+      <Filter>源文件\Demo\Homework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

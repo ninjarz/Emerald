@@ -31,6 +31,210 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1)
+	{
+		float k = abs(_p1.x - _p0.x) >= abs(_p1.y - _p0.y) ? abs(_p1.x - _p0.x) : abs(_p1.y - _p0.y);
+		FLOAT2 delta((_p1.x - _p0.x) / k, (_p1.y - _p0.y) / k);
+		FLOAT2 pos = _p0;
+		std::vector<FLOAT2> result;
+		for (float i = 0.f; i < k; ++i)
+		{
+			result.push_back(pos += delta);
+		}
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1)
+	{
+		FLOAT2 delta(_p1.x - _p0.x, _p1.y - _p0.y);
+		float e = 2 * delta.y - delta.x;
+		FLOAT2 pos = _p0;
+		std::vector<FLOAT2> result;
+		while (pos.x != _p1.x)
+		{
+			if (e >= 0)
+			{
+				++pos.y;
+				e -= 2 * delta.x;
+			}
+			else
+			{
+				++pos.x;
+				e += 2 * delta.y;
+			}
+			result.push_back(pos);
+		}
+
+		return result;
+	}
+
+	// 
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEBresenhamArc(const FLOAT2& _pos, const float _r)
+	{
+		float d = 3 - 2 * _r;
+		FLOAT2 pos = FLOAT2(0.f, _r);
+		std::vector<FLOAT2> result;
+
+		// 45бу
+		result.push_back(pos);
+		while (pos.x++ <= pos.y)
+		{
+			if (d < 0)
+			{
+				result.push_back(pos);
+				d += 4 * pos.x + 2;
+			}
+			else
+			{
+				--pos.y;
+				result.push_back(pos);
+				d += 4 * pos.x - 4 * pos.y + 2;
+			}
+		}
+		// 90бу
+		unsigned int size = result.size();
+		for (unsigned int i = 0; i < size; ++i)
+		{
+			result.push_back(FLOAT2(result[i].y, result[i].x));
+		}
+		// 180бу
+		size = result.size();
+		for (unsigned int i = 0; i < size; ++i)
+		{
+			result.push_back(FLOAT2(-result[i].x, result[i].y));
+		}
+		// 360бу
+		size = result.size();
+		for (unsigned int i = 0; i < size; ++i)
+		{
+			result.push_back(FLOAT2(result[i].x, -result[i].y));
+		}
+		// shift
+		for (FLOAT2& pos : result)
+			pos += _pos;
+
+		return result;
+	}
+
+	// f(x,y) = (x-xc)^2 + (y-yc)^2 - r^2
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEPNArc(const FLOAT2& _pos, const float _r)
+	{
+		float f = 0.f;
+		FLOAT2 pos = FLOAT2(0.f, _r);
+		std::vector<FLOAT2> result;
+
+		// 45бу
+		result.push_back(pos);
+		while (pos.x <= pos.y)
+		{
+			if (f <= 0.f)
+			{
+				++pos.x;
+				result.push_back(pos);
+				f += 2 * pos.x - 1;
+			}
+			else
+			{
+				--pos.y;
+				result.push_back(pos);
+				f += -2 * pos.y - 1;
+			}
+		}
+		// 90бу
+		unsigned int size = result.size();
+		for (unsigned int i = 0; i < size; ++i)
+		{
+			result.push_back(FLOAT2(result[i].y, result[i].x));
+		}
+		// 180бу
+		size = result.size();
+		for (unsigned int i = 0; i < size; ++i)
+		{
+			result.push_back(FLOAT2(-result[i].x, result[i].y));
+		}
+		// 360бу
+		size = result.size();
+		for (unsigned int i = 0; i < size; ++i)
+		{
+			result.push_back(FLOAT2(result[i].x, -result[i].y));
+		}
+		// shift
+		for (FLOAT2& pos : result)
+			pos += _pos;
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EETest()
+	{
+		/*
+		auto mask = [=](float x, float y){
+			return (y - 300.f)*(500.f - 700.f) - (x - 700.f)*(200.f - 300.f) > 0;
+		};
+
+		std::vector<FLOAT2> result;
+		for (float i = 0; i < 800.f; ++i)
+		for (float j = 0; j < 450.f; ++j)
+		if (mask(i, j))
+			result.push_back(FLOAT2(i, j));
+
+		return result;
+		*/
+		std::vector<FLOAT2> result;
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void putpolywiths(int* p, int n) {
+		float alpha = EE_PI / 4, k = tan(alpha), db = 4;
+
+		// get range of b
+		// TODO: here magic
+		int bmin = 1000, bmax = -1;
+		auto getb = [](int x, int y, int k) {
+			return y - k*x;
+		};
+		for (int i = 0; i < n; i += 1) {
+			int b = getb(p[i * 2], p[i * 2 + 1], k);
+			bmin = min(b, bmin);
+			bmax = max(b, bmax);
+		}
+		struct Line{ int k, b; };
+		struct Point{ int x, y; };
+		struct Line2{ Point a, b; };
+		auto getintersect = [](int x0, int y0, int x1, int y1, int b, float k, int& ix, int& iy) {
+
+			if (abs(k*x0 + y1 - k*x1 + y0) <= 0.01) return 0;
+			// k f
+			float t = k*(x0 - x1) - y0 + y1;
+			ix = (b*(x1 - x0) + x0*y1 - x1*y0) / t;
+			iy = ((-b*y0) + b*y1 + k*x0*y1 - k*x1*y0) / t;
+			if (x0>x1) std::swap(x0, x1);
+			if (x0 > ix || ix > x1) return 0; // box detection
+			return 1;
+		};
+
+		for (int b = bmin; b < bmax; b += db) {
+			int x0, y0, x1, y1;
+			int i;
+			for (i = 0; i < n; i += 1) {
+				int t = i * 2;
+				if (getintersect(p[i * 2], p[i * 2 + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x0, y0)) break;
+			}
+			for (++i; i < n; i += 1) {
+				int t = i * 2;
+				if (getintersect(p[i * 2], p[i * 2 + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x1, y1)) break;
+			}
+			//EEPoints2D points(EEBresenhamLine(FLOAT2(x0, y0), FLOAT2(x1, y1), c);
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixRotationAxis(const FLOAT3& axis, const FLOAT radians)
 	{
 		FLOAT3 axisN = axis.GetNormalization();

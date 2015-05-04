@@ -419,6 +419,7 @@ namespace Emerald
 		m_quadWidth = _rect.z - _rect.x;
 		m_quadHeight = _rect.w - _rect.y;
 		m_isPositionDirty = true;
+		m_isScaleDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -427,6 +428,7 @@ namespace Emerald
 		m_quadWidth = _width;
 		m_quadRect.z = m_quadRect.x + _width;
 		m_isPositionDirty = true;
+		m_isScaleDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -435,6 +437,7 @@ namespace Emerald
 		m_quadHeight = _height;
 		m_quadRect.w = m_quadRect.y + _height;
 		m_isPositionDirty = true;
+		m_isScaleDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <cmath>
+#include <vector>
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -1139,9 +1140,15 @@ namespace Emerald
 		}
 	};
 
+	// TODO: INT2 version
 	//----------------------------------------------------------------------------------------------------
 	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t);
 	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t);
+	std::vector<FLOAT2> EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1);
+	std::vector<FLOAT2> EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1);
+	std::vector<FLOAT2> EEBresenhamArc(const FLOAT2& _pos, const float _r);
+	std::vector<FLOAT2> EEPNArc(const FLOAT2& _pos, const float _r);
+	std::vector<FLOAT2> EETest();
 
 	//----------------------------------------------------------------------------------------------------
 	MATRIX MatrixRotationAxis(const FLOAT3& axis, const FLOAT radians);

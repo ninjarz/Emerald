@@ -6,7 +6,7 @@ namespace Emerald
 {
 	//EEProgressBar
 	//----------------------------------------------------------------------------------------------------
-	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(void)> _funcPtr)
+	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr)
 		:
 		EEQuad2D(_progressRect, _progressTex),
 		m_progressFrame(Rect_Float(0.0f, 0.0f, _progressRect.z - _progressRect.x, _progressRect.w - _progressRect.y), _frameTex),
@@ -18,7 +18,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(void)> _funcPtr)
+	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr)
 		:
 		EEQuad2D(_progressRect, _progressTex),
 		m_progressFrame(_frameRect, _frameTex),
@@ -95,7 +95,7 @@ namespace Emerald
 			{
 				if (m_callbackFunc)
 				{
-					m_callbackFunc();
+					m_callbackFunc(m_progress);
 				}
 			}
 
@@ -135,7 +135,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEProgressbar::SetCallbackFunc(void(*_funcPtr)())
+	bool EEProgressbar::SetCallbackFunc(void(*_funcPtr)(float))
 	{
 		m_callbackFunc = _funcPtr;
 

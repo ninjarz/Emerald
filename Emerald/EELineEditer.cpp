@@ -10,7 +10,7 @@ namespace Emerald
 	EELineEditer::EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
-		m_text(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, "")
+		m_text(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
 	{
 		m_text.SetParent(this);
 	}
@@ -19,7 +19,7 @@ namespace Emerald
 	EELineEditer::EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _tex),
-		m_text(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, "")
+		m_text(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
 	{
 		m_text.SetParent(this);
 	}
@@ -55,8 +55,8 @@ namespace Emerald
 			if (EECore::s_EECore->IsKeyInput())
 			{
 				//the letter on the LineEditer can not be '\r'
-				char letter = (char)EECore::s_EECore->GetKey();
-				if (letter != '\r' && letter != '\n')
+				wchar_t letter = (wchar_t)EECore::s_EECore->GetKey();
+				if (letter != L'\r' && letter != L'\n')
 				{
 					m_text.AddText(letter);
 				}
@@ -74,11 +74,10 @@ namespace Emerald
 			return false;
 
 		return m_text.Render();
-
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	const std::string& EELineEditer::GetText()
+	const std::wstring& EELineEditer::GetText()
 	{
 		return m_text.GetText();
 	}

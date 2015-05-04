@@ -121,6 +121,7 @@ namespace Emerald
 		bool SetTexture(unsigned int _width, unsigned int _height);
 		bool SetTexture(const unsigned char* _buffer, unsigned int _width, unsigned int _height);
 		bool SetTexture(unsigned int _width, unsigned int _height, DXGI_FORMAT _format);
+		bool SetTexture(EEBitmap& _bitmap);
 		bool SetTexture(ID3D11Resource* _resource);
 		bool SetTexture(ID3D11ShaderResourceView* _texture);
 

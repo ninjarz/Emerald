@@ -104,12 +104,11 @@ namespace Emerald
 	EEPoints2D::EEPoints2D(std::vector<FLOAT2>& _points)
 		:
 		EEObject2D(),
+		m_isPointsDirty(true),
 		m_points(_points),
 		m_pointsVB(nullptr)
 	{
 		InitializePoints2D();
-
-		CreatePointsVertexBuffer();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -131,8 +130,11 @@ namespace Emerald
 			m_isPositionDirty = false;
 		}
 
-		if (m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isPointsDirty)
 		{
+			if (m_isPointsDirty)
+				CreatePointsVertexBuffer();
+
 			std::vector<EEPoints2DVertex> vertices(m_points.size());
 			for (unsigned int i = 0; i < m_points.size(); ++i)
 			{
@@ -148,6 +150,7 @@ namespace Emerald
 
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
+			m_isPointsDirty = false;
 		}
 
 		return true;
@@ -173,6 +176,15 @@ namespace Emerald
 		deviceContext->Draw(m_points.size(), 0);
 
 		return true;
+	}
+
+	void EEPoints2D::AddPoints(std::vector<FLOAT2>& _points)
+	{
+		for (FLOAT2& point : _points)
+		{
+			m_points.push_back(point);
+		}
+		m_isPointsDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

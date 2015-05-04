@@ -238,6 +238,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EETexture::SetTexture(EEBitmap& _bitmap)
+	{
+		return SetTexture(_bitmap.GetData(), _bitmap.GetWidth(), _bitmap.GetHeight());
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EETexture::SetTexture(ID3D11Resource* _resource)
 	{
 		SetValue(new EETextureData(_resource));
@@ -307,7 +313,7 @@ namespace Emerald
 						return false;
 					unsigned char* tmp = (unsigned char*)mappedResource.pData;
 					//It have not been verified yet
-					_bitmap.SetData(tmp, m_value->width, m_value->height, mappedResource.RowPitch);
+					_bitmap.SetData(m_value->width, m_value->height, tmp, mappedResource.RowPitch);
 					deviceContext->Unmap(cpuBuf, 0);
 					SAFE_RELEASE(cpuBuf);
 					return true;

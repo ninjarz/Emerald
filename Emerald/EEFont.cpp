@@ -1,7 +1,243 @@
 #include "EEFont.h"
 #include "EECore.h"
-#include <fstream>
 
+//----------------------------------------------------------------------------------------------------
+namespace Emerald
+{
+	//EEFont
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::s_isFontInitialized = false;
+	int EEFont::s_fontWidth = 0;
+	int EEFont::s_fontHeight = 16;
+
+	FT_Library EEFont::s_library = NULL;
+	FT_Face EEFont::s_face = NULL;
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::InitializeFont()
+	{
+		if (!s_isFontInitialized)
+		{
+			FT_Error error = FT_Init_FreeType(&s_library);
+			if (error)
+			{
+				return false;
+			}
+			error = FT_New_Face(s_library, "C:/Windows/Fonts/SIMYOU.TTF", 0, &s_face);
+			if (error)
+			{
+				return false;
+			}
+			error = FT_Set_Pixel_Sizes(s_face, s_fontWidth, s_fontHeight);
+			if (error)
+			{
+				return false;
+			}
+
+			s_isFontInitialized = true;
+		}
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEFont::GetFontBitmap(wchar_t _char)
+	{
+		InitializeFont();
+
+		FT_Error error = FT_Load_Char(s_face, _char, FT_LOAD_RENDER);
+		if (error)
+			return EEBitmap();
+
+		int size = s_face->glyph->bitmap.width * s_face->glyph->bitmap.rows;
+		unsigned char *src = s_face->glyph->bitmap.buffer;
+		std::vector<unsigned char> dst(size * 4);
+		switch (s_face->glyph->bitmap.pixel_mode)
+		{
+		case FT_PIXEL_MODE_NONE:
+			break;
+
+		case FT_PIXEL_MODE_MONO:
+			for (int i = 0; i < s_face->glyph->bitmap.rows; ++i)
+			{
+				int srcIndex = i * s_face->glyph->bitmap.pitch;
+				for (int j = 0; j < s_face->glyph->bitmap.width; ++j)
+				{
+					char pixel = (src[srcIndex + (j >> 3)] & (0x80 >> (j & 7))) ? 255 : 0;
+					int dstIndex = (i * s_face->glyph->bitmap.width + j) << 2;
+					dst[dstIndex + 0] = 255;
+					dst[dstIndex + 1] = 255;
+					dst[dstIndex + 2] = 255;
+					dst[dstIndex + 3] = pixel;
+				}
+			}
+			break;
+
+		case FT_PIXEL_MODE_GRAY:
+			// memo:index + 3 should be 255 and other parts of the color should be src[i]
+			for (int i = 0; i < size; ++i)
+			{
+				int dstIndex = i << 2;
+				dst[dstIndex + 0] = 255;
+				dst[dstIndex + 1] = 255;
+				dst[dstIndex + 2] = 255;
+				dst[dstIndex + 3] = src[i];
+			}
+			break;
+		}
+		//wprintf(L"char:%c left:%d top:%d ax:%d ay:%d\n", _char, s_face->glyph->bitmap_left, s_face->glyph->bitmap_top, s_face->glyph->advance.x >> 6, s_face->glyph->advance.y >> 6);
+		EEBitmap result(s_face->glyph->advance.x >> 6, (int)(s_fontHeight * 1.5f));
+		result.PutData(s_face->glyph->bitmap_left, s_fontHeight - s_face->glyph->bitmap_top, s_face->glyph->bitmap.width, s_face->glyph->bitmap.rows, EEBitmap(s_face->glyph->bitmap.width, s_face->glyph->bitmap.rows, dst.data()));
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEFont::GetFontBitmap(std::wstring _string)
+	{
+		InitializeFont();
+
+		std::vector<EEBitmap> bitmaps;
+		for (wchar_t letter : _string)
+		{
+			bitmaps.push_back(GetFontBitmap(letter));
+		}
+
+		return EEBitmapCombineHorizontal(bitmaps);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const FLOAT3& _position, const EEColor& _color, wchar_t* _text)
+		:
+		EEQuad2D(_position),
+		m_text(_text),
+		m_isTextDirty(true)
+	{
+		InitializeFont();
+
+		SetColor(_color);
+		SetIsUseColor(true);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const EEFont& _font)
+		:
+		EEQuad2D(_font),
+		m_text(_font.m_text),
+		m_isTextDirty(_font.m_isTextDirty)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::~EEFont()
+	{
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::Update()
+	{
+		if (m_isTextDirty)
+		{
+			SetTexture(GetFontBitmap(m_text));
+			SetWidth((float)GetTexture()->GetWidth());
+			SetHeight((float)GetTexture()->GetHeight());
+
+			m_isTextDirty = false;
+		}
+
+		if (!EEQuad2D::Update())
+			return false;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::Render()
+	{
+		if (!EEQuad2D::Render())
+			return false;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::AddText(wchar_t _text)
+	{
+		if (_text == 8)
+		{
+			if (m_text.size())
+				m_text.pop_back();
+		}
+		else if (32 < _text && _text <= 126)
+		{
+			m_text += _text;
+		}
+		else
+		{
+			m_text += _text;
+		}
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::AddText(const wchar_t* _text)
+	{
+		if (*_text == L'\0')
+			return false;
+
+		m_text += _text;
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetText(wchar_t* _text)
+	{
+		m_text = _text;
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const std::wstring& EEFont::GetText()
+	{
+		return m_text;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::IsTextDirty()
+	{
+		return m_isTextDirty;
+	}
+
+	//EEFont_APIS
+	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEGetFontBitmap(wchar_t _char)
+	{
+		return EEFont::GetFontBitmap(_char);
+	}
+
+	EEBitmap EEGetFontBitmap(std::wstring _string)
+	{
+		return EEFont::GetFontBitmap(_string);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEPrint(const FLOAT3& _position, const EEColor& _color, wchar_t* _text)
+	{
+		EEFont font(_position, _color, _text);
+		font.Process();
+	}
+}
+
+
+/*
+// old version
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -34,12 +270,11 @@ namespace Emerald
 			{
 				return false;
 			}
-			error = FT_Set_Pixel_Sizes(s_face, 0, 160);
+			error = FT_Set_Pixel_Sizes(s_face, 0, (int)s_fontHeight);
 			if (error)
 			{
 				return false;
 			}
-
 
 			//----------------------------------------------------------------------------------------------------
 			s_fontTex.SetTexture(L"EEFont/EEFont.dds");
@@ -191,6 +426,7 @@ namespace Emerald
 			break;
 
 		case FT_PIXEL_MODE_GRAY:
+			// memo:index + 3 should be 255 and other parts of the color should be src[i]
 			for (int i = 0; i < size; ++i)
 			{
 				int dstIndex = i << 2;
@@ -205,9 +441,23 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEFont::GetFontBitmap(std::wstring _string)
+	{
+		InitializeFont();
+
+		std::vector<EEBitmap> bitmaps;
+		for (wchar_t letter : _string)
+		{
+			bitmaps.push_back(GetFontBitmap(letter));
+		}
+
+		return EEBitmapCombineHorizontal(bitmaps);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEFont::EEFont(const FLOAT3& _position, const EEColor& _color, char* _text)
 		:
-		EEObject(),
+		EEObject2D(),
 		m_text(_text),
 		m_isTextDirty(true)
 	{
@@ -220,7 +470,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEFont::EEFont(const EEFont& _font)
 		:
-		EEObject(_font),
+		EEObject2D(_font),
 		m_text(_font.m_text),
 		m_isTextDirty(_font.m_isTextDirty)
 	{
@@ -230,7 +480,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEFont::~EEFont()
 	{
-
+		SAFE_RELEASE(m_fontVB);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -381,18 +631,6 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	MATRIX EEFont::GetViewMatrix()
-	{
-		return MATRIX::IDENTITY;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	MATRIX EEFont::GetProjectionMatrix()
-	{
-		return EECore::s_EECore->GetOrthoLHMatrix();
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	const std::string& EEFont::GetText()
 	{
 		return m_text;
@@ -435,6 +673,11 @@ namespace Emerald
 		return EEFont::GetFontBitmap(_char);
 	}
 
+	EEBitmap EEGetFontBitmap(std::wstring _string)
+	{
+		return EEFont::GetFontBitmap(_string);
+	}
+
 	//----------------------------------------------------------------------------------------------------
 	void EEPrint(const FLOAT3& _position, const EEColor& _color, char* _text)
 	{
@@ -442,3 +685,4 @@ namespace Emerald
 		font.Process();
 	}
 }
+*/

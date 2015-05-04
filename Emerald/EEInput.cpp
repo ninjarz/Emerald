@@ -71,6 +71,7 @@ namespace Emerald
 
 		case WM_CHAR:
 			m_keyInput.push((unsigned int)_wparam);
+			//printf("%c %d\n", _wparam, m_keyInput.size());
 			return 0;
 
 		default:

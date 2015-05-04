@@ -14,6 +14,10 @@ namespace Emerald
 	bool EEIsBigEndian();
 	void ResumeSpeed();
 	std::string EEOpenFile();
+	std::wstring AnsiToUnicode(const char* _str);
+	std::wstring AnsiToUnicode(const std::string& _str);
+	std::string UnicodeToAnsi(const wchar_t* _str);
+	std::string UnicodeToAnsi(const std::wstring& _str);
 }
 
 #endif
