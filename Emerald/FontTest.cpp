@@ -1,5 +1,5 @@
 //Font Demo
-#if 1
+#if 0
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -26,7 +26,7 @@ int main(int _argc, char** _argv)
 	EEQuad2D quad0(Rect_Float(0, 0, (float)bitmap.GetWidth(), (float)bitmap.GetHeight()), bitmap);
 	quad0.SetLocalZOrder(10.0f);
 
-	EEBitmap bitmap11 = EEGetFontBitmap(L"大家好!呀呀\'呀呀?");
+	EEBitmap bitmap11 = EEGetFontBitmap(L"大家好!呀\n呀\'呀呀?");
 	EEQuad2D quad1(Rect_Float(0, 200, (float)bitmap11.GetWidth(), (float)bitmap11.GetHeight() + 200), bitmap11);
 	quad1.SetLocalZOrder(10.0f);
 

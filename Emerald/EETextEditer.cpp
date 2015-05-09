@@ -54,7 +54,7 @@ namespace Emerald
 		{
 			if (EECore::s_EECore->IsKeyInput())
 			{
-				m_text.AddText((char)EECore::s_EECore->GetKey());
+				m_text.AddText((wchar_t)EECore::s_EECore->GetKey());
 			}
 		}
 		m_text.Update();

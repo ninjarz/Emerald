@@ -5,7 +5,9 @@
 #include <map>
 #include "EEHelper.h"
 #include "EEUDP.h"
+#include "EETCP.h"
 
+#define DNS_SERVER "114.114.114.114"
 /*	
 message:
 
@@ -291,6 +293,15 @@ namespace Emerald
 			dst[5] = htons(ARCOUNT);
 			return result;
 		}
+		inline void Print()
+		{
+			printf("Header\n");
+			printf("ID:%d \tFLAG:%d\n", ID, FLAG);
+			printf("QR:%d \tOPCODE:%d \tAA:%d \tTC:%d\n", QR, OPCODE, AA, TC);
+			printf("RD:%d \tRA:%d \tZ:%d \tRCODE:%d\n", RD, RA, Z, RCODE);
+			printf("QDCOUNT:%d \tANCOUNT:%d\n", QDCOUNT, ANCOUNT);
+			printf("NSCOUNT:%d \tARCOUNT:%d\n", NSCOUNT, ARCOUNT);
+		}
 	};
 
 	//EEDNSQuestion
@@ -304,6 +315,16 @@ namespace Emerald
 		inline int Size()
 		{
 			return NAME.size() + 1 + 4;
+		}
+		inline bool Load(const char* _data)
+		{
+			NAME = _data;
+			_data += NAME.size() + 1;
+			TYPE = ntohs(*(unsigned short*)_data);
+			_data += 2;
+			CLASS = ntohs(*(unsigned short*)_data);
+			_data += 2;
+			return true;
 		}
 		inline std::string Name()
 		{
@@ -329,6 +350,12 @@ namespace Emerald
 			dst[1] = htons(CLASS);
 			return result;
 		}
+		inline void Print()
+		{
+			printf("Question\n");
+			printf("NAME:%s\n", Name().data());
+			printf("TYPE:%d \tCLASS:%d\n", TYPE, CLASS);
+		}
 	};
 
 	// EEDNSAnswer
@@ -346,6 +373,7 @@ namespace Emerald
 		{
 			std::string result;
 			result += NAME;
+			result += '\0';
 			result.resize(result.size() + 10);
 			unsigned short *dst0 = (unsigned short *)&result[result.size() - 10];
 			dst0[0] = htons(TYPE);
@@ -355,6 +383,15 @@ namespace Emerald
 			dst1[0] = htonl(TTL);
 			result += RDATA;
 			return result;
+		}
+		inline void Print()
+		{
+			printf("Answer\n");
+			printf("NAME:%s\n", NAME.data());
+			printf("TYPE:%d \tCLASS:%d\n", TYPE, CLASS);
+			printf("TTL:%d\n", TTL);
+			printf("RDLENGTH:%d\n", RDLENGTH);
+			printf("RDATA:%s\n", RDATA.data());
 		}
 	};
 
@@ -368,12 +405,16 @@ namespace Emerald
 		virtual ~EEDNSServer();
 
 		virtual bool Process();
+		bool Loopup();
 		bool LoadHostes(wchar_t* _file);
+		std::string GetDomainRoot(std::string _domain);
 
 	protected:
 		//std::vector<std::string>
 		std::map<std::string, std::string> m_hosts;
 		std::map<unsigned int, sockaddr_storage> m_clients;
+
+		EEUDPClient m_loopup;
 	};
 }
 

@@ -8,17 +8,19 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEDNSServer::EEDNSServer(char* _addr, u_short _port)
 		:
-		EEUDPServer(_addr, _port)
+		EEUDPServer(_addr, _port),
+		m_loopup(DNS_SERVER, 53)
 	{
-
+		LoadHostes(L"hosts");
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EEDNSServer::EEDNSServer(const EEUDPServer& _server)
 		:
-		EEUDPServer(_server)
+		EEUDPServer(_server),
+		m_loopup(DNS_SERVER, 53)
 	{
-
+		LoadHostes(L"hosts");
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -32,62 +34,105 @@ namespace Emerald
 	{
 		sockaddr_storage addr;
 		std::string data;
-		if (Recv(&addr, data) || data.size() >= sizeof(EEDNSHeader))
+		if (Recv(&addr, data))
 		{
-			/*addrinfo* addrinfo;
-			sockaddr_storage host;
-			if (getaddrinfo("8.8.8.8", "53", NULL, &addrinfo) != 0) {
-				memcpy(&host, addrinfo->ai_addr, addrinfo->ai_addrlen);
-				freeaddrinfo(addrinfo);
-			}
-			if (EEGetIP(addr) != "8.8.8.8")
-				Send(&host, data);*/
-
+			printf("---------------------------------------------------\n");
 			printf("Recv from:%s %d\n", EEGetIP(addr).data(), EEGetPort(addr));
 			// header
 			EEDNSHeader header;
-			header.QR = 1;
 			header.Load(data.data());
-			printf("ID:%d \tFLAG:%d\n", header.ID, header.FLAG);
-			printf("QDCOUNT:%d \tANCOUNT:%d\n", header.QDCOUNT, header.ANCOUNT);
-			printf("NSCOUNT:%d \tARCOUNT:%d\n", header.NSCOUNT, header.ARCOUNT);
-
-			// store the client
-			//m_clients.insert(std::pair<unsigned int, sockaddr_storage>(header.ID, addr));
+			header.Print();
 
 			char *content = (char*)data.data() + header.Size();
 			// question
 			std::vector<EEDNSQuestion> questions(header.QDCOUNT);
 			for (EEDNSQuestion &question : questions)
 			{
-				question.NAME = content;
-				content += question.NAME.size() + 1;
-				question.TYPE = ntohs(*(unsigned short*)content);
-				content += 2;
-				question.CLASS = ntohs(*(unsigned short*)content);
-				content += 2;
+				question.Load(content);
+				content += question.Size();
+				question.Print();
+				if (question.TYPE != 1)
+				{
+					header.QR = 1;
+					header.RA = 1;
+					header.RCODE = 4;
+					std::string result = header.NetString() + questions[0].NetString();
+					Send(&addr, result);
 
-				printf("NAME:%s\n", question.Name().data());
+					return false;
+				}
 			}
 
 			// make answers
 			std::vector<EEDNSAnswer> answers(header.QDCOUNT);
-			for (EEDNSAnswer &answer : answers)
+			for (int i = 0; i < header.QDCOUNT; ++i)
 			{
 				++header.ANCOUNT;
-				answer.NAME += (char)0xc0;
-				answer.NAME += (char)(header.Size());
-				answer.TYPE = 1;
-				answer.CLASS = 1;
-				answer.TTL = 60;
-				answer.RDLENGTH = 4;
-				answer.RDATA.resize(answer.RDLENGTH);
-				unsigned int *data = (unsigned int*)&answer.RDATA[0];
-				*data = inet_addr("123.125.114.144");
+				answers[i].NAME = questions[i].NAME;
+				//answer.NAME += (char)0xc0;
+				//answer.NAME += (char)(header.Size());
+				answers[i].TYPE = 1;
+				answers[i].CLASS = 1;
+				answers[i].TTL = 6000;
+				answers[i].RDLENGTH = 4;
+				answers[i].RDATA.resize(answers[i].RDLENGTH);
+				unsigned int *rdata = (unsigned int*)&answers[i].RDATA[0];
+				auto iter = m_hosts.find(questions[i].Name());
+				if (iter != m_hosts.end())
+					*rdata = inet_addr(iter->second.data());
+				else
+				{
+					m_clients.insert(std::pair<unsigned int, sockaddr_storage>(header.ID, addr));
+					m_loopup.Send(data);
+
+					return false;
+				}
 			}
-			std::string result = header.NetString() + questions[0].NetString() + answers[0].NetString();
+
+			// respond
+			header.QR = 1;
+			header.RA = 1;
+			std::string result = header.NetString();
+			for (EEDNSQuestion &question : questions)
+				result += question.NetString();
+			for (EEDNSAnswer &answer : answers)
+				result += answer.NetString();
 			Send(&addr, result);
+
 			return true;
+		}
+
+		Loopup();
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEDNSServer::Loopup()
+	{
+		std::string data;
+		if (m_loopup.Recv(data))
+		{
+			EEDNSHeader header;
+			header.Load(data.data());
+			sockaddr_storage addr = m_clients[header.ID];
+			m_clients.erase(header.ID);
+			printf("**************************************************\n");
+			printf("Sent to:%s %d\n", EEGetIP(addr).data(), EEGetPort(addr));
+			header.Print();
+
+			char *content = (char*)data.data() + header.Size();
+			// question
+			std::vector<EEDNSQuestion> questions(header.QDCOUNT);
+			for (EEDNSQuestion &question : questions)
+			{
+				question.Load(content);
+				content += question.Size();
+
+				question.Print();
+			}
+
+			Send(&addr, data);
 		}
 
 		return false;
@@ -101,16 +146,29 @@ namespace Emerald
 		{
 			std::string name;
 			std::string ip;
-			fin >> ip >> name;
 			while (!fin.eof())
 			{
-				m_hosts.insert(std::pair<std::string, std::string>(name, ip));
 				fin >> ip >> name;
+				m_hosts.insert(std::pair<std::string, std::string>(name, ip));
 			}
 			fin.close();
 			return true;
 		}
 
 		return false;
+	}
+
+	// todo (memo: difficult)
+	//----------------------------------------------------------------------------------------------------
+	std::string EEDNSServer::GetDomainRoot(std::string _domain)
+	{
+		int pos = _domain.find("http://");
+		if (pos == 0)
+			_domain.erase(0, 7);
+		pos = _domain.find("/");
+		if (pos != std::string::npos)
+			_domain.erase(pos, _domain.size() - pos);
+
+		return _domain;
 	}
 }

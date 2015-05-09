@@ -34,8 +34,6 @@ namespace Emerald
 		std::vector<EEQuad2D> m_num;
 		EETexture m_numTexs[10];
 	};
-
-
 }
 
 #endif

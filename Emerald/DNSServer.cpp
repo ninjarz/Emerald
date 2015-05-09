@@ -1,5 +1,5 @@
 //DNS Server
-#if 0
+#if 1
 #include "Emerald.h"
 #include <map>
 #include <iostream>
