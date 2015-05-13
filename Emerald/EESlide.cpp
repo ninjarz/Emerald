@@ -9,7 +9,7 @@ namespace Emerald
 	EESlide::EESlide(const Rect_Float& _rect, EETexture& _texs, float _interval, bool _isLoop)
 		:
 		EEQuad2D(_rect, _texs),
-		m_updateTime((float)EECore::s_EECore->GetTotalTime()),
+		m_updateTime(-1.0f),
 		m_changeInterval(_interval),
 		m_isLoop(_isLoop)
 	{
@@ -20,7 +20,7 @@ namespace Emerald
 	EESlide::EESlide(const Rect_Float& _rect, EETexture* _texs, int _amount, float _interval, bool _isLoop)
 		:
 		EEQuad2D(_rect, EETextureCombine(_texs, _amount)),
-		m_updateTime((float)EECore::s_EECore->GetTotalTime()),
+		m_updateTime(-1.0f),
 		m_changeInterval(_interval),
 		m_isLoop(_isLoop)
 	{
@@ -44,6 +44,8 @@ namespace Emerald
 		if (!EEObject::Update())
 			return false;
 
+		if (m_updateTime < 0.0f)
+			m_updateTime = (float)EECore::s_EECore->GetTotalTime();
 		if (m_changeInterval <= 0.0f)
 			m_updateTime = (float)EECore::s_EECore->GetTotalTime();
 		else
@@ -54,7 +56,9 @@ namespace Emerald
 			if (m_isLoop)
 				SetCurrentSlide(times % m_quadTex.GetNumber());
 			else
+			{
 				SetCurrentSlide(times < m_quadTex.GetNumber() ? times : m_quadTex.GetNumber() - 1);
+			}
 		}
 
 		return EEQuad2D::Update();
@@ -70,5 +74,11 @@ namespace Emerald
 	void EESlide::SetInterval(float _interval)
 	{
 		m_changeInterval = _interval;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EESlide::SetIsLoop(bool _isLoop)
+	{
+		m_isLoop = _isLoop;
 	}
 }

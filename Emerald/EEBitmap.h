@@ -49,6 +49,7 @@ namespace Emerald
 	EEBitmap EEBitmapCombineHorizontal(EEBitmap* _bitmaps, int _count);
 	EEBitmap EEBitmapCombineHorizontal(std::vector<EEBitmap>& _bitmaps);
 	EEBitmap EEBitmapCombineVertical(EEBitmap& _top, EEBitmap& _bottom);
+	EEBitmap EEBitmapCombineVertical(std::vector<EEBitmap>& _bitmaps);
 	void EEBitmapDivideHorizontal(EEBitmap& _bitmap, unsigned int _amount, std::vector<EEBitmap>& _bitmaps);
 	void EEBitmapDivideVertical(EEBitmap& _bitmap, unsigned int _amount, std::vector<EEBitmap>& _bitmaps);
 	void EEMerge(std::vector<EEBitmap>& _bitmaps, EEBitmap& _result);

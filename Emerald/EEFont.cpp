@@ -91,18 +91,28 @@ namespace Emerald
 		return result;
 	}
 
+	// 
 	//----------------------------------------------------------------------------------------------------
 	EEBitmap EEFont::GetFontBitmap(std::wstring _string)
 	{
 		InitializeFont();
 
 		std::vector<EEBitmap> bitmaps;
+		std::vector<EEBitmap> lineBitmaps;
 		for (wchar_t letter : _string)
 		{
-			bitmaps.push_back(GetFontBitmap(letter));
+			if (letter != L'\n')
+				bitmaps.push_back(GetFontBitmap(letter));
+			else
+			{
+				lineBitmaps.push_back(EEBitmapCombineHorizontal(bitmaps));
+				bitmaps.clear();
+			}
 		}
+		if (bitmaps.size())
+			lineBitmaps.push_back(EEBitmapCombineHorizontal(bitmaps));
 
-		return EEBitmapCombineHorizontal(bitmaps);
+		return EEBitmapCombineVertical(lineBitmaps);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -169,10 +179,6 @@ namespace Emerald
 			if (m_text.size())
 				m_text.pop_back();
 		}
-		else if (32 < _text && _text <= 126)
-		{
-			m_text += _text;
-		}
 		else
 		{
 			m_text += _text;
@@ -182,6 +188,7 @@ namespace Emerald
 		return true;
 	}
 
+	// memo: deal with backspace
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(const wchar_t* _text)
 	{
@@ -195,7 +202,28 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEFont::SetText(wchar_t* _text)
+	bool EEFont::AddText(const std::wstring& _text)
+	{
+		if (!_text.size())
+			return false;
+
+		m_text += _text;
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetText(const wchar_t* _text)
+	{
+		m_text = _text;
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetText(const std::wstring& _text)
 	{
 		m_text = _text;
 		m_isTextDirty = true;
@@ -227,6 +255,7 @@ namespace Emerald
 		return EEFont::GetFontBitmap(_string);
 	}
 
+	// need a cache
 	//----------------------------------------------------------------------------------------------------
 	void EEPrint(const FLOAT3& _position, const EEColor& _color, wchar_t* _text)
 	{

@@ -16,8 +16,8 @@ namespace Emerald
 		EEFloatBoard(const EEFloatBoard& _floatBoard);
 		virtual ~EEFloatBoard();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 
 		bool SetValue(float _value);
 		bool SetIntRange(int _range);

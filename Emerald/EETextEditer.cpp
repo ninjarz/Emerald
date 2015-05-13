@@ -10,25 +10,25 @@ namespace Emerald
 	EETextEditer::EETextEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
-		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
+		m_font(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
 	{
-		m_text.SetParent(this);
+		m_font.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EETextEditer::EETextEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _tex),
-		m_text(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
+		m_font(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
 	{
-		m_text.SetParent(this);
+		m_font.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EETextEditer::EETextEditer(const EETextEditer& _lineEditer)
 		:
 		EEQuad2D(_lineEditer),
-		m_text(_lineEditer.m_text)
+		m_font(_lineEditer.m_font)
 	{
 
 	}
@@ -54,10 +54,10 @@ namespace Emerald
 		{
 			if (EECore::s_EECore->IsKeyInput())
 			{
-				m_text.AddText((wchar_t)EECore::s_EECore->GetKey());
+				m_font.AddText((wchar_t)EECore::s_EECore->GetKey());
 			}
 		}
-		m_text.Update();
+		m_font.Update();
 
 		return true;
 	}
@@ -68,7 +68,7 @@ namespace Emerald
 		if (!EEQuad2D::Render())
 			return false;
 
-		m_text.Render();
+		m_font.Render();
 
 		return true;
 	}

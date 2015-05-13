@@ -21,11 +21,11 @@ namespace Emerald
 		EETextEditer(const EETextEditer& _lineEditer);
 		virtual ~EETextEditer();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 
 	protected:
-		EEFont m_text;
+		EEFont m_font;
 	};
 }
 

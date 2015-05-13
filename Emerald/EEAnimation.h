@@ -51,11 +51,13 @@ namespace Emerald
 
 		virtual bool Update();
 		virtual bool Render();
-
 		bool Start();
 		bool AddFrame(const EEAnimationFrame& _frame);
+		bool RemoveFrame(int _id = -1);
 
 		void SetIsLoop(bool _isLoop);
+
+		std::vector<EEAnimationFrame*> GetFrames();
 
 	protected:
 		std::queue<EEAnimationFrame*> m_frames;
@@ -78,11 +80,15 @@ namespace Emerald
 		virtual bool Render();
 
 		bool Emit(const FLOAT3& _pos);
-		bool SetAnimation(const EEAnimation& _animation);
+		bool SetAnimation(const EEAnimation* _animation);
+		void SetIsAnimationDirty(bool _isAnimationDirty);
+
+		EEAnimation* GetAnimation();
 
 	protected:
 		std::vector<EEAnimation*> m_animations;
 		EEAnimation* m_backup;
+		bool m_isAnimationDirty;
 	};
 }
 

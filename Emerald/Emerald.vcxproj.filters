@@ -369,6 +369,18 @@
     <ClCompile Include="Points.cpp">
       <Filter>源文件\Demo\Homework</Filter>
     </ClCompile>
+    <ClCompile Include="EEComboBox.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EELineBrowser.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Editer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EETextBrowser.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -550,6 +562,15 @@
     </ClInclude>
     <ClInclude Include="EEPoints2D.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EEComboBox.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EELineBrowser.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EETextBrowser.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

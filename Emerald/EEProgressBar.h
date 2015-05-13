@@ -18,13 +18,13 @@ namespace Emerald
 		EEProgressbar(const EEProgressbar& _progressbar);
 		virtual ~EEProgressbar();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 
 		//localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
 		bool SetProgress(float _progress);
-		bool SetCallbackFunc(void(*_funcPtr)(float));
+		bool SetCallbackFunc(std::function<void(float)>);
 
 		float GetProgress();
 		EETexture* GetProgressTex();

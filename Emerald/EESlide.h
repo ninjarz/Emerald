@@ -22,6 +22,7 @@ namespace Emerald
 
 		bool SetCurrentSlide(int _num);
 		void SetInterval(float _interval);
+		void SetIsLoop(bool _isLoop);
 
 	protected:
 		float m_updateTime;

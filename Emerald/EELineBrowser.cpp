@@ -1,13 +1,13 @@
-#include "EELineEditer.h"
+#include "EELineBrowser.h"
 #include "EECore.h"
 
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EELineEditer
+	//EELineBrowser
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
+	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
 		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
@@ -16,16 +16,27 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
+	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::wstring& _text)
+		:
+		EEQuad2D(_rect, _color),
+		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
+	{
+		m_font.SetParent(this);
+		m_font.SetText(_text);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor, const std::wstring& _text)
 		:
 		EEQuad2D(_rect, _tex),
 		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
 	{
 		m_font.SetParent(this);
+		m_font.SetText(_text);
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::EELineEditer(const EELineEditer& _lineEditer)
+	EELineBrowser::EELineBrowser(const EELineBrowser& _lineEditer)
 		:
 		EEQuad2D(_lineEditer),
 		m_font(_lineEditer.m_font)
@@ -34,13 +45,13 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::~EELineEditer()
+	EELineBrowser::~EELineBrowser()
 	{
 
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EELineEditer::Update()
+	bool EELineBrowser::Update()
 	{
 		if (!EEQuad2D::Update())
 			return false;
@@ -52,15 +63,7 @@ namespace Emerald
 		}
 		if (s_focusedObject == this)
 		{
-			if (EECore::s_EECore->IsKeyInput())
-			{
-				//the letter on the LineEditer can not be '\r'
-				wchar_t letter = (wchar_t)EECore::s_EECore->GetKey();
-				if (letter != L'\r' && letter != L'\n')
-				{
-					m_font.AddText(letter);
-				}
-			}
+
 		}
 		m_font.Update();
 
@@ -68,7 +71,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EELineEditer::Render()
+	bool EELineBrowser::Render()
 	{
 		if (!EEQuad2D::Render())
 			return false;
@@ -77,7 +80,25 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	const std::wstring& EELineEditer::GetText()
+	bool EELineBrowser::AddText(wchar_t _text)
+	{
+		return m_font.AddText(_text);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EELineBrowser::AddText(const wchar_t* _text)
+	{
+		return m_font.AddText(_text);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EELineBrowser::SetText(const std::wstring& _text)
+	{
+		m_font.SetText(_text.data());
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const std::wstring& EELineBrowser::GetText()
 	{
 		return m_font.GetText();
 	}

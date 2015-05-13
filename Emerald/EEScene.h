@@ -20,8 +20,8 @@ namespace Emerald
 		EEScene(const EEScene &_scene);
 		virtual ~EEScene();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 		void AddObject(EEObject* _object);
 		void RemoveObject(EEObject* _object);
 

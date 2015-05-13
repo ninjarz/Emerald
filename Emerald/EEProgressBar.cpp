@@ -135,7 +135,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEProgressbar::SetCallbackFunc(void(*_funcPtr)(float))
+	bool EEProgressbar::SetCallbackFunc(std::function<void(float)> _funcPtr)
 	{
 		m_callbackFunc = _funcPtr;
 

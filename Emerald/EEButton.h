@@ -27,8 +27,8 @@ namespace Emerald
 		EEButton(const EEButton& _button);
 		virtual ~EEButton();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 
 		Rect_Float GetFinalRect();
 		EETexture* GetUpTex();

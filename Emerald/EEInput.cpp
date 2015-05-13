@@ -118,8 +118,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEInput::KeyUp(UINT _input)
 	{
-		if (m_keys[_input])
-			m_mouseInput.push(_input);
 		m_keys[_input] = false;
 
 		return;
@@ -155,6 +153,7 @@ namespace Emerald
 	void EEInput::MouseUp(WPARAM _btnState, int _x, int _y)
 	{
 		ReleaseCapture();
+		m_mouseInput.push((unsigned int)_btnState);
 		KeyUp((unsigned int)_btnState);
 	}
 

@@ -17,8 +17,8 @@ namespace Emerald
 		EEIntBoard(const EEIntBoard& _intBoard);
 		virtual ~EEIntBoard();
 
-		bool Update();
-		bool Render();
+		virtual bool Update();
+		virtual bool Render();
 
 		bool SetValue(int _value);
 		bool SetRange(int _range);

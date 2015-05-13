@@ -133,6 +133,7 @@ namespace Emerald
 		return true;
 	}
 
+	// new
 	//----------------------------------------------------------------------------------------------------
 	bool EEAnimation::AddFrame(const EEAnimationFrame& _frame)
 	{
@@ -156,9 +157,45 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEAnimation::RemoveFrame(int _id)
+	{
+		if (_id == -1)
+		{
+			while (!m_frames.empty())
+			{
+				EEAnimationFrame* frame = m_frames.front();
+				SAFE_DELETE(frame);
+				m_frames.pop();
+			}
+			for (EEAnimationFrame* frame : m_backup)	
+			{
+				SAFE_DELETE(frame);
+			}
+			return true;
+		}
+		else if (0 <= _id &&_id < (int)m_backup.size())
+		{
+			m_backup.erase(m_backup.begin() + _id);
+			for (unsigned i = _id; i < m_backup.size(); ++i)
+			{
+				m_backup[i]->id = i;
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEAnimation::SetIsLoop(bool _isLoop)
 	{
 		m_isLoop = _isLoop;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<EEAnimationFrame*> EEAnimation::GetFrames()
+	{
+		return m_backup;
 	}
 
 	// EEAnimationEmitter
@@ -166,7 +203,8 @@ namespace Emerald
 	EEAnimationEmitter::EEAnimationEmitter()
 		:
 		m_animations(),
-		m_backup(nullptr)
+		m_backup(nullptr),
+		m_isAnimationDirty(false)
 	{
 
 	}
@@ -175,7 +213,8 @@ namespace Emerald
 	EEAnimationEmitter::EEAnimationEmitter(const EEAnimationEmitter& _emitter)
 		:
 		m_animations(),
-		m_backup(new EEAnimation(*_emitter.m_backup))
+		m_backup(new EEAnimation(*_emitter.m_backup)),
+		m_isAnimationDirty(false)
 	{
 
 	}
@@ -196,6 +235,16 @@ namespace Emerald
 	{
 		if (!EEObject::Update())
 			return false;
+
+		if (m_isAnimationDirty)
+		{
+			for (EEAnimation* animation : m_animations)
+			{
+				SAFE_DELETE(animation);
+			}
+			m_animations.clear();
+			m_isAnimationDirty = false;
+		}
 
 		for (EEAnimation* animation : m_animations)
 		{
@@ -251,12 +300,25 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEAnimationEmitter::SetAnimation(const EEAnimation& _animation)
+	bool EEAnimationEmitter::SetAnimation(const EEAnimation* _animation)
 	{
 		SAFE_DELETE(m_backup);
 
-		m_backup = new EEAnimation(_animation);
+		if (_animation)
+			m_backup = new EEAnimation(*_animation);
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEAnimationEmitter::SetIsAnimationDirty(bool _isAnimationDirty)
+	{
+		m_isAnimationDirty = _isAnimationDirty;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEAnimation* EEAnimationEmitter::GetAnimation()
+	{
+		return m_backup;
 	}
 }

@@ -97,6 +97,7 @@
     <ClCompile Include="DirectXTex\DirectXTexUtil.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexWIC.cpp" />
     <ClCompile Include="DNSServer.cpp" />
+    <ClCompile Include="Editer.cpp" />
     <ClCompile Include="EEAction.cpp" />
     <ClCompile Include="EEAnimation.cpp" />
     <ClCompile Include="EEAverage.cpp" />
@@ -107,6 +108,7 @@
     <ClCompile Include="EECamera.cpp" />
     <ClCompile Include="EECollision.cpp" />
     <ClCompile Include="EEColor.cpp" />
+    <ClCompile Include="EEComboBox.cpp" />
     <ClCompile Include="EECore.cpp" />
     <ClCompile Include="EED3D.cpp" />
     <ClCompile Include="EEDNS.cpp" />
@@ -118,6 +120,7 @@
     <ClCompile Include="EEHelper.cpp" />
     <ClCompile Include="EEIntBoard.cpp" />
     <ClCompile Include="EELine2D.cpp" />
+    <ClCompile Include="EELineBrowser.cpp" />
     <ClCompile Include="EELineEditer.cpp" />
     <ClCompile Include="EEMemoryLeak.cpp" />
     <ClCompile Include="EEMusic.cpp" />
@@ -135,6 +138,7 @@
     <ClCompile Include="EESocket.cpp" />
     <ClCompile Include="EESort.cpp" />
     <ClCompile Include="EETCP.cpp" />
+    <ClCompile Include="EETextBrowser.cpp" />
     <ClCompile Include="EETextEditer.cpp" />
     <ClCompile Include="EETexture.cpp" />
     <ClCompile Include="EEInput.cpp" />
@@ -187,6 +191,7 @@
     <ClInclude Include="EECamera.h" />
     <ClInclude Include="EECollision.h" />
     <ClInclude Include="EEColor.h" />
+    <ClInclude Include="EEComboBox.h" />
     <ClInclude Include="EECore.h" />
     <ClInclude Include="EED3D.h" />
     <ClInclude Include="EEDNS.h" />
@@ -197,6 +202,7 @@
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEIntBoard.h" />
     <ClInclude Include="EELine2D.h" />
+    <ClInclude Include="EELineBrowser.h" />
     <ClInclude Include="EELineEditer.h" />
     <ClInclude Include="EEMemoryLeak.h" />
     <ClInclude Include="EEMusic.h" />
@@ -214,6 +220,7 @@
     <ClInclude Include="EESocket.h" />
     <ClInclude Include="EESort.h" />
     <ClInclude Include="EETCP.h" />
+    <ClInclude Include="EETextBrowser.h" />
     <ClInclude Include="EETextEditer.h" />
     <ClInclude Include="EETexture.h" />
     <ClInclude Include="EEInput.h" />

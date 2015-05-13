@@ -44,8 +44,10 @@ namespace Emerald
 		virtual bool Render();
 		bool AddText(wchar_t _text);
 		bool AddText(const wchar_t* _text);
+		bool AddText(const std::wstring& _text);
 
-		bool SetText(wchar_t* _text);
+		bool SetText(const wchar_t* _text);
+		bool SetText(const std::wstring& _text);
 
 		const std::wstring& GetText();
 		bool IsTextDirty();

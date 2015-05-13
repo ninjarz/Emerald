@@ -353,6 +353,30 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEBitmapCombineVertical(std::vector<EEBitmap>& _bitmaps)
+	{
+		int width(0), height(0);
+		for (EEBitmap& bitmap : _bitmaps)
+		{
+			if (bitmap.GetWidth() > width)
+				width = bitmap.GetWidth();
+			height += bitmap.GetHeight();
+		}
+		EEBitmap result(width, height);
+		unsigned int *dst = (unsigned int*)result.GetData();
+		int heightIndex(0);
+		for (EEBitmap& bitmap : _bitmaps)
+		{
+			for (int i = 0; i < bitmap.GetHeight(); ++i)
+			{
+				memcpy(&dst[width * heightIndex++], &bitmap.GetData()[bitmap.GetWidth() * i << 2], bitmap.GetWidth() << 2);
+			}
+		}
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEBitmapDivideHorizontal(EEBitmap& _bitmap, unsigned int _amount, std::vector<EEBitmap>& _bitmaps)
 	{
 		if (!_amount || _bitmap.IsEmpty())
