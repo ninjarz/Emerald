@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _EE_LINE2D_H_
-#define _EE_LINE2D_H_
+#ifndef _EE_CURVE2D_H_
+#define _EE_CURVE2D_H_
 
 #include "EEObject2D.h"
 #include "EETexture.h"
@@ -8,31 +8,31 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EELine2DVertex
+	// EECurve2DVertex
 	//----------------------------------------------------------------------------------------------------
-	struct EELine2DVertex
+	struct EECurve2DVertex
 	{
 		FLOAT3 pos;
 		FLOAT2 tex;
 	};
 
-	//EELine2D
+	// EECurve2D
 	//----------------------------------------------------------------------------------------------------
-	class EELine2D : public EEObject2D
+	class EECurve2D : public EEObject2D
 	{
 	protected:
-		static bool InitializeLine2D();
+		static bool InitializeCurve2D();
 
 	protected:
-		static bool s_isLine2DInitialized;
-		static ID3D11InputLayout *s_lineIL;
-		static ID3D11VertexShader *s_lineVS;
-		static ID3D11PixelShader *s_linePS;
-		static ID3D11Buffer *s_line2DBuffer;
+		static bool s_isCurve2DInitialized;
+		static ID3D11InputLayout *s_curveIL;
+		static ID3D11VertexShader *s_curveVS;
+		static ID3D11PixelShader *s_curvePS;
+		static ID3D11Buffer *s_curveBuffer;
 
 	public:
-		EELine2D(FLOAT2& _start, FLOAT2& _end, const EEColor& _color);
-		virtual ~EELine2D();
+		EECurve2D(const std::vector<FLOAT2>& _curve, const EEColor& _color);
+		virtual ~EECurve2D();
 
 		virtual bool Update();
 		virtual bool Render();
@@ -40,13 +40,13 @@ namespace Emerald
 		void SetWidth(float _width);
 
 	protected:
-		bool CreateLineVertexBuffer();
+		bool CreateCurveVertexBuffer();
 
 	protected:
-		FLOAT2 m_pos0, m_pos1;
+		std::vector<FLOAT2> m_curve;
 		float m_width;
-		bool m_isLineDirty;
-		ID3D11Buffer *m_lineVB;
+		bool m_isCurveDirty;
+		ID3D11Buffer *m_curveVB;
 	};
 
 }

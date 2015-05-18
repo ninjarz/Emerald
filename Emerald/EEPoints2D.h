@@ -31,6 +31,7 @@ namespace Emerald
 		static ID3D11Buffer *s_points2DBuffer;
 
 	public:
+		EEPoints2D();
 		EEPoints2D(std::vector<FLOAT2>& _points);
 		virtual ~EEPoints2D();
 

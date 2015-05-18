@@ -111,6 +111,7 @@
     <ClCompile Include="EEColor.cpp" />
     <ClCompile Include="EEComboBox.cpp" />
     <ClCompile Include="EECore.cpp" />
+    <ClCompile Include="EECurve2D.cpp" />
     <ClCompile Include="EED3D.cpp" />
     <ClCompile Include="EEDNS.cpp" />
     <ClCompile Include="EEEffect.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="EEColor.h" />
     <ClInclude Include="EEComboBox.h" />
     <ClInclude Include="EECore.h" />
+    <ClInclude Include="EECurve2D.h" />
     <ClInclude Include="EED3D.h" />
     <ClInclude Include="EEDNS.h" />
     <ClInclude Include="EEEffect.h" />

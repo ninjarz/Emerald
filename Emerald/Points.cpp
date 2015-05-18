@@ -69,6 +69,8 @@ int main(int _argc, char** _argv)
 	std::vector<FLOAT2> pointsData;
 	for (float t = 0; t < 1.0f; t += 0.001f)
 		pointsData.push_back(EEBezier(FLOAT2(100.f, 100.f), FLOAT2(200.f, 200.f), FLOAT2(100.f, 300.f), FLOAT2(400.f, 400.f), t));
+	EECurve2D curve(pointsData, EEColor::WHITE);
+	curve.SetPosition(FLOAT3(100.f, 0.f, 0.f));
 
 	EEPoints2D points(pointsData);
 	points.SetColor(EEColor::RED); 
@@ -79,13 +81,14 @@ int main(int _argc, char** _argv)
 	int tmp[16] = { 100, 100, 100, 300, 300, 300, 300, 100 };
 	putpolywiths1(tmp, 4, points);
 
-	EELine2D line(FLOAT2(0.0f, 0.0f), FLOAT2(200.0f, 200.0f), EEColor::WHITE);
+	EELine2D line(FLOAT2(100.0f, 0.0f), FLOAT2(200.0f, 200.0f), EEColor::WHITE);
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 		EEShowFPSInTitle(L"- -");
 
+		curve.Process();
 		points.Process();
 		line.Process();
 		//printf("%d ", EEGetFPS());

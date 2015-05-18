@@ -387,6 +387,9 @@
     <ClCompile Include="EEHash.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
+    <ClCompile Include="EECurve2D.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -580,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="EEHash.h">
       <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EECurve2D.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -101,6 +101,17 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEPoints2D::EEPoints2D()
+		:
+		EEObject2D(),
+		m_isPointsDirty(true),
+		m_points(),
+		m_pointsVB(nullptr)
+	{
+		InitializePoints2D();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEPoints2D::EEPoints2D(std::vector<FLOAT2>& _points)
 		:
 		EEObject2D(),
@@ -132,15 +143,14 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isPointsDirty)
 		{
-			if (m_isPointsDirty)
-				CreatePointsVertexBuffer();
-
 			std::vector<EEPoints2DVertex> vertices(m_points.size());
 			for (unsigned int i = 0; i < m_points.size(); ++i)
 			{
 				vertices[i].pos = FLOAT3(m_points[i], m_localZOrder * 0.0001f);
 			}
 
+			if (m_isPointsDirty)
+				CreatePointsVertexBuffer();
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
 			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
