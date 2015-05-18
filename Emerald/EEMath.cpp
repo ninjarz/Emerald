@@ -49,6 +49,8 @@ namespace Emerald
 	std::vector<FLOAT2> EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1)
 	{
 		FLOAT2 delta(_p1.x - _p0.x, _p1.y - _p0.y);
+		FLOAT2 forward(delta.x >= 0 ? 1 : -1, delta.y >= 0 ? 1 : -1);
+		delta = FLOAT2(delta.x >= 0 ? delta.x : -delta.x, delta.y >= 0 ? delta.y : -delta.y);
 		float e = 2 * delta.y - delta.x;
 		FLOAT2 pos = _p0;
 		std::vector<FLOAT2> result;
@@ -56,12 +58,12 @@ namespace Emerald
 		{
 			if (e >= 0)
 			{
-				++pos.y;
+				pos.y += forward.y;
 				e -= 2 * delta.x;
 			}
 			else
 			{
-				++pos.x;
+				pos.x += forward.x;
 				e += 2 * delta.y;
 			}
 			result.push_back(pos);

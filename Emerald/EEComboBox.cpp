@@ -13,7 +13,7 @@ namespace Emerald
 		m_selected(-1),
 		m_isSelectedDirty(true)
 	{
-
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -33,6 +33,8 @@ namespace Emerald
 				m_isSelectedDirty = false;
 			}
 		}
+		//if (s_focusedObject != this)
+		//	m_isSelecting = false;
 		if (!EELineBrowser::Update())
 			return false;
 
@@ -68,6 +70,7 @@ namespace Emerald
 			m_color, m_font.GetColor(), _str));
 		int index = m_options.size() - 1;
 		m_options[index]->SetParent(this);
+		m_options[index]->SetIsFocusable(true);
 		m_options[index]->SetTriggeredFunc(
 			[&, index, _funcPtr]()
 		{
@@ -84,6 +87,7 @@ namespace Emerald
 	void EEComboBox::OnMouseClicked(const Point& _pos)
 	{
 		EELineBrowser::OnMouseClicked(_pos);
+		s_focusedObject = this;
 
 		m_isSelecting = !m_isSelecting;
 	}

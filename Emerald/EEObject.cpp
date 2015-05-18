@@ -9,6 +9,7 @@ namespace Emerald
 	bool EEObject::s_isObjectInitialized = false;
 	ID3D11Buffer *EEObject::s_objectBuffer = NULL;
 	EEObject *EEObject::s_focusedObject = NULL;
+	EEObject *EEObject::s_triggeredObject = NULL;
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::InitializeObject()
@@ -54,8 +55,8 @@ namespace Emerald
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
 		//state
-		m_state(EE_OBJECT_UP),
-		m_isTriggered(false)
+		m_isFocusable(false),
+		m_state(EE_OBJECT_FREE)
 	{
 		InitializeObject();
 	}
@@ -78,8 +79,8 @@ namespace Emerald
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
 		//state
-		m_state(EE_OBJECT_UP),
-		m_isTriggered(false)
+		m_isFocusable(false),
+		m_state(EE_OBJECT_FREE)
 	{
 		InitializeObject();
 	}
@@ -100,8 +101,8 @@ namespace Emerald
 		m_localZOrder(_object.m_localZOrder),
 		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty),
 		//state
-		m_state(_object.m_state),
-		m_isTriggered(_object.m_isTriggered)
+		m_isFocusable(false),
+		m_state(_object.m_state)
 	{
 
 	}
@@ -256,6 +257,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	void EEObject::SetIsFocusable(bool _isFocusable)
+	{
+		m_isFocusable = _isFocusable;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEObject::SetUpdateFunc(std::function<void(void)> _funcPtr)
 	{
 		m_updateFunc = _funcPtr;
@@ -264,9 +271,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEObject::SetUpFunc(std::function<void(void)> _funcPtr)
+	bool EEObject::SetFreeFunc(std::function<void(void)> _funcPtr)
 	{
-		m_upFunc = _funcPtr;
+		m_freeFunc = _funcPtr;
 
 		return true;
 	}
@@ -569,11 +576,11 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEObject::OnMouseUp(const Point& _pos)
+	void EEObject::OnMouseFree(const Point& _pos)
 	{
-		m_state = EE_OBJECT_UP;
-		if (m_upFunc)
-			m_upFunc();
+		m_state = EE_OBJECT_FREE;
+		if (m_freeFunc)
+			m_freeFunc();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -590,6 +597,8 @@ namespace Emerald
 		m_state = EE_OBJECT_DOWN;
 		if (m_clickedFunc)
 			m_clickedFunc();
+		s_focusedObject = this;
+		s_triggeredObject = nullptr;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -598,9 +607,9 @@ namespace Emerald
 		m_state = EE_OBJECT_OVER;
 		if (m_TriggeredFunc)
 			m_TriggeredFunc();
-		s_focusedObject = this;
-		m_isTriggered = true;
-
+		s_focusedObject = nullptr;
+		s_triggeredObject = this;
+		//m_isTriggered = true;
 	}
 	
 	//----------------------------------------------------------------------------------------------------

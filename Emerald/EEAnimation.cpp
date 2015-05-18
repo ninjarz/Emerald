@@ -11,7 +11,7 @@ namespace Emerald
 		EEObject(),
 		m_frames(),
 		m_backup(),
-		m_startTime((float)EECore::s_EECore->GetTotalTime()),
+		startTime(-1.0f),
 		m_isLoop(false)
 	{
 
@@ -23,7 +23,7 @@ namespace Emerald
 		EEObject(_animation),
 		m_frames(),
 		m_backup(),
-		m_startTime(_animation.m_startTime),
+		startTime(_animation.startTime),
 		m_isLoop(_animation.m_isLoop)
 	{
 		for (EEAnimationFrame* frame : _animation.m_backup)
@@ -36,16 +36,12 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEAnimation::~EEAnimation()
 	{
-		while (!m_frames.empty())
-		{
-			EEAnimationFrame* frame = m_frames.front();
+		for (EEAnimationFrame* frame : m_frames)
 			SAFE_DELETE(frame);
-			m_frames.pop();
-		}
+		m_frames.clear();
 		for (EEAnimationFrame* frame : m_backup)
-		{
 			SAFE_DELETE(frame);
-		}
+		m_backup.clear();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -54,47 +50,45 @@ namespace Emerald
 		if (!EEObject::Update())
 			return false;
 
-		float deltaTime = (float)EECore::s_EECore->GetTotalTime() - m_startTime;
+		if (startTime < 0.0f)
+			startTime = (float)EECore::s_EECore->GetTotalTime();
+		float deltaTime = (float)EECore::s_EECore->GetTotalTime() - startTime;
 		if (!m_frames.empty())
 		{
-			// find the current one
-			EEAnimationFrame *frame = m_frames.front();
-			while (frame && deltaTime >= frame->duration)
+			printf("%f\n", deltaTime);
+			for (auto it = m_frames.begin(); it != m_frames.end();)
 			{
-				deltaTime -= frame->duration;
-				m_startTime += frame->duration;
-				m_frames.pop();
-				SAFE_DELETE(frame);
-				if (!m_frames.empty())
-					frame = m_frames.front();
-			}
-
-			// update
-			if (frame)
-			{
-				if (!frame->isRunning)
+				EEAnimationFrame* frame = *it;
+				if (frame->startTime + frame->duration < deltaTime)
+				{
+					SAFE_DELETE(frame);
+					it = m_frames.erase(it);
+					continue;
+				}
+				else if (frame->isRunning)
+				{
+					frame->object->Update();
+				}
+				else if (frame->startTime < deltaTime)
 				{
 					for (auto& action : frame->actions)
 					{
-						action(frame->object, -deltaTime);
+						action(frame->object, frame->startTime - deltaTime);
 					}
 					frame->isRunning = true;
+					frame->object->Update();
 				}
-				return frame->object->Update();
+				++it;
 			}
 		}
 		// reset
 		else if (m_isLoop)
 		{
-			for (EEAnimationFrame* frame : m_backup)
-			{
-				m_frames.push(new EEAnimationFrame(*frame));
-			}
+			Start();
+			printf("loop!\n");
 		}
 		else
-		{
 			SetIsAlive(false);
-		}
 
 		return true;
 	}
@@ -105,10 +99,10 @@ namespace Emerald
 		if (!EEObject::Render())
 			return false;
 
-		if (!m_frames.empty())
+		for (EEAnimationFrame* frame : m_frames)
 		{
-			if (m_frames.front()->isRunning)
-				return m_frames.front()->object->Render();
+			if (frame->isRunning)
+				frame->object->Render();
 		}
 
 
@@ -118,16 +112,13 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEAnimation::Start()
 	{
-		if (IsAlive() && !m_frames.empty())
-			return false;
-
-		// set to start
+		// start
 		SetIsAlive(true);
-		m_startTime = (float)EECore::s_EECore->GetTotalTime();
-
+		startTime = (float)EECore::s_EECore->GetTotalTime();
+		m_frames.clear();
 		for (EEAnimationFrame* frame : m_backup)
 		{
-			m_frames.push(new EEAnimationFrame(*frame));
+			m_frames.push_back(new EEAnimationFrame(*frame));
 		}
 
 		return true;
@@ -161,16 +152,12 @@ namespace Emerald
 	{
 		if (_id == -1)
 		{
-			while (!m_frames.empty())
-			{
-				EEAnimationFrame* frame = m_frames.front();
+			for (EEAnimationFrame* frame : m_frames)
 				SAFE_DELETE(frame);
-				m_frames.pop();
-			}
-			for (EEAnimationFrame* frame : m_backup)	
-			{
+			m_frames.clear();
+			for (EEAnimationFrame* frame : m_backup)
 				SAFE_DELETE(frame);
-			}
+			m_backup.clear();
 			return true;
 		}
 		else if (0 <= _id &&_id < (int)m_backup.size())
@@ -203,7 +190,7 @@ namespace Emerald
 	EEAnimationEmitter::EEAnimationEmitter()
 		:
 		m_animations(),
-		m_backup(nullptr),
+		m_backup(new EEAnimation()),
 		m_isAnimationDirty(false)
 	{
 
@@ -306,6 +293,8 @@ namespace Emerald
 
 		if (_animation)
 			m_backup = new EEAnimation(*_animation);
+		else
+			m_backup = new EEAnimation();
 
 		return true;
 	}

@@ -56,12 +56,11 @@ namespace Emerald
 		if (!EEQuad2D::Update())
 			return false;
 
-		if (m_isTriggered)
+		if (s_focusedObject == this)
 		{
 			//the key queue need to be clear here
-			m_isTriggered = false;
 		}
-		if (s_focusedObject == this)
+		if (s_triggeredObject == this)
 		{
 
 		}

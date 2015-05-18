@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AnimationEditer.cpp" />
     <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="EEFont.cpp" />
     <ClCompile Include="EEGeometry.cpp" />
     <ClCompile Include="EEGUI.cpp" />
+    <ClCompile Include="EEHash.cpp" />
     <ClCompile Include="EEHelper.cpp" />
     <ClCompile Include="EEIntBoard.cpp" />
     <ClCompile Include="EELine2D.cpp" />
@@ -199,6 +201,7 @@
     <ClInclude Include="EEFont.h" />
     <ClInclude Include="EEGeometry.h" />
     <ClInclude Include="EEGUI.h" />
+    <ClInclude Include="EEHash.h" />
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEIntBoard.h" />
     <ClInclude Include="EELine2D.h" />

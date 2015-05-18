@@ -153,6 +153,7 @@ namespace Emerald
 	void EEInput::MouseUp(WPARAM _btnState, int _x, int _y)
 	{
 		ReleaseCapture();
+		// memo: should pop
 		m_mouseInput.push((unsigned int)_btnState);
 		KeyUp((unsigned int)_btnState);
 	}

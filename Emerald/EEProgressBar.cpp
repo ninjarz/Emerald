@@ -15,6 +15,7 @@ namespace Emerald
 		m_callbackFunc(_funcPtr)
 	{
 		m_progressFrame.SetParent(this);
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -27,6 +28,7 @@ namespace Emerald
 		m_callbackFunc(_funcPtr)
 	{
 		m_progressFrame.SetParent(this);
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -39,6 +41,7 @@ namespace Emerald
 		m_callbackFunc(_progressbar.m_callbackFunc)
 	{
 		m_progressFrame.SetParent(this);
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------

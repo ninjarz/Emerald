@@ -26,7 +26,7 @@ namespace Emerald
 		m_overTex(_overTex),
 		m_downTex(_downTex)
 	{
-
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ namespace Emerald
 		m_overTex(_overTex),
 		m_downTex(_downTex)
 	{
-
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ namespace Emerald
 		m_overTex(),
 		m_downTex()
 	{
-
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ namespace Emerald
 		m_overTex(),
 		m_downTex()
 	{
-
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ namespace Emerald
 		m_overTex(_Button.m_overTex),
 		m_downTex(_Button.m_downTex)
 	{
-
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -233,20 +233,20 @@ namespace Emerald
 		{
 		case EE_BUTTON_THREE:
 		{
-								if (m_isTriggered)
+								if (s_triggeredObject == this)
 								{
 									if (m_callbackFunc)
 									{
 										//(*(void(*)())m_callbackFunc)();
 										m_callbackFunc();
-										m_isTriggered = false;
+										s_triggeredObject = nullptr;
 									}
 								}
 		}
 			break;
 		case EE_BUTTON_SCALE:
 		{
-								if (m_isTriggered)
+								if (s_triggeredObject == this)
 								{
 									m_currFadeTime += (float)EECore::s_EECore->GetDeltaTime();
 									if (m_currFadeTime >= m_aimFadeTime)
@@ -254,12 +254,12 @@ namespace Emerald
 										m_currFadeTime = m_aimFadeTime;
 										if (m_callbackFunc)
 											m_callbackFunc();
-										m_isTriggered = false;
+										s_triggeredObject = nullptr;
 									}
 									//the scale value is changed in a sense
 									m_isScaleDirty = true;
 								}
-								else if (m_state == EE_OBJECT_UP)
+								else if (m_state == EE_OBJECT_FREE)
 								{
 									if (m_currScaleTime)
 										m_isScaleDirty = true;
@@ -348,7 +348,7 @@ namespace Emerald
 		ID3D11ShaderResourceView *texture = NULL;
 		switch (m_state)
 		{
-		case EE_OBJECT_UP:
+		case EE_OBJECT_FREE:
 			texture = m_quadTex.GetTexture();
 			deviceConstext->PSSetShaderResources(0, 1, &texture);
 			break;
@@ -403,7 +403,7 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
+			FLOAT3 scale = ((m_parent? m_parent->GetFinalScale() : FLOAT3(1.f)) * m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
 
 			Rect_Float rect(
 				-m_quadWidth * scale.x,

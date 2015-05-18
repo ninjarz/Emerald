@@ -294,6 +294,10 @@ namespace Emerald
 	EEQuad2D::~EEQuad2D()
 	{
 		SAFE_RELEASE(m_quadVB);
+		if (s_focusedObject == this)
+			s_focusedObject = nullptr;
+		if (s_triggeredObject == this)
+			s_triggeredObject = nullptr;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -586,26 +590,22 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEQuad2D::UpdateObjectState()
 	{
-		if (m_state != EE_OBJECT_DOWN)
-			m_state = EE_OBJECT_UP;
-
-		//the mouse is within the rect
-		//!!! GetFinalRect should be optimized
+		// the mouse is within the rect
+		// GetFinalRect should be optimized!
 		if (EECollision(GetFinalRect(), EECore::s_EECore->GetMousePosition()))
 		{
-			//DOWN
+			// DOWN
 			if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 			{
-				if (m_state == EE_OBJECT_UP)
+				if (m_state == EE_OBJECT_OVER && s_focusedObject == nullptr && m_isFocusable)
 					OnMouseClicked(EECore::s_EECore->GetMousePosition());
 			}
-			//DOWN TO UP
-			else if (m_state == EE_OBJECT_DOWN)
+			// DOWN TO UP
+			else if (m_state == EE_OBJECT_DOWN && s_focusedObject == this && m_isFocusable)
 			{
-				//....
 				OnMouseTriggered(EECore::s_EECore->GetMousePosition());
 			}
-			//OVER
+			// OVER
 			else
 			{
 				OnMouseOver(EECore::s_EECore->GetMousePosition());
@@ -613,7 +613,10 @@ namespace Emerald
 		}
 		else
 		{
-			OnMouseUp(EECore::s_EECore->GetMousePosition());
+			if (s_focusedObject == this && !EECore::s_EECore->IsKeyDown(VK_LBUTTON))
+				s_focusedObject = nullptr;
+			else if (s_focusedObject != this)
+				OnMouseFree(EECore::s_EECore->GetMousePosition());
 		}
 
 		return true;

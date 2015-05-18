@@ -56,6 +56,7 @@ int main(int _argc, char** _argv)
 	
 	EEAnimationFrame frame0;
 	frame0.SetObject(hitSlide);
+	frame0.startTime = 0.0f;
 	frame0.duration = 0.05f;
 
 	// 1
@@ -63,6 +64,7 @@ int main(int _argc, char** _argv)
 	//quad1.SetScale(3.0f);
 	EEAnimationFrame frame1;
 	frame1.SetObject(quad1);
+	frame1.startTime = 0.15f;
 	frame1.duration = 0.35f;
 	float alpha11 = 0.0f;
 	float scale11 = 2.0f;
@@ -73,6 +75,7 @@ int main(int _argc, char** _argv)
 	EEQuad2D quad2(Rect_Float(-40, -40, 40, 40), hitTex[30]);
 	EEAnimationFrame frame2;
 	frame2.SetObject(quad2);
+	frame2.startTime = 0.05f;
 	frame2.duration = 0.05f;
 	float rotation2 = EE_2PI;
 	frame2.actions.push_back(boost::bind(EERotateYX, _1, 0.05f, rotation2, _2, false));
@@ -84,6 +87,7 @@ int main(int _argc, char** _argv)
 	quad3.SetAlpha(alpha30);
 	EEAnimationFrame frame3;
 	frame3.SetObject(quad3);
+	frame3.startTime = 0.1f;
 	frame3.duration = 0.05f;
 	frame3.actions.push_back(boost::bind(EEFade, _1, 0.05f, alpha31, _2));
 
@@ -91,6 +95,7 @@ int main(int _argc, char** _argv)
 	EEQuad2D quad4(Rect_Float(-50, -50, 50, 50), hitTex[32]);
 	EEAnimationFrame frame4;
 	frame4.SetObject(quad4);
+	frame4.startTime = 0.5f;
 	frame4.duration = 0.07f;
 	float alpha41 = 0.0f;
 	float scale41 = 4.0f;

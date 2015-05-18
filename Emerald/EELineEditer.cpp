@@ -13,6 +13,7 @@ namespace Emerald
 		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
 	{
 		m_font.SetParent(this);
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -22,6 +23,7 @@ namespace Emerald
 		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
 	{
 		m_font.SetParent(this);
+		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -45,12 +47,11 @@ namespace Emerald
 		if (!EEQuad2D::Update())
 			return false;
 
-		if (m_isTriggered)
+		if (s_focusedObject == this)
 		{
 			//the key queue need to be clear here
-			m_isTriggered = false;
 		}
-		if (s_focusedObject == this)
+		if (s_triggeredObject == this)
 		{
 			if (EECore::s_EECore->IsKeyInput())
 			{

@@ -16,10 +16,11 @@ namespace Emerald
 		bool isRunning;
 		int id;
 		EEObject *object;
+		float startTime;
 		float duration;
 		std::vector<std::function<boost::thread*(EEObject*, float)>> actions;
 
-		inline EEAnimationFrame() : isRunning(false), id(-1), object(nullptr), actions() {}
+		inline EEAnimationFrame() : isRunning(false), id(-1), object(nullptr), startTime(0.f), duration(0.f), actions() {}
 		inline EEAnimationFrame(const EEAnimationFrame& _frame) { *this = _frame; }
 		inline ~EEAnimationFrame()
 		{
@@ -32,6 +33,7 @@ namespace Emerald
 			isRunning = _frame.isRunning;
 			id = _frame.id;
 			object = _frame.object->Clone();
+			startTime = _frame.startTime;
 			duration = _frame.duration;
 			actions = _frame.actions;
 
@@ -60,9 +62,9 @@ namespace Emerald
 		std::vector<EEAnimationFrame*> GetFrames();
 
 	protected:
-		std::queue<EEAnimationFrame*> m_frames;
+		std::vector<EEAnimationFrame*> m_frames;
 		std::vector<EEAnimationFrame*> m_backup;
-		float m_startTime;
+		float startTime;
 		bool m_isLoop;
 	};
 

@@ -9,6 +9,8 @@
 #include "EEMath.h"
 #include "EEColor.h"
 
+
+// big big big memo: manage all the object
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -30,9 +32,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	typedef enum
 	{
-		EE_OBJECT_UP = 1,
-		EE_OBJECT_DOWN = 2,
-		EE_OBJECT_OVER = 3,
+		EE_OBJECT_FREE = 0,
+		EE_OBJECT_DOWN = 1,
+		EE_OBJECT_OVER = 2,
 	} EEObjectState;
 
 	//EEObject
@@ -46,7 +48,7 @@ namespace Emerald
 		static bool s_isObjectInitialized;
 		static ID3D11Buffer *s_objectBuffer;
 		static EEObject *s_focusedObject;
-
+		static EEObject *s_triggeredObject;
 	public:
 		EEObject();
 		EEObject(const FLOAT3& _position);
@@ -82,9 +84,11 @@ namespace Emerald
 		virtual void SetColor(const EEColor& _color);
 		//localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
+		// state
+		virtual void SetIsFocusable(bool _isFocusable);
 		//callback function
 		virtual bool SetUpdateFunc(std::function<void(void)> _funcPtr);
-		virtual bool SetUpFunc(std::function<void(void)> _funcPtr);
+		virtual bool SetFreeFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetOverFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetClickedFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetTriggeredFunc(std::function<void(void)> _funcPtr);
@@ -143,7 +147,7 @@ namespace Emerald
 		//OnFunction
 		virtual void OnUpdate();
 		virtual void OnRender();
-		virtual void OnMouseUp(const Point& _pos);
+		virtual void OnMouseFree(const Point& _pos);
 		virtual void OnMouseOver(const Point& _pos);
 		virtual void OnMouseClicked(const Point& _pos);
 		virtual void OnMouseTriggered(const Point& _pos);
@@ -176,12 +180,12 @@ namespace Emerald
 		float m_localZOrder;
 		bool m_isLocalZOrderDirty;
 		//state
+		bool m_isFocusable;
 		EEObjectState m_state;
-		bool m_isTriggered;
 		//callback function
 		std::function<void(void)> m_updateFunc;
 		std::function<void(void)> m_renderFunc;
-		std::function<void(void)> m_upFunc;
+		std::function<void(void)> m_freeFunc;
 		std::function<void(void)> m_overFunc;
 		std::function<void(void)> m_clickedFunc;
 		std::function<void(void)> m_TriggeredFunc;

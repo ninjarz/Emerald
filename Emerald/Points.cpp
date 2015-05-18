@@ -4,7 +4,7 @@
 
 //----------------------------------------------------------------------------------------------------
 void putpolywiths1(int* p, int n, EEPoints2D& points) {
-	float alpha = EE_PI / 4, k = tan(alpha), db = 4;
+	float alpha = EE_PI / 4, k = tan(alpha), db = 2;
 
 	// get range of b
 	// TODO: here magic
@@ -21,30 +21,37 @@ void putpolywiths1(int* p, int n, EEPoints2D& points) {
 	struct Point{ int x, y; };
 	struct Line2{ Point a, b; };
 	auto getintersect = [](int x0, int y0, int x1, int y1, int b, float k, int& ix, int& iy) {
-
 		if (abs(k*x0 + y1 - k*x1 + y0) <= 0.01) return 0;
 		// k f
 		float t = k*(x0 - x1) - y0 + y1;
 		ix = (b*(x1 - x0) + x0*y1 - x1*y0) / t;
 		iy = ((-b*y0) + b*y1 + k*x0*y1 - k*x1*y0) / t;
 		if (x0>x1) std::swap(x0, x1);
-		if (x0 > ix || ix > x1) return 0; // box detection
+		if (y0>y1) std::swap(y0, y1);
+		if (ix < x0 || x1 < ix || iy < y0 || y1 < iy) return 0; // box detection
 		return 1;
 	};
-
 	for (int b = bmin; b < bmax; b += db) {
-		int x0, y0, x1, y1;
+		int x0(0), y0(0), x1(0), y1(0);
 		int i;
-		for (i = 0; i < n; i += 1) {
+		for (i = 0; i < n; ++i) {
 			int t = i * 2;
-			if (getintersect(p[i * 2], p[i * 2 + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x0, y0)) break;
+			if (getintersect(p[t], p[t + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x0, y0)) 
+				break;
 		}
-		for (++i; i < n; i += 1) {
+		for (++i; i < n; ++i) {
 			int t = i * 2;
-			if (getintersect(p[i * 2], p[i * 2 + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x1, y1)) break;
+			if (getintersect(p[t], p[t + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x1, y1))
+			{
+				if (x0 == x1 && y0 == y1)
+					continue;
+				break;
+			}
 		}
-		points.AddPoints(EEBresenhamLine(FLOAT2(x0, y0), FLOAT2(x1, y1)));
+		printf("%d %d %d %d\n", x0, y0, x1, y1);
+		points.AddPoints(EEDDALine(FLOAT2(x0, y0), FLOAT2(x1, y1)));
 	}
+	int a = 2;
 }
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -79,6 +86,7 @@ int main(int _argc, char** _argv)
 
 		points.Process();
 
+		//printf("%d ", EEGetFPS());
 		EEEndScene();
 	}
 

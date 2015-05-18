@@ -170,7 +170,7 @@ int MainScene()
 			progressbar.SetPosition(pos);
 		}
 	});
-	musicPos.SetUpFunc(
+	musicPos.SetFreeFunc(
 		[&progressbar]
 	{
 		FLOAT3 pos = progressbar.GetPosition();

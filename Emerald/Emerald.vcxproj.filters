@@ -381,6 +381,12 @@
     <ClCompile Include="EETextBrowser.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationEditer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEHash.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -571,6 +577,9 @@
     </ClInclude>
     <ClInclude Include="EETextBrowser.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEHash.h">
+      <Filter>头文件\Emerald</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
