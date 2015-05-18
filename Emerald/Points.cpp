@@ -1,5 +1,5 @@
 //Points Demo
-#if 0
+#if 1
 #include "Emerald.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -8,7 +8,7 @@ void putpolywiths1(int* p, int n, EEPoints2D& points) {
 
 	// get range of b
 	// TODO: here magic
-	int bmin = 1000, bmax = -1;
+	float bmin = 1000, bmax = -1;
 	auto getb = [](int x, int y, int k) {
 		return y - k*x;
 	};
@@ -79,13 +79,15 @@ int main(int _argc, char** _argv)
 	int tmp[16] = { 100, 100, 100, 300, 300, 300, 300, 100 };
 	putpolywiths1(tmp, 4, points);
 
+	EELine2D line(FLOAT2(0.0f, 0.0f), FLOAT2(200.0f, 200.0f), EEColor::WHITE);
+
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 		EEShowFPSInTitle(L"- -");
 
 		points.Process();
-
+		line.Process();
 		//printf("%d ", EEGetFPS());
 		EEEndScene();
 	}

@@ -1,5 +1,5 @@
 #include "EESlide.h"
-
+#include "EECore.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -54,10 +54,10 @@ namespace Emerald
 			m_updateTime += m_changeInterval * times;
 			times += GetTexIndex();
 			if (m_isLoop)
-				SetCurrentSlide(times % m_quadTex.GetNumber());
+				SetCurrentSlide(times % m_tex.GetNumber());
 			else
 			{
-				SetCurrentSlide(times < m_quadTex.GetNumber() ? times : m_quadTex.GetNumber() - 1);
+				SetCurrentSlide(times < m_tex.GetNumber() ? times : m_tex.GetNumber() - 1);
 			}
 		}
 

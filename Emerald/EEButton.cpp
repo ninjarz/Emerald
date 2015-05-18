@@ -191,7 +191,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EETexture* EEButton::GetUpTex()
 	{
-		return &m_quadTex;
+		return &m_tex;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -334,7 +334,6 @@ namespace Emerald
 	bool EEButton::Render_THREE()
 	{
 		MapObjectBuffer();
-		MapQuad2DBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 
@@ -349,7 +348,7 @@ namespace Emerald
 		switch (m_state)
 		{
 		case EE_OBJECT_FREE:
-			texture = m_quadTex.GetTexture();
+			texture = m_tex.GetTexture();
 			deviceConstext->PSSetShaderResources(0, 1, &texture);
 			break;
 		case EE_OBJECT_DOWN:
@@ -442,7 +441,6 @@ namespace Emerald
 	{
 		float finalAlpha = GetFinalAlpha() * (1.0f - (m_currFadeTime / m_aimFadeTime));
 		MapObjectBuffer(finalAlpha);
-		MapQuad2DBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 
@@ -453,7 +451,7 @@ namespace Emerald
 		deviceConstext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
 		deviceConstext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);
 		deviceConstext->VSSetShader(s_quadVS, NULL, 0);
-		ID3D11ShaderResourceView *texture = m_quadTex.GetTexture();
+		ID3D11ShaderResourceView *texture = m_tex.GetTexture();
 		deviceConstext->PSSetShaderResources(0, 1, &texture);
 		deviceConstext->PSSetShader(s_quadPS, NULL, 0);
 		deviceConstext->Draw(4, 0);

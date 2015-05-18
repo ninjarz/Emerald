@@ -98,17 +98,6 @@ namespace Emerald
 			ID3D11Device* device = EECore::s_EECore->GetDevice();
 			ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
 
-			D3D11_BUFFER_DESC bufferDesc;
-			bufferDesc.ByteWidth = sizeof(EEQuad2DBufferDesc);
-			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			bufferDesc.MiscFlags = 0;
-			bufferDesc.StructureByteStride = 0;
-			result = device->CreateBuffer(&bufferDesc, NULL, &s_quad2DBuffer);
-			if (FAILED(result))
-				return false;
-
 			s_isQuad2DInitialized = true;
 		}
 
@@ -122,12 +111,7 @@ namespace Emerald
 		m_quadRect(),
 		m_quadWidth(0.0f),
 		m_quadHeight(0.0f),
-		m_quadVB(NULL),
-		m_quadTex(),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(true),
-		m_isUseTex(false),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
 
@@ -141,12 +125,7 @@ namespace Emerald
 		m_quadRect(_position.x, _position.y, _position.x, _position.y),
 		m_quadWidth(0.0f),
 		m_quadHeight(0.0f),
-		m_quadVB(NULL),
-		m_quadTex(),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(true),
-		m_isUseTex(false),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
 
@@ -160,12 +139,7 @@ namespace Emerald
 		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
 		m_quadWidth(_width),
 		m_quadHeight(_height),
-		m_quadVB(NULL),
-		m_quadTex(),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(true),
-		m_isUseTex(false),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
 
@@ -179,14 +153,12 @@ namespace Emerald
 		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
 		m_quadWidth(_width),
 		m_quadHeight(_height),
-		m_quadVB(NULL),
-		m_quadTex(_tex),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(false),
-		m_isUseTex(true),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
+		SetTexture(_tex);
+		SetIsUseColor(false);
+		SetIsUseTex(true);
 
 		CreateQuadVertexBuffer();
 	}
@@ -198,12 +170,7 @@ namespace Emerald
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadTex(),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(true),
-		m_isUseTex(false),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
 
@@ -217,12 +184,7 @@ namespace Emerald
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadTex(),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(true),
-		m_isUseTex(false),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
 
@@ -237,14 +199,12 @@ namespace Emerald
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadTex(_tex),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(false),
-		m_isUseTex(true),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
+		SetTexture(_tex);
+		SetIsUseColor(false);
+		SetIsUseTex(true);
 
 		CreateQuadVertexBuffer();
 	}
@@ -256,14 +216,12 @@ namespace Emerald
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
-		m_quadVB(NULL),
-		m_quadTex(_tex),
-		m_texRect(0.0, 0.0, 1.0f, 1.0f),
-		m_isUseColor(false),
-		m_isUseTex(true),
-		m_texIndex(0)
+		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
+		SetTexture(_tex);
+		SetIsUseColor(false);
+		SetIsUseTex(true);
 
 		CreateQuadVertexBuffer();
 	}
@@ -275,12 +233,7 @@ namespace Emerald
 		m_quadRect(_quad.m_quadRect),
 		m_quadWidth(_quad.m_quadWidth),
 		m_quadHeight(_quad.m_quadHeight),
-		m_quadVB(nullptr),  // nullptr
-		m_quadTex(_quad.m_quadTex),
-		m_texRect(_quad.m_texRect),
-		m_isUseColor(_quad.m_isUseColor),
-		m_isUseTex(_quad.m_isUseTex),
-		m_texIndex(_quad.m_texIndex)
+		m_quadVB(nullptr)
 	{
 		D3D11_BUFFER_DESC bufferDesc;
 		_quad.m_quadVB->GetDesc(&bufferDesc);
@@ -355,7 +308,6 @@ namespace Emerald
 			return false;
 
 		MapObjectBuffer();
-		MapQuad2DBuffer();
 
 		ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -365,7 +317,7 @@ namespace Emerald
 		deviceContext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
 		deviceContext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);
 		deviceContext->VSSetShader(s_quadVS, NULL, 0);
-		ID3D11ShaderResourceView *texture = m_quadTex.GetTexture();
+		ID3D11ShaderResourceView *texture = m_tex.GetTexture();
 		deviceContext->PSSetShaderResources(0, 1, &texture);
 		deviceContext->PSSetShader(s_quadPS, NULL, 0);
 		deviceContext->Draw(4, 0);
@@ -445,53 +397,6 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::SetTexture(const EETexture& _tex)
-	{
-		m_quadTex = _tex;
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::SetTexture(ID3D11ShaderResourceView* _tex)
-	{
-		m_quadTex.SetTexture(_tex);
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::SetTexRect(Rect_Float& _texRect)
-	{
-		m_texRect = _texRect;
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::SetIsUseColor(bool _isUseColor)
-	{
-		m_isUseColor = _isUseColor;
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::SetIsUseTex(bool _isUseTex)
-	{
-		m_isUseTex = _isUseTex;
-
-		return true;
-	}
-
-	bool EEQuad2D::SetTexIndex(int _index)
-	{
-		m_texIndex = _index;
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	const Rect_Float& EEQuad2D::GetRect() const
 	{
 		return m_quadRect;
@@ -519,17 +424,6 @@ namespace Emerald
 	FLOAT3 EEQuad2D::GetRowCenter() const
 	{
 		return FLOAT3(m_quadWidth / 2, m_quadHeight / 2, 0.0f);
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EETexture* EEQuad2D::GetTexture()
-	{
-		return &m_quadTex;
-	}
-
-	int EEQuad2D::GetTexIndex()
-	{
-		return m_texIndex;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -564,27 +458,6 @@ namespace Emerald
 	{
 		FLOAT3 finalPosition = GetFinalPosition();
 		return FLOAT3(finalPosition.x + m_quadWidth / 2, finalPosition.y + m_quadHeight / 2, 0.0f);
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEQuad2D::MapQuad2DBuffer()
-	{
-		HRESULT result;
-		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		result = deviceContext->Map(s_quad2DBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		if (FAILED(result))
-			return false;
-		EEQuad2DBufferDesc *quad2DBufferDesc = (EEQuad2DBufferDesc*)mappedResource.pData;
-		quad2DBufferDesc->isUseColor = m_isUseColor;
-		quad2DBufferDesc->isUseTex = m_isUseTex;
-		quad2DBufferDesc->texIndex = m_texIndex;
-		deviceContext->Unmap(s_quad2DBuffer, 0);
-
-		deviceContext->VSSetConstantBuffers(3, 1, &s_quad2DBuffer);
-		deviceContext->PSSetConstantBuffers(3, 1, &s_quad2DBuffer);
-
-		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

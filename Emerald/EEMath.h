@@ -380,6 +380,18 @@ namespace Emerald
 			result.Normalise();
 			return result;
 		}
+
+		inline FLOAT2 GetVertical(bool _flag = true) const
+		{
+			FLOAT sinAngle = sinf(EE_PIDIV2);
+			FLOAT cosAngle = cosf(EE_PIDIV2);
+
+			// clockwise
+			if (_flag)
+				return FLOAT2(-x * cosAngle - y * sinAngle, x * sinAngle - y * cosAngle).GetNormalization();
+			else
+				return FLOAT2(x * cosAngle + y * sinAngle, -x * sinAngle + y * cosAngle).GetNormalization();
+		}
 	};
 
 	//----------------------------------------------------------------------------------------------------

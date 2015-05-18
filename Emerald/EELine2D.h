@@ -31,7 +31,7 @@ namespace Emerald
 		static ID3D11Buffer *s_line2DBuffer;
 
 	public:
-		EELine2D(FLOAT2& _start, FLOAT2& _end);
+		EELine2D(FLOAT2& _start, FLOAT2& _end, const EEColor& _color);
 		virtual ~EELine2D();
 
 		virtual bool Update();
@@ -42,6 +42,8 @@ namespace Emerald
 
 	protected:
 		FLOAT2 m_pos0, m_pos1;
+		float m_width;
+		bool m_isLineDirty;
 		ID3D11Buffer *m_lineVB;
 	};
 

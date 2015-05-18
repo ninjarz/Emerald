@@ -4,6 +4,7 @@
 
 #include "EETexture.h"
 #include "EEEffect.h"
+#include "EEMath.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald

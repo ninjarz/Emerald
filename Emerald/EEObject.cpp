@@ -52,6 +52,11 @@ namespace Emerald
 		m_isRotationDirty(true),
 		m_color(0.0f, 0.0f, 0.0f, 0.0f),
 		m_isColorDirty(true),
+		m_isUseColor(true),
+		m_tex(),
+		m_texIndex(0),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
+		m_isUseTex(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
 		//state
@@ -76,6 +81,11 @@ namespace Emerald
 		m_isRotationDirty(true),
 		m_color(0.0f, 0.0f, 0.0f, 0.0f),
 		m_isColorDirty(true),
+		m_isUseColor(true),
+		m_tex(),
+		m_texIndex(0),
+		m_texRect(0.0, 0.0, 1.0f, 1.0f),
+		m_isUseTex(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
 		//state
@@ -98,6 +108,11 @@ namespace Emerald
 		m_isAlphaDirty(_object.m_isAlphaDirty),
 		m_color(_object.m_color),
 		m_isColorDirty(_object.m_isColorDirty),
+		m_isUseColor(_object.m_isUseColor),
+		m_tex(_object.m_tex),
+		m_texIndex(_object.m_texIndex),
+		m_texRect(_object.m_texRect),
+		m_isUseTex(_object.m_isUseTex),
 		m_localZOrder(_object.m_localZOrder),
 		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty),
 		//state
@@ -247,6 +262,54 @@ namespace Emerald
 	void EEObject::SetColor(const EEColor& _color)
 	{
 		m_color = _color;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetIsUseColor(bool _isUseColor)
+	{
+		m_isUseColor = _isUseColor;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetTexture(const EETexture& _tex)
+	{
+		m_tex = _tex;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetTexture(ID3D11ShaderResourceView* _tex)
+	{
+		m_tex.SetTexture(_tex);
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetTexIndex(int _index)
+	{
+		m_texIndex = _index;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetTexRect(Rect_Float& _texRect)
+	{
+		m_texRect = _texRect;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetIsUseTex(bool _isUseTex)
+	{
+		m_isUseTex = _isUseTex;
+
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -466,6 +529,30 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEObject::IsUseColor() const
+	{
+		return m_isUseColor;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EETexture* EEObject::GetTexture()
+	{
+		return &m_tex;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EEObject::GetTexIndex()
+	{
+		return m_texIndex;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::IsUseTex() const
+	{
+		return m_isUseTex;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	float EEObject::GetLocalZOrder() const
 	{
 		return m_localZOrder;
@@ -641,6 +728,9 @@ namespace Emerald
 		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetFinalRotation() * GetViewMatrix() * GetProjectionMatrix();
 		objectBufferDesc->rotationMatrix = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
+		objectBufferDesc->texIndex = GetTexIndex();
+		objectBufferDesc->isUseColor = IsUseColor();
+		objectBufferDesc->isUseTex = IsUseTex();
 		objectBufferDesc->alpha = GetFinalAlpha();
 		deviceContext->Unmap(s_objectBuffer, 0);
 
@@ -667,6 +757,9 @@ namespace Emerald
 		objectBufferDesc->worldViewProjMatrix = GetFinalWorldMatrix() * GetFinalRotation() * GetViewMatrix() * GetProjectionMatrix();
 		objectBufferDesc->rotationMatrix = GetFinalRotation();
 		objectBufferDesc->color = GetColor();
+		objectBufferDesc->texIndex = GetTexIndex();
+		objectBufferDesc->isUseColor = IsUseColor();
+		objectBufferDesc->isUseTex = IsUseTex();
 		objectBufferDesc->alpha = _alpha;
 		deviceContext->Unmap(s_objectBuffer, 0);
 

@@ -49,7 +49,7 @@ namespace Emerald
 	std::vector<FLOAT2> EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1)
 	{
 		FLOAT2 delta(_p1.x - _p0.x, _p1.y - _p0.y);
-		FLOAT2 forward(delta.x >= 0 ? 1 : -1, delta.y >= 0 ? 1 : -1);
+		FLOAT2 forward(delta.x >= 0.f ? 1.f : -1.f, delta.y >= 0.f ? 1.f : -1.f);
 		delta = FLOAT2(delta.x >= 0 ? delta.x : -delta.x, delta.y >= 0 ? delta.y : -delta.y);
 		float e = 2 * delta.y - delta.x;
 		FLOAT2 pos = _p0;
@@ -192,48 +192,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void putpolywiths(int* p, int n) {
-		float alpha = EE_PI / 4, k = tan(alpha), db = 4;
-
-		// get range of b
-		// TODO: here magic
-		int bmin = 1000, bmax = -1;
-		auto getb = [](int x, int y, int k) {
-			return y - k*x;
-		};
-		for (int i = 0; i < n; i += 1) {
-			int b = getb(p[i * 2], p[i * 2 + 1], k);
-			bmin = min(b, bmin);
-			bmax = max(b, bmax);
-		}
-		struct Line{ int k, b; };
-		struct Point{ int x, y; };
-		struct Line2{ Point a, b; };
-		auto getintersect = [](int x0, int y0, int x1, int y1, int b, float k, int& ix, int& iy) {
-
-			if (abs(k*x0 + y1 - k*x1 + y0) <= 0.01) return 0;
-			// k f
-			float t = k*(x0 - x1) - y0 + y1;
-			ix = (b*(x1 - x0) + x0*y1 - x1*y0) / t;
-			iy = ((-b*y0) + b*y1 + k*x0*y1 - k*x1*y0) / t;
-			if (x0>x1) std::swap(x0, x1);
-			if (x0 > ix || ix > x1) return 0; // box detection
-			return 1;
-		};
-
-		for (int b = bmin; b < bmax; b += db) {
-			int x0, y0, x1, y1;
-			int i;
-			for (i = 0; i < n; i += 1) {
-				int t = i * 2;
-				if (getintersect(p[i * 2], p[i * 2 + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x0, y0)) break;
-			}
-			for (++i; i < n; i += 1) {
-				int t = i * 2;
-				if (getintersect(p[i * 2], p[i * 2 + 1], p[(t + 2) % (2 * n)], p[(t + 3) % (2 * n)], b, k, x1, y1)) break;
-			}
-			//EEPoints2D points(EEBresenhamLine(FLOAT2(x0, y0), FLOAT2(x1, y1), c);
-		}
+	void putpolywiths(int* p, int n) 
+	{
+		
 	}
 
 	//----------------------------------------------------------------------------------------------------

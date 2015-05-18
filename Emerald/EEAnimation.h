@@ -5,6 +5,7 @@
 #include <queue>
 #include <functional>
 #include "EEGeometry.h"
+#include "EEHelper.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald

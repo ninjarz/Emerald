@@ -12,17 +12,17 @@ namespace Emerald
 	class EEColor : public FLOAT4
 	{
 	public:
-		static const FLOAT4 BLACK;
-		static const FLOAT4 WHITE;
-		static const FLOAT4 RED;
-		static const FLOAT4 GREEN;
-		static const FLOAT4 BLUE;
-		static const FLOAT4 YELLOW;
-		static const FLOAT4 CYAN;
-		static const FLOAT4 MAGENTA;
-		static const FLOAT4 SILVER;
-		static const FLOAT4 COLORS[9];
-		static const FLOAT4 LUCENCY;
+		static const EEColor BLACK;
+		static const EEColor WHITE;
+		static const EEColor RED;
+		static const EEColor GREEN;
+		static const EEColor BLUE;
+		static const EEColor YELLOW;
+		static const EEColor CYAN;
+		static const EEColor MAGENTA;
+		static const EEColor SILVER;
+		static const EEColor COLORS[9];
+		static const EEColor LUCENCY;
 
 	public:
 		EEColor();

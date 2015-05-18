@@ -90,7 +90,7 @@ namespace Emerald
 		m_colorSpeed = _colorSpeed;
 		SetScale(_scale);
 		m_scaleSpeed = _scaleSpeed;
-		m_quadTex = _texture;
+		m_tex = _texture;
 	}
 
 	//----------------------------------------------------------------------------------------------------

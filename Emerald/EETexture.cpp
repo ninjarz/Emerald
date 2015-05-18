@@ -7,6 +7,77 @@ using namespace DirectX;
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	//EETextureData
+	//----------------------------------------------------------------------------------------------------
+	EETextureData::EETextureData() : resource(nullptr), texture(nullptr), textureUAV(nullptr), textureRTV(nullptr), width(0), height(0)
+	{
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	EETextureData::EETextureData(ID3D11Resource* _resource) : resource(_resource), texture(nullptr), textureUAV(nullptr), textureRTV(nullptr), width(0), height(0)
+	{
+		if (resource)
+		{
+			D3D11_RESOURCE_DIMENSION resourceDimension;
+			resource->GetType(&resourceDimension);
+			if (resourceDimension == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
+			{
+				D3D11_TEXTURE2D_DESC texture2DDesc;
+				((ID3D11Texture2D*)resource)->GetDesc(&texture2DDesc);
+				width = texture2DDesc.Width;
+				height = texture2DDesc.Height;
+				number = texture2DDesc.ArraySize;
+
+				//SRV
+				if (FAILED(EECore::s_EECore->GetDevice()->CreateShaderResourceView(_resource, NULL, &texture)))
+					return;
+
+				//UAV
+				if (FAILED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(_resource, NULL, &textureUAV)))
+					return;
+
+				//RTV
+				if (FAILED(EECore::s_EECore->GetDevice()->CreateRenderTargetView(_resource, NULL, &textureRTV)))
+					return;
+			}
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EETextureData::EETextureData(ID3D11ShaderResourceView* _texture) : resource(nullptr), texture(_texture), textureUAV(nullptr), textureRTV(nullptr), width(0), height(0)
+	{
+		if (texture)
+		{
+			texture->GetResource(&resource);
+			D3D11_RESOURCE_DIMENSION resourceDimension;
+			resource->GetType(&resourceDimension);
+			if (resourceDimension == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
+			{
+				D3D11_TEXTURE2D_DESC texture2DDesc;
+				((ID3D11Texture2D*)resource)->GetDesc(&texture2DDesc);
+				width = texture2DDesc.Width;
+				height = texture2DDesc.Height;
+				number = texture2DDesc.ArraySize;
+
+				//UAV
+				if (FAILED(EECore::s_EECore->GetDevice()->CreateUnorderedAccessView(resource, NULL, &textureUAV)))
+					return;
+
+				//RTV
+				if (FAILED(EECore::s_EECore->GetDevice()->CreateRenderTargetView(resource, NULL, &textureRTV)))
+					return;
+			}
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EETextureData::~EETextureData()
+	{
+		SAFE_RELEASE(resource);
+		SAFE_RELEASE(texture);
+		SAFE_RELEASE(textureUAV);
+	}
+
 	//EETexture
 	//----------------------------------------------------------------------------------------------------
 	EETexture::EETexture()

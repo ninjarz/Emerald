@@ -117,14 +117,17 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELine2D::EELine2D(FLOAT2& _start, FLOAT2& _end)
+	EELine2D::EELine2D(FLOAT2& _start, FLOAT2& _end, const EEColor& _color)
 		:
 		EEObject2D(FLOAT3(_start, 0.0f)),
 		m_pos0(_start),
 		m_pos1(_end),
-		m_lineVB(nullptr)
+		m_width(10.f),
+		m_lineVB(nullptr),
+		m_isLineDirty(true)
 	{
 		InitializeLine2D();
+		SetColor(_color);
 
 		CreateLineVertexBuffer();
 	}
@@ -148,13 +151,18 @@ namespace Emerald
 			m_isPositionDirty = false;
 		}
 
-		if (m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isLineDirty)
 		{
 			EELine2DVertex vertices[4];
-			vertices[0].pos = FLOAT3(m_pos0.x, m_pos0.y, m_localZOrder * 0.0001f);
-			//vertices[0].tex = FLOAT2(m_texRect.x, m_texRect.y);
-			vertices[1].pos = FLOAT3(m_pos1.x, m_pos1.y, m_localZOrder * 0.0001f);
-			//vertices[1].tex = FLOAT2(m_texRect.z, m_texRect.y);
+			FLOAT2 vertical = (m_pos1 - m_pos0).GetVertical();
+			vertices[0].pos = FLOAT3(m_pos0 - vertical * m_width, m_localZOrder * 0.0001f);
+			vertices[0].tex = FLOAT2(m_texRect.x, m_texRect.y);
+			vertices[1].pos = FLOAT3(m_pos1 - vertical * m_width, m_localZOrder * 0.0001f);
+			vertices[1].tex = FLOAT2(m_texRect.z, m_texRect.y);
+			vertices[2].pos = FLOAT3(m_pos0 + vertical * m_width, m_localZOrder * 0.0001f);
+			vertices[2].tex = FLOAT2(m_texRect.x, m_texRect.w);
+			vertices[3].pos = FLOAT3(m_pos1 + vertical * m_width, m_localZOrder * 0.0001f);
+			vertices[3].tex = FLOAT2(m_texRect.z, m_texRect.w);
 
 			ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -165,6 +173,7 @@ namespace Emerald
 
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
+			m_isLineDirty = false;
 		}
 
 		return true;
@@ -179,7 +188,7 @@ namespace Emerald
 		MapObjectBuffer();
 
 		ID3D11DeviceContext *deviceContext = EECore::s_EECore->GetDeviceContext();
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		deviceContext->IASetInputLayout(s_lineIL);
 		UINT stride = sizeof(EELine2DVertex);
 		UINT offset = 0;
@@ -200,7 +209,7 @@ namespace Emerald
 		SAFE_RELEASE(m_lineVB);
 
 		D3D11_BUFFER_DESC vbDesc = { 0 };
-		vbDesc.ByteWidth = sizeof(EELine2DVertex) * 2;
+		vbDesc.ByteWidth = sizeof(EELine2DVertex) * 4;
 		vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		vbDesc.MiscFlags = 0;

@@ -4,13 +4,6 @@
 #include "EEObjectBuffer.hlsl"
 #include "EECameraBuffer.hlsl"
 
-cbuffer BoxBuffer  : register(b3)
-{
-	int cb_isUseColor : packoffset(c0.x);
-	int cb_isUseTex : packoffset(c0.y);
-	float cb_tmp32 : packoffset(c0.z);
-	float cb_tmp33 : packoffset(c0.w);
-};
 Texture2D g_tex0 : register(ps, t0);
 
 SamplerState texSampler

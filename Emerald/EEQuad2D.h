@@ -3,21 +3,10 @@
 #define _EE_QUAD2D_H_
 
 #include "EEObject2D.h"
-#include "EETexture.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEQuad2DBufferDesc
-	//----------------------------------------------------------------------------------------------------
-	struct EEQuad2DBufferDesc
-	{
-		int isUseColor;
-		int isUseTex;
-		int texIndex;
-		float tmp3;
-	};
-
 	//EEQuad2DVertex
 	//----------------------------------------------------------------------------------------------------
 	struct EEQuad2DVertex
@@ -64,13 +53,6 @@ namespace Emerald
 		virtual void SetRect(const Rect_Float& _rect);
 		virtual void SetWidth(float _width);
 		virtual void SetHeight(float _height);
-		//texture
-		virtual bool SetTexture(const EETexture& _tex);
-		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
-		virtual bool SetTexRect(Rect_Float& _texRect);
-		virtual bool SetIsUseColor(bool _isUseColor);
-		virtual bool SetIsUseTex(bool _isUseTex);
-		virtual bool SetTexIndex(int _index);
 
 		//position
 		virtual const Rect_Float& GetRect() const;
@@ -78,17 +60,12 @@ namespace Emerald
 		virtual float GetHeight() const;
 		virtual FLOAT3 GetCenter() const;
 		virtual FLOAT3 GetRowCenter() const;
-		// texture
-		virtual EETexture* GetTexture();
-		virtual int GetTexIndex();
 
 		// position
 		virtual Rect_Float GetFinalRect() const;
 		virtual FLOAT3 GetFinalCenter() const;
 
 	protected:
-		// cbuffer
-		virtual bool MapQuad2DBuffer();
 		// state
 		virtual bool UpdateObjectState();
 		// vbuffer
@@ -100,12 +77,6 @@ namespace Emerald
 		float m_quadWidth, m_quadHeight;
 		// the vertex buffer of the quad
 		ID3D11Buffer *m_quadVB;
-		// the texture of the quad
-		EETexture m_quadTex;
-		Rect_Float m_texRect;
-		bool m_isUseColor;
-		bool m_isUseTex;
-		int m_texIndex;
 	};
 }
 

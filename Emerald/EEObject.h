@@ -8,6 +8,7 @@
 #include <boost/thread/thread.hpp>
 #include "EEMath.h"
 #include "EEColor.h"
+#include "EETexture.h"
 
 
 // big big big memo: manage all the object
@@ -22,10 +23,10 @@ namespace Emerald
 		MATRIX worldViewProjMatrix;
 		MATRIX rotationMatrix;
 		FLOAT4 color;
+		int texIndex;
+		int isUseColor;
+		int isUseTex;
 		float alpha;
-		float tmp1;
-		float tmp2;
-		float tmp3;
 	};
 
 	//EEObjectState
@@ -80,8 +81,15 @@ namespace Emerald
 		virtual void SetAlpha(float _alpha);
 		//rotation
 		virtual void SetRotation(const MATRIX& _rotation);
-		//color
+		// color
 		virtual void SetColor(const EEColor& _color);
+		virtual bool SetIsUseColor(bool _isUseColor);
+		// texture
+		virtual bool SetTexture(const EETexture& _tex);
+		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
+		virtual bool SetTexIndex(int _index);
+		virtual bool SetTexRect(Rect_Float& _texRect);
+		virtual bool SetIsUseTex(bool _isUseTex);
 		//localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
 		// state
@@ -124,9 +132,14 @@ namespace Emerald
 		//rotation
 		virtual const MATRIX& GetRotation() const;
 		virtual bool IsRotaionDirty() const;
-		//color
+		// color
 		virtual const EEColor& GetColor() const;
 		virtual bool IsColorDirty() const;
+		virtual bool IsUseColor() const;
+		// texture
+		virtual EETexture* GetTexture();
+		virtual int GetTexIndex();
+		virtual bool IsUseTex() const;
 		//localZOrder
 		virtual float GetLocalZOrder() const;
 		virtual bool IsLocalZOrderDirty() const;
@@ -164,7 +177,7 @@ namespace Emerald
 		virtual bool UpdateObjectState();
 
 	protected:
-		//life
+		// info
 		bool m_isAlive;
 		EEObject *m_parent;
 		FLOAT3 m_position;
@@ -177,19 +190,24 @@ namespace Emerald
 		bool m_isRotationDirty;
 		EEColor m_color;
 		bool m_isColorDirty;
+		bool m_isUseColor;
+		EETexture m_tex;
+		int m_texIndex;
+		Rect_Float m_texRect;
+		bool m_isUseTex;
 		float m_localZOrder;
 		bool m_isLocalZOrderDirty;
-		//state
+		// state
 		bool m_isFocusable;
 		EEObjectState m_state;
-		//callback function
+		// callback function
 		std::function<void(void)> m_updateFunc;
 		std::function<void(void)> m_renderFunc;
 		std::function<void(void)> m_freeFunc;
 		std::function<void(void)> m_overFunc;
 		std::function<void(void)> m_clickedFunc;
 		std::function<void(void)> m_TriggeredFunc;
-		//action
+		// action
 		std::vector<boost::thread*> m_threads;
 	};
 
