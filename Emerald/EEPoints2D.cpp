@@ -188,11 +188,22 @@ namespace Emerald
 		return true;
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	void EEPoints2D::AddPoints(std::vector<FLOAT2>& _points)
 	{
 		for (FLOAT2& point : _points)
 		{
 			m_points.push_back(point);
+		}
+		m_isPointsDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEPoints2D::AddPoints(std::vector<INT2>& _points)
+	{
+		for (INT2& point : _points)
+		{
+			m_points.push_back(FLOAT2((float)point.x, (float)point.y));
 		}
 		m_isPointsDirty = true;
 	}

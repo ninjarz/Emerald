@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationEditer.cpp" />
+    <ClCompile Include="Average.cpp" />
     <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
@@ -302,6 +303,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEPoints2DShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEAverageShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

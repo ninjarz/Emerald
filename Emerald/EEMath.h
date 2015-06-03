@@ -18,6 +18,8 @@ namespace Emerald
 #define EE_1DIV2PI          0.159154943f
 #define EE_PIDIV2           1.570796327f
 #define EE_PIDIV4           0.785398163f
+#define EE_F_MAX			FLT_MAX
+#define EE_F_MIN			FLT_MIN
 
 	//----------------------------------------------------------------------------------------------------
 	//typedef int INT;
@@ -210,6 +212,20 @@ namespace Emerald
 			if (i < 2)
 				return *(&x + i);
 			return y;
+		}
+
+		inline bool operator== (const FLOAT2& _float2) const
+		{
+			if (x == _float2.x && y == _float2.y)
+				return true;
+			return false;
+		}
+
+		inline bool operator!= (const FLOAT2& _float2) const
+		{
+			if (x == _float2.x && y == _float2.y)
+				return false;
+			return true;
 		}
 
 		inline FLOAT2& operator= (const FLOAT2& _float2)
@@ -1041,7 +1057,8 @@ namespace Emerald
 			return *this;
 		}
 
-		inline MATRIX transpose(void) const {
+		inline MATRIX Transpose(void) const 
+		{
 			return MATRIX(
 				m[0][0], m[1][0], m[2][0], m[3][0],
 				m[0][1], m[1][1], m[2][1], m[3][1],
@@ -1157,9 +1174,14 @@ namespace Emerald
 	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t);
 	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t);
 	std::vector<FLOAT2> EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1);
+	void EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1, std::vector<FLOAT2>& _result);
 	std::vector<FLOAT2> EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1);
-	std::vector<FLOAT2> EEBresenhamArc(const FLOAT2& _pos, const float _r);
-	std::vector<FLOAT2> EEPNArc(const FLOAT2& _pos, const float _r);
+	void EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1, std::vector<FLOAT2>& _result);
+	std::vector<FLOAT2> EEBresenhamArc(const FLOAT2& _pos, float _r, float _start = 0.f, float _end = EE_2PI);
+	std::vector<FLOAT2> EEPNArc(const FLOAT2& _pos, float _r, float _start = 0.f, float _end = EE_2PI);
+	std::vector<FLOAT2> EEEllipse(const FLOAT2& _pos, float _a, float _b, float _start = 0.f, float _end = EE_2PI);
+	std::vector<FLOAT2> EEFillPolygon(const std::vector<FLOAT2>& _points);
+	std::vector<FLOAT2> EEFillPolygon(const std::vector<FLOAT2>& _outer, const std::vector<FLOAT2>& _inner);
 	std::vector<FLOAT2> EETest();
 
 	//----------------------------------------------------------------------------------------------------
@@ -1190,6 +1212,10 @@ namespace Emerald
 	FLOAT4 Rand_FLOAT4();
 
 	FLOAT EEDegreesToRadians(FLOAT _degrees);
+
+	//----------------------------------------------------------------------------------------------------
+	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b);
+	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b, FLOAT2& _result);
 }
 
 #endif

@@ -58,7 +58,6 @@ namespace Emerald
 					header.RCODE = 4;
 					std::string result = header.NetString() + questions[0].NetString();
 					Send(&addr, result);
-
 					return false;
 				}
 			}
@@ -73,18 +72,19 @@ namespace Emerald
 				//answer.NAME += (char)(header.Size());
 				answers[i].TYPE = 1;
 				answers[i].CLASS = 1;
-				answers[i].TTL = 6000;
+				answers[i].TTL = 60;
 				answers[i].RDLENGTH = 4;
 				answers[i].RDATA.resize(answers[i].RDLENGTH);
 				unsigned int *rdata = (unsigned int*)&answers[i].RDATA[0];
 				auto iter = m_hosts.find(questions[i].Name());
 				if (iter != m_hosts.end())
+				{
 					*rdata = inet_addr(iter->second.data());
+				}
 				else
 				{
 					m_clients.insert(std::pair<unsigned int, sockaddr_storage>(header.ID, addr));
 					m_loopup.Send(data);
-
 					return false;
 				}
 			}

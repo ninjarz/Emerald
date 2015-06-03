@@ -7,7 +7,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject3D::EEObject3D()
 		:
-		EEObject()
+		EEObject(),
+		m_axisAlignedBox()
 	{
 
 	}
@@ -15,7 +16,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEObject3D::EEObject3D(const FLOAT3& _position)
 		:
-		EEObject(_position)
+		EEObject(_position),
+		m_axisAlignedBox()
 	{
 
 	}

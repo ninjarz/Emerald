@@ -33,12 +33,14 @@ namespace Emerald
 	public:
 		EEPoints2D();
 		EEPoints2D(std::vector<FLOAT2>& _points);
+
 		virtual ~EEPoints2D();
 
 		virtual bool Update();
 		virtual bool Render();
 
 		void AddPoints(std::vector<FLOAT2>& _points);
+		void AddPoints(std::vector<INT2>& _points);
 
 	protected:
 		bool CreatePointsVertexBuffer();

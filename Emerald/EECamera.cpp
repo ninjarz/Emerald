@@ -498,6 +498,36 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EECameraSystem::GetPosition()
+	{
+		return m_cameras[m_currCamera].GetPosition();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EECameraSystem::GetRight()
+	{
+		return m_cameras[m_currCamera].GetRight();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EECameraSystem::GetUp()
+	{
+		return m_cameras[m_currCamera].GetUp();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EECameraSystem::GetLook()
+	{
+		return m_cameras[m_currCamera].GetLook();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EECameraSystem::GetLookAt()
+	{
+		return m_cameras[m_currCamera].GetLookAt();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	const MATRIX& EECameraSystem::GetViewMatrix()
 	{
 		return m_cameras[m_currCamera].GetViewMatrix();
@@ -557,6 +587,21 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	EEHCamera EEGetCamera() { return EECore::s_EECore->GetEECameraSystem()->GetCamera(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EEGetCameraPosition() { return EECore::s_EECore->GetEECameraSystem()->GetPosition(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EEGetCameraRight() { return EECore::s_EECore->GetEECameraSystem()->GetRight(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EEGetCameraUp() { return EECore::s_EECore->GetEECameraSystem()->GetUp(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EEGetCameraLook() { return EECore::s_EECore->GetEECameraSystem()->GetLook(); }
+
+	//----------------------------------------------------------------------------------------------------
+	const FLOAT3& EEGetCameraLookAt() { return EECore::s_EECore->GetEECameraSystem()->GetLookAt(); }
 
 	//----------------------------------------------------------------------------------------------------
 	const MATRIX& EEGetViewMatrix() { return EECore::s_EECore->GetEECameraSystem()->GetViewMatrix(); }

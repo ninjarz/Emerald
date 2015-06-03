@@ -7,7 +7,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EERippleC
+	// EERippleC
 	//----------------------------------------------------------------------------------------------------
 	bool EERippleC::s_isRippleCInitialized = false;
 	ID3D11Buffer *EERippleC::s_disturbBuffer = nullptr;

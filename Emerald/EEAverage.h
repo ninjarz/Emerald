@@ -8,14 +8,37 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEBlurC
+	// EEAverageBufferDesc
+	//----------------------------------------------------------------------------------------------------
+	struct EEAverageBufferDesc
+	{
+		int value;
+		float tmp1;
+		float tmp2;
+		float tmp3;
+	};
+
+	// EEAverage
+	//----------------------------------------------------------------------------------------------------
 	class EEAverageC : public EEEffect
 	{
-	public:
-		EEAverageC(EETexture& _src);
-
+	protected:
+		static bool InitializeAverageC();
 
 	protected:
+		static bool s_isAverageCInitialized;
+		static ID3D11Buffer *s_averageBuffer;
+		static ID3D11ComputeShader *s_averageCS;
+
+	public:
+		EEAverageC();
+		EEAverageC(const EETexture& _src);
+
+		virtual bool Update();
+		virtual bool Render();
+
+	protected:
+		EETexture m_target;
 		EETexture m_backup;
 	};
 

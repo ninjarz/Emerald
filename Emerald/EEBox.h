@@ -8,17 +8,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEBoxBufferDesc
-	//----------------------------------------------------------------------------------------------------
-	struct EEBoxBufferDesc
-	{
-		int isUseColor;
-		int isUseTex;
-		float tmp2;
-		float tmp3;
-	};
-
-	//EEBoxVertex
+	// EEBoxVertex
 	//----------------------------------------------------------------------------------------------------
 	struct EEBoxVertex
 	{
@@ -27,7 +17,7 @@ namespace Emerald
 		FLOAT2 tex;
 	};
 
-	//EEBox
+	// EEBox
 	//----------------------------------------------------------------------------------------------------
 	class EEBox : public EEObject3D
 	{
@@ -54,8 +44,6 @@ namespace Emerald
 		virtual bool Render();
 
 	protected:
-		//cbuffer
-		virtual bool MapBoxBuffer();
 		//vbuffer and ibuffer
 		bool CreateBoxVertexBuffer();
 		bool CreateBoxIndexBuffer();
@@ -66,10 +54,6 @@ namespace Emerald
 		//the vertex and index buffer of the box
 		ID3D11Buffer *m_boxVB;
 		ID3D11Buffer *m_boxIB;
-		//the texture of the box if need
-		EETexture m_boxTex;
-		bool m_isUseColor;
-		bool m_isUseTex;
 	};
 }
 

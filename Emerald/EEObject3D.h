@@ -3,6 +3,7 @@
 #define _EE_OBJECT3D_H_
 
 #include "EEObject.h"
+#include "EECollision.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -16,6 +17,9 @@ namespace Emerald
 	public:
 		virtual MATRIX GetViewMatrix();
 		virtual MATRIX GetProjectionMatrix();
+
+	protected:
+		EEAxisAlignedBox m_axisAlignedBox;
 	};
 
 }

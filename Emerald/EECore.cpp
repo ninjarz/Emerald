@@ -85,10 +85,10 @@ namespace Emerald
 	{
 		Start();
 		Tick();
-		if (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessageW(&m_msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&m_msg);
-			DispatchMessage(&m_msg);
+			DispatchMessageW(&m_msg);
 		}
 
 		if (m_runTime > 0)

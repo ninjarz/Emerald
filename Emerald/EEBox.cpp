@@ -95,20 +95,6 @@ namespace Emerald
 			SAFE_RELEASE(vertexShaderBuffer);
 			SAFE_RELEASE(pixelShaderBuffer);
 
-			ID3D11Device* device = EECore::s_EECore->GetDevice();
-			ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
-
-			D3D11_BUFFER_DESC bufferDesc;
-			bufferDesc.ByteWidth = sizeof(EEBoxBufferDesc);
-			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			bufferDesc.MiscFlags = 0;
-			bufferDesc.StructureByteStride = 0;
-			result = device->CreateBuffer(&bufferDesc, NULL, &s_boxBuffer);
-			if (FAILED(result))
-				return false;
-
 			s_isBoxInitialized = true;
 		}
 
@@ -121,10 +107,7 @@ namespace Emerald
 		EEObject3D(_pos),
 		m_size(_size),
 		m_boxVB(NULL),
-		m_boxIB(NULL),
-		m_boxTex(),
-		m_isUseColor(true),
-		m_isUseTex(false)
+		m_boxIB(NULL)
 	{
 		InitializeBox();
 
@@ -138,12 +121,12 @@ namespace Emerald
 		EEObject3D(_pos),
 		m_size(_size),
 		m_boxVB(NULL),
-		m_boxIB(NULL),
-		m_boxTex(_tex),
-		m_isUseColor(false),
-		m_isUseTex(true)
+		m_boxIB(NULL)
 	{
 		InitializeBox();
+		SetTexture(_tex);
+		SetIsUseColor(false);
+		SetIsUseTex(true);
 
 		CreateBoxVertexBuffer();
 		CreateBoxIndexBuffer();
@@ -155,10 +138,7 @@ namespace Emerald
 		EEObject3D(_pos),
 		m_size(_width, _height, _depth),
 		m_boxVB(NULL),
-		m_boxIB(NULL),
-		m_boxTex(),
-		m_isUseColor(true),
-		m_isUseTex(false)
+		m_boxIB(NULL)
 	{
 		InitializeBox();
 
@@ -172,12 +152,12 @@ namespace Emerald
 		EEObject3D(_pos),
 		m_size(_width, _height, _depth),
 		m_boxVB(NULL),
-		m_boxIB(NULL),
-		m_boxTex(_tex),
-		m_isUseColor(false),
-		m_isUseTex(true)
+		m_boxIB(NULL)
 	{
 		InitializeBox();
+		SetTexture(_tex);
+		SetIsUseColor(false);
+		SetIsUseTex(true);
 
 		CreateBoxVertexBuffer();
 		CreateBoxIndexBuffer();
@@ -316,7 +296,6 @@ namespace Emerald
 			return false;
 
 		MapObjectBuffer();
-		MapBoxBuffer();
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
 		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -326,28 +305,10 @@ namespace Emerald
 		deviceConstext->IASetVertexBuffers(0, 1, &m_boxVB, &stride, &offset);
 		deviceConstext->IASetIndexBuffer(m_boxIB, DXGI_FORMAT_R32_UINT, 0);
 		deviceConstext->VSSetShader(s_boxVS, NULL, 0);
-		ID3D11ShaderResourceView *texture = m_boxTex.GetTexture();
+		ID3D11ShaderResourceView *texture = m_tex.GetTexture();
 		deviceConstext->PSSetShaderResources(0, 1, &texture);
 		deviceConstext->PSSetShader(s_boxPS, NULL, 0);
 		deviceConstext->DrawIndexed(36, 0, 0);
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEBox::MapBoxBuffer()
-	{
-		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		if (FAILED(deviceContext->Map(s_boxBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-			return false;
-		EEBoxBufferDesc *boxBufferDesc = (EEBoxBufferDesc*)mappedResource.pData;
-		boxBufferDesc->isUseColor = m_isUseColor;
-		boxBufferDesc->isUseTex = m_isUseTex;
-		deviceContext->Unmap(s_boxBuffer, 0);
-
-		deviceContext->VSSetConstantBuffers(3, 1, &s_boxBuffer);
-		deviceContext->PSSetConstantBuffers(3, 1, &s_boxBuffer);
 
 		return true;
 	}

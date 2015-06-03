@@ -22,7 +22,7 @@ namespace Emerald
 	};
 	*/
 
-	//EEDisturbBufferDesc
+	// EEDisturbBufferDesc
 	//----------------------------------------------------------------------------------------------------
 	struct EEDisturbBufferDesc
 	{
@@ -31,7 +31,7 @@ namespace Emerald
 		int weight;
 	};
 
-	//EESpreadBufferDesc
+	// EESpreadBufferDesc
 	//----------------------------------------------------------------------------------------------------
 	struct EESpreadBufferDesc
 	{
@@ -41,7 +41,7 @@ namespace Emerald
 		float tmp2;
 	};
 
-	//EERippleBufferDesc
+	// EERippleBufferDesc
 	//----------------------------------------------------------------------------------------------------
 	struct EERippleBufferDesc
 	{
@@ -51,7 +51,7 @@ namespace Emerald
 		float tmp3;
 	};
 
-	//EERippleC
+	// EERippleC
 	//----------------------------------------------------------------------------------------------------
 	class EERippleC : public EEEffect
 	{

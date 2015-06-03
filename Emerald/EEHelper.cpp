@@ -1,6 +1,7 @@
 #include "EEHelper.h"
 
 #include <Windows.h>
+#include <vector>
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -95,5 +96,17 @@ namespace Emerald
 	std::string UnicodeToAnsi(const std::wstring& _str)
 	{
 		return UnicodeToAnsi(_str.data());
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::wstring CopyEnvironmentVariable(const std::wstring& variable)
+	{
+		DWORD length = ::GetEnvironmentVariableW(variable.c_str(), 0, 0);
+		if (!length)
+			return std::wstring();
+		std::vector<wchar_t> buffer(length);
+		if (!GetEnvironmentVariableW(variable.c_str(), &buffer[0], buffer.size()) || !buffer[0])
+			return std::wstring();
+		return &buffer[0];
 	}
 }

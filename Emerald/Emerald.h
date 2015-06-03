@@ -20,8 +20,10 @@
 #include "EETCP.h"
 #include "EEUDP.h"
 #include "EEDNS.h"
-#include "EERipple.h"
 #include "EEAnimation.h"
+
+#include "EEAverage.h"
+#include "EERipple.h"
 
 using namespace Emerald;
 

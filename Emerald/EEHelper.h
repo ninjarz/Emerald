@@ -18,6 +18,8 @@ namespace Emerald
 	std::wstring AnsiToUnicode(const std::string& _str);
 	std::string UnicodeToAnsi(const wchar_t* _str);
 	std::string UnicodeToAnsi(const std::wstring& _str);
+
+	std::wstring CopyEnvironmentVariable(const std::wstring& variable);
 }
 
 #endif

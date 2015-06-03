@@ -1,4 +1,4 @@
-//Ripple Demo
+// Ripple Demo
 #if 0
 #include "Emerald.h"
 
@@ -13,22 +13,19 @@ int main(int _argc, char** _argv)
 	desc.height = 450;					//窗口高度
 	desc.isSSAA = true;					//是开启抗锯齿
 	desc.isVsync = false;				//是否垂直同步
-	EEInitialize(desc);
+	EEInitialize();
 
 	EETexture bgTex(L"Texture\\etc\\xmyrz.jpg");
 	//EETexture bgTex(L"Texture\\test3.gif");
 	
 	//EETexture bgTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg");
-	EEScene mainScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
-	mainScene.SetTexIndex(1);
+	EEQuad2D quad(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
 	EERippleC ripple(bgTex);
-	//ripple.Disturb((int)(100.f / 800.f * bgTex.GetWidth()), (int)(100.f / 450.f * bgTex.GetHeight()), 10, 256);
+	EEAverageC average;
 	
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
-		//EEShowFPSInTitle(L"- -");
-
 		
 		if (EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 		{
@@ -37,7 +34,7 @@ int main(int _argc, char** _argv)
 		}
 		ripple.Process();
 		
-		mainScene.Process();
+		quad.Process();
 
 		printf("%d ", EEGetFPS());
 		EEEndScene();

@@ -130,6 +130,11 @@ namespace Emerald
 		void ClearCamera();
 		bool SetCamera(EEHCamera _camera);
 		EEHCamera GetCamera();
+		const FLOAT3& GetPosition();
+		const FLOAT3& GetRight();
+		const FLOAT3& GetUp();
+		const FLOAT3& GetLook();
+		const FLOAT3& GetLookAt();
 		const MATRIX& GetViewMatrix();
 		const MATRIX& GetProjectionMatrix();
 		const MATRIX& GetOrthoLHMatrix();
@@ -156,6 +161,11 @@ namespace Emerald
 	void EEClearCamera();
 	bool EESetCamera(EEHCamera _camera);
 	EEHCamera EEGetCamera();
+	const FLOAT3& EEGetCameraPosition();
+	const FLOAT3& EEGetCameraRight();
+	const FLOAT3& EEGetCameraUp();
+	const FLOAT3& EEGetCameraLook();
+	const FLOAT3& EEGetCameraLookAt();
 	const MATRIX& EEGetViewMatrix();
 	const MATRIX& EEGetProjectionMatrix();
 	const MATRIX& EEGetOrthoLHMatrix();

@@ -97,6 +97,9 @@
     <Filter Include="源文件\Demo\Homework">
       <UniqueIdentifier>{9a10a4b0-5f83-443b-bc77-841e2e1de006}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEAverageShader">
+      <UniqueIdentifier>{0644a267-10ba-49be-93a0-4504f1b0ac55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -390,6 +393,9 @@
     <ClCompile Include="EECurve2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
+    <ClCompile Include="Average.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -633,6 +639,9 @@
     </None>
     <None Include="EEShader\EEPoints2DShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EEAverageShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEAverageShader</Filter>
     </None>
   </ItemGroup>
 </Project>

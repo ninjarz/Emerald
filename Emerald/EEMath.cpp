@@ -1,4 +1,5 @@
 #include "EEMath.h"
+#include <algorithm>
 
 namespace Emerald
 {
@@ -37,12 +38,26 @@ namespace Emerald
 		FLOAT2 delta((_p1.x - _p0.x) / k, (_p1.y - _p0.y) / k);
 		FLOAT2 pos = _p0;
 		std::vector<FLOAT2> result;
+
 		for (float i = 0.f; i < k; ++i)
 		{
 			result.push_back(pos += delta);
 		}
 
 		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1, std::vector<FLOAT2>& _result)
+	{
+		float k = abs(_p1.x - _p0.x) >= abs(_p1.y - _p0.y) ? abs(_p1.x - _p0.x) : abs(_p1.y - _p0.y);
+		FLOAT2 delta((_p1.x - _p0.x) / k, (_p1.y - _p0.y) / k);
+		FLOAT2 pos = _p0;
+
+		for (float i = 0.f; i < k; ++i)
+		{
+			_result.push_back(pos += delta);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -72,9 +87,33 @@ namespace Emerald
 		return result;
 	}
 
-	// 
 	//----------------------------------------------------------------------------------------------------
-	std::vector<FLOAT2> EEBresenhamArc(const FLOAT2& _pos, const float _r)
+	void EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1, std::vector<FLOAT2>& _result)
+	{
+		FLOAT2 delta(_p1.x - _p0.x, _p1.y - _p0.y);
+		FLOAT2 forward(delta.x >= 0.f ? 1.f : -1.f, delta.y >= 0.f ? 1.f : -1.f);
+		delta = FLOAT2(delta.x >= 0 ? delta.x : -delta.x, delta.y >= 0 ? delta.y : -delta.y);
+		float e = 2 * delta.y - delta.x;
+		FLOAT2 pos = _p0;
+
+		while (pos.x != _p1.x)
+		{
+			if (e >= 0)
+			{
+				pos.y += forward.y;
+				e -= 2 * delta.x;
+			}
+			else
+			{
+				pos.x += forward.x;
+				e += 2 * delta.y;
+			}
+			_result.push_back(pos);
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEBresenhamArc(const FLOAT2& _pos, float _r, float _start, float _end)
 	{
 		float d = 3 - 2 * _r;
 		FLOAT2 pos = FLOAT2(0.f, _r);
@@ -99,21 +138,15 @@ namespace Emerald
 		// 90бу
 		unsigned int size = result.size();
 		for (unsigned int i = 0; i < size; ++i)
-		{
 			result.push_back(FLOAT2(result[i].y, result[i].x));
-		}
 		// 180бу
 		size = result.size();
 		for (unsigned int i = 0; i < size; ++i)
-		{
 			result.push_back(FLOAT2(-result[i].x, result[i].y));
-		}
 		// 360бу
 		size = result.size();
 		for (unsigned int i = 0; i < size; ++i)
-		{
 			result.push_back(FLOAT2(result[i].x, -result[i].y));
-		}
 		// shift
 		for (FLOAT2& pos : result)
 			pos += _pos;
@@ -123,7 +156,7 @@ namespace Emerald
 
 	// f(x,y) = (x-xc)^2 + (y-yc)^2 - r^2
 	//----------------------------------------------------------------------------------------------------
-	std::vector<FLOAT2> EEPNArc(const FLOAT2& _pos, const float _r)
+	std::vector<FLOAT2> EEPNArc(const FLOAT2& _pos, float _r, float _start, float _end)
 	{
 		float f = 0.f;
 		FLOAT2 pos = FLOAT2(0.f, _r);
@@ -171,19 +204,150 @@ namespace Emerald
 		return result;
 	}
 
+	// x = a * cost, y = b * sint
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEEllipse(const FLOAT2& _pos, float _a, float _b, float _start, float _end)
+	{
+		float delta = EE_PI / 360.f;
+		std::vector<FLOAT2> result;
+
+		while (_start <= _end)
+		{
+			result.push_back(_pos + FLOAT2(_a * cos(_start), _b * sin(_start)));
+			_start += delta;
+		}
+
+		return result;
+	}
+
+	// y = kx + b
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEFillPolygon(const std::vector<FLOAT2>& _points)
+	{
+		float k = tan(EE_PI / 4);
+		float delta = 2.f;
+		int n = _points.size();
+		std::vector<FLOAT2> result;
+
+		float bmin = EE_F_MAX, bmax = EE_F_MIN;
+		for (int i = 0; i < n; i += 1)
+		{
+			float b = _points[i].y - k * _points[i].x;
+			bmin = min(b, bmin);
+			bmax = max(b, bmax);
+		}
+
+		for (float b = bmin; b < bmax; b += delta)
+		{
+			FLOAT2 intersection;
+			std::vector<FLOAT2> intersections;
+			for (int i = 0; i < n; ++i)
+			{
+				if (EELineIntersect(_points[i], _points[(i + 1) % n], k, b, intersection))
+				{
+					if (_points[i] == intersection)
+						continue;
+					else if (_points[(i + 1) % n] == intersection)
+					{
+						if (!EELineIntersect(_points[i], _points[(i + 2) % n], k, b))
+							intersections.push_back(intersection);
+						intersections.push_back(intersection);
+						++i;
+					}
+					else
+						intersections.push_back(intersection);
+				}
+			}
+			std::sort(intersections.begin(), intersections.end(), [](FLOAT2 _a, FLOAT2 _b) { return _a.x < _b.x; });
+			for (unsigned int i = 0; i < intersections.size(); i += 2)
+			{
+				EEDDALine(intersections[i], intersections[i + 1], result);
+			}
+		}
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<FLOAT2> EEFillPolygon(const std::vector<FLOAT2>& _outer, const std::vector<FLOAT2>& _inner)
+	{
+		float k = tan(EE_PI / 4);
+		float delta = 2.f;
+		int n = _outer.size();
+		std::vector<FLOAT2> result;
+
+		float bmin = EE_F_MAX, bmax = EE_F_MIN;
+		for (int i = 0; i < n; i += 1)
+		{
+			float b = _outer[i].y - k * _outer[i].x;
+			bmin = min(b, bmin);
+			bmax = max(b, bmax);
+		}
+
+		for (float b = bmin; b < bmax; b += delta)
+		{
+			// outer
+			FLOAT2 intersection;
+			std::vector<FLOAT2> intersections;
+			for (int i = 0; i < n; ++i)
+			{
+				if (EELineIntersect(_outer[i], _outer[(i + 1) % n], k, b, intersection))
+				{
+					if (_outer[i] == intersection)
+						continue;
+					else if (_outer[(i + 1) % n] == intersection)
+					{
+						if (!EELineIntersect(_outer[i], _outer[(i + 2) % n], k, b))
+							intersections.push_back(intersection);
+						intersections.push_back(intersection);
+						++i;
+					}
+					else
+						intersections.push_back(intersection);
+				}
+			}
+			// inner
+			for (int i = 0; i < _inner.size(); ++i)
+			{
+				if (EELineIntersect(_inner[i], _inner[(i + 1) % n], k, b, intersection))
+				{
+					if (_inner[i] == intersection)
+						continue;
+					else if (_inner[(i + 1) % n] == intersection)
+					{
+						if (!EELineIntersect(_inner[i], _inner[(i + 2) % n], k, b))
+							intersections.push_back(intersection);
+						intersections.push_back(intersection);
+						++i;
+					}
+					else
+						intersections.push_back(intersection);
+				}
+			}
+			// fill
+			std::sort(intersections.begin(), intersections.end(), [](FLOAT2 _a, FLOAT2 _b) { return _a.x < _b.x; });
+			for (unsigned int i = 0; i < intersections.size(); i += 2)
+			{
+				EEDDALine(intersections[i], intersections[i + 1], result);
+			}
+		}
+
+		return result;
+	}
+
 	//----------------------------------------------------------------------------------------------------
 	std::vector<FLOAT2> EETest()
 	{
 		/*
 		auto mask = [=](float x, float y){
-			return (y - 300.f)*(500.f - 700.f) - (x - 700.f)*(200.f - 300.f) > 0;
+		return (y - 300.f)*(500.f - 700.f) - (x - 700.f)*(200.f - 300.f) > 0;
 		};
 
 		std::vector<FLOAT2> result;
 		for (float i = 0; i < 800.f; ++i)
 		for (float j = 0; j < 450.f; ++j)
 		if (mask(i, j))
-			result.push_back(FLOAT2(i, j));
+		result.push_back(FLOAT2(i, j));
 
 		return result;
 		*/
@@ -192,9 +356,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void putpolywiths(int* p, int n) 
+	void putpolywiths(int* p, int n)
 	{
-		
+
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -317,7 +481,7 @@ namespace Emerald
 
 		FLOAT range = 1.0f / (_farZ - _nearZ);
 		result(0, 0) = 2.0f / _Width;	result(0, 1) = 0.0f;				result(0, 2) = 0.0f;			result(0, 3) = 0;
-		result(1, 0) = 0.0f;			result(1, 1) = - 2.0f / _Height;	result(1, 2) = 0.0f;			result(1, 3) = 0;
+		result(1, 0) = 0.0f;			result(1, 1) = -2.0f / _Height;	result(1, 2) = 0.0f;			result(1, 3) = 0;
 		result(2, 0) = 0.0f;			result(2, 1) = 0.0f;				result(2, 2) = range;			result(2, 3) = 0;
 		result(3, 0) = -1.0f;			result(3, 1) = 1.0f;				result(3, 2) = -range * _nearZ;	result(3, 3) = 1;
 
@@ -337,10 +501,10 @@ namespace Emerald
 
 		/*
 		result.m[0][1] = result.m[0][2] = result.m[0][3] =
-			result.m[1][0] = result.m[1][2] = result.m[1][3] =
-			result.m[2][0] = result.m[2][1] =
-			result.m[3][0] = result.m[3][1] = result.m[3][3] = 0.f;
-			*/
+		result.m[1][0] = result.m[1][2] = result.m[1][3] =
+		result.m[2][0] = result.m[2][1] =
+		result.m[3][0] = result.m[3][1] = result.m[3][3] = 0.f;
+		*/
 
 		return result;
 	}
@@ -564,5 +728,80 @@ namespace Emerald
 	FLOAT EEDegreesToRadians(FLOAT _degrees)
 	{
 		return _degrees * (EE_PI / 180.0f);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b)
+	{
+		FLOAT2 intersection;
+		if (_pos1.x == _pos0.x)
+		{
+			intersection.x = _pos1.x;
+			intersection.y = _k * intersection.x + _b;
+		}
+		else
+		{
+			float k = (_pos1.y - _pos0.y) / (_pos1.x - _pos0.x);
+			float b = _pos0.y - k * _pos0.x;
+			// parallel
+			if (k - _k == 0.f)
+				return false;
+
+			intersection.x = (b - _b) / (_k - k);
+			intersection.y = _k * intersection.x + _b;
+		}
+		if (_pos0.x < _pos1.x)
+		{
+			if (intersection.x < _pos0.x || _pos1.x < intersection.x)
+				return false;
+		}
+		else if (intersection.x < _pos1.x || _pos0.x < intersection.x)
+			return false;
+		if (_pos0.y < _pos1.y)
+		{
+			if (intersection.y < _pos0.y || _pos1.y < intersection.y)
+				return false;
+		}
+		else if (intersection.y < _pos1.y || _pos0.y < intersection.y)
+			return false;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b, FLOAT2& _result)
+	{
+		if (_pos1.x == _pos0.x)
+		{
+			_result.x = _pos1.x;
+			_result.y = _k * _result.x + _b;
+		}
+		else
+		{
+			float k = (_pos1.y - _pos0.y) / (_pos1.x - _pos0.x);
+			float b = _pos0.y - k * _pos0.x;
+			// parallel
+			if (k - _k == 0.f)
+				return false;
+
+			_result.x = (b - _b) / (_k - k);
+			_result.y = _k * _result.x + _b;
+		}
+		if (_pos0.x < _pos1.x)
+		{
+			if (_result.x < _pos0.x || _pos1.x < _result.x)
+				return false;
+		}
+		else if (_result.x < _pos1.x || _pos0.x < _result.x)
+			return false;
+		if (_pos0.y < _pos1.y)
+		{
+			if (_result.y < _pos0.y || _pos1.y < _result.y)
+				return false;
+		}
+		else if (_result.y < _pos1.y || _pos0.y < _result.y)
+			return false;
+
+		return true;
 	}
 }

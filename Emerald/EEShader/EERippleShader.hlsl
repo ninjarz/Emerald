@@ -24,7 +24,7 @@ void RippleCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, u
 
 	if (weight)
 	{
-		//By self-weight only
+		// use self-weight
 		float halfWidth = g_weight.Length.x / 2.f;
 		float halfHeight = g_weight.Length.y / 2.f;
 
@@ -34,7 +34,7 @@ void RippleCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, u
 
 		g_output[uint2(_threadID.x, _threadID.y)] = g_input[uint2(a, b)];
 		
-		//By weight diff
+		// use weight diff
 		//int a = g_weight[uint2(_threadID.x + 1, _threadID.y)] - g_weight[uint2(_threadID.x - 1, _threadID.y)] >> 2;
 		//int b = g_weight[uint2(_threadID.x, _threadID.y + 1)] - g_weight[uint2(_threadID.x, _threadID.y - 1)] >> 2;
 		//g_output[uint2(_threadID.x, _threadID.y)] = g_input[uint2(_threadID.x + a, _threadID.y + b)];
