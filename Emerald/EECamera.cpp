@@ -434,6 +434,7 @@ namespace Emerald
 			cameraBufferDesc->orthoLHMatrix = m_orthoLHMatrix;
 			cameraBufferDesc->perspectiveFovLHMatrix = m_cameras[m_currCamera].GetProjectionMatrix();
 			cameraBufferDesc->viewMatrix = m_cameras[m_currCamera].GetViewMatrix();
+			cameraBufferDesc->eyePos = (FLOAT3)m_cameras[m_currCamera].GetPosition();
 
 			deviceContext->VSSetConstantBuffers(1, 1, &m_cameraBuffer);
 

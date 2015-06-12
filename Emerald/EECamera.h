@@ -108,6 +108,8 @@ namespace Emerald
 		MATRIX orthoLHMatrix;
 		MATRIX perspectiveFovLHMatrix;
 		MATRIX viewMatrix;
+		FLOAT3 eyePos;
+		float tmp0;
 	};
 
 	//EECameraSystem

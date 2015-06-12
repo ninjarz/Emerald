@@ -61,25 +61,25 @@ namespace Emerald
 		virtual bool Render();
 		virtual bool Process();
 
-		//life
+		// life
 		virtual void SetIsAlive(bool _isAlive);
-		//parent
+		// parent
 		virtual void SetParent(EEObject* _parent);
-		//position
+		// position
 		virtual void SetPositionX(float _posX);
 		virtual void SetPositionY(float _posY);
 		virtual void SetPositionZ(float _posZ);
 		virtual void SetPositionXY(const FLOAT2& _pos);
 		virtual void SetPosition(const FLOAT3& _pos);
-		//scale
+		// scale
 		virtual void SetScaleX(float _scaleX);
 		virtual void SetScaleY(float _scaleY);
 		virtual void SetScaleZ(float _scaleZ);
 		virtual void SetScale(float _scale);
 		virtual void SetScale(const FLOAT3& _scale);
-		//alpha
+		// alpha
 		virtual void SetAlpha(float _alpha);
-		//rotation
+		// rotation
 		virtual void SetRotation(const MATRIX& _rotation);
 		// color
 		virtual void SetColor(const EEColor& _color);
@@ -90,25 +90,25 @@ namespace Emerald
 		virtual bool SetTexIndex(int _index);
 		virtual bool SetTexRect(Rect_Float& _texRect);
 		virtual bool SetIsUseTex(bool _isUseTex);
-		//localZOrder
+		// localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
 		// state
 		virtual void SetIsFocusable(bool _isFocusable);
-		//callback function
+		// callback function
 		virtual bool SetUpdateFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetFreeFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetOverFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetClickedFunc(std::function<void(void)> _funcPtr);
 		virtual bool SetTriggeredFunc(std::function<void(void)> _funcPtr);
-		//action
+		// action
 		virtual void AddThread(boost::thread* _thread);
 		virtual bool RemoveThread();
 
-		//life
+		// life
 		bool IsAlive();
-		//parent
+		// parent
 		virtual EEObject* GetParent();
-		//position
+		// position
 		virtual float GetPositionX() const;
 		virtual float GetPositionY() const;
 		virtual float GetPositionZ() const;
@@ -120,16 +120,16 @@ namespace Emerald
 		virtual MATRIX GetWorldMatrix();
 		virtual MATRIX GetViewMatrix();
 		virtual MATRIX GetProjectionMatrix();
-		//scale
+		// scale
 		virtual float GetScaleX() const;
 		virtual float GetScaleY() const;
 		virtual float GetScaleZ() const;
 		virtual const FLOAT3& GetScale() const;
 		virtual bool IsScaleDirty() const;
-		//alpha
+		// alpha
 		virtual float GetAlpha() const;
 		virtual bool IsAlphaDirty() const;
-		//rotation
+		// rotation
 		virtual const MATRIX& GetRotation() const;
 		virtual bool IsRotaionDirty() const;
 		// color
@@ -140,24 +140,24 @@ namespace Emerald
 		virtual EETexture* GetTexture();
 		virtual int GetTexIndex();
 		virtual bool IsUseTex() const;
-		//localZOrder
+		// localZOrder
 		virtual float GetLocalZOrder() const;
 		virtual bool IsLocalZOrderDirty() const;
 
-		//position
+		// position
 		virtual FLOAT3 GetFinalPosition() const;
 		virtual FLOAT3 GetFinalCenter() const;
 		virtual MATRIX GetFinalWorldMatrix() const;
-		//scale
+		// scale
 		virtual FLOAT3 GetFinalScale() const;
-		//alpha
+		// alpha
 		virtual FLOAT GetFinalAlpha() const;
-		//rotation
+		// rotation
 		virtual MATRIX GetFinalRotation() const;
-		//localZOrder
+		// localZOrder
 		virtual float GetFinalLocalZOrder() const;
 
-		//OnFunction
+		// OnFunction
 		virtual void OnUpdate();
 		virtual void OnRender();
 		virtual void OnMouseFree(const Point& _pos);

@@ -593,7 +593,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	MATRIX EEObject::GetFinalWorldMatrix() const
 	{
-		return MatrixTranslation(GetFinalPosition());
+		return MatrixScaling(GetFinalScale()) * MatrixTranslation(GetFinalPosition());
 	}
 
 	//----------------------------------------------------------------------------------------------------

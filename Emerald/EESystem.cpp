@@ -86,7 +86,7 @@ namespace Emerald
 		//register the windows class
 		WNDCLASSEXW wc;
 		wc.cbSize = sizeof(WNDCLASSEXW);						//窗口类的大小
-		wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;			//窗口的风格
+		wc.style = CS_HREDRAW | CS_VREDRAW;						//窗口的风格
 		wc.lpfnWndProc = WndProc;								//指向处理函数的指针，WndProc函数用于处理系统消息
 		wc.cbClsExtra = 0;										//紧跟窗口类结构后的附加字节数
 		wc.cbWndExtra = 0;										//紧跟窗口实例后的附加字节数
@@ -125,18 +125,18 @@ namespace Emerald
 		}
 
 		//create window
-			m_hWnd = CreateWindowExW(WS_EX_APPWINDOW,					//窗口的扩展风格
-			m_applicationName,                                    //指向窗口类名字的指针
-			m_applicationName,                                    //指向窗口名字的指针
-			WS_POPUP,                                  //窗口的风格
-			//0,
-			posX, posY,                                           //窗口在屏幕上显示的起始位置
-			m_width, m_height,                                    //窗口的宽度和高度
-			NULL,                                                 //指向被创建窗口的的父窗口的句柄
-			NULL,                                                 //菜单的句柄
-			m_hInstance,                                          //与窗口相关联的模块的实例句柄
-			NULL);                                                //指向一个值的指针，该值传递给窗口WM_CREATE消息
-
+		m_hWnd = CreateWindowExW(
+			WS_EX_APPWINDOW,										//窗口的扩展风格
+			m_applicationName,										//指向窗口类名字的指针
+			m_applicationName,										//指向窗口名字的指针
+			//WS_OVERLAPPEDWINDOW,												//窗口的风格
+			WS_POPUP,
+			posX, posY,												//窗口在屏幕上显示的起始位置
+			m_width, m_height,										//窗口的宽度和高度
+			NULL,													//指向被创建窗口的的父窗口的句柄
+			NULL,													//菜单的句柄
+			m_hInstance,											//与窗口相关联的模块的实例句柄
+			NULL);													//指向一个值的指针，该值传递给窗口WM_CREATE消息
 
 		ShowWindow(m_hWnd, SW_SHOW);
 		SetForegroundWindow(m_hWnd);

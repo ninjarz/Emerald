@@ -1,62 +1,94 @@
 #ifndef _EE_BLURSHADER_HLSL_
 #define _EE_BLURSHADER_HLSL_
 
+#include "EEShaderHelper.hlsl"
 
-//HorizontalBlur
+#define N 256
+#define GROUPDIM_Z 1
+
+// Blur
 //----------------------------------------------------------------------------------------------------
-Texture2D<float4> g_input;
-RWTexture2D<float4> g_output;
-
-#define GROUPDIM_X 256
-
-groupshared float4 gCache[GROUPDIM_X + ];
-[numthreads(GROUPDIM_X, 1, 1)]
-void HorizontalBlurCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, uint _groupIndex : SV_GroupIndex, uint3 _threadID : SV_DispatchThreadID)
+cbuffer BlurSettings
 {
-	//
-	// Fill local thread storage to reduce bandwidth.  To blur 
-	// N pixels, we will need to load N + 2*BlurRadius pixels
-	// due to the blur radius.
-	//
-
-	// This thread group runs N threads.  To get the extra 2*BlurRadius pixels, 
-	// have 2*BlurRadius threads sample an extra pixel.
-	if (groupThreadID.x < gBlurRadius)
+	static const int g_blurRadius = 5;
+	static const float g_weights[11] =
 	{
-		// Clamp out of bound samples that occur at image borders.
-		int x = max(dispatchThreadID.x - gBlurRadius, 0);
-		gCache[groupThreadID.x] = gInput[int2(x, dispatchThreadID.y)];
-	}
-	if (groupThreadID.x >= N - gBlurRadius)
+		0.05f, 0.05f, 0.1f, 0.1f, 0.1f, 0.2f, 0.1f, 0.1f, 0.1f, 0.05f, 0.05f,
+	};
+};
+
+cbuffer BlurBuffer : register(b3)
+{
+	float cb_value : packoffset(c0.x);
+	float cb_tmp31 : packoffset(c0.z);
+	float cb_tmp32 : packoffset(c0.w);
+	float cb_tmp33 : packoffset(c0.y);
+};
+
+Texture2D<float4> g_input : register(cs, t0);
+RWTexture2D<float4> g_output : register(cs, u0);
+groupshared float4 g_cache[N + 2 * g_blurRadius];
+
+[numthreads(N, 1, GROUPDIM_Z)]
+void BlurHorzCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, uint _groupIndex : SV_GroupIndex, uint3 _threadID : SV_DispatchThreadID)
+{
+	// left borders
+	if (_groupTID.x < g_blurRadius)
 	{
-		// Clamp out of bound samples that occur at image borders.
-		int x = min(dispatchThreadID.x + gBlurRadius, gInput.Length.x - 1);
-		gCache[groupThreadID.x + 2 * gBlurRadius] = gInput[int2(x, dispatchThreadID.y)];
+		// image borders
+		int x = max(_threadID.x - g_blurRadius, 0);
+		g_cache[_groupTID.x] = g_input[uint2(x, _threadID.y)];
 	}
+	// right borders
+	if (_groupTID.x >= N - g_blurRadius)
+	{
+		// image borders.
+		int x = min(_threadID.x + g_blurRadius, g_input.Length.x - 1);
+		g_cache[_groupTID.x + 2 * g_blurRadius] = g_input[uint2(x, _threadID.y)];
+	}
+	g_cache[_groupTID.x + g_blurRadius] = g_input[min(_threadID.xy, g_input.Length.xy - 1)];
 
-	// Clamp out of bound samples that occur at image borders.
-	gCache[groupThreadID.x + gBlurRadius] = gInput[min(dispatchThreadID.xy, gInput.Length.xy - 1)];
-
-	// Wait for all threads to finish.
 	GroupMemoryBarrierWithGroupSync();
 
-	//
-	// Now blur each pixel.
-	//
-
-	float4 blurColor = float4(0, 0, 0, 0);
-
-		[unroll]
-	for (int i = -gBlurRadius; i <= gBlurRadius; ++i)
+	// blur
+	float4 blurColor = float4(0.f, 0.f, 0.f, 0.f);
+	[unroll]
+	for (int i = -g_blurRadius; i <= g_blurRadius; ++i)
 	{
-		int k = groupThreadID.x + gBlurRadius + i;
-
-		blurColor += gWeights[i + gBlurRadius] * gCache[k];
+		blurColor += g_weights[i + g_blurRadius] * g_cache[_groupTID.x + g_blurRadius + i];
 	}
-
-	gOutput[dispatchThreadID.xy] = blurColor;
+	g_output[_threadID.xy] = blurColor;
 }
 
+[numthreads(1, N, GROUPDIM_Z)]
+void BlurVertCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, uint _groupIndex : SV_GroupIndex, uint3 _threadID : SV_DispatchThreadID)
+{
+	// top borders
+	if (_groupTID.y < g_blurRadius)
+	{
+		// image borders
+		int y = max(_threadID.y - g_blurRadius, 0);
+		g_cache[_groupTID.y] = g_input[uint2(_threadID.x, y)];
+	}
+	// buttom borders
+	if (_groupTID.y >= N - g_blurRadius)
+	{
+		// image borders.
+		int y = min(_threadID.y + g_blurRadius, g_input.Length.y - 1);
+		g_cache[_groupTID.y + 2 * g_blurRadius] = g_input[uint2(_threadID.x, y)];
+	}
+	g_cache[_groupTID.y + g_blurRadius] = g_input[min(_threadID.xy, g_input.Length.xy - 1)];
 
+	GroupMemoryBarrierWithGroupSync();
+
+	// blur
+	float4 blurColor = float4(0.f, 0.f, 0.f, 0.f);
+	[unroll]
+	for (int i = -g_blurRadius; i <= g_blurRadius; ++i)
+	{
+		blurColor += g_weights[i + g_blurRadius] * g_cache[_groupTID.y + g_blurRadius + i];
+	}
+	g_output[_threadID.xy] = blurColor;
+}
 
 #endif

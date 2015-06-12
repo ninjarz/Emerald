@@ -307,7 +307,7 @@ namespace Emerald
 				}
 			}
 			// inner
-			for (int i = 0; i < _inner.size(); ++i)
+			for (unsigned int i = 0; i < _inner.size(); ++i)
 			{
 				if (EELineIntersect(_inner[i], _inner[(i + 1) % n], k, b, intersection))
 				{
@@ -507,6 +507,34 @@ namespace Emerald
 		*/
 
 		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	MATRIX MatrixScaling(const FLOAT3& _scale)
+	{
+		MATRIX result;
+
+		result.m[0][0] = _scale.x;
+		result.m[0][1] = 0.0f;
+		result.m[0][2] = 0.0f;
+		result.m[0][3] = 0.0f;
+
+		result.m[1][0] = 0.0f;
+		result.m[1][1] = _scale.y;
+		result.m[1][2] = 0.0f;
+		result.m[1][3] = 0.0f;
+
+		result.m[2][0] = 0.0f;
+		result.m[2][1] = 0.0f;
+		result.m[2][2] = _scale.z;
+		result.m[2][3] = 0.0f;
+
+		result.m[3][0] = 0.f;
+		result.m[3][1] = 0.f;
+		result.m[3][2] = 0.f;
+		result.m[3][3] = 1.f;
+
+		return result;	
 	}
 
 	//----------------------------------------------------------------------------------------------------

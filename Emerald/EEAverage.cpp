@@ -33,7 +33,7 @@ namespace Emerald
 
 			ID3D10Blob *errorMessage = nullptr;
 			ID3D10Blob *computeShaderBuffer = nullptr;
-			//DisturbCS
+			// CS
 			result = D3DX11CompileFromFileW(L"EEShader\\EEAverageShader.hlsl", NULL, NULL, "AverageCS", "cs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, NULL, &computeShaderBuffer, &errorMessage, NULL);
 			if (FAILED(result))
 			{

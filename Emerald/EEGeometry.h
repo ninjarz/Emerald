@@ -7,6 +7,10 @@
 #include "EELine2D.h"
 #include "EEPoints2D.h"
 #include "EEBox.h"
+#include "EESphere.h"
+#include "EEGrid.h"
+#include "EECylinder.h"
+#include "EEPolyhedron.h"
 
 
 //----------------------------------------------------------------------------------------------------

@@ -268,11 +268,11 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 scale = (GetFinalScale() - 1.0f) * 0.5f;
+			FLOAT3 scale = (m_parent ? m_parent->GetFinalScale() * m_scale - 1.0f : m_scale - 1.0f) * 0.5f;
 
 			Rect_Float rect(
-				- m_quadWidth * scale.x,
-				- m_quadHeight * scale.y,
+				-m_quadWidth * scale.x,
+				-m_quadHeight * scale.y,
 				m_quadWidth + m_quadWidth * scale.x,
 				m_quadHeight + m_quadHeight * scale.y
 				);

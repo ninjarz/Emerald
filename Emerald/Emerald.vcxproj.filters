@@ -100,6 +100,9 @@
     <Filter Include="头文件\Emerald\EEShader\EEAverageShader">
       <UniqueIdentifier>{0644a267-10ba-49be-93a0-4504f1b0ac55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEGrayShader">
+      <UniqueIdentifier>{4d81271e-1f18-4d36-bdf1-adca75f73466}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -396,6 +399,24 @@
     <ClCompile Include="Average.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="EESphere.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Blur.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEGray.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="EEGrid.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EECylinder.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
+    <ClCompile Include="EEPolyhedron.cpp">
+      <Filter>源文件\Emerald\EEGeometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -593,6 +614,21 @@
     <ClInclude Include="EECurve2D.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
+    <ClInclude Include="EESphere.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EEGray.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="EEGrid.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EECylinder.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="EEPolyhedron.h">
+      <Filter>头文件\Emerald\EEGeometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -642,6 +678,12 @@
     </None>
     <None Include="EEShader\EEAverageShader.hlsl">
       <Filter>头文件\Emerald\EEShader\EEAverageShader</Filter>
+    </None>
+    <None Include="EEShader\EEGrayShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEGrayShader</Filter>
+    </None>
+    <None Include="EEShader\EELightShader.hlsl">
+      <Filter>头文件\Emerald\EEShader</Filter>
     </None>
   </ItemGroup>
 </Project>

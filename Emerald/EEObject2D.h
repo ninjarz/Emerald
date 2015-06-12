@@ -16,6 +16,8 @@ namespace Emerald
 	public:
 		virtual MATRIX GetViewMatrix();
 		virtual MATRIX GetProjectionMatrix();
+
+		virtual MATRIX GetFinalWorldMatrix() const;
 	};
 
 }

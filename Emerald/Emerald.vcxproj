@@ -78,6 +78,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationEditer.cpp" />
     <ClCompile Include="Average.cpp" />
+    <ClCompile Include="Blur.cpp" />
     <ClCompile Include="CameraAction.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
@@ -113,12 +114,15 @@
     <ClCompile Include="EEComboBox.cpp" />
     <ClCompile Include="EECore.cpp" />
     <ClCompile Include="EECurve2D.cpp" />
+    <ClCompile Include="EECylinder.cpp" />
     <ClCompile Include="EED3D.cpp" />
     <ClCompile Include="EEDNS.cpp" />
     <ClCompile Include="EEEffect.cpp" />
     <ClCompile Include="EEFloatBoard.cpp" />
     <ClCompile Include="EEFont.cpp" />
     <ClCompile Include="EEGeometry.cpp" />
+    <ClCompile Include="EEGray.cpp" />
+    <ClCompile Include="EEGrid.cpp" />
     <ClCompile Include="EEGUI.cpp" />
     <ClCompile Include="EEHash.cpp" />
     <ClCompile Include="EEHelper.cpp" />
@@ -132,6 +136,7 @@
     <ClCompile Include="EEObject3D.cpp" />
     <ClCompile Include="EEParticle.cpp" />
     <ClCompile Include="EEPoints2D.cpp" />
+    <ClCompile Include="EEPolyhedron.cpp" />
     <ClCompile Include="EEProgressBar.cpp" />
     <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
@@ -141,6 +146,7 @@
     <ClCompile Include="EESmartPtr.cpp" />
     <ClCompile Include="EESocket.cpp" />
     <ClCompile Include="EESort.cpp" />
+    <ClCompile Include="EESphere.cpp" />
     <ClCompile Include="EETCP.cpp" />
     <ClCompile Include="EETextBrowser.cpp" />
     <ClCompile Include="EETextEditer.cpp" />
@@ -198,11 +204,14 @@
     <ClInclude Include="EEComboBox.h" />
     <ClInclude Include="EECore.h" />
     <ClInclude Include="EECurve2D.h" />
+    <ClInclude Include="EECylinder.h" />
     <ClInclude Include="EED3D.h" />
     <ClInclude Include="EEDNS.h" />
     <ClInclude Include="EEEffect.h" />
     <ClInclude Include="EEFont.h" />
     <ClInclude Include="EEGeometry.h" />
+    <ClInclude Include="EEGray.h" />
+    <ClInclude Include="EEGrid.h" />
     <ClInclude Include="EEGUI.h" />
     <ClInclude Include="EEHash.h" />
     <ClInclude Include="EEHelper.h" />
@@ -216,6 +225,7 @@
     <ClInclude Include="EEObject3D.h" />
     <ClInclude Include="EEParticle.h" />
     <ClInclude Include="EEPoints2D.h" />
+    <ClInclude Include="EEPolyhedron.h" />
     <ClInclude Include="EEProgressbar.h" />
     <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
@@ -225,6 +235,7 @@
     <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />
     <ClInclude Include="EESort.h" />
+    <ClInclude Include="EESphere.h" />
     <ClInclude Include="EETCP.h" />
     <ClInclude Include="EETextBrowser.h" />
     <ClInclude Include="EETextEditer.h" />
@@ -308,6 +319,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEAverageShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEGrayShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EELightShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

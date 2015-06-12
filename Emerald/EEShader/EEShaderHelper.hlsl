@@ -1,7 +1,17 @@
 #ifndef _EE_SHADERHELPER_HLSL_
 #define _EE_SHADERHELPER_HLSL_
 
-//float4 -> uint
+float Saturate(float _input)
+{
+	return min(max(_input, 0), 1);
+}
+
+uint FloatToUint(float _input, float _Scale)
+{
+	return (uint)floor(_input * _Scale + 0.5f);
+}
+
+// float4 -> uint
 //----------------------------------------------------------------------------------------------------
 uint Float4ToUint(in float4 _input)
 {
@@ -16,7 +26,7 @@ uint Float4ToUint(in float4 _input)
 	return result;
 }
 
-//uint -> float4
+// uint -> float4
 //----------------------------------------------------------------------------------------------------
 float4 UintToFloat4(in uint _input)
 {
@@ -32,7 +42,7 @@ float4 UintToFloat4(in uint _input)
 	return result;
 }
 
-//uint -> float4
+// uint -> float4
 //----------------------------------------------------------------------------------------------------
 void UintToFloat4(in uint _input, out float4 _result)
 {
@@ -43,6 +53,31 @@ void UintToFloat4(in uint _input, out float4 _result)
 	_result.z = (float)(_input & 0xff) / 0xff;
 	_input >>= 8;
 	_result.w = (float)(_input & 0xff) / 0xff;
+}
+
+// float4 -> unorm
+//----------------------------------------------------------------------------------------------------
+uint Float4ToUnorm(in float4 _input)
+{
+	uint result;
+	result = 
+		((FloatToUint(Saturate(_input.r), 255)) |
+		(FloatToUint(Saturate(_input.g), 255) << 8) |
+		(FloatToUint(Saturate(_input.b), 255) << 16) |
+		(FloatToUint(Saturate(_input.a), 255) << 24));
+	return result;
+}
+
+// unorm -> float4
+//----------------------------------------------------------------------------------------------------
+float4 UnormToFloat4(in uint _input)
+{
+	float4 result;
+	result.x = (FLOAT)(_input & 0x000000ff) / 255;
+	result.y = (FLOAT)(((_input >> 8) & 0x000000ff)) / 255;
+	result.z = (FLOAT)(((_input >> 16) & 0x000000ff)) / 255;
+	result.w = (FLOAT)(_input >> 24) / 255;
+	return result;
 }
 
 //----------------------------------------------------------------------------------------------------

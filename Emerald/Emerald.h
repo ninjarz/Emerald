@@ -24,6 +24,8 @@
 
 #include "EEAverage.h"
 #include "EERipple.h"
+#include "EEBlur.h"
+#include "EEGray.h"
 
 using namespace Emerald;
 

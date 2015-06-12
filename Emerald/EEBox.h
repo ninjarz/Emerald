@@ -3,7 +3,6 @@
 #define _EE_BOX_H_
 
 #include "EEObject3D.h"
-#include "EETexture.h"
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -21,16 +20,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	class EEBox : public EEObject3D
 	{
-	protected:
-		static bool InitializeBox();
-
-	protected:
-		static bool s_isBoxInitialized;
-		static ID3D11InputLayout *s_boxIL;
-		static ID3D11VertexShader *s_boxVS;
-		static ID3D11PixelShader  *s_boxPS;
-		static ID3D11Buffer *s_boxBuffer;
-
 	public:
 		EEBox(const FLOAT3& _pos, const FLOAT3& _size);
 		EEBox(const FLOAT3& _pos, const FLOAT3& _size, const EETexture& _tex);
@@ -51,9 +40,6 @@ namespace Emerald
 	protected:
 		//the size of the box
 		FLOAT3 m_size;
-		//the vertex and index buffer of the box
-		ID3D11Buffer *m_boxVB;
-		ID3D11Buffer *m_boxIB;
 	};
 }
 
