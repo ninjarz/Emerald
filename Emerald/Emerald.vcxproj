@@ -80,6 +80,7 @@
     <ClCompile Include="Average.cpp" />
     <ClCompile Include="Blur.cpp" />
     <ClCompile Include="CameraAction.cpp" />
+    <ClCompile Include="ContrastAndBright.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
     <ClCompile Include="DirectXTex\BC6HBC7.cpp" />
@@ -112,12 +113,15 @@
     <ClCompile Include="EECollision.cpp" />
     <ClCompile Include="EEColor.cpp" />
     <ClCompile Include="EEComboBox.cpp" />
+    <ClCompile Include="EEContrastAndBright.cpp" />
     <ClCompile Include="EECore.cpp" />
     <ClCompile Include="EECurve2D.cpp" />
     <ClCompile Include="EECylinder.cpp" />
     <ClCompile Include="EED3D.cpp" />
+    <ClCompile Include="EEDilate.cpp" />
     <ClCompile Include="EEDNS.cpp" />
     <ClCompile Include="EEEffect.cpp" />
+    <ClCompile Include="EEErode.cpp" />
     <ClCompile Include="EEFloatBoard.cpp" />
     <ClCompile Include="EEFont.cpp" />
     <ClCompile Include="EEGeometry.cpp" />
@@ -159,6 +163,7 @@
     <ClCompile Include="EEThread.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
+    <ClCompile Include="Erode.cpp" />
     <ClCompile Include="FontTest.cpp" />
     <ClCompile Include="Line2d.cpp" />
     <ClCompile Include="NoteMap.cpp" />
@@ -202,12 +207,15 @@
     <ClInclude Include="EECollision.h" />
     <ClInclude Include="EEColor.h" />
     <ClInclude Include="EEComboBox.h" />
+    <ClInclude Include="EEContrastAndBright.h" />
     <ClInclude Include="EECore.h" />
     <ClInclude Include="EECurve2D.h" />
     <ClInclude Include="EECylinder.h" />
     <ClInclude Include="EED3D.h" />
+    <ClInclude Include="EEDilate.h" />
     <ClInclude Include="EEDNS.h" />
     <ClInclude Include="EEEffect.h" />
+    <ClInclude Include="EEErode.h" />
     <ClInclude Include="EEFont.h" />
     <ClInclude Include="EEGeometry.h" />
     <ClInclude Include="EEGray.h" />
@@ -329,6 +337,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EELightShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEContrastAndBrightShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEErodeShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEFilterShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EEDilateShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

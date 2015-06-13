@@ -8,12 +8,12 @@
 cbuffer RippleBuffer : register(b3)
 {
 	float cb_refractiveIndex : packoffset(c0.x);
-	float cb_tmp31 : packoffset(c0.z);
-	float cb_tmp32 : packoffset(c0.w);
-	float cb_tmp33 : packoffset(c0.y);
+	float cb_tmp31 : packoffset(c0.y);
+	float cb_tmp32 : packoffset(c0.z);
+	float cb_tmp33 : packoffset(c0.w);
 };
 
-Texture2D<int> g_weight : register(cs, t0);
+Texture2D<float> g_weight : register(cs, t0);
 Texture2D<float4> g_input : register(cs, t1);
 RWTexture2D<float4> g_output : register(cs, u0);
 

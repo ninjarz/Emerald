@@ -161,6 +161,26 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EETexture EETexture::Clone()
+	{
+		EETexture result;
+		if (GetTexture())
+		{
+			ID3D11Resource *resource = nullptr;
+			GetTexture()->GetResource(&resource);
+			D3D11_TEXTURE2D_DESC texture2DDesc;
+			((ID3D11Texture2D*)resource)->GetDesc(&texture2DDesc);
+			ID3D11Texture2D *resourceBackup = nullptr;
+			if (SUCCEEDED(EECore::s_EECore->GetDevice()->CreateTexture2D(&texture2DDesc, NULL, &resourceBackup)))
+			{
+				result.SetTexture(resourceBackup);
+				EECore::s_EECore->GetDeviceContext()->CopyResource(resourceBackup, resource);
+			}
+		}
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EETexture::SetTexture(LPCWSTR _file)
 	{
 		WCHAR ext[_MAX_EXT];

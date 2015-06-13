@@ -5,12 +5,12 @@
 #define GROUPDIM_Y 32
 #define GROUPDIM_Z 1
 
-// Gray
+// ContrastAndBright (f(x) * (c * 0.01f) + b)
 //----------------------------------------------------------------------------------------------------
-cbuffer GrayBuffer : register(b3)
+cbuffer ContrastAndBrightBuffer : register(b3)
 {
-	float cb_value : packoffset(c0.x);
-	float cb_tmp31 : packoffset(c0.y);
+	float cb_contrast : packoffset(c0.x);
+	float cb_bright : packoffset(c0.y);
 	float cb_tmp32 : packoffset(c0.z);
 	float cb_tmp33 : packoffset(c0.w);
 };
@@ -19,12 +19,11 @@ Texture2D<float4> g_input : register(cs, t0);
 RWTexture2D<float4> g_output : register(cs, u0);
 
 [numthreads(GROUPDIM_X, GROUPDIM_Y, GROUPDIM_Z)]
-void GrayCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, uint _groupIndex : SV_GroupIndex, uint3 _threadID : SV_DispatchThreadID)
+void ContrastAndBrightCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, uint _groupIndex : SV_GroupIndex, uint3 _threadID : SV_DispatchThreadID)
 {
 	float4 value = g_input[uint2(_threadID.x, _threadID.y)];
-	float gray = value.x * 0.299 + value.y * 0.587 + value.z * 0.114;
 
-	g_output[_threadID.xy] = float4(gray, gray, gray, value.w);
+	g_output[uint2(_threadID.x, _threadID.y)] = value * (cb_contrast * 0.01f) + cb_bright;
 }
 
 #endif

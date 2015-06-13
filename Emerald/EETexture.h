@@ -59,6 +59,8 @@ namespace Emerald
 		EETexture(ID3D11ShaderResourceView* _texture);
 		EETexture(const EETexture& _texture);
 		virtual ~EETexture();
+
+		virtual EETexture Clone();
 		
 		bool SetTexture(LPCWSTR _file);
 		bool SetTexture(unsigned int _width, unsigned int _height);

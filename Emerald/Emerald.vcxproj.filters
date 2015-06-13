@@ -103,6 +103,18 @@
     <Filter Include="头文件\Emerald\EEShader\EEGrayShader">
       <UniqueIdentifier>{4d81271e-1f18-4d36-bdf1-adca75f73466}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEContrastAndBrightShader">
+      <UniqueIdentifier>{b276b873-7262-40f6-a306-572a7bc33f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEErodeShader">
+      <UniqueIdentifier>{9d2434b1-b298-4a33-a4f9-1fd54a0efec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEFilterShader">
+      <UniqueIdentifier>{ab10b0aa-6260-471f-b617-05a8b973b54d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EEDilateShader">
+      <UniqueIdentifier>{98c94284-054e-4bda-a2d1-6091e8b86846}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -417,6 +429,21 @@
     <ClCompile Include="EEPolyhedron.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
+    <ClCompile Include="EEContrastAndBright.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="ContrastAndBright.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEErode.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Erode.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEDilate.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -629,6 +656,15 @@
     <ClInclude Include="EEPolyhedron.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
+    <ClInclude Include="EEContrastAndBright.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="EEErode.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="EEDilate.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -684,6 +720,18 @@
     </None>
     <None Include="EEShader\EELightShader.hlsl">
       <Filter>头文件\Emerald\EEShader</Filter>
+    </None>
+    <None Include="EEShader\EEContrastAndBrightShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEContrastAndBrightShader</Filter>
+    </None>
+    <None Include="EEShader\EEErodeShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEErodeShader</Filter>
+    </None>
+    <None Include="EEShader\EEFilterShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEFilterShader</Filter>
+    </None>
+    <None Include="EEShader\EEDilateShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EEDilateShader</Filter>
     </None>
   </ItemGroup>
 </Project>

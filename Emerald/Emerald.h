@@ -26,6 +26,9 @@
 #include "EERipple.h"
 #include "EEBlur.h"
 #include "EEGray.h"
+#include "EEContrastAndBright.h"
+#include "EEErode.h"
+#include "EEDilate.h"
 
 using namespace Emerald;
 

@@ -20,9 +20,9 @@ cbuffer BlurSettings
 cbuffer BlurBuffer : register(b3)
 {
 	float cb_value : packoffset(c0.x);
-	float cb_tmp31 : packoffset(c0.z);
-	float cb_tmp32 : packoffset(c0.w);
-	float cb_tmp33 : packoffset(c0.y);
+	float cb_tmp31 : packoffset(c0.y);
+	float cb_tmp32 : packoffset(c0.z);
+	float cb_tmp33 : packoffset(c0.w);
 };
 
 Texture2D<float4> g_input : register(cs, t0);

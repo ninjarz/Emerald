@@ -1,4 +1,4 @@
-// Blur Demo
+// Demo
 #if 0
 #include "Emerald.h"
 
@@ -21,15 +21,15 @@ int main(int _argc, char** _argv)
 
 	//EETexture bgTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg");
 	EEQuad2D quad(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), tex1);
-	EEBlurC blur(tex1);
-	blur.Process();
+	EEContrastAndBrightC cb(tex1);
+	cb.SetContrast(200.f);
+	cb.SetBright(0.1f);
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 
 		quad.Process();
-		blur.Process();
 
 		printf("%d ", EEGetFPS());
 		EEEndScene();
