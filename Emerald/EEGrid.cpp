@@ -17,6 +17,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEGrid::EEGrid(float _width, float _height, unsigned int _m, unsigned int _n, const EETexture& _tex)
+		:
+		EEObject3D(),
+		m_size(_width, _height),
+		m_m(_m),
+		m_n(_n)
+	{
+		SetTexture(_tex);
+		SetIsUseColor(false);
+		SetIsUseTex(true);
+
+		CreateGridBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEGrid::EEGrid(const EEGrid& _grid)
 	{
 
@@ -94,7 +109,7 @@ namespace Emerald
 				vertices[index].pos.z = tmpZ;
 
 				vertices[index].normal = FLOAT3(0.f, 1.f, 0.f);
-				vertices[index].tex = FLOAT2(dx * i, dx * j);
+				vertices[index].tex = FLOAT2((float)i / m_m, (float)j / m_n);
 			}
 		}
 		

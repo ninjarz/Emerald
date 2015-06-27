@@ -115,6 +115,9 @@
     <Filter Include="头文件\Emerald\EEShader\EEDilateShader">
       <UniqueIdentifier>{98c94284-054e-4bda-a2d1-6091e8b86846}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEShader\EECannyShader">
+      <UniqueIdentifier>{1983e395-f950-4aa2-82ac-aa6cd547e8c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -444,6 +447,12 @@
     <ClCompile Include="EEDilate.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
     </ClCompile>
+    <ClCompile Include="EECanny.cpp">
+      <Filter>源文件\Emerald\EEEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Canny.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -665,6 +674,9 @@
     <ClInclude Include="EEDilate.h">
       <Filter>头文件\Emerald\EEEffect</Filter>
     </ClInclude>
+    <ClInclude Include="EECanny.h">
+      <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">
@@ -732,6 +744,9 @@
     </None>
     <None Include="EEShader\EEDilateShader.hlsl">
       <Filter>头文件\Emerald\EEShader\EEDilateShader</Filter>
+    </None>
+    <None Include="EEShader\EECannyShader.hlsl">
+      <Filter>头文件\Emerald\EEShader\EECannyShader</Filter>
     </None>
   </ItemGroup>
 </Project>

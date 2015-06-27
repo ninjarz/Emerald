@@ -80,6 +80,7 @@
     <ClCompile Include="Average.cpp" />
     <ClCompile Include="Blur.cpp" />
     <ClCompile Include="CameraAction.cpp" />
+    <ClCompile Include="Canny.cpp" />
     <ClCompile Include="ContrastAndBright.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="EEBox.cpp" />
     <ClCompile Include="EEButton.cpp" />
     <ClCompile Include="EECamera.cpp" />
+    <ClCompile Include="EECanny.cpp" />
     <ClCompile Include="EECollision.cpp" />
     <ClCompile Include="EEColor.cpp" />
     <ClCompile Include="EEComboBox.cpp" />
@@ -204,6 +206,7 @@
     <ClInclude Include="EEBox.h" />
     <ClInclude Include="EEButton.h" />
     <ClInclude Include="EECamera.h" />
+    <ClInclude Include="EECanny.h" />
     <ClInclude Include="EECollision.h" />
     <ClInclude Include="EEColor.h" />
     <ClInclude Include="EEComboBox.h" />
@@ -357,6 +360,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEDilateShader.hlsl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EEShader\EECannyShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

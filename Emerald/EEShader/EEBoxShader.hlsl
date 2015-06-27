@@ -60,7 +60,7 @@ void BoxPS(BoxVOut _pIn, out float4 _finalColor :SV_TARGET)
 	directLight.ambient = float4(0.2f, 0.2f, 0.2f, 1.0f);
 	directLight.diffuse = float4(0.5f, 0.5f, 0.5f, 1.0f);
 	directLight.specular = float4(0.5f, 0.5f, 0.5f, 1.0f);
-	directLight.dir = float3(0.57735f, -0.57735f, 0.57735f);
+	directLight.dir = float3(0.67735f, -0.57735f, 0.57735f);
 	float3 toEye = normalize(cb_eyePos - _pIn.posW);
 	float4 A = float4(0.f, 0.f, 0.f, 0.f);
 	float4 D = float4(0.f, 0.f, 0.f, 0.f);

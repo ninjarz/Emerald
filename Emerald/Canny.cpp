@@ -21,11 +21,9 @@ int main(int _argc, char** _argv)
 	gray.Process();
 
 	EEQuad2D quad(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), tex1);
-	EEDilateC dilate(tex1, tex1_gray, INT2(2, 2));
-	dilate.Process();
-	EEErodeC erode(tex1, tex1_gray, INT2(2, 2));
-	erode.Process();
-	
+	EECannyC canny(tex1, tex1_gray, INT2(2, 2));
+	canny.Process();
+
 
 	while (EERun())
 	{

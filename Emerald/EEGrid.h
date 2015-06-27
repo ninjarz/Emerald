@@ -22,6 +22,7 @@ namespace Emerald
 	{
 	public:
 		EEGrid(float _width, float _height, unsigned int _m, unsigned int _n);
+		EEGrid(float _width, float _height, unsigned int _m, unsigned int _n, const EETexture& _tex);
 		EEGrid(const EEGrid& _grid);
 		virtual ~EEGrid();
 		virtual inline EEObject* Clone() { return new EEGrid(*this); }

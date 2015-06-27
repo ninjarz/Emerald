@@ -1173,6 +1173,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t);
 	FLOAT2 EEBezier(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t);
+	FLOAT2 EEBSpline(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t);
+	FLOAT2 EEBSpline(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t);
 	std::vector<FLOAT2> EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1);
 	void EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1, std::vector<FLOAT2>& _result);
 	std::vector<FLOAT2> EEBresenhamLine(const FLOAT2& _p0, const FLOAT2& _p1);

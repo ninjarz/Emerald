@@ -29,6 +29,7 @@
 #include "EEContrastAndBright.h"
 #include "EEErode.h"
 #include "EEDilate.h"
+#include "EECanny.h"
 
 using namespace Emerald;
 

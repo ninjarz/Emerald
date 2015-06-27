@@ -25,11 +25,11 @@ void ErodeCS(uint3 _groupID : SV_GroupID, uint3 _groupTID : SV_GroupThreadID, ui
 
 	int i = max((int)_threadID.x - cb_kernel.x, 0);
 	int ie = min(_threadID.x + cb_kernel.x, g_input.Length.x - 1);
-	for (; i < ie; ++i)
+	for (; i <= ie; ++i)
 	{
 		int j = max((int)_threadID.y - cb_kernel.y, 0);
 		int je = min(_threadID.y + cb_kernel.y, g_input.Length.y - 1);
-		for (; j < je; ++j)
+		for (; j <= je; ++j)
 		{
 			if (g_input_gray[uint2(i, j)] < g_input_gray[index])
 				index = uint2(i, j);

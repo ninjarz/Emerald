@@ -32,6 +32,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEBSpline(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, float _t)
+	{
+		float tt = _t * _t;
+		return (_p0 * (1 - 2 * _t + tt) + _p1 * (1 + 2 * _t - 2 * tt) + _p2 * (tt)) * 0.5f;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	FLOAT2 EEBSpline(const FLOAT2& _p0, const FLOAT2& _p1, const FLOAT2& _p2, const FLOAT2& _p3, float _t)
+	{
+		float tt = _t * _t;
+		float ttt = tt * _t;
+		return (_p0 * (1 - 3 * _t + 3 * tt - ttt) + _p1 * (4 - 6 * tt + 3 * ttt) + _p2 * (1 + 3 * _t + 3 * tt - 3 * ttt) + _p3 * (ttt)) / 6.f;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	std::vector<FLOAT2> EEDDALine(const FLOAT2& _p0, const FLOAT2& _p1)
 	{
 		float k = abs(_p1.x - _p0.x) >= abs(_p1.y - _p0.y) ? abs(_p1.x - _p0.x) : abs(_p1.y - _p0.y);

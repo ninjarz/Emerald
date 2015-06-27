@@ -1,5 +1,5 @@
 //Points Demo
-#if 0
+#if 1
 #include "Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -27,7 +27,7 @@ int main(int _argc, char** _argv)
 
 	std::vector<FLOAT2> pointsData;
 	for (float t = 0; t < 1.0f; t += 0.001f)
-		pointsData.push_back(EEBezier(FLOAT2(100.f, 50.f), FLOAT2(200.f, 100.f), FLOAT2(300.f, 50.f), FLOAT2(400.f, 100.f), t));
+		pointsData.push_back(EEBSpline(FLOAT2(100.f, 50.f), FLOAT2(200.f, 100.f), FLOAT2(300.f, 50.f), FLOAT2(400.f, 100.f), t));
 	EECurve2D curve(pointsData, EEColor::BLACK);
 	curve.SetWidth(10.f);
 
