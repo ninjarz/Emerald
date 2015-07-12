@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\freetype-2.5.3\include;E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)Include;E:\boost_1_55_0\boost_1_55_0</IncludePath>
-    <LibraryPath>E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;E:\freetype-2.5.3\objs\win32\vc2010;$(LibraryPath);$(DXSDK_DIR)Lib\x86;E:\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
+    <IncludePath>E:\lib\freetype-2.5.3\include;E:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)\Include;E:\lib\boost_1_55_0\boost_1_55_0</IncludePath>
+    <LibraryPath>E:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;E:\lib\freetype-2.5.3\objs\win32\vc2010;$(LibraryPath);$(DXSDK_DIR)\Lib\x86;E:\lib\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>E:\freetype-2.5.3\include;$(IncludePath);$(DXSDK_DIR)Include;E:\boost_1_55_0\boost_1_55_0;E:\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include</IncludePath>

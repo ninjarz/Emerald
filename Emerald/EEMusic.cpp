@@ -18,11 +18,11 @@ namespace Emerald
 		{
 			av_register_all();
 
-			CoInitializeEx(NULL, COINIT_MULTITHREADED);
+			// CoInitializeEx(NULL, COINIT_MULTITHREADED);
 			if (FAILED(XAudio2Create(&s_XAudio2, 0)))
 			{
 				MessageBoxW(NULL, L"Create XAudio2 failed!", L"ERROR", MB_OK);
-				CoUninitialize();
+				// CoUninitialize();
 				return false;
 			}
 			if (FAILED(s_XAudio2->CreateMasteringVoice(&s_masteringVoice)))
@@ -30,7 +30,7 @@ namespace Emerald
 				MessageBoxW(NULL, L"Create mastering voice failed!", L"ERROR", MB_OK);
 				s_XAudio2->Release();
 				s_XAudio2 = NULL;
-				CoUninitialize();
+				// CoUninitialize();
 				return false;
 			}
 
@@ -89,7 +89,7 @@ namespace Emerald
 	{
 		if (m_sourceVoice)
 			m_sourceVoice->DestroyVoice();
-		SAFE_DELETE_ARRAY(m_buffer.pAudioData);
+		//SAFE_DELETE_ARRAY(m_buffer.pAudioData);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -296,14 +296,15 @@ namespace Emerald
 
 		int channels = codecContext->channels;
 		int bitsPerSample = av_get_bits_per_sample_fmt(codecContext->sample_fmt);
+		int bytesPerSample = bitsPerSample / 8;
 		int samplesPerSec = codecContext->sample_rate;
-		int blockAlign = bitsPerSample * channels / 8;
+		int blockAlign = bytesPerSample * channels;
 		int avgBytesPerSec = samplesPerSec * blockAlign;
 		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
 		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
 		m_totalTimes = (int)(formatContext->duration / AV_TIME_BASE);
 		std::string data;
-		data.resize(m_totalBytes);
+		data.resize(m_totalBytes + avgBytesPerSec);
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
@@ -322,24 +323,27 @@ namespace Emerald
 				}
 				if (got > 0)
 				{
-					int size = *frame->linesize;
+					//int size = *frame->linesize;
+					int size = frame->nb_samples * bytesPerSample;
 					if (av_sample_fmt_is_planar(codecContext->sample_fmt))
 					{
-						for (int i = 0; i < size; i += 2)
+						for (int i = 0; i < size; i += bytesPerSample)
 						{
-							int pos = len + i * 2;
-							data[pos] = (char)frame->data[0][i];
-							data[pos + 1] = (char)frame->data[0][i + 1];
-							data[pos + 2] = (char)frame->data[1][i];
-							data[pos + 3] = (char)frame->data[1][i + 1];
+							for (int j = 0; j < bytesPerSample; ++j)
+							{
+								data[len++] = (char)frame->data[0][i + j];
+							}
+							for (int j = 0; j < bytesPerSample; ++j)
+							{
+								data[len++] = (char)frame->data[1][i + j];
+							}
 						}
-						len += *frame->linesize * 2;
 					}
 					else
 					{
-						data.append((char*)frame->data[0], *frame->linesize);
-						//memcpy((&data[0]) + len, frame->data[0], *frame->linesize);
-						len += *frame->linesize;
+						data.append((char*)frame->data[0], size);
+						//memcpy((&data[0]) + len, frame->data[0], size);
+						len += size;
 					}
 				}
 			}
@@ -351,7 +355,13 @@ namespace Emerald
 		data.resize(m_totalBytes);
 		m_data.push_back(data);
 
-		m_format.wFormatTag = WAVE_FORMAT_PCM;																/* format type */
+		/*
+		The WAVEFORMATEX structure can describe only a subset of the formats that can be described by the WAVEFORMATEXTENSIBLE structure. For example, WAVEFORMATEX can describe mono or (two-channel) stereo pulse-code modulated (PCM) streams with 8-bit or 16-bit integer sample values, or with 32-bit floating-point sample values. In addition, WAVEFORMATEX can describe popular non-PCM formats such as AC-3 and WMA Pro.
+		*/
+		if (bitsPerSample == 32)
+			m_format.wFormatTag = WAVE_FORMAT_PCM;															/* format type */
+		else
+			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
 		m_format.nChannels = channels;																		/* number of channels (i.e. mono, stereo...) */
 		m_format.nSamplesPerSec = samplesPerSec;															/* sample rate */
 		m_format.nAvgBytesPerSec = avgBytesPerSec;															/* for buffer estimation */

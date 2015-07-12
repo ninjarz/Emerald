@@ -178,9 +178,8 @@ namespace Emerald
 	unsigned int HFLPHash(char *_str, unsigned int _len)
 	{
 		unsigned int n = 0;
-		int i;
 		char* b = (char *)&n;
-		for (i = 0; i< _len; ++i) {
+		for (unsigned int i = 0; i< _len; ++i) {
 			b[i % 4] ^= _str[i];
 		}
 		return n%_len;
@@ -220,7 +219,6 @@ namespace Emerald
 	unsigned int TianlHash(char *_str, unsigned int _len)
 	{
 		unsigned long urlHashValue = 0;
-		int i;
 		unsigned char ucChar;
 		if (!_len)  {
 			return 0;
@@ -229,10 +227,10 @@ namespace Emerald
 			urlHashValue = 16777216 * (_len - 1);
 		}
 		else {
-			urlHashValue = 42781900080;
+			urlHashValue = unsigned long(42781900080);
 		}
 		if (_len <= 96) {
-			for (i = 1; i <= _len; i++) {
+			for (unsigned int i = 1; i <= _len; i++) {
 				ucChar = _str[i - 1];
 				if (ucChar <= 'Z'&&ucChar >= 'A')  {
 					ucChar = ucChar + 32;
@@ -241,7 +239,7 @@ namespace Emerald
 			}
 		}
 		else  {
-			for (i = 1; i <= 96; i++)
+			for (unsigned int i = 1; i <= 96; i++)
 			{
 				ucChar = _str[i + _len - 96 - 1];
 				if (ucChar <= 'Z'&&ucChar >= 'A')

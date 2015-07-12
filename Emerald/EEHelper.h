@@ -33,7 +33,6 @@ namespace Emerald
 //	CPU - Write				yes					yes1
 
 
-
 //8位浮点数
 //----------------------------------------------------------------------------------------------------
 //0000 0000(2) = 0.0f
@@ -41,9 +40,11 @@ namespace Emerald
 //1111 1111(2) = 1.0f
 //...
 
+
 //Shader
 //----------------------------------------------------------------------------------------------------
 //texture, Texture1D, Texture1DArray, Texture2D, Texture2DArray, Texture3D, TextureCube. The element size must fit into 4 32-bit quantities.
+
 
 //Compute Shader
 //----------------------------------------------------------------------------------------------------
@@ -57,8 +58,20 @@ namespace Emerald
 //
 //NOTE, out of bound reads always return 0 in CS
 
+
 //Map
 //----------------------------------------------------------------------------------------------------
 //RowPitch and DepthPitch that mapped from resource are not match its size.
 //
 //
+
+
+// Gouraud Shading, Phong Shading
+//----------------------------------------------------------------------------------------------------
+// Gouraud: 亮度插值，会产生Mach带效应
+// Phong: 法向量插值，计算量大
+
+
+// Whitted
+//----------------------------------------------------------------------------------------------------
+// I=Ic+KsIs+KtIt (s, t方向迭代)

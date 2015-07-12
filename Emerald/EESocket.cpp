@@ -120,7 +120,11 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	std::string EESocket::IP()
 	{
-		return std::string(inet_ntoa(((sockaddr_in*)&m_addr)->sin_addr));
+		char IPdotdec[20];
+		inet_ntop(AF_INET, &((sockaddr_in*)&m_addr)->sin_addr, IPdotdec, 16);
+
+		return std::string(IPdotdec);
+		// return std::string(inet_ntoa(((sockaddr_in*)&m_addr)->sin_addr));
 	}
 	
 	//----------------------------------------------------------------------------------------------------

@@ -56,7 +56,7 @@ namespace Emerald
 					header.QR = 1;
 					header.RA = 1;
 					header.RCODE = 4;
-					std::string result = header.NetString() + questions[0].NetString();
+					std::string result = header.NetString() + question.NetString();
 					Send(&addr, result);
 					return false;
 				}
@@ -79,6 +79,15 @@ namespace Emerald
 				auto iter = m_hosts.find(questions[i].Name());
 				if (iter != m_hosts.end())
 				{
+					if (iter->second == "0.0.0.0")
+					{
+						header.QR = 1;
+						header.RA = 1;
+						header.RCODE = 3;
+						std::string result = header.NetString() + questions[0].NetString();
+						Send(&addr, result);
+						return false;
+					}
 					*rdata = inet_addr(iter->second.data());
 				}
 				else

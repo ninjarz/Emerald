@@ -42,7 +42,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	class EEMusic
 	{
-	protected:
+	public:
 		static bool InitializeMusic();
 
 	protected:
