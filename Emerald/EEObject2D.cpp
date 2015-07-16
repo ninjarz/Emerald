@@ -31,10 +31,4 @@ namespace Emerald
 	{
 		return EECore::s_EECore->GetOrthoLHMatrix();
 	}
-
-	//----------------------------------------------------------------------------------------------------
-	MATRIX EEObject2D::GetFinalWorldMatrix() const
-	{
-		return MatrixTranslation(GetFinalPosition());
-	}
 }

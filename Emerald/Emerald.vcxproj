@@ -179,7 +179,7 @@
     <None Include="EEWaveCoder.cpp" />
     <ClCompile Include="UDPClient.cpp" />
     <ClCompile Include="UDPServer.cpp" />
-    <ClCompile Include="源.cpp" />
+    <ClCompile Include="test.cpp" />
     <ClCompile Include="源1.cpp" />
     <ClCompile Include="DIVA.cpp" />
     <ClCompile Include="LineEditer.cpp" />

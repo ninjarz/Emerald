@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <vector>
+#include <fstream>
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -108,5 +109,32 @@ namespace Emerald
 		if (!GetEnvironmentVariableW(variable.c_str(), &buffer[0], buffer.size()) || !buffer[0])
 			return std::wstring();
 		return &buffer[0];
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void TXTFilter(const std::string& _fin, const std::string& _fout)
+	{
+		std::ifstream fin(_fin);
+		std::ofstream fout(_fout);
+		if (fin.is_open() && fout.is_open())
+		{
+			while (!fin.eof())
+			{
+				std::string tmp;
+				fin >> tmp >> tmp >> tmp;
+				getline(fin, tmp);
+				fout << trim(tmp) << '\n';
+			}
+			fin.close();
+			fout.close();
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::string& trim(std::string& _str)
+	{
+		_str.erase(0, _str.find_first_not_of(" "));
+		_str.erase(_str.find_last_not_of(" ") + 1);
+		return _str;
 	}
 }

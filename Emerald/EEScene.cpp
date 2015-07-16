@@ -7,35 +7,17 @@ namespace Emerald
 {
 	//EEScene
 	//----------------------------------------------------------------------------------------------------
-	EEScene::EEScene(const Rect_Float &_rect)
+	EEScene::EEScene()
 		:
-		EEQuad2D(_rect)
+		EEObject()
 	{
-
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEScene::EEScene(const Rect_Float &_rect, const EETexture& _tex)
-		:
-		EEQuad2D(_rect, _tex)
-	{
-		//controls
-
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEScene::EEScene(const Rect_Float &_rect, ID3D11ShaderResourceView *_tex)
-		:
-		EEQuad2D(_rect, _tex)
-	{
-		//controls
 
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EEScene::EEScene(const EEScene &_scene)
 		:
-		EEQuad2D(_scene),
+		EEObject(_scene),
 		m_objects(m_objects)
 	{
 
@@ -50,7 +32,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScene::Update()
 	{
-		if (!EEQuad2D::Update())
+		if (!EEObject::Update())
 			return false;
 
 		for (UINT i = 0; i < m_objects.size(); ++i)
@@ -64,7 +46,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScene::Render()
 	{
-		if (!EEQuad2D::Render())
+		if (!EEObject::Render())
 			return false;
 
 		for (UINT i = 0; i < m_objects.size(); ++i)

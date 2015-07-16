@@ -16,7 +16,7 @@ int main(int _argc, char** _argv)
 
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
 	EETexture button2Tex(L"Texture/主界面/模式标签/生涯模式.png");
-	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, "hello world");
+	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, L"hello world");
 	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
 	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
 

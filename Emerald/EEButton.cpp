@@ -296,13 +296,11 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale - 1.0f) * 0.5f;
-
 			Rect_Float rect(
-				-m_quadWidth * scale.x,
-				-m_quadHeight * scale.y,
-				m_quadWidth + m_quadWidth * scale.x,
-				m_quadHeight + m_quadHeight * scale.y
+				-m_quadWidth / 2,
+				-m_quadHeight / 2,
+				m_quadWidth / 2,
+				m_quadHeight / 2
 				);
 
 			EEQuad2DVertex vertices[4];
@@ -402,13 +400,13 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 scale = ((m_parent? m_parent->GetFinalScale() : FLOAT3(1.f)) * m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
+			FLOAT3 scale = FLOAT3((m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime) * 0.5f);
 
 			Rect_Float rect(
-				-m_quadWidth * scale.x,
-				-m_quadHeight * scale.y,
-				m_quadWidth + m_quadWidth * scale.x,
-				m_quadHeight + m_quadHeight * scale.y
+				-m_quadWidth / 2 - m_quadWidth * scale.x,
+				-m_quadHeight / 2 - m_quadHeight * scale.y,
+				m_quadWidth / 2 + m_quadWidth * scale.x,
+				m_quadHeight / 2 + m_quadHeight * scale.y
 				);
 
 			EEQuad2DVertex vertices[4];

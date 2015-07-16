@@ -9,7 +9,7 @@ namespace Emerald
 	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr)
 		:
 		EEQuad2D(_progressRect, _progressTex),
-		m_progressFrame(Rect_Float(0.0f, 0.0f, _progressRect.z - _progressRect.x, _progressRect.w - _progressRect.y), _frameTex),
+		m_progressFrame(Rect_Float(0.0f, 0.0f, _progressRect.z - _progressRect.x, _progressRect.w - _progressRect.y) - FLOAT2(GetWidht() / 2, GetHeight() / 2), _frameTex),
 		m_progress(0.0f),
 		m_isProgressDirty(false),
 		m_callbackFunc(_funcPtr)
@@ -22,7 +22,7 @@ namespace Emerald
 	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr)
 		:
 		EEQuad2D(_progressRect, _progressTex),
-		m_progressFrame(_frameRect, _frameTex),
+		m_progressFrame(_frameRect - FLOAT2(GetWidht() / 2, GetHeight() / 2), _frameTex),
 		m_progress(0.0f),
 		m_isProgressDirty(false),
 		m_callbackFunc(_funcPtr)
@@ -65,13 +65,11 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isProgressDirty)
 		{
-			FLOAT3 scale = (GetFinalScale() - 1.0f) * 0.5f;
-
 			Rect_Float rect(
-				-m_quadWidth * scale.x,
-				-m_quadHeight * scale.y,
-				m_quadWidth + m_quadWidth * scale.x,
-				m_quadHeight + m_quadHeight * scale.y
+				-m_quadWidth / 2,
+				-m_quadHeight / 2,
+				m_quadWidth / 2,
+				m_quadHeight / 2
 				);
 
 			//the value of the z depends on the progress (the scaled end - the scaled width * (1.0f - the progress)
@@ -168,6 +166,6 @@ namespace Emerald
 	{
 		EEObject::OnMouseTriggered(_pos);
 
-		SetProgress((_pos.x - m_position.x) / m_quadWidth);
+		SetProgress((_pos.x - m_position.x) / m_quadWidth + 0.5f);
 	}
 }

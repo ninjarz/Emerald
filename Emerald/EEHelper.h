@@ -20,6 +20,9 @@ namespace Emerald
 	std::string UnicodeToAnsi(const std::wstring& _str);
 
 	std::wstring CopyEnvironmentVariable(const std::wstring& variable);
+
+	void TXTFilter(const std::string& _fin, const std::string& _fout);
+	std::string& trim(std::string& _str);
 }
 
 #endif

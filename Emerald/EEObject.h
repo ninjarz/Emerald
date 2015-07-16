@@ -11,11 +11,10 @@
 #include "EETexture.h"
 
 
-// big big big memo: manage all the object
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEObjectBufferDesc
+	// EEObjectBufferDesc
 	//----------------------------------------------------------------------------------------------------
 	struct EEObjectBufferDesc
 	{
@@ -29,7 +28,7 @@ namespace Emerald
 		float alpha;
 	};
 
-	//EEObjectState
+	// EEObjectState
 	//----------------------------------------------------------------------------------------------------
 	typedef enum
 	{
@@ -38,7 +37,7 @@ namespace Emerald
 		EE_OBJECT_OVER = 2,
 	} EEObjectState;
 
-	//EEObject
+	// EEObject
 	//----------------------------------------------------------------------------------------------------
 	class EEObject
 	{
@@ -180,8 +179,11 @@ namespace Emerald
 		// info
 		bool m_isAlive;
 		EEObject *m_parent;
+
+		// translate
 		FLOAT3 m_position;
 		bool m_isPositionDirty;
+		// 
 		FLOAT3 m_scale;
 		bool m_isScaleDirty;
 		float m_alpha;
@@ -211,7 +213,7 @@ namespace Emerald
 		std::vector<boost::thread*> m_threads;
 	};
 
-	//EEObject_APIs
+	// EEObject_APIs
 	//----------------------------------------------------------------------------------------------------
 	bool EEProcess(EEObject* _object);
 

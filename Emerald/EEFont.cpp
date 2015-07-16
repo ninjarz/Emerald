@@ -149,6 +149,7 @@ namespace Emerald
 	{
 		if (m_isTextDirty)
 		{
+			// append from center(position)
 			SetTexture(GetFontBitmap(m_text));
 			SetWidth((float)GetTexture()->GetWidth());
 			SetHeight((float)GetTexture()->GetHeight());

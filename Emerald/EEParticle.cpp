@@ -48,7 +48,9 @@ namespace Emerald
 			{
 				SetPosition(GetPosition() + m_positionSpeed * m_durationTime);
 				SetColor(GetColor() + m_colorSpeed * m_durationTime);
-				SetScale(GetScale() + m_scaleSpeed * m_durationTime);
+				FLOAT3 scale = GetScale() + m_scaleSpeed * m_durationTime;
+				scale.z = 1.f;
+				SetScale(scale);
 				m_durationTime = 0.0f;
 				m_isAlive = false;
 			}
@@ -56,7 +58,9 @@ namespace Emerald
 			{
 				SetPosition(GetPosition() + m_positionSpeed * deltaTime);
 				SetColor(GetColor() + m_colorSpeed * deltaTime);
-				SetScale(GetScale() + m_scaleSpeed * deltaTime);
+				FLOAT3 scale = GetScale() + m_scaleSpeed * deltaTime;
+				scale.z = 1.f;
+				SetScale(scale);
 				m_durationTime -= deltaTime;
 			}
 

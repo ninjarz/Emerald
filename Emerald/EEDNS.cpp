@@ -111,13 +111,13 @@ namespace Emerald
 			return true;
 		}
 
-		Loopup();
+		Lookup();
 
 		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEDNSServer::Loopup()
+	bool EEDNSServer::Lookup()
 	{
 		std::string data;
 		if (m_loopup.Recv(data))

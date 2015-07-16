@@ -30,8 +30,7 @@ int main(int _argc, char** _argv)
 	EEQuad2D quad1(Rect_Float(0, 200, (float)bitmap11.GetWidth(), (float)bitmap11.GetHeight() + 200), bitmap11);
 	quad1.SetLocalZOrder(10.0f);
 
-	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
-	EETexture button2Tex(L"Texture/主界面/模式标签/生涯模式.png");
+	EETexture bgTex(L"Texture\\Project Diva Freedom\\01\\选歌条.png");
 	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, L"hello world");
 	helloworld.AddText(L'1');
 	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);

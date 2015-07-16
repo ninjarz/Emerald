@@ -153,9 +153,6 @@
     <ClCompile Include="EEMusic.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="源.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="源1.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -451,6 +448,9 @@
       <Filter>源文件\Emerald\EEEffect</Filter>
     </ClCompile>
     <ClCompile Include="Canny.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>

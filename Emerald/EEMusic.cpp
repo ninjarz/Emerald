@@ -45,7 +45,7 @@ namespace Emerald
 		:
 		m_totalBytes(0),
 		m_totalSamples(0),
-		m_totalTimes(0),
+		m_totalTime(0.f),
 		m_beginSamples(0)
 	{
 		InitializeMusic();
@@ -57,7 +57,7 @@ namespace Emerald
 		m_format(_format),
 		m_totalBytes(0),
 		m_totalSamples(0),
-		m_totalTimes(0),
+		m_totalTime(0.f),
 		m_beginSamples(0)
 	{
 		InitializeMusic();
@@ -70,12 +70,25 @@ namespace Emerald
 		:
 		m_totalBytes(0),
 		m_totalSamples(0),
-		m_totalTimes(0),
+		m_totalTime(0.f),
 		m_beginSamples(0)
 	{
 		InitializeMusic();
 
 		LoadMusic(_fileName);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEMusic::EEMusic(const std::string& _fileName)
+		:
+		m_totalBytes(0),
+		m_totalSamples(0),
+		m_totalTime(0.f),
+		m_beginSamples(0)
+	{
+		InitializeMusic();
+
+		LoadMusic(_fileName.c_str());
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -96,6 +109,14 @@ namespace Emerald
 	bool EEMusic::Open(const char* _fileName)
 	{
 		if (!LoadMusic(_fileName))
+			return false;
+
+		return true;
+	}
+
+	bool EEMusic::Open(const std::string& _fileName)
+	{
+		if (!LoadMusic(_fileName.c_str()))
 			return false;
 
 		return true;
@@ -234,7 +255,7 @@ namespace Emerald
 		m_data.push_back(std::string(_buffer, _size));
 		m_totalBytes += _size;
 		m_totalSamples += _size / m_format.nBlockAlign;
-		m_totalTimes += _size / m_format.nBlockAlign / m_format.nSamplesPerSec;
+		m_totalTime += (double)_size / m_format.nBlockAlign / m_format.nSamplesPerSec;
 
 		ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
 		m_buffer.Flags = 0;
@@ -302,7 +323,7 @@ namespace Emerald
 		int avgBytesPerSec = samplesPerSec * blockAlign;
 		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
 		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
-		m_totalTimes = (int)(formatContext->duration / AV_TIME_BASE);
+		m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
 		std::string data;
 		data.resize(m_totalBytes + avgBytesPerSec);
 
@@ -351,7 +372,7 @@ namespace Emerald
 		}
 		m_totalBytes = len;
 		m_totalSamples = len / blockAlign;
-		m_totalTimes = m_totalSamples / samplesPerSec;
+		m_totalTime = (double)m_totalSamples / samplesPerSec;
 		data.resize(m_totalBytes);
 		m_data.push_back(data);
 
@@ -359,9 +380,9 @@ namespace Emerald
 		The WAVEFORMATEX structure can describe only a subset of the formats that can be described by the WAVEFORMATEXTENSIBLE structure. For example, WAVEFORMATEX can describe mono or (two-channel) stereo pulse-code modulated (PCM) streams with 8-bit or 16-bit integer sample values, or with 32-bit floating-point sample values. In addition, WAVEFORMATEX can describe popular non-PCM formats such as AC-3 and WMA Pro.
 		*/
 		if (bitsPerSample == 32)
-			m_format.wFormatTag = WAVE_FORMAT_PCM;															/* format type */
+			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;															/* format type */
 		else
-			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+			m_format.wFormatTag = WAVE_FORMAT_PCM;
 		m_format.nChannels = channels;																		/* number of channels (i.e. mono, stereo...) */
 		m_format.nSamplesPerSec = samplesPerSec;															/* sample rate */
 		m_format.nAvgBytesPerSec = avgBytesPerSec;															/* for buffer estimation */
@@ -447,11 +468,24 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	double EEMusic::GetTotalTime()
+	{
+		return m_totalTime;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	float EEMusic::GetProgress()
 	{
 		return (float)GetSampled() / GetTotalSamples();
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	double EEMusic::GetProgressTime()
+	{
+		return (double)GetSampled() / m_format.nSamplesPerSec;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	char* EEMusic::GetSampleData(int _num)
 	{
 		/*

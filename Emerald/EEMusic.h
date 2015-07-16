@@ -54,10 +54,12 @@ namespace Emerald
 		EEMusic();
 		EEMusic(const WAVEFORMATEX& _format);
 		EEMusic(const char* _fileName);
+		EEMusic(const std::string& _fileName);
 		EEMusic(const EEMusic& _music);
 		virtual ~EEMusic();
 
 		bool Open(const char* _fileName);
+		bool Open(const std::string& _fileName);
 		bool Play(float _begin = 0.0f);
 		bool Play(float _begin, float _end, int _times = 1);
 		bool Pause();
@@ -74,7 +76,9 @@ namespace Emerald
 		int GetSampleRate();
 		int GetTotalSamples();
 		int GetSampled();
+		double GetTotalTime();
 		float GetProgress();
+		double GetProgressTime();
 		char* GetSampleData(int _num);
 
 	protected:
@@ -83,7 +87,7 @@ namespace Emerald
 		WAVEFORMATEX m_format;
 		int m_totalBytes;
 		int m_totalSamples;
-		int m_totalTimes;
+		double m_totalTime;
 		int m_beginSamples;
 		std::vector<std::string> m_data;
 	};

@@ -136,7 +136,7 @@ namespace Emerald
 	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height)
 		:
 		EEObject2D(_position),
-		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
+		m_quadRect(-_width / 2, -_height / 2, _width / 2, _height / 2),
 		m_quadWidth(_width),
 		m_quadHeight(_height),
 		m_quadVB(NULL)
@@ -150,7 +150,7 @@ namespace Emerald
 	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
 		:
 		EEObject2D(_position),
-		m_quadRect(_position.x, _position.y, _position.x + _width, _position.y + _height),
+		m_quadRect(-_width / 2, -_height / 2, _width / 2, _height / 2),
 		m_quadWidth(_width),
 		m_quadHeight(_height),
 		m_quadVB(NULL)
@@ -166,7 +166,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float &_rect)
 		:
-		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3((_rect.x + _rect.z) / 2, (_rect.y + _rect.w) / 2, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -180,7 +180,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float& _rect, const EEColor& _color)
 		:
-		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3((_rect.x + _rect.z) / 2, (_rect.y + _rect.w) / 2, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -195,7 +195,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float &_rect, const EETexture& _tex)
 		:
-		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3((_rect.x + _rect.z) / 2, (_rect.y + _rect.w) / 2, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -212,7 +212,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const Rect_Float &_rect, ID3D11ShaderResourceView* _tex)
 		:
-		EEObject2D(FLOAT3(_rect.x, _rect.y, 0.0f)),
+		EEObject2D(FLOAT3((_rect.x + _rect.z) / 2, (_rect.y + _rect.w) / 2, 0.0f)),
 		m_quadRect(_rect),
 		m_quadWidth(_rect.z - _rect.x),
 		m_quadHeight(_rect.w - _rect.y),
@@ -268,13 +268,11 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
-			FLOAT3 scale = (m_parent ? m_parent->GetFinalScale() * m_scale - 1.0f : m_scale - 1.0f) * 0.5f;
-
 			Rect_Float rect(
-				-m_quadWidth * scale.x,
-				-m_quadHeight * scale.y,
-				m_quadWidth + m_quadWidth * scale.x,
-				m_quadHeight + m_quadHeight * scale.y
+				-m_quadWidth / 2,
+				-m_quadHeight / 2,
+				m_quadWidth / 2,
+				m_quadHeight / 2
 				);
 
 			EEQuad2DVertex quadVertices[4];
@@ -329,8 +327,8 @@ namespace Emerald
 	void EEQuad2D::SetPositionX(float _posX)
 	{
 		m_position.x = _posX;
-		m_quadRect.x = _posX;
-		m_quadRect.z = _posX + m_quadWidth;
+		m_quadRect.x = _posX - m_quadWidth / 2;
+		m_quadRect.z = _posX + m_quadWidth / 2;
 
 		m_isPositionDirty = true;
 	}
@@ -339,8 +337,8 @@ namespace Emerald
 	void EEQuad2D::SetPositionY(float _posY)
 	{
 		m_position.y = _posY;
-		m_quadRect.y = _posY;
-		m_quadRect.w = _posY + m_quadHeight;
+		m_quadRect.y = _posY - m_quadHeight / 2;
+		m_quadRect.w = _posY + m_quadHeight / 2;
 		m_isPositionDirty = true;
 	}
 
@@ -348,11 +346,11 @@ namespace Emerald
 	void EEQuad2D::SetPositionXY(const FLOAT2& _position)
 	{
 		m_position.x = _position.x;
-		m_quadRect.x = _position.x;
-		m_quadRect.z = _position.x + m_quadWidth;
 		m_position.y = _position.y;
-		m_quadRect.y = _position.y;
-		m_quadRect.w = _position.y + m_quadHeight;
+		m_quadRect.x = _position.x - m_quadWidth / 2;
+		m_quadRect.z = _position.x + m_quadWidth / 2;
+		m_quadRect.y = _position.y - m_quadHeight / 2;
+		m_quadRect.w = _position.y + m_quadHeight / 2;
 		m_isPositionDirty = true;
 	}
 
@@ -360,17 +358,17 @@ namespace Emerald
 	void EEQuad2D::SetPosition(const FLOAT3& _position)
 	{
 		m_position = _position;
-		m_quadRect.x = _position.x;
-		m_quadRect.z = _position.x + m_quadWidth;
-		m_quadRect.y = _position.y;
-		m_quadRect.w = _position.y + m_quadHeight;
+		m_quadRect.x = _position.x - m_quadWidth / 2;
+		m_quadRect.z = _position.x + m_quadWidth / 2;
+		m_quadRect.y = _position.y - m_quadHeight / 2;
+		m_quadRect.w = _position.y + m_quadHeight / 2;
 		m_isPositionDirty = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEQuad2D::SetRect(const Rect_Float& _rect)
 	{
-		m_position = FLOAT3(_rect.x, _rect.y, 0.0f);
+		m_position = FLOAT3((_rect.x + _rect.z) / 2, (_rect.y + _rect.w) / 2, 0.0f);
 		m_quadRect = _rect;
 		m_quadWidth = _rect.z - _rect.x;
 		m_quadHeight = _rect.w - _rect.y;
@@ -382,7 +380,8 @@ namespace Emerald
 	void EEQuad2D::SetWidth(float _width)
 	{
 		m_quadWidth = _width;
-		m_quadRect.z = m_quadRect.x + _width;
+		m_quadRect.x = m_position.x - _width / 2;
+		m_quadRect.z = m_position.x + _width / 2;
 		m_isPositionDirty = true;
 		m_isScaleDirty = true;
 	}
@@ -391,7 +390,8 @@ namespace Emerald
 	void EEQuad2D::SetHeight(float _height)
 	{
 		m_quadHeight = _height;
-		m_quadRect.w = m_quadRect.y + _height;
+		m_quadRect.y = m_position.y - m_quadHeight / 2;
+		m_quadRect.w = m_position.y + m_quadHeight / 2;
 		m_isPositionDirty = true;
 		m_isScaleDirty = true;
 	}
@@ -417,13 +417,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	FLOAT3 EEQuad2D::GetCenter() const
 	{
-		return FLOAT3(m_position.x + m_quadWidth / 2, m_position.y + m_quadHeight / 2, 0.0f);
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	FLOAT3 EEQuad2D::GetRowCenter() const
-	{
-		return FLOAT3(m_quadWidth / 2, m_quadHeight / 2, 0.0f);
+		return GetPosition();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -456,8 +450,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	FLOAT3 EEQuad2D::GetFinalCenter() const
 	{
-		FLOAT3 finalPosition = GetFinalPosition();
-		return FLOAT3(finalPosition.x + m_quadWidth / 2, finalPosition.y + m_quadHeight / 2, 0.0f);
+		return GetFinalPosition();
 	}
 
 	//----------------------------------------------------------------------------------------------------

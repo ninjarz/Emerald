@@ -16,6 +16,13 @@ namespace Emerald
 	};
 
 	//EEQuad2D
+	/*
+	+--+--+--+--+--+--+--+--+
+	|           + position  |
+	+--+--+--+--0--+--+--+--+
+	|           +           |
+	+--+--+--+--+--+--+--+--+
+	*/
 	//----------------------------------------------------------------------------------------------------
 	class EEQuad2D : public EEObject2D
 	{
@@ -59,7 +66,6 @@ namespace Emerald
 		virtual float GetWidht() const;
 		virtual float GetHeight() const;
 		virtual FLOAT3 GetCenter() const;
-		virtual FLOAT3 GetRowCenter() const;
 
 		// position
 		virtual Rect_Float GetFinalRect() const;
@@ -73,7 +79,7 @@ namespace Emerald
 
 	protected:
 		// the size of the quad
-		Rect_Float m_quadRect;
+		Rect_Float m_quadRect; // redundancy
 		float m_quadWidth, m_quadHeight;
 		// the vertex buffer of the quad
 		ID3D11Buffer *m_quadVB;

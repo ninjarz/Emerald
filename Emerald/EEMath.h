@@ -1111,6 +1111,17 @@ namespace Emerald
 			w = _rect.w;
 			return *this;
 		}
+
+		inline Rect_Float operator+ (const FLOAT2& _float2) const
+		{
+			return Rect_Float(x + _float2.x, y + _float2.y, z + _float2.x, w + _float2.y);
+		}
+
+		inline Rect_Float operator- (const FLOAT2& _float2) const
+		{
+			return Rect_Float(x - _float2.x, y - _float2.y, z - _float2.x, w - _float2.y);
+			return *this;
+		}
 	};
 
 	//----------------------------------------------------------------------------------------------------

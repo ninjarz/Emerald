@@ -11,12 +11,10 @@ namespace Emerald
 {
 	//EEScne
 	//----------------------------------------------------------------------------------------------------
-	class EEScene : public EEQuad2D
+	class EEScene : public EEObject
 	{
 	public:
-		EEScene(const Rect_Float &_rect);
-		EEScene(const Rect_Float &_rect, const EETexture& _tex);
-		EEScene(const Rect_Float &_rect, ID3D11ShaderResourceView *_tex);
+		EEScene();
 		EEScene(const EEScene &_scene);
 		virtual ~EEScene();
 

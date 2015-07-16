@@ -405,7 +405,7 @@ namespace Emerald
 		virtual ~EEDNSServer();
 
 		virtual bool Process();
-		bool Loopup();
+		bool Lookup();
 		bool LoadHostes(wchar_t* _file);
 		std::string GetDomainRoot(std::string _domain);
 

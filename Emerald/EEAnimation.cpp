@@ -55,7 +55,6 @@ namespace Emerald
 		float deltaTime = (float)EECore::s_EECore->GetTotalTime() - startTime;
 		if (!m_frames.empty())
 		{
-			printf("%f\n", deltaTime);
 			for (auto it = m_frames.begin(); it != m_frames.end();)
 			{
 				EEAnimationFrame* frame = *it;
@@ -85,7 +84,6 @@ namespace Emerald
 		else if (m_isLoop)
 		{
 			Start();
-			printf("loop!\n");
 		}
 		else
 			SetIsAlive(false);

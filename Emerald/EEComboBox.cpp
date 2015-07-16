@@ -66,7 +66,7 @@ namespace Emerald
 	bool EEComboBox::AddItem(const std::wstring& _str, std::function<void(void)> _funcPtr)
 	{
 		float height = GetHeight() * (m_options.size() + 1);
-		m_options.push_back(new EELineBrowser(Rect_Float(0.0f, height, GetWidht(), height + GetHeight()),
+		m_options.push_back(new EELineBrowser(Rect_Float(0.0f, height, GetWidht(), height + GetHeight()) - FLOAT2(GetWidht() / 2, GetHeight() / 2),
 			m_color, m_font.GetColor(), _str));
 		int index = m_options.size() - 1;
 		m_options[index]->SetParent(this);
