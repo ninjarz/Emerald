@@ -453,6 +453,9 @@
     <ClCompile Include="test.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="DIVAMana.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -676,6 +679,9 @@
     </ClInclude>
     <ClInclude Include="EECanny.h">
       <Filter>头文件\Emerald\EEEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DIVAMana.h">
+      <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

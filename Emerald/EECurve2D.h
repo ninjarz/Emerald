@@ -31,12 +31,16 @@ namespace Emerald
 		static ID3D11Buffer *s_curveBuffer;
 
 	public:
+		EECurve2D();
+		EECurve2D(const EETexture& _tex);
+		EECurve2D(const std::vector<FLOAT2>& _curve, const EETexture& _tex);
 		EECurve2D(const std::vector<FLOAT2>& _curve, const EEColor& _color);
 		virtual ~EECurve2D();
 
 		virtual bool Update();
 		virtual bool Render();
 
+		void SetCurve(const std::vector<FLOAT2>& _curve);
 		void SetWidth(float _width);
 
 	protected:

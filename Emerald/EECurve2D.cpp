@@ -102,6 +102,50 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EECurve2D::EECurve2D()
+		:
+		EEObject2D(),
+		m_curve(),
+		m_width(1.f),
+		m_isCurveDirty(true),
+		m_curveVB(nullptr)
+	{
+		InitializeCurve2D();
+
+	}
+
+	EECurve2D::EECurve2D(const EETexture& _tex)
+		:
+		EEObject2D(),
+		m_curve(),
+		m_width(1.f),
+		m_isCurveDirty(true),
+		m_curveVB(nullptr)
+	{
+		InitializeCurve2D();
+		SetIsUseColor(false);
+		SetIsUseTex(true);
+		SetTexture(_tex);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EECurve2D::EECurve2D(const std::vector<FLOAT2>& _curve, const EETexture& _tex)
+		:
+		EEObject2D(),
+		m_curve(_curve),
+		m_width(1.f),
+		m_isCurveDirty(true),
+		m_curveVB(nullptr)
+	{
+		InitializeCurve2D();
+		SetIsUseColor(false);
+		SetIsUseTex(true);
+		SetTexture(_tex);
+
+		CreateCurveVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EECurve2D::EECurve2D(const std::vector<FLOAT2>& _cruve, const EEColor& _color)
 		:
 		EEObject2D(),
@@ -135,26 +179,27 @@ namespace Emerald
 			m_isPositionDirty = false;
 		}
 
-		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isCurveDirty)
+		if (m_isLocalZOrderDirty || m_isCurveDirty)
 		{
-			float halfWidth = m_width / 2;
 			std::vector<EECurve2DVertex> vertices(m_curve.size() << 1);
-			for (unsigned int i = 0; i < m_curve.size() - 1; ++i)
-			{
-				int index = i << 1;
-				FLOAT2 vertical = (m_curve[i + 1] - m_curve[i]).GetVertical();
-				vertices[index].pos = FLOAT3(m_curve[i] + vertical * halfWidth, m_localZOrder * 0.0001f);
-				//vertices[0].tex = FLOAT2(m_texRect.x, m_texRect.y);
-				vertices[index + 1].pos = FLOAT3(m_curve[i] - vertical * halfWidth, m_localZOrder * 0.0001f);
-				//vertices[1].tex = FLOAT2(m_texRect.z, m_texRect.y);
-			}
 			if (m_curve.size() > 1)
 			{
+				float halfWidth = m_width / 2;
+				float deltaTex = 1.f / m_curve.size();
+				for (unsigned int i = 0; i < m_curve.size() - 1; ++i)
+				{
+					int index = i << 1;
+					FLOAT2 vertical = (m_curve[i + 1] - m_curve[i]).GetVertical();
+					vertices[index].pos = FLOAT3(m_curve[i] + vertical * halfWidth, m_localZOrder * 0.0001f);
+					vertices[index].tex = FLOAT2(m_texRect.x, m_texRect.y + i * deltaTex);
+					vertices[index + 1].pos = FLOAT3(m_curve[i] - vertical * halfWidth, m_localZOrder * 0.0001f);
+					vertices[index + 1].tex = FLOAT2(m_texRect.z, m_texRect.y + i * deltaTex);
+				}
 				FLOAT2 vertical = (m_curve[m_curve.size() - 1] - m_curve[m_curve.size() - 2]).GetVertical();
 				vertices[vertices.size() - 2].pos = FLOAT3(m_curve.back() + vertical * halfWidth, m_localZOrder * 0.0001f);
-				//vertices[0].tex = FLOAT2(m_texRect.x, m_texRect.y);
+				vertices[vertices.size() - 2].tex = FLOAT2(m_texRect.x, m_texRect.w);
 				vertices[vertices.size() - 1].pos = FLOAT3(m_curve.back() - vertical * halfWidth, m_localZOrder * 0.0001f);
-				//vertices[1].tex = FLOAT2(m_texRect.z, m_texRect.y);
+				vertices[vertices.size() - 1].tex = FLOAT2(m_texRect.z, m_texRect.w);
 			}
 
 			if (m_isCurveDirty)
@@ -169,7 +214,6 @@ namespace Emerald
 				deviceContext->Unmap(m_curveVB, 0);
 			}
 
-			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
 			m_isCurveDirty = false;
 		}
@@ -202,6 +246,13 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	void EECurve2D::SetCurve(const std::vector<FLOAT2>& _curve)
+	{
+		m_curve = _curve;
+		m_isCurveDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EECurve2D::SetWidth(float _width)
 	{
 		m_width = _width;
@@ -212,20 +263,23 @@ namespace Emerald
 	bool EECurve2D::CreateCurveVertexBuffer()
 	{
 		SAFE_RELEASE(m_curveVB);
-
-		D3D11_BUFFER_DESC vbDesc = { 0 };
-		vbDesc.ByteWidth = sizeof(EECurve2DVertex) * m_curve.size() << 1;
-		vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		vbDesc.MiscFlags = 0;
-		vbDesc.StructureByteStride = 0;
-		vbDesc.Usage = D3D11_USAGE_DYNAMIC;
-		if (FAILED(EECore::s_EECore->GetDevice()->CreateBuffer(&vbDesc, NULL, &m_curveVB)))
+		if (m_curve.size())
 		{
-			MessageBoxW(NULL, L"CreateVertexBuffer failed!", L"Error", MB_OK);
-			return false;
+			D3D11_BUFFER_DESC vbDesc = { 0 };
+			vbDesc.ByteWidth = sizeof(EECurve2DVertex) * m_curve.size() << 1;
+			vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			vbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			vbDesc.MiscFlags = 0;
+			vbDesc.StructureByteStride = 0;
+			vbDesc.Usage = D3D11_USAGE_DYNAMIC;
+			if (FAILED(EECore::s_EECore->GetDevice()->CreateBuffer(&vbDesc, NULL, &m_curveVB)))
+			{
+				MessageBoxW(NULL, L"CreateVertexBuffer failed!", L"Error", MB_OK);
+				return false;
+			}
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 }

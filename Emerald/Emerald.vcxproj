@@ -101,6 +101,7 @@
     <ClCompile Include="DirectXTex\DirectXTexTGA.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexUtil.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexWIC.cpp" />
+    <ClCompile Include="DIVAMana.cpp" />
     <ClCompile Include="DNSServer.cpp" />
     <ClCompile Include="Editer.cpp" />
     <ClCompile Include="EEAction.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="DirectXTex\Filters.h" />
     <ClInclude Include="DirectXTex\scoped.h" />
     <ClInclude Include="DIVAHelper.h" />
+    <ClInclude Include="DIVAMana.h" />
     <ClInclude Include="EEAction.h" />
     <ClInclude Include="EEAnimation.h" />
     <ClInclude Include="EEAverage.h" />

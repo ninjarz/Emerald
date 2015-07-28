@@ -1,7 +1,6 @@
 #include "EEMusic.h"
 #include "EEHelper.h"
 
-
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -43,6 +42,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic()
 		:
+		m_musicCallBack(this),
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
@@ -54,6 +54,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic(const WAVEFORMATEX& _format)
 		:
+		m_musicCallBack(this),
 		m_format(_format),
 		m_totalBytes(0),
 		m_totalSamples(0),
@@ -68,6 +69,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic(const char* _fileName)
 		:
+		m_musicCallBack(this),
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
@@ -81,6 +83,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic(const std::string& _fileName)
 		:
+		m_musicCallBack(this),
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
@@ -93,6 +96,8 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::EEMusic(const EEMusic& _musformatContext)
+		:
+		m_musicCallBack(this)
 	{
 
 	}
@@ -102,7 +107,7 @@ namespace Emerald
 	{
 		if (m_sourceVoice)
 			m_sourceVoice->DestroyVoice();
-		//SAFE_DELETE_ARRAY(m_buffer.pAudioData);
+		SAFE_DELETE(m_loader);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -123,6 +128,16 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::Start()
+	{
+		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
+			return false;
+
+		return true;
+	}
+
+	// _begin: 0.f-1.f
+	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::Play(float _begin)
 	{
 		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
@@ -130,26 +145,27 @@ namespace Emerald
 
 		m_beginSamples = (int)(_begin * m_totalSamples);
 		unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
-		for (unsigned int i = 0; i < m_data.size(); ++i)
+		for (auto& data : m_data)
 		{
-			if (m_data[i].size() <= beginBytes)
+			if (data.size() <= beginBytes)
 			{
-				beginBytes -= m_data[i].size();
+				beginBytes -= data.size();
 			}
 			else
 			{
-				ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
-				m_buffer.Flags = 0;
-				m_buffer.AudioBytes = m_data[i].size();
-				m_buffer.pAudioData = (BYTE*)&m_data[i][0];
-				m_buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
-				m_buffer.PlayLength = 0;
-				m_buffer.LoopBegin = 0;
-				m_buffer.LoopLength = 0;
-				m_buffer.LoopCount = 0;
-				m_buffer.pContext = NULL;
-				if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
-					return false;
+				XAUDIO2_BUFFER buffer;
+				ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
+				buffer.Flags = 0;
+				buffer.AudioBytes = data.size();
+				buffer.pAudioData = (BYTE*)&data[0];
+				buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
+				buffer.PlayLength = 0;
+				buffer.LoopBegin = 0;
+				buffer.LoopLength = 0;
+				buffer.LoopCount = 0;
+				buffer.pContext = nullptr;
+				if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
+					continue;
 				beginBytes = 0;
 			}
 		}
@@ -171,48 +187,50 @@ namespace Emerald
 		{
 			unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
 			unsigned int byteLen = (int)(_len * m_totalSamples) * (m_format.wBitsPerSample / 8);
-			for (unsigned int i = 0; i < m_data.size(); ++i)
+			for (auto& data : m_data)
 			{
-				if (m_data[i].size() <= beginBytes)
+				if (data.size() <= beginBytes)
 				{
-					beginBytes -= m_data[i].size();
+					beginBytes -= data.size();
 				}
-				else if (m_data[i].size() - beginBytes <= byteLen)
+				else if (data.size() - beginBytes <= byteLen)
 				{
-					ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
+					XAUDIO2_BUFFER buffer;
+					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
 					if (times == _times - 1)
-						m_buffer.Flags = 0;
+						buffer.Flags = 0;
 					else
-						m_buffer.Flags = XAUDIO2_END_OF_STREAM;
-					m_buffer.AudioBytes = m_data[i].size();
-					m_buffer.pAudioData = (BYTE*)&m_data[i][0];
-					m_buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
-					m_buffer.PlayLength = 0;
-					m_buffer.LoopBegin = 0;
-					m_buffer.LoopLength = 0;
-					m_buffer.LoopCount = 0;
-					m_buffer.pContext = NULL;
-					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
+						buffer.Flags = XAUDIO2_END_OF_STREAM;
+					buffer.AudioBytes = data.size();
+					buffer.pAudioData = (BYTE*)&data[0];
+					buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
+					buffer.PlayLength = 0;
+					buffer.LoopBegin = 0;
+					buffer.LoopLength = 0;
+					buffer.LoopCount = 0;
+					buffer.pContext = NULL;
+					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
 						return false;
-					byteLen -= m_data[i].size() - beginBytes;
+					byteLen -= data.size() - beginBytes;
 					beginBytes = 0;
 				}
-				else if (byteLen != 0)//data.size() - beginBytes > byteLen && byteLen != 0
+				else if (byteLen != 0) // data.size() - beginBytes > byteLen && byteLen != 0
 				{
-					ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
+					XAUDIO2_BUFFER buffer;
+					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
 					if (times == _times - 1)
-						m_buffer.Flags = 0;
+						buffer.Flags = 0;
 					else
-						m_buffer.Flags = XAUDIO2_END_OF_STREAM;
-					m_buffer.AudioBytes = m_data[i].size();
-					m_buffer.pAudioData = (BYTE*)&m_data[i][0];
-					m_buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
-					m_buffer.PlayLength = byteLen / (m_format.wBitsPerSample / 8);
-					m_buffer.LoopBegin = 0;
-					m_buffer.LoopLength = 0;
-					m_buffer.LoopCount = 0;
-					m_buffer.pContext = NULL;
-					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
+						buffer.Flags = XAUDIO2_END_OF_STREAM;
+					buffer.AudioBytes = data.size();
+					buffer.pAudioData = (BYTE*)&data[0];
+					buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
+					buffer.PlayLength = byteLen / (m_format.wBitsPerSample / 8);
+					buffer.LoopBegin = 0;
+					buffer.LoopLength = 0;
+					buffer.LoopCount = 0;
+					buffer.pContext = NULL;
+					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
 						return false;
 					byteLen = 0;
 					beginBytes = 0;
@@ -257,20 +275,27 @@ namespace Emerald
 		m_totalSamples += _size / m_format.nBlockAlign;
 		m_totalTime += (double)_size / m_format.nBlockAlign / m_format.nSamplesPerSec;
 
-		ZeroMemory(&m_buffer, sizeof(XAUDIO2_BUFFER));
-		m_buffer.Flags = 0;
-		m_buffer.AudioBytes = _size;
-		m_buffer.pAudioData = (BYTE*)&(m_data[m_data.size() - 1][0]);
-		m_buffer.PlayBegin = 0;
-		m_buffer.PlayLength = 0;
-		m_buffer.LoopBegin = 0;
-		m_buffer.LoopLength = 0;
-		m_buffer.LoopCount = 0;
-		m_buffer.pContext = NULL;
-		if (FAILED(m_sourceVoice->SubmitSourceBuffer(&m_buffer)))
+		XAUDIO2_BUFFER buffer;
+		ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
+		buffer.Flags = 0;
+		buffer.AudioBytes = _size;
+		buffer.pAudioData = (BYTE*)&(m_data.back()[0]);
+		buffer.PlayBegin = 0;
+		buffer.PlayLength = 0;
+		buffer.LoopBegin = 0;
+		buffer.LoopLength = 0;
+		buffer.LoopCount = 0;
+		buffer.pContext = NULL;
+		if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
 			return false;
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::AddBuffer(const std::string& _buffer)
+	{
+		return AddBuffer(_buffer.c_str(), _buffer.size());
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -324,13 +349,29 @@ namespace Emerald
 		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
 		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
 		m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
-		std::string data;
+		/*
+		The WAVEFORMATEX structure can describe only a subset of the formats that can be described by the WAVEFORMATEXTENSIBLE structure. For example, WAVEFORMATEX can describe mono or (two-channel) stereo pulse-code modulated (PCM) streams with 8-bit or 16-bit integer sample values, or with 32-bit floating-point sample values. In addition, WAVEFORMATEX can describe popular non-PCM formats such as AC-3 and WMA Pro.
+		*/
+		if (bitsPerSample == 32)
+			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;											/* format type */
+		else
+			m_format.wFormatTag = WAVE_FORMAT_PCM;
+		m_format.nChannels = channels;																/* number of channels (i.e. mono, stereo...) */
+		m_format.nSamplesPerSec = samplesPerSec;													/* sample rate */
+		m_format.nAvgBytesPerSec = avgBytesPerSec;													/* for buffer estimation */
+		m_format.nBlockAlign = blockAlign;															/* block size of data */
+		m_format.wBitsPerSample = bitsPerSample;													/* number of bits per sample of mono data */
+		m_format.cbSize = 0;																		/* extra information (after cbSize) */
+		if (FAILED(s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format)))
+			return false;
+
+		m_data.push_back(std::string());
+		std::string& data = m_data.back();
 		data.resize(m_totalBytes + avgBytesPerSec);
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
 		AVFrame	*frame = avcodec_alloc_frame();
-
 		uint32_t len = 0;
 		int got;
 		while (av_read_frame(formatContext, packet) >= 0)
@@ -339,12 +380,12 @@ namespace Emerald
 			{
 				if (avcodec_decode_audio4(codecContext, frame, &got, packet) < 0)
 				{
-					//printf("Error in decoding audio frame.\n");
-					return false;
+					printf("Error in decoding audio frame.\n");
+					av_free_packet(packet);
+					continue;
 				}
 				if (got > 0)
 				{
-					//int size = *frame->linesize;
 					int size = frame->nb_samples * bytesPerSample;
 					if (av_sample_fmt_is_planar(codecContext->sample_fmt))
 					{
@@ -362,8 +403,8 @@ namespace Emerald
 					}
 					else
 					{
-						data.append((char*)frame->data[0], size);
-						//memcpy((&data[0]) + len, frame->data[0], size);
+						// data.append((char*)frame->data[0], size);
+						memcpy((&data[0]) + len, frame->data[0], size);
 						len += size;
 					}
 				}
@@ -374,26 +415,155 @@ namespace Emerald
 		m_totalSamples = len / blockAlign;
 		m_totalTime = (double)m_totalSamples / samplesPerSec;
 		data.resize(m_totalBytes);
-		m_data.push_back(data);
-
-		/*
-		The WAVEFORMATEX structure can describe only a subset of the formats that can be described by the WAVEFORMATEXTENSIBLE structure. For example, WAVEFORMATEX can describe mono or (two-channel) stereo pulse-code modulated (PCM) streams with 8-bit or 16-bit integer sample values, or with 32-bit floating-point sample values. In addition, WAVEFORMATEX can describe popular non-PCM formats such as AC-3 and WMA Pro.
-		*/
-		if (bitsPerSample == 32)
-			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;															/* format type */
-		else
-			m_format.wFormatTag = WAVE_FORMAT_PCM;
-		m_format.nChannels = channels;																		/* number of channels (i.e. mono, stereo...) */
-		m_format.nSamplesPerSec = samplesPerSec;															/* sample rate */
-		m_format.nAvgBytesPerSec = avgBytesPerSec;															/* for buffer estimation */
-		m_format.nBlockAlign = blockAlign;																	/* block size of data */
-		m_format.wBitsPerSample = bitsPerSample;															/* number of bits per sample of mono data */
-		m_format.cbSize = 0;																				/* extra information (after cbSize) */
-		if (FAILED(s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format)))
-			return false;
 
 		avcodec_close(codecContext);
 		avformat_close_input(&formatContext);
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::LoadMusic(const std::string& _fileName)
+	{
+		return LoadMusic(_fileName.c_str());
+	}
+
+	bool EEMusic::AsyncLoadMusic(const char* _fileName)
+	{
+		AVFormatContext *formatContext = NULL;
+		int streamIndex = -1;
+		AVCodecContext *codecContext = NULL;
+		AVCodec *codec = NULL;
+		//open file
+		if (avformat_open_input(&formatContext, _fileName, NULL, NULL) < 0)
+		{
+			return false;
+		}
+		//get info
+		if (avformat_find_stream_info(formatContext, NULL) < 0)
+		{
+			//unable to find stream info
+			avformat_close_input(&formatContext);
+			return false;
+		}
+		//find the stream
+		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, 0, 0, NULL, 0)) < 0)
+		{
+			//if could not find the audio stream
+			avformat_close_input(&formatContext);
+			return false;
+		}
+		//get a pointer to the codec context
+		codecContext = formatContext->streams[streamIndex]->codec;
+		//find the decoder
+		codec = avcodec_find_decoder(codecContext->codec_id);
+		if (!codec)
+		{
+			avformat_close_input(&formatContext);
+			return false;
+		}
+		//could not open codec
+		if (avcodec_open2(codecContext, codec, NULL) < 0)
+		{
+			avformat_close_input(&formatContext);
+			return false;
+		}
+
+		int channels = codecContext->channels;
+		int bitsPerSample = av_get_bits_per_sample_fmt(codecContext->sample_fmt);
+		int bytesPerSample = bitsPerSample / 8;
+		int samplesPerSec = codecContext->sample_rate;
+		int blockAlign = bytesPerSample * channels;
+		int avgBytesPerSec = samplesPerSec * blockAlign;
+		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
+		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
+		m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
+
+		if (bitsPerSample == 32)
+			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+		else
+			m_format.wFormatTag = WAVE_FORMAT_PCM;
+		m_format.nChannels = channels;
+		m_format.nSamplesPerSec = samplesPerSec;
+		m_format.nAvgBytesPerSec = avgBytesPerSec;
+		m_format.nBlockAlign = blockAlign;
+		m_format.wBitsPerSample = bitsPerSample;
+		m_format.cbSize = 0;
+		if (FAILED(s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format, 0, XAUDIO2_DEFAULT_FREQ_RATIO, &m_musicCallBack)))
+			return false;
+
+		// todo: keep the the handler of the thr
+		m_loader = new boost::thread([&, bytesPerSample, formatContext, streamIndex, codecContext, codec] () mutable ->bool {
+			AVPacket *packet = new AVPacket;
+			av_init_packet(packet);
+			AVFrame	*frame = avcodec_alloc_frame();
+			uint32_t len = 0;
+			int got;
+			while (av_read_frame(formatContext, packet) >= 0)
+			{
+				if (packet->stream_index == streamIndex)
+				{
+					if (avcodec_decode_audio4(codecContext, frame, &got, packet) < 0)
+					{
+						printf("Error in decoding audio frame.\n");
+						av_free_packet(packet);
+						continue;
+					}
+					if (got > 0)
+					{
+						//int size = *frame->linesize;
+						int size = frame->nb_samples * bytesPerSample;
+						m_data.push_back(std::string());
+						std::string& data = m_data.back();
+						if (av_sample_fmt_is_planar(codecContext->sample_fmt))
+						{
+							data.resize(size * 2);
+							int index = 0;
+							for (int i = 0; i < size; i += bytesPerSample)
+							{
+								for (int j = 0; j < bytesPerSample; ++j)
+								{
+									data[index++] = (char)frame->data[0][i + j];
+								}
+								for (int j = 0; j < bytesPerSample; ++j)
+								{
+									data[index++] = (char)frame->data[1][i + j];
+								}
+							}
+							len += size * 2;
+						}
+						else
+						{
+							data.resize(size);
+							memcpy((&data[0]), frame->data[0], size);
+							len += size;
+						}
+						XAUDIO2_BUFFER buffer;
+						ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
+						buffer.Flags = 0;
+						buffer.AudioBytes = data.size();
+						buffer.pAudioData = (BYTE*)&(data[0]);
+						buffer.PlayBegin = 0;
+						buffer.PlayLength = 0;
+						buffer.LoopBegin = 0;
+						buffer.LoopLength = 0;
+						buffer.LoopCount = 0;
+						buffer.pContext = nullptr;
+						// wait
+						while (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)));
+					}
+				}
+				av_free_packet(packet);
+			}
+			m_totalBytes = len;
+			m_totalSamples = len / m_format.nBlockAlign;
+			m_totalTime = (double)m_totalSamples / m_format.nSamplesPerSec;
+
+			avcodec_close(codecContext);
+			avformat_close_input(&formatContext);
+
+			return true;
+		});
 
 		return true;
 	}

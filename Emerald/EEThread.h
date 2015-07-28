@@ -6,7 +6,7 @@
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
-// not useful now
+// it is not useful now
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {

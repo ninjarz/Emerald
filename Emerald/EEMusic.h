@@ -33,12 +33,37 @@ extern "C"
 #pragma comment(lib,"xaudio2.lib")
 #include <xaudio2.h>
 #include <vector>
+#include <list>
 #include <string>
-
+#include <boost/thread/thread.hpp>
 
 namespace Emerald
 {
-	//EEMusic
+	// EEMusicCallBack
+	//----------------------------------------------------------------------------------------------------
+	class EEMusicCallBack :public IXAudio2VoiceCallback
+	{
+	public:
+		inline EEMusicCallBack(EEMusic* _music) : IXAudio2VoiceCallback() { music = _music; }
+		inline ~EEMusicCallBack() {}
+
+		// important
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnBufferEnd(void* _context) {}
+		// keep
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnBufferStart(void* _context) {}
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceProcessingPassEnd() {}
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceProcessingPassStart(UINT32 _samplesRequired) {}
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnStreamEnd() {}
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnLoopEnd(void* _context) {}
+		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceError(void* _context, HRESULT _error) {}
+
+	public:
+		EEMusic* music;
+	};
+
+	// EEMusic
+	// an instance of EEMusic can just holds one kind of formats
+	// XAUDIO2_MAX_QUEUED_BUFFERS
 	//----------------------------------------------------------------------------------------------------
 	class EEMusic
 	{
@@ -60,12 +85,16 @@ namespace Emerald
 
 		bool Open(const char* _fileName);
 		bool Open(const std::string& _fileName);
-		bool Play(float _begin = 0.0f);
+		bool Start();
+		bool Play(float _begin = 0.f);
 		bool Play(float _begin, float _end, int _times = 1);
 		bool Pause();
 		bool Stop();
 		bool AddBuffer(const char* _buffer, unsigned int _size);
+		bool AddBuffer(const std::string& _buffer);
 		bool LoadMusic(const char* _fileName);
+		bool LoadMusic(const std::string& _fileName);
+		bool AsyncLoadMusic(const char* _fileName);
 
 		bool SetVolume(float _volume);
 		bool SetSampleRate(int _rate);
@@ -83,13 +112,14 @@ namespace Emerald
 
 	protected:
 		IXAudio2SourceVoice *m_sourceVoice;
-		XAUDIO2_BUFFER m_buffer;
+		EEMusicCallBack m_musicCallBack;
 		WAVEFORMATEX m_format;
 		int m_totalBytes;
 		int m_totalSamples;
 		double m_totalTime;
 		int m_beginSamples;
-		std::vector<std::string> m_data;
+		std::list<std::string> m_data;
+		boost::thread *m_loader;
 	};
 }
 
