@@ -30,32 +30,76 @@ extern "C"
 #include <libavutil/audioconvert.h>
 #include <libavutil/mathematics.h>
 }
+#if 0
 #pragma comment(lib,"xaudio2.lib")
 #include <xaudio2.h>
+#elif 1
+#include <C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Include/XAudio2.h>
+#endif
 #include <vector>
 #include <list>
+#include <queue>
 #include <string>
-#include <boost/thread/thread.hpp>
+#include "EEThread.h"
 
 namespace Emerald
 {
+	class EEMusic;
+	class EEMusicCallBack;
+
+	// EEMusicState
+	//----------------------------------------------------------------------------------------------------
+	enum EEMusicState
+	{
+		EE_MUSIC_DEFAULT = 0,
+		EE_MUSIC_PLAYING,
+		EE_MUSIC_NO_BUFFER,
+		EE_MUSIC_PAUSE,
+		EE_MUSIC_END
+	};
+
+	// EEMusicCellState
+	//----------------------------------------------------------------------------------------------------
+	enum EEMusicCellState
+	{
+		EE_MUSIC_CELL_DEFAULT = 0,
+		EE_MUSIC_CELL_END
+	};
+
+	// EEMusicCell
+	//----------------------------------------------------------------------------------------------------
+	struct EEMusicCell
+	{
+		inline EEMusicCell() : data(nullptr), begin(0), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::string* _data) : data(_data), begin(0), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::string* _data, int _begin) : data(_data), begin(_begin), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::string* _data, int _begin, int _len) : data(_data), begin(_begin), playLength(_len), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::string* _data, int _begin, int _len, EEMusicCellState _state) : data(_data), begin(_begin), playLength(_len), flag(_state) {}
+
+		std::string *data; // point to m_data
+		int begin;
+		int playLength;
+		EEMusicCellState flag;
+	};
+
+
 	// EEMusicCallBack
 	//----------------------------------------------------------------------------------------------------
 	class EEMusicCallBack :public IXAudio2VoiceCallback
 	{
 	public:
-		inline EEMusicCallBack(EEMusic* _music) : IXAudio2VoiceCallback() { music = _music; }
+		inline EEMusicCallBack(EEMusic* _music) : IXAudio2VoiceCallback(), music(_music) {}
 		inline ~EEMusicCallBack() {}
 
 		// important
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnBufferEnd(void* _context) {}
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnBufferEnd(void* _context);
 		// keep
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnBufferStart(void* _context) {}
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceProcessingPassEnd() {}
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceProcessingPassStart(UINT32 _samplesRequired) {}
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnStreamEnd() {}
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnLoopEnd(void* _context) {}
-		 virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceError(void* _context, HRESULT _error) {}
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnBufferStart(void* _context);
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceProcessingPassEnd();
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceProcessingPassStart(UINT32 _samplesRequired);
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnStreamEnd();
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnLoopEnd(void* _context);
+		virtual COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE OnVoiceError(void* _context, HRESULT _error);
 
 	public:
 		EEMusic* music;
@@ -67,6 +111,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	class EEMusic
 	{
+		friend EEMusicCallBack;
 	public:
 		static bool InitializeMusic();
 
@@ -92,9 +137,10 @@ namespace Emerald
 		bool Stop();
 		bool AddBuffer(const char* _buffer, unsigned int _size);
 		bool AddBuffer(const std::string& _buffer);
-		bool LoadMusic(const char* _fileName);
-		bool LoadMusic(const std::string& _fileName);
+		bool SyncLoadMusic(const char* _fileName);
+		bool SyncLoadMusic(const std::string& _fileName);
 		bool AsyncLoadMusic(const char* _fileName);
+		bool AsyncLoadMusic(const std::string& _fileName);
 
 		bool SetVolume(float _volume);
 		bool SetSampleRate(int _rate);
@@ -108,9 +154,12 @@ namespace Emerald
 		double GetTotalTime();
 		float GetProgress();
 		double GetProgressTime();
-		char* GetSampleData(int _num);
 
 	protected:
+		bool SubmitBuffer();
+
+	protected:
+		// state
 		IXAudio2SourceVoice *m_sourceVoice;
 		EEMusicCallBack m_musicCallBack;
 		WAVEFORMATEX m_format;
@@ -118,7 +167,11 @@ namespace Emerald
 		int m_totalSamples;
 		double m_totalTime;
 		int m_beginSamples;
+		EEMusicState m_state;
+
+		// data
 		std::list<std::string> m_data;
+		std::queue<EEMusicCell> m_playList; // need mutex
 		boost::thread *m_loader;
 	};
 }

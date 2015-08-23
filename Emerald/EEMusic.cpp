@@ -4,6 +4,45 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	// EEMusicCallBack
+	//----------------------------------------------------------------------------------------------------
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnBufferEnd(void* _context)
+	{
+		if (!music->SubmitBuffer())
+			music->m_state = EE_MUSIC_NO_BUFFER;
+		//printf("0\n");
+	}
+
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnBufferStart(void* _context)
+	{
+		//printf("1\n");
+	}
+
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnVoiceProcessingPassEnd()
+	{
+		//printf("2\n");
+	}
+
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnVoiceProcessingPassStart(UINT32 _samplesRequired)
+	{
+		//printf("3\n");
+	}
+
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnStreamEnd()
+	{
+		//printf("4\n");
+	}
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnLoopEnd(void* _context)
+	{
+		//printf("5\n");
+	}
+
+	COM_DECLSPEC_NOTHROW void STDMETHODCALLTYPE EEMusicCallBack::OnVoiceError(void* _context, HRESULT _error)
+	{
+		//printf("6");
+	}
+
+
 	//EEMusic
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::s_isMusicInitialized = false;
@@ -17,7 +56,7 @@ namespace Emerald
 		{
 			av_register_all();
 
-			// CoInitializeEx(NULL, COINIT_MULTITHREADED);
+			CoInitializeEx(NULL, COINIT_MULTITHREADED);
 			if (FAILED(XAudio2Create(&s_XAudio2, 0)))
 			{
 				MessageBoxW(NULL, L"Create XAudio2 failed!", L"ERROR", MB_OK);
@@ -46,7 +85,8 @@ namespace Emerald
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
-		m_beginSamples(0)
+		m_beginSamples(0),
+		m_state(EE_MUSIC_DEFAULT)
 	{
 		InitializeMusic();
 	}
@@ -59,11 +99,11 @@ namespace Emerald
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
-		m_beginSamples(0)
+		m_beginSamples(0),
+		m_state(EE_MUSIC_DEFAULT)
 	{
-		InitializeMusic();
-
-		s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format);
+		if (InitializeMusic())
+			s_XAudio2->CreateSourceVoice(&m_sourceVoice, &m_format);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -73,11 +113,15 @@ namespace Emerald
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
-		m_beginSamples(0)
+		m_beginSamples(0),
+		m_state(EE_MUSIC_DEFAULT)
 	{
-		InitializeMusic();
+		if (InitializeMusic())
+		{
+			InitializeMusic();
 
-		LoadMusic(_fileName);
+			Open(_fileName);
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -87,11 +131,15 @@ namespace Emerald
 		m_totalBytes(0),
 		m_totalSamples(0),
 		m_totalTime(0.f),
-		m_beginSamples(0)
+		m_beginSamples(0),
+		m_state(EE_MUSIC_DEFAULT)
 	{
-		InitializeMusic();
+		if (InitializeMusic())
+		{
+			InitializeMusic();
 
-		LoadMusic(_fileName.c_str());
+			Open(_fileName.c_str());
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -105,15 +153,20 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEMusic::~EEMusic()
 	{
+		if (m_loader)
+		{
+			m_loader->interrupt();
+			m_loader->join();
+			SAFE_DELETE(m_loader);
+		}
 		if (m_sourceVoice)
 			m_sourceVoice->DestroyVoice();
-		SAFE_DELETE(m_loader);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::Open(const char* _fileName)
 	{
-		if (!LoadMusic(_fileName))
+		if (!SyncLoadMusic(_fileName))
 			return false;
 
 		return true;
@@ -121,10 +174,7 @@ namespace Emerald
 
 	bool EEMusic::Open(const std::string& _fileName)
 	{
-		if (!LoadMusic(_fileName.c_str()))
-			return false;
-
-		return true;
+		return Open(_fileName.c_str());
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -132,6 +182,17 @@ namespace Emerald
 	{
 		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
 			return false;
+
+		m_state = EE_MUSIC_PLAYING;
+		if (!SubmitBuffer())
+			m_state = EE_MUSIC_NO_BUFFER;
+		else
+		{
+			for (int i = 1; i < XAUDIO2_MAX_QUEUED_BUFFERS; ++i)
+			{
+				SubmitBuffer();
+			}
+		}
 
 		return true;
 	}
@@ -153,27 +214,12 @@ namespace Emerald
 			}
 			else
 			{
-				XAUDIO2_BUFFER buffer;
-				ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
-				buffer.Flags = 0;
-				buffer.AudioBytes = data.size();
-				buffer.pAudioData = (BYTE*)&data[0];
-				buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
-				buffer.PlayLength = 0;
-				buffer.LoopBegin = 0;
-				buffer.LoopLength = 0;
-				buffer.LoopCount = 0;
-				buffer.pContext = nullptr;
-				if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
-					continue;
+				m_playList.push(EEMusicCell(&data, beginBytes));
 				beginBytes = 0;
 			}
 		}
 
-		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
-			return false;
-
-		return true;
+		return Start();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -197,20 +243,10 @@ namespace Emerald
 				{
 					XAUDIO2_BUFFER buffer;
 					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
-					if (times == _times - 1)
-						buffer.Flags = 0;
+					if (times != _times - 1)
+						m_playList.push(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_DEFAULT));
 					else
-						buffer.Flags = XAUDIO2_END_OF_STREAM;
-					buffer.AudioBytes = data.size();
-					buffer.pAudioData = (BYTE*)&data[0];
-					buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
-					buffer.PlayLength = 0;
-					buffer.LoopBegin = 0;
-					buffer.LoopLength = 0;
-					buffer.LoopCount = 0;
-					buffer.pContext = NULL;
-					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
-						return false;
+						m_playList.push(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_END));
 					byteLen -= data.size() - beginBytes;
 					beginBytes = 0;
 				}
@@ -218,20 +254,10 @@ namespace Emerald
 				{
 					XAUDIO2_BUFFER buffer;
 					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
-					if (times == _times - 1)
-						buffer.Flags = 0;
+					if (times != _times - 1)
+						m_playList.push(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_DEFAULT));
 					else
-						buffer.Flags = XAUDIO2_END_OF_STREAM;
-					buffer.AudioBytes = data.size();
-					buffer.pAudioData = (BYTE*)&data[0];
-					buffer.PlayBegin = beginBytes / (m_format.wBitsPerSample / 8);
-					buffer.PlayLength = byteLen / (m_format.wBitsPerSample / 8);
-					buffer.LoopBegin = 0;
-					buffer.LoopLength = 0;
-					buffer.LoopCount = 0;
-					buffer.pContext = NULL;
-					if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
-						return false;
+						m_playList.push(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_END));
 					byteLen = 0;
 					beginBytes = 0;
 					break;
@@ -241,10 +267,7 @@ namespace Emerald
 			}
 		}
 
-		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
-			return false;
-
-		return true;
+		return Start();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -252,6 +275,8 @@ namespace Emerald
 	{
 		if (FAILED(m_sourceVoice->Stop()))
 			return false;
+
+		m_state = EE_MUSIC_PAUSE;
 
 		return true;
 	}
@@ -261,12 +286,15 @@ namespace Emerald
 	{
 		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
 			return false;
-
 		if (FAILED(m_sourceVoice->Stop()))
 			return false;
+
+		m_state = EE_MUSIC_DEFAULT;
+
 		return true;
 	}
 
+	// todo
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::AddBuffer(const char* _buffer, unsigned int _size)
 	{
@@ -299,7 +327,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::LoadMusic(const char* _fileName)
+	bool EEMusic::SyncLoadMusic(const char* _fileName)
 	{
 		AVFormatContext *formatContext = NULL;
 		int streamIndex = -1;
@@ -346,9 +374,9 @@ namespace Emerald
 		int samplesPerSec = codecContext->sample_rate;
 		int blockAlign = bytesPerSample * channels;
 		int avgBytesPerSec = samplesPerSec * blockAlign;
-		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
-		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
-		m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
+		//m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
+		//m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
+		//m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
 		/*
 		The WAVEFORMATEX structure can describe only a subset of the formats that can be described by the WAVEFORMATEXTENSIBLE structure. For example, WAVEFORMATEX can describe mono or (two-channel) stereo pulse-code modulated (PCM) streams with 8-bit or 16-bit integer sample values, or with 32-bit floating-point sample values. In addition, WAVEFORMATEX can describe popular non-PCM formats such as AC-3 and WMA Pro.
 		*/
@@ -367,7 +395,7 @@ namespace Emerald
 
 		m_data.push_back(std::string());
 		std::string& data = m_data.back();
-		data.resize(m_totalBytes + avgBytesPerSec);
+		data.resize((int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec) + avgBytesPerSec);
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
@@ -403,7 +431,6 @@ namespace Emerald
 					}
 					else
 					{
-						// data.append((char*)frame->data[0], size);
 						memcpy((&data[0]) + len, frame->data[0], size);
 						len += size;
 					}
@@ -423,11 +450,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::LoadMusic(const std::string& _fileName)
+	bool EEMusic::SyncLoadMusic(const std::string& _fileName)
 	{
-		return LoadMusic(_fileName.c_str());
+		return SyncLoadMusic(_fileName.c_str());
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::AsyncLoadMusic(const char* _fileName)
 	{
 		AVFormatContext *formatContext = NULL;
@@ -475,9 +503,9 @@ namespace Emerald
 		int samplesPerSec = codecContext->sample_rate;
 		int blockAlign = bytesPerSample * channels;
 		int avgBytesPerSec = samplesPerSec * blockAlign;
-		m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
-		m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
-		m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
+		// m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
+		// m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
+		// m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
 
 		if (bitsPerSample == 32)
 			m_format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
@@ -538,19 +566,23 @@ namespace Emerald
 							memcpy((&data[0]), frame->data[0], size);
 							len += size;
 						}
-						XAUDIO2_BUFFER buffer;
-						ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
-						buffer.Flags = 0;
-						buffer.AudioBytes = data.size();
-						buffer.pAudioData = (BYTE*)&(data[0]);
-						buffer.PlayBegin = 0;
-						buffer.PlayLength = 0;
-						buffer.LoopBegin = 0;
-						buffer.LoopLength = 0;
-						buffer.LoopCount = 0;
-						buffer.pContext = nullptr;
-						// wait
-						while (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)));
+						try
+						{
+							m_playList.push(EEMusicCell(&data));
+							if (EE_MUSIC_NO_BUFFER == m_state)
+							{
+								SubmitBuffer();
+							}
+							EEThreadSleep(1);
+							//SubmitBuffer();
+							//printf("%d\n", m_playList.size());
+						}
+						catch (boost::thread_interrupted&)
+						{
+							avcodec_close(codecContext);
+							avformat_close_input(&formatContext);
+							return false;
+						}
 					}
 				}
 				av_free_packet(packet);
@@ -568,6 +600,12 @@ namespace Emerald
 		return true;
 	}
 
+	bool EEMusic::AsyncLoadMusic(const std::string& _fileName)
+	{
+		return AsyncLoadMusic(_fileName.c_str());
+	}
+
+	// 0.0-1.0-N
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::SetVolume(float _volume)
 	{
@@ -656,15 +694,38 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	char* EEMusic::GetSampleData(int _num)
+	bool EEMusic::SubmitBuffer()
 	{
-		/*
-		if (_num < m_totalSamples)
-			return &m_data[0][0] + m_format.nBlockAlign * _num;
-		else
-			return NULL;
-			*/
-
-		return NULL;
+		if (!m_playList.empty())
+		{
+			EEMusicCell &cell = m_playList.front();
+			if (cell.data)
+			{
+				XAUDIO2_BUFFER buffer;
+				ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
+				if (EE_MUSIC_CELL_DEFAULT == cell.flag)
+					buffer.Flags = 0;
+				else if (EE_MUSIC_CELL_END == cell.flag)
+					buffer.Flags = XAUDIO2_END_OF_STREAM;
+				buffer.AudioBytes = cell.data->size();
+				buffer.pAudioData = (BYTE*)&(*cell.data)[0];
+				buffer.PlayBegin = cell.begin / (m_format.wBitsPerSample / 8);
+				buffer.PlayLength = cell.playLength / (m_format.wBitsPerSample / 8);
+				buffer.LoopBegin = 0;
+				buffer.LoopLength = 0;
+				buffer.LoopCount = 0;
+				buffer.pContext = NULL;
+				if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
+					return false;
+				else
+				{
+					if (EE_MUSIC_NO_BUFFER == m_state)
+						m_state = EE_MUSIC_PLAYING;
+					m_playList.pop();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

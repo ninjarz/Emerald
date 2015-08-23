@@ -88,11 +88,22 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	UINT EEInput::PeekKey()
+	{
+		while (m_keyInput.empty())
+		{
+			EECore::s_EECore->Run();
+		}
+
+		return  m_keyInput.front();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	UINT EEInput::GetKey()
 	{
 		while (m_keyInput.empty())
 		{
-			//may be I should just handle the message, but running the timer
+			//  May be I should just handle the message, but running the timer
 			EECore::s_EECore->Run();
 		}
 
@@ -105,6 +116,15 @@ namespace Emerald
 	bool EEInput::IsKeyInput()
 	{
 		return !m_keyInput.empty();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEInput::ClearKey()
+	{
+		while (!m_keyInput.empty())
+		{
+			m_keyInput.pop();
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -178,10 +198,16 @@ namespace Emerald
 	bool EEIsKeyDown(UINT para) { return EECore::s_EECore->GetEEInput()->IsKeyDown(para); }
 
 	//----------------------------------------------------------------------------------------------------
+	UINT EEPeekKey() { return EECore::s_EECore->GetEEInput()->PeekKey(); }
+
+	//----------------------------------------------------------------------------------------------------
 	UINT EEGetKey() { return EECore::s_EECore->GetEEInput()->GetKey(); }
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEIsKeyInput() { return EECore::s_EECore->GetEEInput()->IsKeyInput(); }
+
+	//----------------------------------------------------------------------------------------------------
+	void EEClearKey() { return EECore::s_EECore->GetEEInput()->ClearKey(); }
 
 	//----------------------------------------------------------------------------------------------------
 	Point EEGetMousePosition() { return EECore::s_EECore->GetEEInput()->GetMousePosition(); }

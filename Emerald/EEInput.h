@@ -37,8 +37,10 @@ namespace Emerald
 		//EEInput_Keyboard
 	public:
 		bool IsKeyDown(UINT);
+		UINT PeekKey();
 		UINT GetKey();
 		bool IsKeyInput();
+		void ClearKey();
 
 	private:
 		void KeyDown(UINT);
@@ -92,8 +94,10 @@ namespace Emerald
 	//EEInput_APIs
 	//----------------------------------------------------------------------------------------------------
 	bool EEIsKeyDown(UINT _para);
+	UINT EEPeekKey();
 	UINT EEGetKey();
 	bool EEIsKeyInput();
+	void EEClearKey();
 
 	Point EEGetMousePosition();
 	int EEGetMouseDeltaX();

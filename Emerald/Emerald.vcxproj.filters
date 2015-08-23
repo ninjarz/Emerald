@@ -450,11 +450,17 @@
     <ClCompile Include="Canny.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="DIVAMana.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="DIVAConfig.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -681,6 +687,9 @@
       <Filter>头文件\Emerald\EEEffect</Filter>
     </ClInclude>
     <ClInclude Include="DIVAMana.h">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="DIVAConfig.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
   </ItemGroup>

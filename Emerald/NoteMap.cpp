@@ -1,12 +1,27 @@
+#include "DIVAHelper.h"
+#if _DIVA_
 #include "NoteMap.h"
 
 #include <fstream>
 using namespace std;
 
 
+//----------------------------------------------------------------------------------------------------
+NoteMap::NoteMap()
+	:
+	m_second(1.000),
+	m_framePos(0),
+	m_frameForwardPos(0)
+{
+
+}
+
+//----------------------------------------------------------------------------------------------------
 NoteMap::NoteMap(wchar_t* _fileName)
 	:
-	m_second(1.000)
+	m_second(1.000),
+	m_framePos(0),
+	m_frameForwardPos(0)
 {
 	ifstream fin(_fileName);
 	if (!fin.is_open())
@@ -15,6 +30,7 @@ NoteMap::NoteMap(wchar_t* _fileName)
 	string tmp;
 	getline(fin, m_version);
 	getline(fin, m_mapName);
+	string basePath = string("Song\\") + m_mapName + "\\";
 	getline(fin, m_noterName);
 	getline(fin, m_authorName);
 	getline(fin, tmp);
@@ -45,27 +61,25 @@ NoteMap::NoteMap(wchar_t* _fileName)
 			else if (digit < 0.2)
 				m_frames[pos].BPM = floor(m_frames[pos].BPM);
 		}
-		// m_frames[pos].IsSetBPM = true;
+		m_frames[pos].isSetBPM = true;
 	}
 
 	// set timePosition
 	double lastTime = 0, singleTime = 1;
-	int lastBPMIndex = 0;
 	for (int i = 0; i < m_frameNum; i++)
 	{
 		if (m_frames[i].BPM > 0)
 		{
-			lastTime += (i - lastBPMIndex) * singleTime;
-			lastBPMIndex = i;
 			singleTime = 60.0 * m_second / (m_frames[i].BPM * (NOTE_PER_PERIOD / TIME_PER_PERIOD));
 		}
-		m_frames[i].timePosition = lastTime + (i - lastBPMIndex) * singleTime;
+		m_frames[i].timePos = lastTime;
+		lastTime += singleTime;
 		// init notes
 		for (int j = 0; j < NOTE_NUM; j++)
 			m_frames[i].notes[j].notePos = i;
 	}
 
-	// resource num
+	// resource
 	while (true)
 	{
 		int pos;
@@ -84,9 +98,11 @@ NoteMap::NoteMap(wchar_t* _fileName)
 			break;
 		int bgsNum;
 		fin >> bgsNum;
-		fin >> m_frames[pos].BGM[bgsNum];
+		fin >> m_frames[pos].music[bgsNum];
 	}
 
+	int pixelX = EEGetWidth() / 40;
+	int pixelY = EEGetHeight() / 22;
 	// note
 	while (true)
 	{
@@ -96,35 +112,45 @@ NoteMap::NoteMap(wchar_t* _fileName)
 			break;
 		int noteNum = m_frames[pos].noteNum;
 		Note &note = m_frames[pos].notes[noteNum];
-		fin >> note.type;
-		fin >> note.x;
-		fin >> note.y;
-		fin >> note.tailx;
-		fin >> note.taily;
 		fin >> note.key;
-		if (note.type >= NOTE_NUM)
+		fin >> note.x;
+		note.x = (note.x + 3) * pixelX;
+		fin >> note.y;
+		note.y = (note.y + 5) * pixelY;
+		fin >> note.tailx;
+		note.tailx = (note.tailx / 12) * pixelX;
+		fin >> note.taily;
+		note.taily = (note.taily / 12) * pixelY;
+		fin >> note.sound;
+		if (note.key >= NOTE_NUM)
 			fin >> note.duration;
 		m_frames[pos].noteNum++;
 	}
 
-	// waves
+	// music file
 	while (true)
 	{
 		int pos;
 		fin >> pos;
 		if (pos == -1)
 			break;
-		getline(fin, m_waves[pos]);
+		string music;
+		getline(fin, music);
+		music = basePath + trim(music);
+		m_music[pos] = music;
 	}
 
-	// resource
+	// resource file
 	while (true)
 	{
 		int pos;
 		fin >> pos;
 		if (pos == -1)
 			break;
-		getline(fin, m_resources[pos]);
+		string src;
+		getline(fin, src);
+		src = basePath + trim(src);
+		m_resources[pos] = src;
 	}
 
 	if (m_version >= "1.0.1.0")
@@ -132,3 +158,47 @@ NoteMap::NoteMap(wchar_t* _fileName)
 	
 	fin.close();
 }
+
+//----------------------------------------------------------------------------------------------------
+Frame* NoteMap::GetFrame()
+{
+	if ((unsigned int)m_framePos < m_frames.size())
+		return &m_frames[m_framePos++];
+	else
+		return nullptr;
+}
+
+//----------------------------------------------------------------------------------------------------
+int NoteMap::GetFramePos()
+{
+	return m_framePos;
+}
+
+//----------------------------------------------------------------------------------------------------
+Frame* NoteMap::GetFrameForward()
+{
+	if ((unsigned int)m_frameForwardPos < m_frames.size())
+	if (m_frameForwardPos < m_framePos + NOTE_PER_PERIOD)
+		return &m_frames[m_frameForwardPos++];
+	return nullptr;
+}
+
+//----------------------------------------------------------------------------------------------------
+int NoteMap::GetFrameForwardPos()
+{
+	return m_frameForwardPos;
+}
+
+//----------------------------------------------------------------------------------------------------
+map<int, string>& NoteMap::GetMusicPaths()
+{
+	return m_music;
+}
+
+//----------------------------------------------------------------------------------------------------
+string NoteMap::GetMusicPath(int _i)
+{
+	return m_music[_i];
+}
+
+#endif

@@ -5,6 +5,8 @@
 #define _EE_MEMORYLEAK_ON_
 #include "EEMemoryLeak.h"
 
+#include "DIVAMana.h"
+
 
 int MainScene();
 int SelectMusic();
@@ -15,16 +17,23 @@ int MainScene()
 {
 	int flag = 0;
 	//EEMusic music;
+	//music.Open("Music/bg.ogg");
+	//music.Open("Song/Ievan Polkka (Game Edit)/WAV/Ievan Polkka (Game Edit).mp3");
+	//music.Play();
 	//music.Open("Music/jx.mp3");
 	//music.SetFrequencyRatio(2.0f);
+	//music.Play();
 	//music.Play(0.2f, 0.1f, 5);
 	//music.Play(0.2f, 0.1f, 2);
 
 	//order 10, time 0 - +∞
-	EETexture bgTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg");
-	EEScene mainScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
-	mainScene.SetLocalZOrder(10.0f);
+	EEScene mainScene;
 	//EERotateYX(mainScene, 16.0f, 2 * EE_2PI, 1.0f, true);
+
+	EETexture bgTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg");
+	EEQuad2D mainQuad(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
+	mainQuad.SetLocalZOrder(10.0f);
+	mainScene.AddObject(&mainQuad);
 	
 	//order 1, time 0 - +∞
 	EETexture nameTex(L"Texture\\Project Diva Freedom\\主界面\\默认主题\\PDF.png");
@@ -278,9 +287,7 @@ int SelectMusic()
 	int difficult = 0;
 
 	//scene
-	EEScene selectScene(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()));
-	selectScene.SetLocalZOrder(10.0f);
-	selectScene.SetAlpha(0.0f);
+	EEScene selectScene;
 	EEFade(&selectScene, 0.4f, 1.0f);
 
 	//bg
@@ -447,10 +454,7 @@ int SelectMusic()
 	extremeButton.SetLocalZOrder(3.f);
 	extremeButton.SetAlpha(0.0f);
 	selectScene.AddObject(&extremeButton);
-	easyButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton, 
-		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
-		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
-		&chooseBrightSlide]
+	easyButton.SetTriggeredFunc([&]
 	{
 		difficult = 0;
 		easyButton.SetAlpha(1.0f);
@@ -468,10 +472,7 @@ int SelectMusic()
 		chooseFrame4Slide.SetCurrentSlide(difficult);
 		chooseBrightSlide.SetCurrentSlide(difficult);
 	});
-	normalButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton,
-		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
-		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
-		&chooseBrightSlide]
+	normalButton.SetTriggeredFunc([&]
 	{
 		difficult = 1;
 		easyButton.SetAlpha(0.0f);
@@ -489,10 +490,7 @@ int SelectMusic()
 		chooseFrame4Slide.SetCurrentSlide(difficult);
 		chooseBrightSlide.SetCurrentSlide(difficult);
 	});
-	hardButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton,
-		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
-		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
-		&chooseBrightSlide]
+	hardButton.SetTriggeredFunc([&]
 	{
 		difficult = 2;
 		easyButton.SetAlpha(0.0f);
@@ -510,10 +508,7 @@ int SelectMusic()
 		chooseFrame4Slide.SetCurrentSlide(difficult);
 		chooseBrightSlide.SetCurrentSlide(difficult);
 	});
-	extremeButton.SetTriggeredFunc([&difficult, &easyButton, &normalButton, &hardButton, &extremeButton,
-		&bgSlide, &circleSlide, &line1Slide, &line2Slide, &starSlide, 
-		&chooseFrame2Slide, &chooseFrame3Slide, &chooseFrame4Slide,
-		&chooseBrightSlide]
+	extremeButton.SetTriggeredFunc([&]
 	{
 		difficult = 3;
 		easyButton.SetAlpha(0.0f);
@@ -552,9 +547,12 @@ int SimpleSet()
 	int flag = 0;
 
 	//order 10, time 0 - +∞
+	EEScene simpleSet;
+
 	EETexture bgTex(L"Texture/Project Diva Freedom/简单设置/背景.jpg");
-	EEScene simpleSet(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
-	simpleSet.SetLocalZOrder(10.0f);
+	EEQuad2D mainQuad(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
+	mainQuad.SetLocalZOrder(10.0f);
+	simpleSet.AddObject(&mainQuad);
 
 	EETexture infoTex(L"Texture/Project Diva Freedom/简单设置/歌曲信息.png");
 	EEQuad2D infoQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.0f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.1367f), infoTex);
@@ -644,12 +642,12 @@ int SimpleSet()
 int FreePlay()
 {
 	int flag = 0;
-
+	
 	//bg
-	EETexture bgTex(L"Texture/Project Diva Freedom/自由模式/Fantasy Melody St. Logo.png");
-	EEScene freePlay(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
-	freePlay.SetLocalZOrder(10.0f);
-
+	//EETexture bgTex(L"Texture/Project Diva Freedom/自由模式/Fantasy Melody St. Logo.png");
+	//EEScene freePlay(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), bgTex);
+	//freePlay.SetLocalZOrder(10.0f);
+	/*
 	//top
 	EETexture topTex[2] = {
 		L"Texture/Project Diva Freedom/自由模式/Gaming Interface/HP-Safe Top.png",
@@ -778,23 +776,29 @@ int FreePlay()
 	ctTinyQuad.SetLocalZOrder(7.f);
 	ctTinyQuad.SetIsAlive(false);
 	freePlay.AddObject(&ctTinyQuad);
+	*/
 
-	//exit
-
+	// map
+	DIVAMana game(L"Song/Romeo to Cinderella (HD multi)/Romeo to Cinderella_Hard.diva");
+	game.Start();
 
 	while(EERun() && flag == 0)
 	{
-		EEBeginScene(EEColor::WHITE);
+		EEBeginScene(EEColor::BLACK);
 
-		pauseSlide.SetCurrentSlide(EEGetFPS() % 4);
-		hpSlide.SetCurrentSlide(EEGetFPS() % 20);
-		EEProcess(&freePlay);
+		game.Process();
 
 		EEEndScene();
 	}
 
 	EERemoveThread();
 	return flag;
+}
+
+
+void test()
+{
+
 }
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -809,6 +813,7 @@ int main(int _argc, char** _argv)
 	desc.isSSAA = false;					//是开启抗锯齿
 	desc.isVsync = false;				//是否垂直同步
 	EEInitialize(desc);
+
 	FreePlay();
 	int flag = 0;
 	while (flag = MainScene())
