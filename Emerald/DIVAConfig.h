@@ -8,6 +8,7 @@ class DIVAConfig
 public:
 	static bool Initialize();
 	static char GetKeyMap(unsigned int _key);
+	
 
 private:
 	static bool s_isInitialized;

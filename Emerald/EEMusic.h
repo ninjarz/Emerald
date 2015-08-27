@@ -40,6 +40,7 @@ extern "C"
 #include <list>
 #include <queue>
 #include <string>
+#include <mutex>
 #include "EEThread.h"
 
 namespace Emerald
@@ -172,6 +173,7 @@ namespace Emerald
 		// data
 		std::list<std::string> m_data;
 		std::queue<EEMusicCell> m_playList; // need mutex
+		// std::mutex m_playListMutex;
 		boost::thread *m_loader;
 	};
 }

@@ -163,6 +163,7 @@ namespace Emerald
 	void EECore::ClearMouseDeltaY() { m_EEInput->ClearMouseDeltaY(); }
 	void EECore::ClearMouseDeltaXY() { m_EEInput->ClearMouseDeltaXY(); };
 	void EECore::ClearMouseDeltaM() { m_EEInput->ClearMouseDeltaM(); };
+	void EECore::ClearInput() { m_EEInput->Clear(); };
 
 	//EECore_Timer
 	//----------------------------------------------------------------------------------------------------

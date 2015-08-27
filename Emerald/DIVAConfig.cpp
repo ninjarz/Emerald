@@ -16,20 +16,20 @@ bool DIVAConfig::Initialize()
 		s_keyMap[2] = 'S';
 		s_keyMap[3] = 'W';
 
-		s_keyMap[4] = 'd';
-		s_keyMap[5] = 'd';
-		s_keyMap[6] = 'd';
-		s_keyMap[7] = 'd';
+		s_keyMap[4] = (char)39;
+		s_keyMap[5] = (char)37;
+		s_keyMap[6] = (char)40;
+		s_keyMap[7] = (char)38;
 
 		s_keyMap[8] = 'D';
 		s_keyMap[9] = 'A';
 		s_keyMap[10] = 'S';
 		s_keyMap[11] = 'W';
 
-		s_keyMap[12] = 'd';
-		s_keyMap[13] = 'd';
-		s_keyMap[14] = 'd';
-		s_keyMap[15] = 'd';
+		s_keyMap[12] = (char)39;
+		s_keyMap[13] = (char)37;
+		s_keyMap[14] = (char)40;
+		s_keyMap[15] = (char)38;
 	}
 
 	return true;

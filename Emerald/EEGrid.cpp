@@ -163,7 +163,7 @@ namespace Emerald
 		ibData.SysMemSlicePitch = 0;
 		if (FAILED(EECore::s_EECore->GetDevice()->CreateBuffer(&ibDesc, &ibData, &m_objectIB)))
 		{
-			MessageBox(NULL, L"CreateIndexBuffer failed!", L"Error", MB_OK);
+			MessageBoxW(NULL, L"CreateIndexBuffer failed!", L"Error", MB_OK);
 			return false;
 		}
 

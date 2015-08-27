@@ -18,7 +18,7 @@ DIVANote::DIVANote(const Note& _note, double _totalTime, double singleTime, EETe
 	m_strip(_stripTex),
 
 	m_state(DIVA_NOTE_DEFAULT),
-	m_actionTime(0.2),
+	m_actionTime(0.1),
 	m_totalTime(_totalTime),
 	m_restTime(_totalTime),
 
@@ -38,17 +38,9 @@ bool DIVANote::Update(double _deltaTime)
 		// Hit time
 		if (abs(m_restTime) <= m_actionTime && m_state == DIVA_NOTE_DEFAULT)
 		{
-			if (EEIsKeyInput())
+			if (EEGetKeyHit(DIVAConfig::GetKeyMap(m_key)))
 			{
-				unsigned int key = EEPeekKey();
-				if (DIVAConfig::GetKeyMap(m_key) == key)
-				{
-					EEGetKey();
-					m_state = DIVA_NOTE_COOL;
-				}
-				// wrong key
-				else
-					m_state = DIVA_NOTE_WORST;
+				m_state = DIVA_NOTE_COOL;
 			}
 		}
 		// Missed
@@ -75,17 +67,9 @@ bool DIVANote::Update(double _deltaTime)
 		// Hit time
 		if (abs(m_restTime) <= m_actionTime && m_state == DIVA_NOTE_DEFAULT)
 		{
-			if (EEIsKeyInput())
+			if (EEGetKeyHit(DIVAConfig::GetKeyMap(m_key)))
 			{
-				unsigned int key = EEPeekKey();
-				if (DIVAConfig::GetKeyMap(m_key) == key)
-				{
-					EEGetKey();
-					m_state = DIVA_NOTE_COOL;
-				}
-				// wrong key
-				else
-					m_state = DIVA_NOTE_WORST;
+				m_state = DIVA_NOTE_COOL;
 			}
 		}
 		// Missed
@@ -94,8 +78,9 @@ bool DIVANote::Update(double _deltaTime)
 			m_state = DIVA_NOTE_WORST;
 		}
 		// Strip time
-		else if (m_restTime < 0 && m_state != DIVA_NOTE_DEFAULT)
+		else if (m_restDuration > m_actionTime && m_state != DIVA_NOTE_DEFAULT)
 		{
+			m_state = DIVA_NOTE_STRIP_DEFAULT;
 			if (!EEIsKeyDown(DIVAConfig::GetKeyMap(m_key)))
 				m_state = DIVA_NOTE_STRIP_WORST;
 		}
@@ -106,13 +91,15 @@ bool DIVANote::Update(double _deltaTime)
 				m_state = DIVA_NOTE_STRIP_COOL;
 		}
 		// Missed
-		else if (m_restDuration < 0)
+		else if (m_restDuration + m_actionTime <= 0)
 		{
 			if (EEIsKeyDown(DIVAConfig::GetKeyMap(m_key)))
 				m_state = DIVA_NOTE_STRIP_WORST;
 		}
 
 		float percent = (float)(m_totalTime - m_restTime) / m_totalTime;
+		if (percent > 1.f)
+			percent = 1.f;
 		FLOAT2 vertical = (FLOAT2(m_x, m_y) - FLOAT2(m_tailx, m_taily)).GetVertical() * 30.f;
 		FLOAT2 center1 = (FLOAT2(m_x, m_y) - FLOAT2(m_tailx, m_taily)) / 3.f + FLOAT2(m_tailx, m_taily) - vertical;
 		FLOAT2 center2 = (FLOAT2(m_x, m_y) - FLOAT2(m_tailx, m_taily)) * 2 / 3.f + FLOAT2(m_tailx, m_taily) + vertical;
@@ -217,7 +204,7 @@ DIVAMana::DIVAMana(wchar_t* _fileName)
 	//quad1.SetScale(3.0f);
 	EEAnimationFrame frame1;
 	frame1.SetObject(quad1);
-	frame1.startTime = 0.15f;
+	frame1.startTime = 0.05f;
 	frame1.duration = 0.35f;
 	float alpha11 = 0.0f;
 	float scale11 = 2.0f;
@@ -334,7 +321,7 @@ bool DIVAMana::Process()
 					break;
 				case DIVA_NOTE_COOL:
 					m_emitter.Emit(ptr->GetPosition());
-					continue;
+					break;
 				case DIVA_NOTE_FINE:
 					break;
 				case DIVA_NOTE_SAD:
@@ -344,6 +331,8 @@ bool DIVAMana::Process()
 				case DIVA_NOTE_WORST:
 					ptr = m_notes.erase(ptr);
 					continue;
+				case DIVA_NOTE_STRIP_DEFAULT:
+					break;
 				case DIVA_NOTE_STRIP_COOL:
 					m_emitter.Emit(ptr->GetPosition());
 					ptr = m_notes.erase(ptr);
@@ -365,7 +354,6 @@ bool DIVAMana::Process()
 
 			++ptr;
 		}
-		EEClearKey();
 
 		// handle new frames
 		while (m_noteTime <= m_currentTime)

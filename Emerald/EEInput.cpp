@@ -70,7 +70,7 @@ namespace Emerald
 			return 0;
 
 		case WM_CHAR:
-			m_keyInput.push((unsigned int)_wparam);
+			m_keyInput.push_back((unsigned int)_wparam);
 			//printf("%c %d\n", _wparam, m_keyInput.size());
 			return 0;
 
@@ -80,22 +80,28 @@ namespace Emerald
 		//return 0;
 	}
 
-	//EEInput_Keyboard
 	//----------------------------------------------------------------------------------------------------
-	bool EEInput::IsKeyDown(UINT _key)
+	void EEInput::Clear()
 	{
-		return m_keys[_key];
+		ClearKey();
+		ClearKeyHit();
+		ClearMouse();
+		ClearMouseDeltaXY();
+		ClearMouseDeltaM();
 	}
 
+	//EEInput_Keyboard
 	//----------------------------------------------------------------------------------------------------
-	UINT EEInput::PeekKey()
+	int EEInput::PeekKey(UINT _key)
 	{
-		while (m_keyInput.empty())
+		int i = 0;
+		for (auto it = m_keyInput.begin(); it != m_keyInput.end(); ++it, ++i)
 		{
-			EECore::s_EECore->Run();
+			if (*it == _key)
+				return i;
 		}
 
-		return  m_keyInput.front();
+		return  -1;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -103,13 +109,28 @@ namespace Emerald
 	{
 		while (m_keyInput.empty())
 		{
-			//  May be I should just handle the message, but running the timer
+			// todo
 			EECore::s_EECore->Run();
 		}
 
 		UINT key = m_keyInput.front();
-		m_keyInput.pop();
+		m_keyInput.pop_front();
 		return key;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEInput::GetKey(UINT _key)
+	{
+		for (auto it = m_keyInput.begin(); it != m_keyInput.end(); ++it)
+		{
+			if (*it == _key)
+			{
+				m_keyInput.erase(it);
+				return true;
+			}
+		}
+
+		return  false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -121,15 +142,61 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEInput::ClearKey()
 	{
-		while (!m_keyInput.empty())
+		m_keyInput.clear();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEInput::IsKeyDown(UINT _key)
+	{
+		return m_keys[_key];
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	UINT EEInput::GetKeyHit()
+	{
+		while (m_keyHitInput.empty())
 		{
-			m_keyInput.pop();
+			//  May be I should just handle the message, but running the timer
+			EECore::s_EECore->Run();
 		}
+
+		UINT key = m_keyHitInput.front();
+		m_keyHitInput.pop_front();
+		return key;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEInput::GetKeyHit(UINT _key)
+	{
+		for (auto it = m_keyHitInput.begin(); it != m_keyHitInput.end(); ++it)
+		{
+			if (*it == _key)
+			{
+				m_keyHitInput.erase(it);
+				return true;
+			}
+		}
+
+		return  false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEInput::IsKeyHitInput()
+	{
+		return !m_keyHitInput.empty();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEInput::ClearKeyHit()
+	{
+		m_keyHitInput.clear();
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEInput::KeyDown(UINT input)
 	{
+		if (!m_keys[input])
+			m_keyHitInput.push_back(input);
 		m_keys[input] = true;
 
 		return;
@@ -153,7 +220,7 @@ namespace Emerald
 		}
 
 		UINT mouse = m_mouseInput.front();
-		m_mouseInput.pop();
+		m_mouseInput.pop_front();
 		return mouse;
 	}
 
@@ -163,6 +230,7 @@ namespace Emerald
 		return !m_mouseInput.empty();
 	}
 
+	//----------------------------------------------------------------------------------------------------
 	void EEInput::MouseDown(WPARAM _btnState, int _x, int _y)
 	{
 		SetCapture(EECore::s_EECore->GetHWnd());
@@ -173,8 +241,7 @@ namespace Emerald
 	void EEInput::MouseUp(WPARAM _btnState, int _x, int _y)
 	{
 		ReleaseCapture();
-		// memo: should pop
-		m_mouseInput.push((unsigned int)_btnState);
+		m_mouseInput.push_back((unsigned int)_btnState);
 		KeyUp((unsigned int)_btnState);
 	}
 
@@ -193,21 +260,45 @@ namespace Emerald
 		m_mousePos.y = _y;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	void EEInput::ClearMouse()
+	{
+		m_mouseInput.clear();
+	}
+
 	//EEInput_APIs
 	//----------------------------------------------------------------------------------------------------
-	bool EEIsKeyDown(UINT para) { return EECore::s_EECore->GetEEInput()->IsKeyDown(para); }
+	void EEClearInput() { return EECore::s_EECore->GetEEInput()->Clear(); }
 
 	//----------------------------------------------------------------------------------------------------
-	UINT EEPeekKey() { return EECore::s_EECore->GetEEInput()->PeekKey(); }
+	int EEPeekKey(UINT _key) { return EECore::s_EECore->GetEEInput()->PeekKey(_key); }
 
 	//----------------------------------------------------------------------------------------------------
 	UINT EEGetKey() { return EECore::s_EECore->GetEEInput()->GetKey(); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEGetKey(UINT _key) { return EECore::s_EECore->GetEEInput()->GetKey(_key); }
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEIsKeyInput() { return EECore::s_EECore->GetEEInput()->IsKeyInput(); }
 
 	//----------------------------------------------------------------------------------------------------
 	void EEClearKey() { return EECore::s_EECore->GetEEInput()->ClearKey(); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEIsKeyDown(UINT para) { return EECore::s_EECore->GetEEInput()->IsKeyDown(para); }
+
+	//----------------------------------------------------------------------------------------------------
+	UINT EEGetKeyHit() { return EECore::s_EECore->GetEEInput()->GetKeyHit(); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEGetKeyHit(UINT _key) { return EECore::s_EECore->GetEEInput()->GetKeyHit(_key); }
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEIsKeyHitInput() { return EECore::s_EECore->GetEEInput()->IsKeyHitInput(); }
+
+	//----------------------------------------------------------------------------------------------------
+	void EEClearKeyHit() { return EECore::s_EECore->GetEEInput()->ClearKeyHit(); }
 
 	//----------------------------------------------------------------------------------------------------
 	Point EEGetMousePosition() { return EECore::s_EECore->GetEEInput()->GetMousePosition(); }

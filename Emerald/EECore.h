@@ -124,6 +124,7 @@ namespace Emerald
 		void ClearMouseDeltaY();
 		void ClearMouseDeltaXY();
 		void ClearMouseDeltaM();
+		void ClearInput();
 
 	private:
 		EEInput *m_EEInput;

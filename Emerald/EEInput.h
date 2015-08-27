@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <WindowsX.h>
 #include <queue>
+#include <list>
 #include "EEMath.h"
 
 //----------------------------------------------------------------------------------------------------
@@ -33,14 +34,22 @@ namespace Emerald
 		bool Initialize();
 		void Shutdown();
 		LRESULT MessageHandler(HWND, UINT, WPARAM, LPARAM);
+		void Clear();
 
 		//EEInput_Keyboard
 	public:
-		bool IsKeyDown(UINT);
-		UINT PeekKey();
+		// char
+		int PeekKey(UINT _key);
 		UINT GetKey();
+		bool GetKey(UINT _key);
 		bool IsKeyInput();
 		void ClearKey();
+		// key down
+		bool IsKeyDown(UINT);
+		UINT GetKeyHit();
+		bool GetKeyHit(UINT _key);
+		bool IsKeyHitInput();
+		void ClearKeyHit();
 
 	private:
 		void KeyDown(UINT);
@@ -48,7 +57,8 @@ namespace Emerald
 
 	private:
 		bool m_keys[256];
-		std::queue<UINT> m_keyInput;
+		std::list<UINT> m_keyInput;
+		std::list<UINT> m_keyHitInput;
 
 		//EEInput_Mouse
 	public:
@@ -68,6 +78,7 @@ namespace Emerald
 		void MouseUp(WPARAM, int, int);
 		void MouseWheel(WPARAM, int, int);
 		void OnMouseMove(WPARAM, int, int);
+		void ClearMouse();
 
 	private:
 		//normal
@@ -75,7 +86,7 @@ namespace Emerald
 		int m_mouseDeltaX;
 		int m_mouseDeltaY;
 		int m_mouseDeltaM;
-		std::queue<UINT> m_mouseInput;
+		std::list<UINT> m_mouseInput;
 		/*
 		//with the left button held
 		Point m_mouseLeftPos;
@@ -93,11 +104,18 @@ namespace Emerald
 
 	//EEInput_APIs
 	//----------------------------------------------------------------------------------------------------
-	bool EEIsKeyDown(UINT _para);
-	UINT EEPeekKey();
+	void EEClearInput();
+
+	int EEPeekKey(UINT _key);
 	UINT EEGetKey();
+	bool EEGetKey(UINT _key);
 	bool EEIsKeyInput();
 	void EEClearKey();
+	bool EEIsKeyDown(UINT _para);
+	UINT EEGetKeyHit();
+	bool EEGetKeyHit(UINT _key);
+	bool EEIsKeyHitInput();
+	void EEClearKeyHit();
 
 	Point EEGetMousePosition();
 	int EEGetMouseDeltaX();
