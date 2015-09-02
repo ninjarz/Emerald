@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Emerald.h"
+#include "../../Emerald.h"
 using namespace std;
 
 #define BGS_NUM 10

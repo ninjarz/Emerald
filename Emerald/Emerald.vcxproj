@@ -75,13 +75,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AnimationEditer.cpp" />
-    <ClCompile Include="Average.cpp" />
-    <ClCompile Include="Blur.cpp" />
-    <ClCompile Include="CameraAction.cpp" />
-    <ClCompile Include="Canny.cpp" />
-    <ClCompile Include="ContrastAndBright.cpp" />
+    <ClCompile Include="Demo\animation.cpp" />
+    <ClCompile Include="Demo\AnimationEditer.cpp" />
+    <ClCompile Include="Demo\Average.cpp" />
+    <ClCompile Include="Demo\Blur.cpp" />
+    <ClCompile Include="Demo\CameraAction.cpp" />
+    <ClCompile Include="Demo\Canny.cpp" />
+    <ClCompile Include="Demo\ContrastAndBright.cpp" />
+    <ClCompile Include="Demo\DIVA\DIVA.cpp" />
+    <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
+    <ClCompile Include="Demo\DIVA\DIVAMana.cpp" />
+    <ClCompile Include="Demo\DIVA\NoteMap.cpp" />
+    <ClCompile Include="Demo\DNSServer.cpp" />
+    <ClCompile Include="Demo\Editer.cpp" />
+    <ClCompile Include="Demo\Erode.cpp" />
+    <ClCompile Include="Demo\FontTest.cpp" />
+    <ClCompile Include="Demo\Line2d.cpp" />
+    <ClCompile Include="Demo\LineEditer.cpp" />
+    <ClCompile Include="Demo\Music.cpp" />
+    <ClCompile Include="Demo\Picking.cpp" />
+    <ClCompile Include="Demo\Points.cpp" />
+    <ClCompile Include="Demo\Progress.cpp" />
+    <ClCompile Include="Demo\Recoder.cpp" />
+    <ClCompile Include="Demo\Ripple.cpp" />
+    <ClCompile Include="Demo\Slide.cpp" />
+    <ClCompile Include="Demo\TCPClient.cpp" />
+    <ClCompile Include="Demo\TCPSever.cpp" />
+    <ClCompile Include="Demo\TCPwithFont.cpp" />
+    <ClCompile Include="Demo\Test.cpp" />
+    <ClCompile Include="Demo\Thread.cpp" />
+    <ClCompile Include="Demo\UDPClient.cpp" />
+    <ClCompile Include="Demo\UDPServer.cpp" />
+    <ClCompile Include="Demo\YYClient.cpp" />
+    <ClCompile Include="Demo\源1.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
     <ClCompile Include="DirectXTex\BC4BC5.cpp" />
     <ClCompile Include="DirectXTex\BC6HBC7.cpp" />
@@ -101,10 +127,6 @@
     <ClCompile Include="DirectXTex\DirectXTexTGA.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexUtil.cpp" />
     <ClCompile Include="DirectXTex\DirectXTexWIC.cpp" />
-    <ClCompile Include="DIVAConfig.cpp" />
-    <ClCompile Include="DIVAMana.cpp" />
-    <ClCompile Include="DNSServer.cpp" />
-    <ClCompile Include="Editer.cpp" />
     <ClCompile Include="EEAction.cpp" />
     <ClCompile Include="EEAnimation.cpp" />
     <ClCompile Include="EEAverage.cpp" />
@@ -167,32 +189,14 @@
     <ClCompile Include="EEThread.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
-    <ClCompile Include="Erode.cpp" />
-    <ClCompile Include="FontTest.cpp" />
-    <ClCompile Include="Line2d.cpp" />
-    <ClCompile Include="Music.cpp" />
-    <ClCompile Include="NoteMap.cpp" />
-    <ClCompile Include="Picking.cpp" />
-    <ClCompile Include="Points.cpp" />
-    <ClCompile Include="Progress.cpp" />
-    <ClCompile Include="Ripple.cpp" />
-    <ClCompile Include="Slide.cpp" />
-    <ClCompile Include="Thread.cpp" />
     <None Include="DirectXTex\DirectXTex.inl" />
     <None Include="EEWaveCoder.cpp" />
-    <ClCompile Include="UDPClient.cpp" />
-    <ClCompile Include="UDPServer.cpp" />
-    <ClCompile Include="Test.cpp" />
-    <ClCompile Include="源1.cpp" />
-    <ClCompile Include="DIVA.cpp" />
-    <ClCompile Include="LineEditer.cpp" />
-    <ClCompile Include="TCPwithFont.cpp" />
-    <ClCompile Include="Recoder.cpp" />
-    <ClCompile Include="TCPSever.cpp" />
-    <ClCompile Include="TCPClient.cpp" />
-    <ClCompile Include="YYClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
+    <ClInclude Include="Demo\DIVA\DIVAHelper.h" />
+    <ClInclude Include="Demo\DIVA\DIVAMana.h" />
+    <ClInclude Include="Demo\DIVA\NoteMap.h" />
     <ClInclude Include="DirectXTex\BC.h" />
     <ClInclude Include="DirectXTex\BCDirectCompute.h" />
     <ClInclude Include="DirectXTex\DDS.h" />
@@ -200,9 +204,6 @@
     <ClInclude Include="DirectXTex\DirectXTexP.h" />
     <ClInclude Include="DirectXTex\Filters.h" />
     <ClInclude Include="DirectXTex\scoped.h" />
-    <ClInclude Include="DIVAConfig.h" />
-    <ClInclude Include="DIVAHelper.h" />
-    <ClInclude Include="DIVAMana.h" />
     <ClInclude Include="EEAction.h" />
     <ClInclude Include="EEAnimation.h" />
     <ClInclude Include="EEAverage.h" />
@@ -268,7 +269,6 @@
     <ClInclude Include="Emerald.h" />
     <ClInclude Include="EESlide.h" />
     <ClInclude Include="EEFloatBoard.h" />
-    <ClInclude Include="NoteMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEQuad2DShader.hlsl">

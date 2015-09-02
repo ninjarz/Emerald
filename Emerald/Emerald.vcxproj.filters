@@ -46,9 +46,6 @@
     <Filter Include="源文件\Demo\DIVA">
       <UniqueIdentifier>{7d488e33-c436-43ca-be1c-fff7e4992df2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Demo\YY">
-      <UniqueIdentifier>{220a982e-73a0-43cd-8342-19d831f187d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Emerald\EETexture">
       <UniqueIdentifier>{7a8e9807-242d-4562-aa0e-d6542b6eb12e}</UniqueIdentifier>
     </Filter>
@@ -93,9 +90,6 @@
     </Filter>
     <Filter Include="源文件\Emerald\EEObject">
       <UniqueIdentifier>{b7d91fcf-65b4-42ea-969f-f8aeb0760a9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Demo\Homework">
-      <UniqueIdentifier>{9a10a4b0-5f83-443b-bc77-841e2e1de006}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\Emerald\EEShader\EEAverageShader">
       <UniqueIdentifier>{0644a267-10ba-49be-93a0-4504f1b0ac55}</UniqueIdentifier>
@@ -153,9 +147,6 @@
     <ClCompile Include="EEMusic.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
-    <ClCompile Include="源1.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EESort.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -174,23 +165,8 @@
     <ClCompile Include="EESocket.cpp">
       <Filter>源文件\Emerald\EESocket</Filter>
     </ClCompile>
-    <ClCompile Include="UDPServer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPSever.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPClient.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="UDPClient.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEGUI.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="LineEditer.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EELineEditer.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
@@ -216,26 +192,8 @@
     <ClCompile Include="EEBox.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
-    <ClCompile Include="CameraAction.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Recoder.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPwithFont.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEThread.cpp">
       <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="Thread.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="DIVA.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
-    <ClCompile Include="YYClient.cpp">
-      <Filter>源文件\Demo\YY</Filter>
     </ClCompile>
     <ClCompile Include="EESmartPtr.cpp">
       <Filter>源文件\Emerald</Filter>
@@ -243,17 +201,11 @@
     <ClCompile Include="EEIntBoard.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Picking.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EETexture.cpp">
       <Filter>源文件\Emerald\EETexture</Filter>
     </ClCompile>
     <ClCompile Include="EEBitmap.cpp">
       <Filter>源文件\Emerald\EETexture</Filter>
-    </ClCompile>
-    <ClCompile Include="FontTest.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEFont.cpp">
       <Filter>源文件\Emerald\EEFont</Filter>
@@ -272,9 +224,6 @@
     </ClCompile>
     <ClCompile Include="EERipple.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="Ripple.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEBlur.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
@@ -339,17 +288,11 @@
     <ClCompile Include="EEAverage.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Slide.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEAnimation.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
     <ClCompile Include="EEAction.cpp">
       <Filter>源文件\Emerald\EEAction</Filter>
-    </ClCompile>
-    <ClCompile Include="DNSServer.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEDNS.cpp">
       <Filter>源文件\Emerald\EESocket</Filter>
@@ -357,14 +300,8 @@
     <ClCompile Include="EEParticle.cpp">
       <Filter>源文件\Emerald\EEParticle</Filter>
     </ClCompile>
-    <ClCompile Include="NoteMap.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
     <ClCompile Include="EELine2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Line2d.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEObject.cpp">
       <Filter>源文件\Emerald\EEObject</Filter>
@@ -375,17 +312,8 @@
     <ClCompile Include="EEObject3D.cpp">
       <Filter>源文件\Emerald\EEObject</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Progress.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEPoints2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Points.cpp">
-      <Filter>源文件\Demo\Homework</Filter>
     </ClCompile>
     <ClCompile Include="EEComboBox.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
@@ -393,14 +321,8 @@
     <ClCompile Include="EELineBrowser.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Editer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EETextBrowser.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationEditer.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEHash.cpp">
       <Filter>源文件\Emerald</Filter>
@@ -408,14 +330,8 @@
     <ClCompile Include="EECurve2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
-    <ClCompile Include="Average.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EESphere.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Blur.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEGray.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
@@ -432,14 +348,8 @@
     <ClCompile Include="EEContrastAndBright.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
     </ClCompile>
-    <ClCompile Include="ContrastAndBright.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEErode.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="Erode.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEDilate.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
@@ -447,20 +357,104 @@
     <ClCompile Include="EECanny.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Canny.cpp">
+    <ClCompile Include="Demo\animation.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="DIVAMana.cpp">
+    <ClCompile Include="Demo\AnimationEditer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Average.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Blur.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\CameraAction.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Canny.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\ContrastAndBright.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DNSServer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Editer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Erode.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\FontTest.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Line2d.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\LineEditer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Music.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Picking.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Points.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Progress.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Recoder.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Ripple.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Slide.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\TCPClient.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\TCPSever.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\TCPwithFont.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Test.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Thread.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\UDPClient.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\UDPServer.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\YYClient.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\源1.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVA\DIVA.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
-    <ClCompile Include="Music.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="DIVAConfig.cpp">
+    <ClCompile Include="Demo\DIVA\DIVAConfig.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>源文件\Demo</Filter>
+    <ClCompile Include="Demo\DIVA\DIVAMana.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVA\NoteMap.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,9 +548,6 @@
     <ClInclude Include="EEIntBoard.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
-    <ClInclude Include="DIVAHelper.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
     <ClInclude Include="EETexture.h">
       <Filter>头文件\Emerald\EETexture</Filter>
     </ClInclude>
@@ -638,9 +629,6 @@
     <ClInclude Include="EEObject3D.h">
       <Filter>头文件\Emerald\EEObject</Filter>
     </ClInclude>
-    <ClInclude Include="NoteMap.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
     <ClInclude Include="EEPoints2D.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
@@ -686,10 +674,16 @@
     <ClInclude Include="EECanny.h">
       <Filter>头文件\Emerald\EEEffect</Filter>
     </ClInclude>
-    <ClInclude Include="DIVAMana.h">
+    <ClInclude Include="Demo\DIVA\DIVAConfig.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
-    <ClInclude Include="DIVAConfig.h">
+    <ClInclude Include="Demo\DIVA\DIVAHelper.h">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVA\DIVAMana.h">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVA\NoteMap.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
   </ItemGroup>

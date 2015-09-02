@@ -1,9 +1,8 @@
 //Game
 #include "DIVAHelper.h"
 #if _DIVA_
-#include "Emerald.h"
 #define _EE_MEMORYLEAK_ON_
-#include "EEMemoryLeak.h"
+#include "../../Emerald.h"
 
 #include "DIVAMana.h"
 

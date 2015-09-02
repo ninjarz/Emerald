@@ -157,6 +157,7 @@ namespace Emerald
 		double GetProgressTime();
 
 	protected:
+		bool PushBuffer(const EEMusicCell& _buffer);
 		bool SubmitBuffer();
 
 	protected:
@@ -173,7 +174,7 @@ namespace Emerald
 		// data
 		std::list<std::string> m_data;
 		std::queue<EEMusicCell> m_playList; // need mutex
-		// std::mutex m_playListMutex;
+		std::mutex m_playListMutex;
 		boost::thread *m_loader;
 	};
 }

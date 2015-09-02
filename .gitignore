@@ -157,5 +157,7 @@ $RECYCLE.BIN/
 
 # Demo Files
 Texture/
+Song/
+Music/
 *.o
 *.exe

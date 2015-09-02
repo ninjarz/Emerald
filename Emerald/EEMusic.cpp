@@ -214,7 +214,7 @@ namespace Emerald
 			}
 			else
 			{
-				m_playList.push(EEMusicCell(&data, beginBytes));
+				PushBuffer(EEMusicCell(&data, beginBytes));
 				beginBytes = 0;
 			}
 		}
@@ -244,9 +244,9 @@ namespace Emerald
 					XAUDIO2_BUFFER buffer;
 					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
 					if (times != _times - 1)
-						m_playList.push(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_DEFAULT));
+						PushBuffer(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_DEFAULT));
 					else
-						m_playList.push(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_END));
+						PushBuffer(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_END));
 					byteLen -= data.size() - beginBytes;
 					beginBytes = 0;
 				}
@@ -255,9 +255,9 @@ namespace Emerald
 					XAUDIO2_BUFFER buffer;
 					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
 					if (times != _times - 1)
-						m_playList.push(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_DEFAULT));
+						PushBuffer(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_DEFAULT));
 					else
-						m_playList.push(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_END));
+						PushBuffer(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_END));
 					byteLen = 0;
 					beginBytes = 0;
 					break;
@@ -568,14 +568,12 @@ namespace Emerald
 						}
 						try
 						{
-							m_playList.push(EEMusicCell(&data));
+							PushBuffer(EEMusicCell(&data));
 							if (EE_MUSIC_NO_BUFFER == m_state)
 							{
 								SubmitBuffer();
 							}
 							EEThreadSleep(1);
-							//SubmitBuffer();
-							//printf("%d\n", m_playList.size());
 						}
 						catch (boost::thread_interrupted&)
 						{
@@ -694,8 +692,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::PushBuffer(const EEMusicCell& _buffer)
+	{
+		m_playListMutex.lock();
+
+		m_playList.push(_buffer);
+
+		m_playListMutex.unlock();
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::SubmitBuffer()
 	{
+		m_playListMutex.lock();
+
 		if (!m_playList.empty())
 		{
 			EEMusicCell &cell = m_playList.front();
@@ -716,16 +727,23 @@ namespace Emerald
 				buffer.LoopCount = 0;
 				buffer.pContext = NULL;
 				if (FAILED(m_sourceVoice->SubmitSourceBuffer(&buffer)))
+				{
+					m_playListMutex.unlock();
 					return false;
+				}
 				else
 				{
 					if (EE_MUSIC_NO_BUFFER == m_state)
 						m_state = EE_MUSIC_PLAYING;
 					m_playList.pop();
+
+					m_playListMutex.unlock();
 					return true;
 				}
 			}
 		}
+
+		m_playListMutex.unlock();
 		return false;
 	}
 }

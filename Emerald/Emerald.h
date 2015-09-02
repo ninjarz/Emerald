@@ -31,6 +31,8 @@
 #include "EEDilate.h"
 #include "EECanny.h"
 
+#include "EEMemoryLeak.h"
+
 using namespace Emerald;
 
 /*
