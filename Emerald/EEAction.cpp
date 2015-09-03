@@ -27,6 +27,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -45,6 +46,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -90,6 +92,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -108,6 +111,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -153,6 +157,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -171,6 +176,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -223,6 +229,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -241,6 +248,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -290,6 +298,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -308,6 +317,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(20);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;
@@ -368,6 +378,7 @@ namespace Emerald
 				while (1)
 				{
 					EEThreadSleep(10);
+					std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 					float currTime = (float)EECore::s_EECore->GetTotalTime();
 					float deltaTime = currTime - progress;
@@ -388,6 +399,7 @@ namespace Emerald
 			while (1)
 			{
 				EEThreadSleep(10);
+				std::lock_guard<std::mutex> mutex(_object->GetThreadMutex());
 
 				float currTime = (float)EECore::s_EECore->GetTotalTime();
 				float deltaTime = currTime - progress;

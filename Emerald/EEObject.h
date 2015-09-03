@@ -5,6 +5,7 @@
 #include <d3d11.h>
 #include <d3dx11async.h>
 #include <functional>
+#include <mutex>
 #include <boost/thread/thread.hpp>
 #include "EEMath.h"
 #include "EEColor.h"
@@ -164,7 +165,12 @@ namespace Emerald
 		virtual void OnMouseClicked(const Point& _pos);
 		virtual void OnMouseTriggered(const Point& _pos);
 
-		//operator
+		// mutex
+		std::mutex& GetThreadMutex();
+		void ThreadLock();
+		void ThreadUnLock();
+
+		// operator
 		bool operator< (const EEObject& _object) const;
 		bool operator> (const EEObject& _object) const;
 
@@ -211,6 +217,7 @@ namespace Emerald
 		std::function<void(void)> m_TriggeredFunc;
 		// action
 		std::vector<boost::thread*> m_threads;
+		std::mutex m_threadMutex;
 	};
 
 	// EEObject_APIs

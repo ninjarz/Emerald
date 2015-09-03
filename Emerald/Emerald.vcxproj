@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EEF4FDD6-62DA-454E-BD29-EC501C1E11BB}</ProjectGuid>
     <RootNamespace>Emerald</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -24,7 +25,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -85,6 +86,7 @@
     <ClCompile Include="Demo\DIVA\DIVA.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAMana.cpp" />
+    <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVA\NoteMap.cpp" />
     <ClCompile Include="Demo\DNSServer.cpp" />
     <ClCompile Include="Demo\Editer.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
     <ClInclude Include="Demo\DIVA\DIVAHelper.h" />
     <ClInclude Include="Demo\DIVA\DIVAMana.h" />
+    <ClInclude Include="Demo\DIVA\DIVAMusicList.h" />
     <ClInclude Include="Demo\DIVA\NoteMap.h" />
     <ClInclude Include="DirectXTex\BC.h" />
     <ClInclude Include="DirectXTex\BCDirectCompute.h" />

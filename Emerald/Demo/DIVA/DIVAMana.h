@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include "DIVAMusicList.h"
 #include "NoteMap.h"
 using namespace std;
 

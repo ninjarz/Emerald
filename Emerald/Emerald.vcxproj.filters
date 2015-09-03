@@ -456,6 +456,9 @@
     <ClCompile Include="Demo\DIVA\NoteMap.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -684,6 +687,9 @@
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
     <ClInclude Include="Demo\DIVA\NoteMap.h">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVA\DIVAMusicList.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
   </ItemGroup>

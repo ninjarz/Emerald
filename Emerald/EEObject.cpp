@@ -155,10 +155,14 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::Process()
 	{
-		if (Update())
-			return Render();
+		bool result = false;
+		ThreadLock();
 
-		return false;
+		if (Update())
+			result = Render();
+
+		ThreadUnLock();
+		return result;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -697,6 +701,24 @@ namespace Emerald
 		s_focusedObject = nullptr;
 		s_triggeredObject = this;
 		//m_isTriggered = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::mutex& EEObject::GetThreadMutex()
+	{
+		return m_threadMutex;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::ThreadLock()
+	{
+		m_threadMutex.lock();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::ThreadUnLock()
+	{
+		m_threadMutex.unlock();
 	}
 	
 	//----------------------------------------------------------------------------------------------------

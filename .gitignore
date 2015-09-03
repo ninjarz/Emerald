@@ -159,5 +159,7 @@ $RECYCLE.BIN/
 Texture/
 Song/
 Music/
+#
+DLL/
 *.o
 *.exe
