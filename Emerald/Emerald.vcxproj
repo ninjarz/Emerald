@@ -85,7 +85,7 @@
     <ClCompile Include="Demo\ContrastAndBright.cpp" />
     <ClCompile Include="Demo\DIVA\DIVA.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
-    <ClCompile Include="Demo\DIVA\DIVAMana.cpp" />
+    <ClCompile Include="Demo\DIVA\DIVAGame.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVA\NoteMap.cpp" />
     <ClCompile Include="Demo\DNSServer.cpp" />
@@ -197,7 +197,7 @@
   <ItemGroup>
     <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
     <ClInclude Include="Demo\DIVA\DIVAHelper.h" />
-    <ClInclude Include="Demo\DIVA\DIVAMana.h" />
+    <ClInclude Include="Demo\DIVA\DIVAGame.h" />
     <ClInclude Include="Demo\DIVA\DIVAMusicList.h" />
     <ClInclude Include="Demo\DIVA\NoteMap.h" />
     <ClInclude Include="DirectXTex\BC.h" />

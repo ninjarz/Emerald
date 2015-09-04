@@ -450,13 +450,13 @@
     <ClCompile Include="Demo\DIVA\DIVAConfig.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\DIVA\DIVAMana.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\DIVA\NoteMap.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
     <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVA\DIVAGame.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
   </ItemGroup>
@@ -683,13 +683,13 @@
     <ClInclude Include="Demo\DIVA\DIVAHelper.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
-    <ClInclude Include="Demo\DIVA\DIVAMana.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
     <ClInclude Include="Demo\DIVA\NoteMap.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
     <ClInclude Include="Demo\DIVA\DIVAMusicList.h">
+      <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVA\DIVAGame.h">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
   </ItemGroup>

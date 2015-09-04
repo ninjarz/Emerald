@@ -1,6 +1,6 @@
 #include "DIVAHelper.h"
 #if _DIVA_
-#include "DIVAMana.h"
+#include "DIVAGame.h"
 #include "DIVAConfig.h"
 
 DIVANote::DIVANote(const Note& _note, double _totalTime, double singleTime, EETexture& _nodeTex, EETexture& _stripTex)
@@ -127,7 +127,7 @@ bool DIVANote::Update(double _deltaTime)
 
 
 //----------------------------------------------------------------------------------------------------
-DIVAMana::DIVAMana(wchar_t* _fileName)
+DIVAGame::DIVAGame(NoteMap _noteMap)
 	:
 	m_isStart(false),
 	m_currentTime(0.f),
@@ -137,7 +137,7 @@ DIVAMana::DIVAMana(wchar_t* _fileName)
 	m_singleTime(0.f),
 	m_distanceTime(0.f),
 
-	m_noteMap(_fileName),
+	m_noteMap(_noteMap),
 	m_notes(),
 	m_emitter(),
 
@@ -253,13 +253,13 @@ DIVAMana::DIVAMana(wchar_t* _fileName)
 	m_emitter.SetAnimation(&animation);
 }
 
-DIVAMana::~DIVAMana()
+DIVAGame::~DIVAGame()
 {
 	for (auto it = m_music.begin(); it != m_music.end(); ++it)
 		SAFE_DELETE(it->second);
 }
 
-bool DIVAMana::Start()
+bool DIVAGame::Start()
 {
 	// load music files
 	auto music = m_noteMap.GetMusicPaths();
@@ -275,7 +275,7 @@ bool DIVAMana::Start()
 	return true;
 }
 
-bool DIVAMana::Process()
+bool DIVAGame::Process()
 {
 	if (m_isStart)
 	{
@@ -300,9 +300,9 @@ bool DIVAMana::Process()
 					continue;
 				case DIVA_NOTE_FINE:
 					break;
-				case DIVA_NOTE_SAD:
-					break;
 				case DIVA_NOTE_SAFE:
+					break;
+				case DIVA_NOTE_SAD:
 					break;
 				case DIVA_NOTE_WORST:
 					ptr = m_notes.erase(ptr);
@@ -324,9 +324,9 @@ bool DIVAMana::Process()
 					break;
 				case DIVA_NOTE_FINE:
 					break;
-				case DIVA_NOTE_SAD:
-					break;
 				case DIVA_NOTE_SAFE:
+					break;
+				case DIVA_NOTE_SAD:
 					break;
 				case DIVA_NOTE_WORST:
 					ptr = m_notes.erase(ptr);
@@ -339,9 +339,9 @@ bool DIVAMana::Process()
 					continue;
 				case DIVA_NOTE_STRIP_FINE:
 					break;
-				case DIVA_NOTE_STRIP_SAD:
-					break;
 				case DIVA_NOTE_STRIP_SAFE:
+					break;
+				case DIVA_NOTE_STRIP_SAD:
 					break;
 				case DIVA_NOTE_STRIP_WORST:
 					ptr = m_notes.erase(ptr);

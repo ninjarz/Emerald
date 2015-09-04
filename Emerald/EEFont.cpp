@@ -116,6 +116,20 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const FLOAT3& _position, const EEColor& _color, char* _text)
+		:
+		EEQuad2D(_position),
+		m_text(AnsiToUnicode(_text)),
+		m_isTextDirty(true)
+	{
+		InitializeFont();
+
+		SetColor(_color);
+		SetIsUseColor(true);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEFont::EEFont(const FLOAT3& _position, const EEColor& _color, wchar_t* _text)
 		:
 		EEQuad2D(_position),
@@ -175,6 +189,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(wchar_t _text)
 	{
+		// delete
 		if (_text == 8)
 		{
 			if (m_text.size())
@@ -215,12 +230,27 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetText(const char* _text)
+	{
+		m_text = AnsiToUnicode(_text);
+		m_isTextDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEFont::SetText(const wchar_t* _text)
 	{
 		m_text = _text;
 		m_isTextDirty = true;
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetText(const std::string& _text)
+	{
+		return SetText(_text.data());
 	}
 
 	//----------------------------------------------------------------------------------------------------

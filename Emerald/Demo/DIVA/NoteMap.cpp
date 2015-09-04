@@ -17,20 +17,20 @@ NoteMap::NoteMap()
 }
 
 //----------------------------------------------------------------------------------------------------
-NoteMap::NoteMap(wchar_t* _fileName)
+NoteMap::NoteMap(const char* _filePath, const char* _basePath)
 	:
 	m_second(1.000),
 	m_framePos(0),
 	m_frameForwardPos(0)
 {
-	ifstream fin(_fileName);
+	ifstream fin(_filePath);
 	if (!fin.is_open())
 		return;
 
 	string tmp;
 	getline(fin, m_version);
 	getline(fin, m_mapName);
-	string basePath = string("Song\\") + m_mapName + "\\";
+	string basePath = _basePath;
 	getline(fin, m_noterName);
 	getline(fin, m_authorName);
 	getline(fin, tmp);

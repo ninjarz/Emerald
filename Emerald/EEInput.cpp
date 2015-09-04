@@ -73,6 +73,9 @@ namespace Emerald
 			m_keyInput.push_back((unsigned int)_wparam);
 			//printf("%c %d\n", _wparam, m_keyInput.size());
 			return 0;
+		case WM_IME_CHAR:
+			m_keyInput.push_back((unsigned int)_wparam);
+			return 0;
 
 		default:
 			return DefWindowProc(_hwnd, _umsg, _wparam, _lparam);

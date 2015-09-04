@@ -14,6 +14,7 @@ namespace Emerald
 	{
 	public:
 		EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor);
+		EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::string& _text);
 		EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::wstring& _text);
 		EELineBrowser(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor, const std::wstring& _text);
 		EELineBrowser(const EELineBrowser& _lineEditer);
@@ -24,6 +25,7 @@ namespace Emerald
 		bool AddText(wchar_t _text);
 		bool AddText(const wchar_t* _text);
 
+		void SetText(const std::string& _text);
 		void SetText(const std::wstring& _text);
 
 		const std::wstring& GetText();

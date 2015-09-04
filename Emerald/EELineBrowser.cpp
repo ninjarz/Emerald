@@ -15,6 +15,15 @@ namespace Emerald
 		m_font.SetParent(this);
 	}
 
+	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::string& _text)
+		:
+		EEQuad2D(_rect, _color),
+		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
+	{
+		m_font.SetParent(this);
+		m_font.SetText(_text);
+	}
+
 	//----------------------------------------------------------------------------------------------------
 	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::wstring& _text)
 		:
@@ -88,6 +97,12 @@ namespace Emerald
 	bool EELineBrowser::AddText(const wchar_t* _text)
 	{
 		return m_font.AddText(_text);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EELineBrowser::SetText(const std::string& _text)
+	{
+		m_font.SetText(_text.data());
 	}
 
 	//----------------------------------------------------------------------------------------------------

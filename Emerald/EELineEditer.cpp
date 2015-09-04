@@ -53,7 +53,7 @@ namespace Emerald
 		}
 		if (s_triggeredObject == this)
 		{
-			if (EECore::s_EECore->IsKeyInput())
+			while (EECore::s_EECore->IsKeyInput())
 			{
 				//the letter on the LineEditer can not be '\r'
 				wchar_t letter = (wchar_t)EECore::s_EECore->GetKey();

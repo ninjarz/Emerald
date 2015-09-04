@@ -36,6 +36,7 @@ namespace Emerald
 		static FT_Face s_face;
 
 	public:
+		EEFont(const FLOAT3& _position, const EEColor& _color, char* _text);
 		EEFont(const FLOAT3& _position, const EEColor& _color, wchar_t* _text);
 		EEFont(const EEFont& _font);
 		virtual ~EEFont();
@@ -46,7 +47,9 @@ namespace Emerald
 		bool AddText(const wchar_t* _text);
 		bool AddText(const std::wstring& _text);
 
+		bool SetText(const char* _text);
 		bool SetText(const wchar_t* _text);
+		bool SetText(const std::string& _text);
 		bool SetText(const std::wstring& _text);
 
 		const std::wstring& GetText();

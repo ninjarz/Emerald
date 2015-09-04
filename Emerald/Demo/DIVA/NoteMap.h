@@ -46,7 +46,7 @@ class NoteMap
 {
 public:
 	NoteMap();
-	NoteMap(wchar_t* _fileName);
+	NoteMap(const char* _filePath, const char* _basePath);
 
 	Frame* GetFrame();
 	int GetFramePos();

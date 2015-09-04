@@ -2,7 +2,6 @@
 
 #include <list>
 #include "DIVAMusicList.h"
-#include "NoteMap.h"
 using namespace std;
 
 // DIVANoteState
@@ -12,15 +11,15 @@ enum DIVANoteState
 	DIVA_NOTE_DEFAULT = 0,
 	DIVA_NOTE_COOL,
 	DIVA_NOTE_FINE,
-	DIVA_NOTE_SAD,
 	DIVA_NOTE_SAFE,
+	DIVA_NOTE_SAD,
 	DIVA_NOTE_WORST,
 
 	DIVA_NOTE_STRIP_DEFAULT,
 	DIVA_NOTE_STRIP_COOL,
 	DIVA_NOTE_STRIP_FINE,
-	DIVA_NOTE_STRIP_SAD,
 	DIVA_NOTE_STRIP_SAFE,
+	DIVA_NOTE_STRIP_SAD,
 	DIVA_NOTE_STRIP_WORST
 
 };
@@ -55,11 +54,11 @@ public:
 };
 
 
-class DIVAMana
+class DIVAGame
 {
 public:
-	DIVAMana(wchar_t* _fileName);
-	~DIVAMana();
+	DIVAGame(NoteMap _noteMap);
+	~DIVAGame();
 
 	bool Start();
 	bool Process();
