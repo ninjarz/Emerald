@@ -347,9 +347,10 @@ int SelectMusic(DIVAMusicList& _musicList)
 	starSlide.SetLocalZOrder(9.f);
 	selectScene.AddObject(&starSlide);
 
+	// 0
 	// ChooseFrame
 	EETexture chooseFrameTex(L"Texture/Project Diva Freedom/Song Choosing/Song Choosing-Frame.png");
-	EEButton chooseFrameQuad(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), chooseFrameTex, chooseFrameTex, chooseFrameTex, [&flag] { flag = 1; });
+	EEButton chooseFrameQuad(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), chooseFrameTex, chooseFrameTex, chooseFrameTex, [&flag, &_musicList] { flag = 1; _musicList.SelectMusic(0); });
 	chooseFrameQuad.SetLocalZOrder(7.f);
 	selectScene.AddObject(&chooseFrameQuad);
 	EELineBrowser chooseFrameText(Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * 0.4033f, (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * 0.4611f), EEColor::LUCENCY, EEColor::WHITE, listInfo[0].musicName);
@@ -395,6 +396,22 @@ int SelectMusic(DIVAMusicList& _musicList)
 	EESlide chooseBrightSlide(Rect_Float((float)EEGetWidth() * 0.f, (float)EEGetHeight() * 0.3944f, (float)EEGetWidth() * 0.57f, (float)EEGetHeight() * 0.4711f), chooseBrightTex, 4);
 	chooseBrightSlide.SetLocalZOrder(7.1f);
 	selectScene.AddObject(&chooseBrightSlide);
+	// 1
+	// ChooseFrame
+	EEButton chooseFrameQuad1(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * (0.4033f + 0.1f), (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * (0.4611f + 0.1f)), chooseFrameTex, chooseFrameTex, chooseFrameTex, [&flag, &_musicList] { flag = 1; _musicList.SelectMusic(1); });
+	chooseFrameQuad1.SetLocalZOrder(7.f);
+	selectScene.AddObject(&chooseFrameQuad1);
+	EELineBrowser chooseFrameText1(Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * (0.4033f + 0.1f), (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * (0.4611f + 0.1f)), EEColor::LUCENCY, EEColor::WHITE, listInfo[1].musicName);
+	chooseFrameText1.SetLocalZOrder(6.f);
+	selectScene.AddObject(&chooseFrameText1);
+	// 2
+	// ChooseFrame
+	EEButton chooseFrameQuad2(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * (0.4033f + 0.2f), (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * (0.4611f + 0.2f)), chooseFrameTex, chooseFrameTex, chooseFrameTex, [&flag, &_musicList] { flag = 1; _musicList.SelectMusic(2); });
+	chooseFrameQuad2.SetLocalZOrder(7.f);
+	selectScene.AddObject(&chooseFrameQuad2);
+	EELineBrowser chooseFrameText2(Rect_Float((float)EEGetWidth() * 0.01625f, (float)EEGetHeight() * (0.4033f + 0.2f), (float)EEGetWidth() * 0.33875f, (float)EEGetHeight() * (0.4611f + 0.2f)), EEColor::LUCENCY, EEColor::WHITE, listInfo[2].musicName);
+	chooseFrameText2.SetLocalZOrder(6.f);
+	selectScene.AddObject(&chooseFrameText2);
 
 	// ItemsZone
 	EETexture itemsZoneTex(L"Texture/Project Diva Freedom/Song Choosing/Items Zone.png");
@@ -461,6 +478,7 @@ int SelectMusic(DIVAMusicList& _musicList)
 	easyButton.SetTriggeredFunc([&]
 	{
 		difficult = 0;
+		_musicList.SelectDegree(0);
 		easyButton.SetAlpha(1.0f);
 		normalButton.SetAlpha(0.0f);
 		hardButton.SetAlpha(0.0f);
@@ -479,6 +497,7 @@ int SelectMusic(DIVAMusicList& _musicList)
 	normalButton.SetTriggeredFunc([&]
 	{
 		difficult = 1;
+		_musicList.SelectDegree(1);
 		easyButton.SetAlpha(0.0f);
 		normalButton.SetAlpha(1.0f);
 		hardButton.SetAlpha(0.0f);
@@ -497,6 +516,7 @@ int SelectMusic(DIVAMusicList& _musicList)
 	hardButton.SetTriggeredFunc([&]
 	{
 		difficult = 2;
+		_musicList.SelectDegree(2);
 		easyButton.SetAlpha(0.0f);
 		normalButton.SetAlpha(0.0f);
 		hardButton.SetAlpha(1.0f);
@@ -515,6 +535,7 @@ int SelectMusic(DIVAMusicList& _musicList)
 	extremeButton.SetTriggeredFunc([&]
 	{
 		difficult = 3;
+		_musicList.SelectDegree(3);
 		easyButton.SetAlpha(0.0f);
 		normalButton.SetAlpha(0.0f);
 		hardButton.SetAlpha(0.0f);
@@ -532,11 +553,19 @@ int SelectMusic(DIVAMusicList& _musicList)
 	});
 
 
-	while (EERun() && flag == 0)
+	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 
 		EEProcess(&selectScene);
+
+		if (flag != 0)
+		{
+			if (!_musicList.GetNoteMap())
+				flag = 0;
+			else
+				break;
+		}
 
 		EEEndScene();
 	}
@@ -643,7 +672,7 @@ int SimpleSet()
 	return flag;
 }
 
-int FreePlay(NoteMap& _noteMap)
+int FreePlay(const NoteMap* _noteMap)
 {
 	int flag = 0;
 	
@@ -783,7 +812,7 @@ int FreePlay(NoteMap& _noteMap)
 	*/
 
 	// map
-	DIVAGame game(_noteMap);
+	DIVAGame game(*_noteMap);
 	game.Start();
 
 	while(EERun() && flag == 0)
@@ -834,7 +863,7 @@ int main(int _argc, char** _argv)
 				case 1:
 					while (flag = SimpleSet())
 					{
-						FreePlay(*musicList.GetNoteMap(flag - 1, 0));
+						FreePlay(musicList.GetNoteMap());
 					}
 					break;
 				}

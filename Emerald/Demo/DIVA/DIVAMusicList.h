@@ -11,8 +11,8 @@ struct DIVAMusicInfo
 public:
 	string musicName;
 	string musicPath;
-	map<int, string> musicMaps;
-	map<int, NoteMap> musicMapsInfo;
+	map<int, string> musicMapPaths;
+	map<int, NoteMap> musicMapData;
 };
 
 class DIVAMusicList
@@ -22,11 +22,17 @@ public:
 
 	bool Initialize();
 	vector<DIVAMusicInfo>* GetMusicList();
-	NoteMap* GetNoteMap(unsigned int _listId, unsigned int _degree);
+	bool SelectMusic(unsigned int _listId);
+	bool SelectDegree(unsigned int _degree);
+	bool SelectNoteMap(unsigned int _listId, unsigned int _degree);
+	const NoteMap* GetNoteMap();
+	const NoteMap* GetNoteMap(unsigned int _listId, unsigned int _degree);
 
 protected:
 	bool LoadMusicList();
 
 protected:
 	vector<DIVAMusicInfo> m_musicList;
+	unsigned int m_currentMusic;
+	unsigned int m_currentDegree;
 };

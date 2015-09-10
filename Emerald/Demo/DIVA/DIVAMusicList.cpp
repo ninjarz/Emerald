@@ -7,6 +7,9 @@
 #include <string>
 
 DIVAMusicList::DIVAMusicList()
+	:
+	m_currentMusic(0),
+	m_currentDegree(0)
 {
 
 }
@@ -21,19 +24,50 @@ vector<DIVAMusicInfo>* DIVAMusicList::GetMusicList()
 	return &m_musicList;
 }
 
-NoteMap* DIVAMusicList::GetNoteMap(unsigned int _listId, unsigned int _degree)
+bool DIVAMusicList::SelectMusic(unsigned int _listId)
+{
+	m_currentMusic = _listId;
+
+	return true;
+}
+
+bool DIVAMusicList::SelectDegree(unsigned int _degree)
+{
+	m_currentDegree = _degree;
+
+	return true;
+}
+
+bool DIVAMusicList::SelectNoteMap(unsigned int _listId, unsigned int _degree)
+{
+	m_currentMusic = _listId;
+	m_currentDegree = _degree;
+
+	return true;
+}
+
+const NoteMap* DIVAMusicList::GetNoteMap()
+{
+	return GetNoteMap(m_currentMusic, m_currentDegree);
+}
+
+const NoteMap* DIVAMusicList::GetNoteMap(unsigned int _listId, unsigned int _degree)
 {
 	if (_listId < 0 || m_musicList.size() <= _listId)
 		return nullptr;
+	auto& paths = m_musicList[_listId].musicMapPaths;
+	auto& pathsIt = paths.find(_degree);
+	if (pathsIt == paths.end())
+		return nullptr;
 
-	auto& info = m_musicList[_listId].musicMapsInfo;
-	auto it = info.find(_degree);
-	if (it == info.end())
+	auto& data = m_musicList[_listId].musicMapData;
+	auto dataIt = data.find(_degree);
+	if (dataIt == data.end())
 	{
-		info[_degree] = NoteMap(m_musicList[_listId].musicMaps[_degree].c_str(), m_musicList[_listId].musicPath.c_str());
+		data[_degree] = NoteMap(m_musicList[_listId].musicMapPaths[_degree].c_str(), m_musicList[_listId].musicPath.c_str());
 	}
 
-	return &info[_degree];
+	return &data[_degree];
 }
 
 bool DIVAMusicList::LoadMusicList()
@@ -72,13 +106,13 @@ bool DIVAMusicList::LoadMusicList()
 						auto end = degree.find_last_of('.') - 1;
 						degree = degree.substr(begin, end - begin + 1);
 						if (degree == "Easy")
-							info.musicMaps[0] = info.musicPath + mapData.cFileName;
+							info.musicMapPaths[0] = info.musicPath + mapData.cFileName;
 						else if (degree == "Normal")
-							info.musicMaps[1] = info.musicPath + mapData.cFileName;
+							info.musicMapPaths[1] = info.musicPath + mapData.cFileName;
 						else if (degree == "Hard")
-							info.musicMaps[2] = info.musicPath + mapData.cFileName;
+							info.musicMapPaths[2] = info.musicPath + mapData.cFileName;
 						else
-							info.musicMaps[3] = info.musicPath + mapData.cFileName;
+							info.musicMapPaths[3] = info.musicPath + mapData.cFileName;
 					} while (FindNextFileA(mapHandle, &mapData));
 				}
 
