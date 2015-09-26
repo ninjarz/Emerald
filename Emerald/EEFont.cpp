@@ -74,14 +74,14 @@ namespace Emerald
 			break;
 
 		case FT_PIXEL_MODE_GRAY:
-			// memo:index + 3 should be 255 and other parts of the color should be src[i]
+			// memo: index + 3 should be 255 and other parts of the color should be src[i]
 			for (int i = 0; i < size; ++i)
 			{
 				int dstIndex = i << 2;
-				dst[dstIndex + 0] = 255;
-				dst[dstIndex + 1] = 255;
-				dst[dstIndex + 2] = 255;
-				dst[dstIndex + 3] = src[i];
+				dst[dstIndex + 0] = src[i];
+				dst[dstIndex + 1] = src[i];
+				dst[dstIndex + 2] = src[i];
+				dst[dstIndex + 3] = 255;
 			}
 			break;
 		}
@@ -189,7 +189,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(wchar_t _text)
 	{
-		// delete
+		// backspace
 		if (_text == 8)
 		{
 			if (m_text.size())
@@ -204,7 +204,7 @@ namespace Emerald
 		return true;
 	}
 
-	// memo: deal with backspace
+	// todo: deal with backspace
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(const wchar_t* _text)
 	{
@@ -274,7 +274,7 @@ namespace Emerald
 		return m_isTextDirty;
 	}
 
-	//EEFont_APIS
+	// EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
 	EEBitmap EEGetFontBitmap(wchar_t _char)
 	{

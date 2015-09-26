@@ -77,7 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Demo\animation.cpp" />
-    <ClCompile Include="Demo\AnimationEditer.cpp" />
+    <ClCompile Include="Demo\AnimationEditor.cpp" />
     <ClCompile Include="Demo\Average.cpp" />
     <ClCompile Include="Demo\Blur.cpp" />
     <ClCompile Include="Demo\CameraAction.cpp" />
@@ -89,7 +89,7 @@
     <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVA\NoteMap.cpp" />
     <ClCompile Include="Demo\DNSServer.cpp" />
-    <ClCompile Include="Demo\Editer.cpp" />
+    <ClCompile Include="Demo\Editor.cpp" />
     <ClCompile Include="Demo\Erode.cpp" />
     <ClCompile Include="Demo\FontTest.cpp" />
     <ClCompile Include="Demo\Line2d.cpp" />
@@ -161,7 +161,7 @@
     <ClCompile Include="EEIntBoard.cpp" />
     <ClCompile Include="EELine2D.cpp" />
     <ClCompile Include="EELineBrowser.cpp" />
-    <ClCompile Include="EELineEditer.cpp" />
+    <ClCompile Include="EELineEditor.cpp" />
     <ClCompile Include="EEMemoryLeak.cpp" />
     <ClCompile Include="EEMusic.cpp" />
     <ClCompile Include="EEObject2D.cpp" />

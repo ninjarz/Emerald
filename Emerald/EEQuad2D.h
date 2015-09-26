@@ -52,7 +52,7 @@ namespace Emerald
 		virtual bool Update();
 		virtual bool Render();
 
-		//position
+		// position
 		virtual void SetPositionX(float _posX);
 		virtual void SetPositionY(float _posY);
 		virtual void SetPositionXY(const FLOAT2& _position);
@@ -61,7 +61,7 @@ namespace Emerald
 		virtual void SetWidth(float _width);
 		virtual void SetHeight(float _height);
 
-		//position
+		// position
 		virtual const Rect_Float& GetRect() const;
 		virtual float GetWidth() const;
 		virtual float GetHeight() const;

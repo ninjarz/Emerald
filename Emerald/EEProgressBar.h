@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEProgressBar
+	// EEProgressBar
 	//----------------------------------------------------------------------------------------------------
 	class EEProgressbar : public EEQuad2D
 	{
@@ -21,7 +21,7 @@ namespace Emerald
 		virtual bool Update();
 		virtual bool Render();
 
-		//localZOrder
+		// localZOrder
 		virtual void SetLocalZOrder(float _localZOrder);
 		bool SetProgress(float _progress);
 		bool SetCallbackFunc(std::function<void(float)>);
@@ -33,13 +33,12 @@ namespace Emerald
 		virtual void OnMouseTriggered(const Point& _pos);
 
 	private:
-		//the quad of the frame
+		// the quad of the frame
 		EEQuad2D m_progressFrame;
-		//the degree of the progress
+		// the degree of the progress
 		float m_progress;
 		bool m_isProgressDirty;
-		//callback function
-		//void(*m_callbackFunc)(void);
+		// callback function
 		std::function<void(float)> m_callbackFunc;
 	};
 }

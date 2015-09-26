@@ -168,9 +168,6 @@
     <ClCompile Include="EEGUI.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="EELineEditer.cpp">
-      <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
     <ClCompile Include="EEProgressBar.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
@@ -357,9 +354,6 @@
     <ClCompile Include="Demo\animation.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\AnimationEditer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\Average.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -376,9 +370,6 @@
       <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="Demo\DNSServer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Editer.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="Demo\Erode.cpp">
@@ -458,6 +449,15 @@
     </ClCompile>
     <ClCompile Include="EETextEditor.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EELineEditor.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Editor.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\AnimationEditor.cpp">
+      <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

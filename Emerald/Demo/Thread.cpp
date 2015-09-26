@@ -1,4 +1,4 @@
-//CameraAction Demo
+// Thread Demo
 #if 0
 #include "../Emerald.h"
 
