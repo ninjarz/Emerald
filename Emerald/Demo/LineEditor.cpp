@@ -1,6 +1,6 @@
-//LineEditer Demo
-#if 0
-#include "Emerald.h"
+//LineEditor Demo
+#if 1
+#include "../Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(int _argc, char** _argv)
@@ -17,16 +17,16 @@ int main(int _argc, char** _argv)
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
 	EETexture button2Tex(L"Texture/主界面/模式标签/生涯模式.png");
 	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, L"hello world");
-	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
-	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
+	EELineEditor *lineEditor = new EELineEditor(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
+	EELineEditor *lineEditor2 = new EELineEditor(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 		EEShowFPSInTitle(L"- -");
 
-		lineEditer->Process();
-		lineEditer2->Process();
+		lineEditor->Process();
+		lineEditor2->Process();
 		helloworld.Process();
 
 		EEEndScene();

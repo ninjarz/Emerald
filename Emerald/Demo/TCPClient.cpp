@@ -1,6 +1,6 @@
-//Send recorder by TCP(Client)
+// Send recorder by TCP(Client)
 #if 0
-#include "Emerald.h"
+#include "../Emerald.h"
 
 EETCPClient g_client("192.168.229.1", 23333);
 

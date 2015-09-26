@@ -1,6 +1,6 @@
 //CameraAction Demo
 #if 0
-#include "Emerald.h"
+#include "../Emerald.h"
 
 using namespace std;
 

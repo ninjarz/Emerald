@@ -1,13 +1,13 @@
-#include "EETextEditer.h"
+#include "EETextEditor.h"
 #include "EECore.h"
 
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EETextEditer
+	//EETextEditor
 	//----------------------------------------------------------------------------------------------------
-	EETextEditer::EETextEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
+	EETextEditor::EETextEditor(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
 		m_font(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
@@ -17,7 +17,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETextEditer::EETextEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
+	EETextEditor::EETextEditor(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _tex),
 		m_font(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
@@ -27,22 +27,22 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETextEditer::EETextEditer(const EETextEditer& _lineEditer)
+	EETextEditor::EETextEditor(const EETextEditor& _lineEditor)
 		:
-		EEQuad2D(_lineEditer),
-		m_font(_lineEditer.m_font)
+		EEQuad2D(_lineEditor),
+		m_font(_lineEditor.m_font)
 	{
 
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETextEditer::~EETextEditer()
+	EETextEditor::~EETextEditor()
 	{
 
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EETextEditer::Update()
+	bool EETextEditor::Update()
 	{
 		if (!EEQuad2D::Update())
 			return false;
@@ -64,7 +64,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EETextEditer::Render()
+	bool EETextEditor::Render()
 	{
 		if (!EEQuad2D::Render())
 			return false;

@@ -186,9 +186,6 @@
     <ClCompile Include="EEQuad2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
-    <ClCompile Include="EETextEditer.cpp">
-      <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
     <ClCompile Include="EEBox.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
@@ -393,9 +390,6 @@
     <ClCompile Include="Demo\Line2d.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\LineEditer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\Music.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -459,6 +453,12 @@
     <ClCompile Include="Demo\DIVA\DIVAGame.cpp">
       <Filter>源文件\Demo\DIVA</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\LineEditor.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EETextEditor.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -521,9 +521,6 @@
     <ClInclude Include="EEGUI.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
-    <ClInclude Include="EELineEditer.h">
-      <Filter>头文件\Emerald\EEGUI</Filter>
-    </ClInclude>
     <ClInclude Include="EEButton.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
@@ -535,9 +532,6 @@
     </ClInclude>
     <ClInclude Include="EEQuad2D.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
-    </ClInclude>
-    <ClInclude Include="EETextEditer.h">
-      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
     <ClInclude Include="EEBox.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
@@ -691,6 +685,12 @@
     </ClInclude>
     <ClInclude Include="Demo\DIVA\DIVAGame.h">
       <Filter>源文件\Demo\DIVA</Filter>
+    </ClInclude>
+    <ClInclude Include="EELineEditor.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EETextEditor.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

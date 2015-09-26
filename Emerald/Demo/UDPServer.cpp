@@ -1,6 +1,6 @@
-//Send recorder by UDP(Server)
+// Send recorder by UDP(Server)
 #if 0
-#include "Emerald.h"
+#include "../Emerald.h"
 #include <map>
 #include <iostream>
 

@@ -55,9 +55,9 @@ int main(int _argc, char** _argv)
 	button1->SetLocalZOrder(5.f);
 	mainScene->AddObject(button1);
 
-	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 315.f), EEColor::WHITE, EEColor::BLACK);
-	lineEditer->SetLocalZOrder(3.f);
-	mainScene->AddObject(lineEditer);
+	EELineEditor *lineEditor = new EELineEditor(Rect_Float(200.f, 300.f, 300.f, 315.f), EEColor::WHITE, EEColor::BLACK);
+	lineEditor->SetLocalZOrder(3.f);
+	mainScene->AddObject(lineEditor);
 	while (EERun())
 	{
 		EEBeginScene(EEColor::WHITE);
@@ -66,7 +66,7 @@ int main(int _argc, char** _argv)
 		button1->Process();
 		if (g_flag)
 		{
-			g_name = lineEditer->GetText();
+			g_name = lineEditor->GetText();
 			cout << g_name;
 			break;
 		}
@@ -76,7 +76,7 @@ int main(int _argc, char** _argv)
 	if (!g_flag)
 		return 0;
 	mainScene->RemoveObject(button1);
-	mainScene->RemoveObject(lineEditer);
+	mainScene->RemoveObject(lineEditor);
 
 
 

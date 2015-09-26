@@ -1,4 +1,4 @@
-//Font Demo
+// Font Demo
 #if 0
 #include "../Emerald.h"
 
@@ -33,8 +33,8 @@ int main(int _argc, char** _argv)
 	EETexture bgTex(L"Texture\\Project Diva Freedom\\01\\Ñ¡¸èÌõ.png");
 	EEFont helloworld(FLOAT3(100.0f, 100.0f, 0.0f), EEColor::YELLOW, L"hello world");
 	helloworld.AddText(L'1');
-	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
-	EELineEditer *lineEditer2 = new EELineEditer(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
+	EELineEditor *lineEditor = new EELineEditor(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
+	EELineEditor *lineEditor2 = new EELineEditor(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
 
 	while (EERun())
 	{
@@ -43,8 +43,8 @@ int main(int _argc, char** _argv)
 
 		quad0.Process();
 		quad1.Process();
-		lineEditer->Process();
-		lineEditer2->Process();
+		lineEditor->Process();
+		lineEditor2->Process();
 		helloworld.Process();
 
 		EEEndScene();

@@ -17,7 +17,7 @@ namespace Emerald
 		EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::string& _text);
 		EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::wstring& _text);
 		EELineBrowser(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor, const std::wstring& _text);
-		EELineBrowser(const EELineBrowser& _lineEditer);
+		EELineBrowser(const EELineBrowser& _lineEditor);
 		virtual ~EELineBrowser();
 
 		virtual bool Update();

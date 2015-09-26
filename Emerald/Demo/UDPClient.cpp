@@ -1,6 +1,6 @@
-//Send recorder by UDP(Client)
+// Send recorder by UDP(Client)
 #if 0
-#include "Emerald.h"
+#include "../Emerald.h"
 
 using namespace std;
 
@@ -49,18 +49,18 @@ int main(int _argc, char** _argv)
 	EEInitialize(desc);
 
 	EETexture bgTex(L"Texture\\主界面\\主界面背景.jpg");
-	EELineEditer *lineEditer = new EELineEditer(Rect_Float(200.f, 300.f, 300.f, 330.f), bgTex, EEColor::BLACK);
+	EELineEditor *lineEditor = new EELineEditor(Rect_Float(200.f, 300.f, 300.f, 330.f), bgTex, EEColor::BLACK);
 	EETexture buttonTex(L"Texture/主界面/模式标签/生涯模式.png");
 	EEButton *button1 = new EEButton(EE_BUTTON_SCALE, Rect_Float(40.f, 380.f, 100.f, 440.f), 1.3f, 0.2f, 0.2f, buttonTex, (DWORD_PTR)ConfirmName);
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 
-		lineEditer->Process();
+		lineEditor->Process();
 		button1->Process();
 		if (flag)
 		{
-			g_name = lineEditer->GetText();
+			g_name = lineEditor->GetText();
 			break;
 		}
 

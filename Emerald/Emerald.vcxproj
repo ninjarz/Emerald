@@ -93,7 +93,7 @@
     <ClCompile Include="Demo\Erode.cpp" />
     <ClCompile Include="Demo\FontTest.cpp" />
     <ClCompile Include="Demo\Line2d.cpp" />
-    <ClCompile Include="Demo\LineEditer.cpp" />
+    <ClCompile Include="Demo\LineEditor.cpp" />
     <ClCompile Include="Demo\Music.cpp" />
     <ClCompile Include="Demo\Picking.cpp" />
     <ClCompile Include="Demo\Points.cpp" />
@@ -181,7 +181,7 @@
     <ClCompile Include="EESphere.cpp" />
     <ClCompile Include="EETCP.cpp" />
     <ClCompile Include="EETextBrowser.cpp" />
-    <ClCompile Include="EETextEditer.cpp" />
+    <ClCompile Include="EETextEditor.cpp" />
     <ClCompile Include="EETexture.cpp" />
     <ClCompile Include="EEInput.cpp" />
     <ClCompile Include="EEMath.cpp" />
@@ -238,7 +238,7 @@
     <ClInclude Include="EEIntBoard.h" />
     <ClInclude Include="EELine2D.h" />
     <ClInclude Include="EELineBrowser.h" />
-    <ClInclude Include="EELineEditer.h" />
+    <ClInclude Include="EELineEditor.h" />
     <ClInclude Include="EEMemoryLeak.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEObject2D.h" />
@@ -258,7 +258,7 @@
     <ClInclude Include="EESphere.h" />
     <ClInclude Include="EETCP.h" />
     <ClInclude Include="EETextBrowser.h" />
-    <ClInclude Include="EETextEditer.h" />
+    <ClInclude Include="EETextEditor.h" />
     <ClInclude Include="EETexture.h" />
     <ClInclude Include="EEInput.h" />
     <ClInclude Include="EEMath.h" />

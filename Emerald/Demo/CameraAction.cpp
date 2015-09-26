@@ -1,6 +1,6 @@
-//CameraAction Demo
+// CameraAction Demo
 #if 0
-#include "Emerald.h"
+#include "../Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(int _argc, char** _argv)

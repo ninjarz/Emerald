@@ -1,1 +1,1 @@
-#define _DIVA_ 1
+#define _DIVA_ 0

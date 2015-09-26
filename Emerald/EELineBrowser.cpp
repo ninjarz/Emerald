@@ -45,10 +45,10 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineBrowser::EELineBrowser(const EELineBrowser& _lineEditer)
+	EELineBrowser::EELineBrowser(const EELineBrowser& _lineEditor)
 		:
-		EEQuad2D(_lineEditer),
-		m_font(_lineEditer.m_font)
+		EEQuad2D(_lineEditor),
+		m_font(_lineEditor.m_font)
 	{
 
 	}

@@ -403,7 +403,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	float EEQuad2D::GetWidht() const
+	float EEQuad2D::GetWidth() const
 	{
 		return m_quadWidth;
 	}

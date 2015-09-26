@@ -9,7 +9,7 @@ namespace Emerald
 	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr)
 		:
 		EEQuad2D(_progressRect, _progressTex),
-		m_progressFrame(Rect_Float(0.0f, 0.0f, _progressRect.z - _progressRect.x, _progressRect.w - _progressRect.y) - FLOAT2(GetWidht() / 2, GetHeight() / 2), _frameTex),
+		m_progressFrame(Rect_Float(0.0f, 0.0f, _progressRect.z - _progressRect.x, _progressRect.w - _progressRect.y) - FLOAT2(GetWidth() / 2, GetHeight() / 2), _frameTex),
 		m_progress(0.0f),
 		m_isProgressDirty(false),
 		m_callbackFunc(_funcPtr)
@@ -22,7 +22,7 @@ namespace Emerald
 	EEProgressbar::EEProgressbar(const Rect_Float& _progressRect, const Rect_Float& _frameRect, const EETexture& _progressTex, const EETexture& _frameTex, std::function<void(float)> _funcPtr)
 		:
 		EEQuad2D(_progressRect, _progressTex),
-		m_progressFrame(_frameRect - FLOAT2(GetWidht() / 2, GetHeight() / 2), _frameTex),
+		m_progressFrame(_frameRect - FLOAT2(GetWidth() / 2, GetHeight() / 2), _frameTex),
 		m_progress(0.0f),
 		m_isProgressDirty(false),
 		m_callbackFunc(_funcPtr)

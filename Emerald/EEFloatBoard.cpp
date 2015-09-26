@@ -56,7 +56,7 @@ namespace Emerald
 			{
 				m_num[i].SetParent(this);
 				m_num[i].SetLocalZOrder(m_localZOrder); //It is wrong~~
-				m_num[i].SetRect(Rect_Float((float)(m_num.size() - i - 1) * width, 0.0f, (float)(m_num.size() - i) * width, (float)m_quadHeight) - FLOAT2(GetWidht() / 2, GetHeight() / 2));
+				m_num[i].SetRect(Rect_Float((float)(m_num.size() - i - 1) * width, 0.0f, (float)(m_num.size() - i) * width, (float)m_quadHeight) - FLOAT2(GetWidth() / 2, GetHeight() / 2));
 				m_num[i].SetIsUseColor(false);
 				m_num[i].SetIsUseTex(true);
 			}

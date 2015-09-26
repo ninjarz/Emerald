@@ -1,13 +1,13 @@
-#include "EELineEditer.h"
+#include "EELineEditor.h"
 #include "EECore.h"
 
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EELineEditer
+	//EELineEditor
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::EELineEditer(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
+	EELineEditor::EELineEditor(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
 		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
@@ -17,7 +17,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::EELineEditer(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
+	EELineEditor::EELineEditor(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _tex),
 		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
@@ -27,22 +27,22 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::EELineEditer(const EELineEditer& _lineEditer)
+	EELineEditor::EELineEditor(const EELineEditor& _lineEditor)
 		:
-		EEQuad2D(_lineEditer),
-		m_font(_lineEditer.m_font)
+		EEQuad2D(_lineEditor),
+		m_font(_lineEditor.m_font)
 	{
 
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EELineEditer::~EELineEditer()
+	EELineEditor::~EELineEditor()
 	{
 
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EELineEditer::Update()
+	bool EELineEditor::Update()
 	{
 		if (!EEQuad2D::Update())
 			return false;
@@ -55,7 +55,7 @@ namespace Emerald
 		{
 			while (EECore::s_EECore->IsKeyInput())
 			{
-				//the letter on the LineEditer can not be '\r'
+				//the letter on the LineEditor can not be '\r'
 				wchar_t letter = (wchar_t)EECore::s_EECore->GetKey();
 				if (letter != L'\r' && letter != L'\n')
 				{
@@ -69,7 +69,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EELineEditer::Render()
+	bool EELineEditor::Render()
 	{
 		if (!EEQuad2D::Render())
 			return false;
@@ -78,7 +78,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	const std::wstring& EELineEditer::GetText()
+	const std::wstring& EELineEditor::GetText()
 	{
 		return m_font.GetText();
 	}
