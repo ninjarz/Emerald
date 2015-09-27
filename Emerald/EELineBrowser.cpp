@@ -10,7 +10,7 @@ namespace Emerald
 	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
-		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
+		m_font(m_quadWidth, m_quadHeight, _fontColor, L"")
 	{
 		m_font.SetParent(this);
 	}
@@ -18,7 +18,7 @@ namespace Emerald
 	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::string& _text)
 		:
 		EEQuad2D(_rect, _color),
-		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
+		m_font(m_quadWidth, m_quadHeight, _fontColor, L"")
 	{
 		m_font.SetParent(this);
 		m_font.SetText(_text);
@@ -28,7 +28,7 @@ namespace Emerald
 	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor, const std::wstring& _text)
 		:
 		EEQuad2D(_rect, _color),
-		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
+		m_font(m_quadWidth, m_quadHeight, _fontColor, L"")
 	{
 		m_font.SetParent(this);
 		m_font.SetText(_text);
@@ -38,7 +38,7 @@ namespace Emerald
 	EELineBrowser::EELineBrowser(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor, const std::wstring& _text)
 		:
 		EEQuad2D(_rect, _tex),
-		m_font(FLOAT3(0.0f, 0.0f, 0.0f), _fontColor, L"")
+		m_font(m_quadWidth, m_quadHeight, _fontColor, L"")
 	{
 		m_font.SetParent(this);
 		m_font.SetText(_text);

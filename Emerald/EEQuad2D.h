@@ -16,6 +16,7 @@ namespace Emerald
 	};
 
 	//EEQuad2D
+	//----------------------------------------------------------------------------------------------------
 	/*
 	+--+--+--+--+--+--+--+--+
 	|           + position  |
@@ -23,7 +24,6 @@ namespace Emerald
 	|           +           |
 	+--+--+--+--+--+--+--+--+
 	*/
-	//----------------------------------------------------------------------------------------------------
 	class EEQuad2D : public EEObject2D
 	{
 	protected:
@@ -40,6 +40,7 @@ namespace Emerald
 		EEQuad2D();
 		EEQuad2D(const FLOAT3& _position);
 		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height);
+		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EEColor& _color);
 		EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex);
 		EEQuad2D(const Rect_Float& _rect);
 		EEQuad2D(const Rect_Float& _rect, const EEColor& _color);

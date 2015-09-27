@@ -78,10 +78,10 @@ namespace Emerald
 			for (int i = 0; i < size; ++i)
 			{
 				int dstIndex = i << 2;
-				dst[dstIndex + 0] = src[i];
-				dst[dstIndex + 1] = src[i];
-				dst[dstIndex + 2] = src[i];
-				dst[dstIndex + 3] = 255;
+				dst[dstIndex + 0] = 255;
+				dst[dstIndex + 1] = 255;
+				dst[dstIndex + 2] = 255;
+				dst[dstIndex + 3] = src[i];
 			}
 			break;
 		}
@@ -101,7 +101,7 @@ namespace Emerald
 		std::vector<EEBitmap> lineBitmaps;
 		for (wchar_t letter : _string)
 		{
-			if (letter != L'\n')
+			if (letter != L'\n' && letter != L'\r')
 				bitmaps.push_back(GetFontBitmap(letter));
 			else
 			{
@@ -120,7 +120,10 @@ namespace Emerald
 		:
 		EEQuad2D(_position),
 		m_text(AnsiToUnicode(_text)),
-		m_isTextDirty(true)
+		m_isTextDirty(true),
+		m_isDynamic(true),
+		m_isAdaptive(false),
+		m_adaptivePos(1.f, 1.f)
 	{
 		InitializeFont();
 
@@ -134,7 +137,78 @@ namespace Emerald
 		:
 		EEQuad2D(_position),
 		m_text(_text),
-		m_isTextDirty(true)
+		m_isTextDirty(true),
+		m_isDynamic(true),
+		m_isAdaptive(false),
+		m_adaptivePos(1.f, 1.f)
+	{
+		InitializeFont();
+
+		SetColor(_color);
+		SetIsUseColor(true);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const float _width, float height, const EEColor& _color)
+		:
+		EEQuad2D(FLOAT3(0.f, 0.f, 0.f), _width, height, _color),
+		m_text(L""),
+		m_isTextDirty(true),
+		m_isDynamic(false),
+		m_isAdaptive(true),
+		m_adaptivePos(1.f, 1.f)
+	{
+		InitializeFont();
+
+		SetColor(_color);
+		SetIsUseColor(true);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const float _width, float height, const EEColor& _color, wchar_t* _text)
+		:
+		EEQuad2D(FLOAT3(0.f, 0.f, 0.f), _width, height, _color),
+		m_text(_text),
+		m_isTextDirty(true),
+		m_isDynamic(false),
+		m_isAdaptive(true),
+		m_adaptivePos(1.f, 1.f)
+	{
+		InitializeFont();
+
+		SetColor(_color);
+		SetIsUseColor(true);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const Rect_Float& _rect, const EEColor& _color)
+		:
+		EEQuad2D(_rect, _color),
+		m_text(L""),
+		m_isTextDirty(true),
+		m_isDynamic(false),
+		m_isAdaptive(true),
+		m_adaptivePos(1.f, 1.f)
+	{
+		InitializeFont();
+
+		SetColor(_color);
+		SetIsUseColor(true);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	EEFont::EEFont(const Rect_Float& _rect, const EEColor& _color, wchar_t* _text)
+		:
+		EEQuad2D(_rect, _color),
+		m_text(_text),
+		m_isTextDirty(true),
+		m_isDynamic(false),
+		m_isAdaptive(true),
+		m_adaptivePos(1.f, 1.f)
 	{
 		InitializeFont();
 
@@ -148,7 +222,10 @@ namespace Emerald
 		:
 		EEQuad2D(_font),
 		m_text(_font.m_text),
-		m_isTextDirty(_font.m_isTextDirty)
+		m_isTextDirty(_font.m_isTextDirty),
+		m_isDynamic(_font.m_isDynamic),
+		m_isAdaptive(_font.m_isAdaptive),
+		m_adaptivePos(_font.m_adaptivePos)
 	{
 
 	}
@@ -163,10 +240,18 @@ namespace Emerald
 	{
 		if (m_isTextDirty)
 		{
-			// append from center(position)
-			SetTexture(GetFontBitmap(m_text));
-			SetWidth((float)GetTexture()->GetWidth());
-			SetHeight((float)GetTexture()->GetHeight());
+			if (m_isDynamic)
+			{
+				// append from center(position)
+				SetTexture(GetFontBitmap(m_text));
+				SetWidth((float)GetTexture()->GetWidth());
+				SetHeight((float)GetTexture()->GetHeight());
+			}
+			else
+			{
+				SetTexture(GetFontBitmap(m_text));
+				AdaptivePos();
+			}
 
 			m_isTextDirty = false;
 		}
@@ -208,7 +293,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::AddText(const wchar_t* _text)
 	{
-		if (*_text == L'\0')
+		if (_text == nullptr || *_text == L'\0')
 			return false;
 
 		m_text += _text;
@@ -228,14 +313,43 @@ namespace Emerald
 
 		return true;
 	}
+	
+	//----------------------------------------------------------------------------------------------------
+	/*
+	(0, 0)
+	+--+--+--+--+--+--+--+--+
+	|           +           |
+	+--+--+--+--+           |
+	|                       |
+	|                       |
+	|           +--+--+--+--+
+	|           +           |
+	+--+--+--+--+--+--+--+--+
+	                    (1.f, 1.f)
+	*/
+	bool EEFont::AdaptivePos()
+	{
+		if (!m_isDynamic && m_isAdaptive)
+		{
+			if (GetFontTotalWidth() || GetFontTotalHeight())
+			{
+				float beginX = ((GetFontTotalWidth() - GetWidth()) * m_adaptivePos.x) / GetFontTotalWidth();
+				float endX = beginX + GetWidth() / GetFontTotalWidth();
+				float beginY = ((GetFontTotalHeight() - GetHeight()) * m_adaptivePos.x) / GetFontTotalHeight();
+				float endY = beginY + GetHeight() / GetFontTotalHeight();
+				SetTexRect(Rect_Float(beginX, beginY, endX, endY));
+
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEFont::SetText(const char* _text)
 	{
-		m_text = AnsiToUnicode(_text);
-		m_isTextDirty = true;
-
-		return true;
+		return SetText(AnsiToUnicode(_text));
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -260,6 +374,27 @@ namespace Emerald
 		m_isTextDirty = true;
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetAdaptivePos(float _percentX, float _percentY)
+	{
+		m_adaptivePos.x = _percentX;
+		m_adaptivePos.y = _percentY;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEFont::GetFontTotalWidth()
+	{
+		return (float)GetTexture()->GetWidth();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEFont::GetFontTotalHeight()
+	{
+		return (float)GetTexture()->GetHeight();
 	}
 
 	//----------------------------------------------------------------------------------------------------

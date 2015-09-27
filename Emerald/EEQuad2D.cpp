@@ -147,6 +147,21 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EEColor& _color)
+		:
+		EEObject2D(_position),
+		m_quadRect(-_width / 2, -_height / 2, _width / 2, _height / 2),
+		m_quadWidth(_width),
+		m_quadHeight(_height),
+		m_quadVB(NULL)
+	{
+		InitializeQuad2D();
+
+		SetColor(_color);
+		CreateQuadVertexBuffer();
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEQuad2D::EEQuad2D(const FLOAT3& _position, FLOAT _width, FLOAT _height, const EETexture& _tex)
 		:
 		EEObject2D(_position),
@@ -156,10 +171,10 @@ namespace Emerald
 		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
+
 		SetTexture(_tex);
 		SetIsUseColor(false);
 		SetIsUseTex(true);
-
 		CreateQuadVertexBuffer();
 	}
 
@@ -202,10 +217,10 @@ namespace Emerald
 		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
+
 		SetTexture(_tex);
 		SetIsUseColor(false);
 		SetIsUseTex(true);
-
 		CreateQuadVertexBuffer();
 	}
 
@@ -219,10 +234,10 @@ namespace Emerald
 		m_quadVB(NULL)
 	{
 		InitializeQuad2D();
+
 		SetTexture(_tex);
 		SetIsUseColor(false);
 		SetIsUseTex(true);
-
 		CreateQuadVertexBuffer();
 	}
 
@@ -266,7 +281,7 @@ namespace Emerald
 			m_isPositionDirty = false;
 		}
 
-		if (m_isScaleDirty || m_isLocalZOrderDirty)
+		if (m_isScaleDirty || m_isLocalZOrderDirty || m_isTexRectDirty)
 		{
 			Rect_Float rect(
 				-m_quadWidth / 2,
@@ -294,6 +309,7 @@ namespace Emerald
 
 			m_isScaleDirty = false;
 			m_isLocalZOrderDirty = false;
+			m_isTexRectDirty = false;
 		}
 
 		return true;

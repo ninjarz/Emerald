@@ -38,6 +38,10 @@ namespace Emerald
 	public:
 		EEFont(const FLOAT3& _position, const EEColor& _color, char* _text);
 		EEFont(const FLOAT3& _position, const EEColor& _color, wchar_t* _text);
+		EEFont(const float _width, float height, const EEColor& _color);
+		EEFont(const float _width, float height, const EEColor& _color, wchar_t* _text);
+		EEFont(const Rect_Float& _rect, const EEColor& _color);
+		EEFont(const Rect_Float& _rect, const EEColor& _color, wchar_t* _text);
 		EEFont(const EEFont& _font);
 		virtual ~EEFont();
 
@@ -46,19 +50,26 @@ namespace Emerald
 		bool AddText(wchar_t _text);
 		bool AddText(const wchar_t* _text);
 		bool AddText(const std::wstring& _text);
+		bool AdaptivePos();
 
 		bool SetText(const char* _text);
 		bool SetText(const wchar_t* _text);
 		bool SetText(const std::string& _text);
 		bool SetText(const std::wstring& _text);
+		bool SetAdaptivePos(float _percentX, float _percentY);
 
+		float GetFontTotalWidth();
+		float GetFontTotalHeight();
 		const std::wstring& GetText();
 		bool IsTextDirty();
 
 	protected:
-		// memo:font's width and height
+		// todo: font's width and height
 		std::wstring m_text;
 		bool m_isTextDirty;
+		bool m_isDynamic;
+		bool m_isAdaptive;
+		FLOAT2 m_adaptivePos;
 	};
 
 	// EEFont_APIS

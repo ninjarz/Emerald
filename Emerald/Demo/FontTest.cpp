@@ -1,5 +1,5 @@
 // Font Demo
-#if 0
+#if 1
 #include "../Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
@@ -18,7 +18,7 @@ int main(int _argc, char** _argv)
 	EEBitmap bitmap2 = EEGetFontBitmap(L'Ñ½');
 	EEBitmap bitmap3 = EEGetFontBitmap(L'£¿');
 	EEBitmap bitmap = EEBitmapCombineHorizontal(bitmap1, bitmap2);
-	bitmap = EEBitmapCombineHorizontal(bitmap, bitmap3);
+	//bitmap = EEBitmapCombineHorizontal(bitmap, bitmap3);
 	//bitmap.Resize(500, 500);
 	//std::vector<EEBitmap> bitmaps;
 	//EEBitmapDivideVertical(bitmap, 3, bitmaps);
@@ -35,6 +35,7 @@ int main(int _argc, char** _argv)
 	helloworld.AddText(L'1');
 	EELineEditor *lineEditor = new EELineEditor(Rect_Float(200.f, 300.f, 300.f, 350.f), bgTex, EEColor::BLACK);
 	EELineEditor *lineEditor2 = new EELineEditor(Rect_Float(400.f, 300.f, 500.f, 350.f), bgTex, EEColor::BLACK);
+	EETextEditor *textEditor = new EETextEditor(Rect_Float(300.f, 100.f, 400.f, 150.f), bgTex, EEColor::BLACK);
 
 	while (EERun())
 	{
@@ -46,6 +47,7 @@ int main(int _argc, char** _argv)
 		lineEditor->Process();
 		lineEditor2->Process();
 		helloworld.Process();
+		textEditor->Process();
 
 		EEEndScene();
 	}

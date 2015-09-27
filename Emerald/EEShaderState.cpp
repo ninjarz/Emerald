@@ -69,9 +69,13 @@ namespace Emerald
 		deviceContext->RSSetState(m_rasterizerState);
 
 		ZeroMemory(&m_samplerDesc, sizeof(m_samplerDesc));
-		m_samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-		m_samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-		m_samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		m_samplerDesc.BorderColor[0] = 0.f;
+		m_samplerDesc.BorderColor[1] = 0.f;
+		m_samplerDesc.BorderColor[2] = 0.f;
+		m_samplerDesc.BorderColor[3] = 0.f;
+		m_samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+		m_samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+		m_samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
 		m_samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		device->CreateSamplerState(&m_samplerDesc, &m_samplerState);
 		deviceContext->PSSetSamplers(0, 1, &m_samplerState);

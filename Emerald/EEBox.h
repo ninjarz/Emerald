@@ -33,12 +33,12 @@ namespace Emerald
 		virtual bool Render();
 
 	protected:
-		//vbuffer and ibuffer
+		// vbuffer and ibuffer
 		bool CreateBoxVertexBuffer();
 		bool CreateBoxIndexBuffer();
 
 	protected:
-		//the size of the box
+		// the size of the box
 		FLOAT3 m_size;
 	};
 }

@@ -202,6 +202,7 @@ namespace Emerald
 		EETexture m_tex;
 		int m_texIndex;
 		Rect_Float m_texRect;
+		bool m_isTexRectDirty;
 		bool m_isUseTex;
 		float m_localZOrder;
 		bool m_isLocalZOrderDirty;

@@ -10,7 +10,7 @@ namespace Emerald
 	EETextEditor::EETextEditor(const Rect_Float &_rect, const EEColor& _color, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _color),
-		m_font(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
+		m_font(m_quadWidth, m_quadHeight, _fontColor, L"")
 	{
 		m_font.SetParent(this);
 		SetIsFocusable(true);
@@ -20,7 +20,7 @@ namespace Emerald
 	EETextEditor::EETextEditor(const Rect_Float &_rect, const EETexture& _tex, const EEColor& _fontColor)
 		:
 		EEQuad2D(_rect, _tex),
-		m_font(FLOAT3(_rect.x, _rect.y, 0.0f), _fontColor, L"")
+		m_font(m_quadWidth, m_quadHeight, _fontColor, L"")
 	{
 		m_font.SetParent(this);
 		SetIsFocusable(true);

@@ -56,6 +56,7 @@ namespace Emerald
 		m_tex(),
 		m_texIndex(0),
 		m_texRect(0.0, 0.0, 1.0f, 1.0f),
+		m_isTexRectDirty(true),
 		m_isUseTex(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
@@ -85,6 +86,7 @@ namespace Emerald
 		m_tex(),
 		m_texIndex(0),
 		m_texRect(0.0, 0.0, 1.0f, 1.0f),
+		m_isTexRectDirty(true),
 		m_isUseTex(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
@@ -112,6 +114,7 @@ namespace Emerald
 		m_tex(_object.m_tex),
 		m_texIndex(_object.m_texIndex),
 		m_texRect(_object.m_texRect),
+		m_isTexRectDirty(_object.m_isTexRectDirty),
 		m_isUseTex(_object.m_isUseTex),
 		m_localZOrder(_object.m_localZOrder),
 		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty),
@@ -304,6 +307,7 @@ namespace Emerald
 	bool EEObject::SetTexRect(Rect_Float& _texRect)
 	{
 		m_texRect = _texRect;
+		m_isTexRectDirty = true;
 
 		return true;
 	}

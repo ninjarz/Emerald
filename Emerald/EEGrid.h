@@ -31,11 +31,11 @@ namespace Emerald
 		virtual bool Render();
 
 	protected:
-		//vbuffer and ibuffer
+		// vbuffer and ibuffer
 		bool CreateGridBuffer();
 
 	protected:
-		//the size of the grid
+		// the size of the grid
 		FLOAT2 m_size;
 		int m_m;
 		int m_n;
