@@ -9,6 +9,12 @@ namespace Emerald
 	class EEVideo
 	{
 	public:
+		static bool InitializeVideo();
+
+	protected:
+		static bool s_isVideoInitialized;
+
+	public:
 		EEVideo();
 
 		bool Open(const char* _fileName);
