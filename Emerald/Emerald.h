@@ -13,6 +13,7 @@
 #include "EEGUI.h"
 #include "EEAction.h"
 #include "EEMusic.h"
+#include "EEVideo.h"
 #include "EERecorder.h"
 #include "EEWaveCoder.h"
 #include "EEParticle.h"

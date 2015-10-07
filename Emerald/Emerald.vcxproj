@@ -109,6 +109,7 @@
     <ClCompile Include="Demo\Thread.cpp" />
     <ClCompile Include="Demo\UDPClient.cpp" />
     <ClCompile Include="Demo\UDPServer.cpp" />
+    <ClCompile Include="Demo\Video.cpp" />
     <ClCompile Include="Demo\YYClient.cpp" />
     <ClCompile Include="Demo\源1.cpp" />
     <ClCompile Include="DirectXTex\BC.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="EEThread.cpp" />
     <ClCompile Include="EETimer.cpp" />
     <ClCompile Include="EEUDP.cpp" />
+    <ClCompile Include="EEVideo.cpp" />
     <None Include="DirectXTex\DirectXTex.inl" />
     <None Include="EEWaveCoder.cpp" />
   </ItemGroup>
@@ -269,6 +271,7 @@
     <ClInclude Include="EEThread.h" />
     <ClInclude Include="EETimer.h" />
     <ClInclude Include="EEUDP.h" />
+    <ClInclude Include="EEVideo.h" />
     <ClInclude Include="EEWaveCoder.h" />
     <ClInclude Include="Emerald.h" />
     <ClInclude Include="EESlide.h" />

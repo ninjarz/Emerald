@@ -10,26 +10,6 @@
 *  6-23 18 rate       0-262143
 * 24-31  8 channels   0-255
 */
-#pragma warning(disable: 4996)
-
-extern "C"
-{
-#pragma comment (lib, "avcodec.lib")  
-#pragma comment (lib, "avdevice.lib")
-#pragma comment (lib, "avfilter.lib")
-#pragma comment (lib, "avformat.lib")
-#pragma comment (lib, "avutil.lib")
-#pragma comment (lib, "postproc.lib")
-#pragma comment (lib, "swresample.lib")
-#pragma comment (lib, "swscale.lib")
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavformat/avio.h>
-#include <libswresample/swresample.h>
-#include <libavutil/opt.h>
-#include <libavutil/audioconvert.h>
-#include <libavutil/mathematics.h>
-}
 #if 0
 #pragma comment(lib,"xaudio2.lib")
 #include <xaudio2.h>
@@ -42,6 +22,7 @@ extern "C"
 #include <string>
 #include <mutex>
 #include "EEThread.h"
+
 
 namespace Emerald
 {

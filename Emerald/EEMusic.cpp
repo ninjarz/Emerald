@@ -1,6 +1,27 @@
 #include "EEMusic.h"
 #include "EEHelper.h"
 
+#pragma warning(disable: 4996)
+extern "C"
+{
+#pragma comment (lib, "avcodec.lib")  
+#pragma comment (lib, "avdevice.lib")
+#pragma comment (lib, "avfilter.lib")
+#pragma comment (lib, "avformat.lib")
+#pragma comment (lib, "avutil.lib")
+#pragma comment (lib, "postproc.lib")
+#pragma comment (lib, "swresample.lib")
+#pragma comment (lib, "swscale.lib")
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavformat/avio.h>
+#include <libswresample/swresample.h>
+#include <libavutil/opt.h>
+#include <libavutil/audioconvert.h>
+#include <libavutil/mathematics.h>
+}
+
+
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -43,7 +64,7 @@ namespace Emerald
 	}
 
 
-	//EEMusic
+	// EEMusic
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::s_isMusicInitialized = false;
 	IXAudio2 *EEMusic::s_XAudio2 = NULL;
@@ -338,35 +359,36 @@ namespace Emerald
 		int streamIndex = -1;
 		AVCodecContext *codecContext = NULL;
 		AVCodec *codec = NULL;
-		//open file
+
+		// open file
 		if (avformat_open_input(&formatContext, _fileName, NULL, NULL) < 0)
 		{
 			return false;
 		}
-		//get info
+
+		// find stream info
 		if (avformat_find_stream_info(formatContext, NULL) < 0)
 		{
 			//unable to find stream info
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		//find the stream
+		// find the stream
 		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, 0, 0, NULL, 0)) < 0)
 		{
-			//if could not find the audio stream
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		//get a pointer to the codec context
+
+		// find decoder
 		codecContext = formatContext->streams[streamIndex]->codec;
-		//find the decoder
 		codec = avcodec_find_decoder(codecContext->codec_id);
 		if (!codec)
 		{
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		//could not open codec
+		// open codec
 		if (avcodec_open2(codecContext, codec, NULL) < 0)
 		{
 			avformat_close_input(&formatContext);
@@ -382,6 +404,7 @@ namespace Emerald
 		//m_totalBytes = (int)((double)formatContext->duration / AV_TIME_BASE * avgBytesPerSec);
 		//m_totalSamples = (int)((double)formatContext->duration / AV_TIME_BASE * samplesPerSec);
 		//m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
+
 		/*
 		The WAVEFORMATEX structure can describe only a subset of the formats that can be described by the WAVEFORMATEXTENSIBLE structure. For example, WAVEFORMATEX can describe mono or (two-channel) stereo pulse-code modulated (PCM) streams with 8-bit or 16-bit integer sample values, or with 32-bit floating-point sample values. In addition, WAVEFORMATEX can describe popular non-PCM formats such as AC-3 and WMA Pro.
 		*/
@@ -470,35 +493,36 @@ namespace Emerald
 		int streamIndex = -1;
 		AVCodecContext *codecContext = NULL;
 		AVCodec *codec = NULL;
-		//open file
+
+		// open file
 		if (avformat_open_input(&formatContext, _fileName, NULL, NULL) < 0)
 		{
 			return false;
 		}
-		//get info
+
+		// find stream info
 		if (avformat_find_stream_info(formatContext, NULL) < 0)
 		{
 			//unable to find stream info
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		//find the stream
+		// find the stream
 		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, 0, 0, NULL, 0)) < 0)
 		{
-			//if could not find the audio stream
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		//get a pointer to the codec context
+
+		// find decoder
 		codecContext = formatContext->streams[streamIndex]->codec;
-		//find the decoder
 		codec = avcodec_find_decoder(codecContext->codec_id);
 		if (!codec)
 		{
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		//could not open codec
+		// open codec
 		if (avcodec_open2(codecContext, codec, NULL) < 0)
 		{
 			avformat_close_input(&formatContext);
