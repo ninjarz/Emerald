@@ -847,4 +847,35 @@ namespace Emerald
 
 		return true;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEFFT(const std::vector<std::complex<double>>& _td, std::vector<std::complex<double>>& _fd, int _n)
+	{
+		int count = 1 << _n;
+		std::vector<std::complex<double>> w(count >> 1), x1(_td), x2(count);
+
+
+		for (int i = 0; i < count / 2; ++i)
+		{
+			double angle = - i * EE_2PI / count;
+			w[i] = std::complex<double>(cos(angle), sin(angle));
+		}
+		/*
+		for (int i = 0; i < _n; ++i)
+		{
+			for (int j = 0; j < 1 << i; ++j)
+			{
+				int size = 1 << (_n - i);
+				for (int k = 0; k < size >> 1; ++k)
+				{
+					int p = j * size;
+					x2[i + p] = x1[i + p] + x1[i + p + size / 2] * w[i * (1 << i)];
+					x2[i + p + size >> 1] = x1[i + p] - x1[i + p + size / 2] * w[i * (1 << i)];
+				}
+			}
+
+			std::complex<double> tmp;
+		}
+		*/
+	}
 }

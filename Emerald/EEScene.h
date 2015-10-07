@@ -22,6 +22,7 @@ namespace Emerald
 		virtual bool Render();
 		void AddObject(EEObject* _object);
 		void RemoveObject(EEObject* _object);
+		void SubObject();
 
 	protected:
 		//controls

@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <vector>
+#include <complex>
+
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -1230,6 +1232,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b);
 	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b, FLOAT2& _result);
+
+	//----------------------------------------------------------------------------------------------------
+	void EEFFT(const std::vector<std::complex<double>>& _td, std::vector<std::complex<double>>& _fd, int _n);
 }
 
 #endif

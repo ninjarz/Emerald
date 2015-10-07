@@ -6,12 +6,14 @@
 int main(int _argc, char** _argv)
 {
 	EEMusic music;
-	//music.AsyncLoadMusic("Music/zhntn.mp3");
-	//music.Start();
+	music.AsyncLoadMusic("Music/zhntn.mp3");
+	music.SetFrequencyRatio(1.5f);
+	music.Start();
 
-	music.Open("Music/zhntn.mp3");
-	music.Play(0.5, 0.1, 2);
-
+	//music.Open("Music/zhntn.mp3");
+	//music.Play();
+	//music.Play(0.5, 0.1, 2);
+	
 	system("pause");
 	return 0;
 }

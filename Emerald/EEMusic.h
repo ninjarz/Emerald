@@ -72,12 +72,12 @@ namespace Emerald
 	struct EEMusicCell
 	{
 		inline EEMusicCell() : data(nullptr), begin(0), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
-		inline EEMusicCell(std::string* _data) : data(_data), begin(0), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
-		inline EEMusicCell(std::string* _data, int _begin) : data(_data), begin(_begin), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
-		inline EEMusicCell(std::string* _data, int _begin, int _len) : data(_data), begin(_begin), playLength(_len), flag(EE_MUSIC_CELL_DEFAULT) {}
-		inline EEMusicCell(std::string* _data, int _begin, int _len, EEMusicCellState _state) : data(_data), begin(_begin), playLength(_len), flag(_state) {}
+		inline EEMusicCell(std::pair<int, std::string>* _data) : data(_data), begin(0), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::pair<int, std::string>* _data, int _begin) : data(_data), begin(_begin), playLength(0), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::pair<int, std::string>* _data, int _begin, int _len) : data(_data), begin(_begin), playLength(_len), flag(EE_MUSIC_CELL_DEFAULT) {}
+		inline EEMusicCell(std::pair<int, std::string>* _data, int _begin, int _len, EEMusicCellState _state) : data(_data), begin(_begin), playLength(_len), flag(_state) {}
 
-		std::string *data; // point to m_data
+		std::pair<int, std::string> *data; // mirror of m_data
 		int begin;
 		int playLength;
 		EEMusicCellState flag;
@@ -148,6 +148,8 @@ namespace Emerald
 		bool SetFrequencyRatio(float _para);
 
 		const WAVEFORMATEX& GetFormat();
+		int GetBitsPerSample();
+		int GetChannels();
 		float GetVolume();
 		int GetSampleRate();
 		int GetTotalSamples();
@@ -155,6 +157,7 @@ namespace Emerald
 		double GetTotalTime();
 		float GetProgress();
 		double GetProgressTime();
+		std::string GetCurrentSample(int _count = 1);
 
 	protected:
 		bool PushBuffer(const EEMusicCell& _buffer);
@@ -168,11 +171,11 @@ namespace Emerald
 		int m_totalBytes;
 		int m_totalSamples;
 		double m_totalTime;
-		int m_beginSamples;
+		int m_beginSamples; // offsetSamplers
 		EEMusicState m_state;
 
 		// data
-		std::list<std::string> m_data;
+		std::list<std::pair<int, std::string>> m_data; // id, data
 		std::queue<EEMusicCell> m_playList; // need mutex
 		std::mutex m_playListMutex;
 		boost::thread *m_loader;

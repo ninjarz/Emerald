@@ -1,4 +1,4 @@
-//Game
+// Game
 #include "DIVAHelper.h"
 #if _DIVA_
 #define _EE_MEMORYLEAK_ON_

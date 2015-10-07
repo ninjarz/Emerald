@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -40,8 +40,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\lib\freetype-2.5.3\include;D:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)\Include;D:\lib\boost_1_58_0\boost_1_58_0</IncludePath>
-    <LibraryPath>D:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;D:\lib\freetype-2.5.3\objs\win32\;$(LibraryPath);$(DXSDK_DIR)\Lib\x86;D:\lib\boost_1_58_0\boost_1_58_0\stage\lib</LibraryPath>
+    <IncludePath>E:\lib\freetype-2.5.3\include;E:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)\Include;E:\Lib\boost_1_55_0\boost_1_55_0</IncludePath>
+    <LibraryPath>E:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;E:\Lib\freetype-2.5.3\objs\win32\vc2010;$(LibraryPath);$(DXSDK_DIR)\Lib\x86;E:\Lib\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>E:\Lib\freetype-2.5.3\include;E:\Lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)Include;E:\Lib\boost_1_55_0\boost_1_55_0</IncludePath>
@@ -95,6 +95,7 @@
     <ClCompile Include="Demo\Line2d.cpp" />
     <ClCompile Include="Demo\LineEditor.cpp" />
     <ClCompile Include="Demo\Music.cpp" />
+    <ClCompile Include="Demo\Music2.cpp" />
     <ClCompile Include="Demo\Picking.cpp" />
     <ClCompile Include="Demo\Points.cpp" />
     <ClCompile Include="Demo\Progress.cpp" />
