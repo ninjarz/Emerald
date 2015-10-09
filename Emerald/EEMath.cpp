@@ -849,13 +849,60 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	std::vector<int> EERader(int _n)
+	{
+		if (_n <= 0)
+			return std::vector<int>();
+
+		std::vector<int> result(_n, 0);
+		for (int i = 1; i < _n; ++i)
+		{
+			result[i] = (EERaderNext(_n, result[i - 1]));
+		}
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EERaderNext(int _n, int _value)
+	{
+		if (_value < 0 || _n <= _value + 1)
+			return 0;
+
+		int pos = _n >> 1;
+
+		while (pos <= _value)
+		{
+			_value -= pos;
+			pos >>= 1;
+		}
+
+		return _value + pos;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	int EERader(int _n, int _index)
+	{
+		int result = 0;
+
+		for (int i(1), j(_n >> 1); i < _n; i <<= 1, j >>= 1)
+		{
+			if (_index & i)
+			{
+				result += j;
+			}
+		}
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEFFT(const std::vector<std::complex<double>>& _td, std::vector<std::complex<double>>& _fd, int _n)
 	{
 		int count = 1 << _n;
 		std::vector<std::complex<double>> w(count >> 1), x1(_td), x2(count);
 
-
-		for (int i = 0; i < count / 2; ++i)
+		for (int i = 0; i < count >> 1; ++i)
 		{
 			double angle = - i * EE_2PI / count;
 			w[i] = std::complex<double>(cos(angle), sin(angle));
@@ -869,8 +916,8 @@ namespace Emerald
 				for (int k = 0; k < size >> 1; ++k)
 				{
 					int p = j * size;
-					x2[i + p] = x1[i + p] + x1[i + p + size / 2] * w[i * (1 << i)];
-					x2[i + p + size >> 1] = x1[i + p] - x1[i + p + size / 2] * w[i * (1 << i)];
+					x2[k + p] = x1[k + p] + x1[k + p + size >> 1] * w[i * (1 << i)];
+					x2[k + p + size >> 1] = x1[k + p] - x1[k + p + size >> 1] * w[i * (1 << i)];
 				}
 			}
 

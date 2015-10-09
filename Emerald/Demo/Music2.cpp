@@ -5,6 +5,9 @@
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(int _argc, char** _argv)
 {
+	auto tmp = EERader(8);
+
+
 	EEMusic music;
 	music.AsyncLoadMusic("Music/zhntn.mp3");
 	music.SetFrequencyRatio(1.f);
@@ -50,7 +53,7 @@ int main(int _argc, char** _argv)
 		if (sample.size())
 		{
 			// todo: just deal with the left channel
-			for (int i = 0; i < sample.size(); ++i)
+			for (unsigned int i = 0; i < sample.size(); ++i)
 			{
 				tdQuads[loopPos].SetPositionX(desc.width - scene.GetPositionX());
 				tdQuads[loopPos].SetHeight(sample[i]);

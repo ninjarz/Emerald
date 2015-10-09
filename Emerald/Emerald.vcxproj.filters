@@ -462,6 +462,12 @@
     <ClCompile Include="Demo\Music2.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="EEVideo.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Video.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -694,6 +700,9 @@
     </ClInclude>
     <ClInclude Include="EETextEditor.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EEVideo.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
