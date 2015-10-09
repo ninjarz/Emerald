@@ -1234,9 +1234,9 @@ namespace Emerald
 	bool EELineIntersect(const FLOAT2& _pos0, const FLOAT2& _pos1, float _k, float _b, FLOAT2& _result);
 
 	//----------------------------------------------------------------------------------------------------
-	int EERaderNext(int _n, int _index);
-	std::vector<int> EERader(int _n);
-	int EERader(int _n, int _index);
+	int EERaderNext(int _count, int _index);
+	std::vector<int> EERader(int _count);
+	int EERader(int _count, int _index);
 	void EEFFT(const std::vector<std::complex<double>>& _td, std::vector<std::complex<double>>& _fd, int _n);
 }
 

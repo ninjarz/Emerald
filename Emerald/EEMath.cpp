@@ -849,27 +849,27 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	std::vector<int> EERader(int _n)
+	std::vector<int> EERader(int _count)
 	{
-		if (_n <= 0)
+		if (_count <= 0)
 			return std::vector<int>();
 
-		std::vector<int> result(_n, 0);
-		for (int i = 1; i < _n; ++i)
+		std::vector<int> result(_count, 0);
+		for (int i = 1; i < _count; ++i)
 		{
-			result[i] = (EERaderNext(_n, result[i - 1]));
+			result[i] = (EERaderNext(_count, result[i - 1]));
 		}
 
 		return result;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	int EERaderNext(int _n, int _value)
+	int EERaderNext(int _count, int _value)
 	{
-		if (_value < 0 || _n <= _value + 1)
+		if (_value < 0 || _count <= _value + 1)
 			return 0;
 
-		int pos = _n >> 1;
+		int pos = _count >> 1;
 
 		while (pos <= _value)
 		{
@@ -881,11 +881,11 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	int EERader(int _n, int _index)
+	int EERader(int _count, int _index)
 	{
 		int result = 0;
 
-		for (int i(1), j(_n >> 1); i < _n; i <<= 1, j >>= 1)
+		for (int i(1), j(_count >> 1); i < _count; i <<= 1, j >>= 1)
 		{
 			if (_index & i)
 			{
@@ -896,33 +896,48 @@ namespace Emerald
 		return result;
 	}
 
+	// e^j¦È = cos¦È + j * sin¦È
+	// WN = e^-j2¦Ð/N
+	// X(K) = ¡Æ(n->N-1)x[n]WN^nk
 	//----------------------------------------------------------------------------------------------------
 	void EEFFT(const std::vector<std::complex<double>>& _td, std::vector<std::complex<double>>& _fd, int _n)
 	{
 		int count = 1 << _n;
-		std::vector<std::complex<double>> w(count >> 1), x1(_td), x2(count);
 
+		// WN
+		std::vector<std::complex<double>> w(count >> 1);
 		for (int i = 0; i < count >> 1; ++i)
 		{
 			double angle = - i * EE_2PI / count;
 			w[i] = std::complex<double>(cos(angle), sin(angle));
 		}
-		/*
+
+		// rader
+		auto rader = EERader(count);
+		for (int i = 0; i < _td.size(); ++i)
+		{
+			_fd[i] = _td[rader[i]];
+		}
+
+		// butterfly computation
+		// level
 		for (int i = 0; i < _n; ++i)
 		{
+			// cross count
 			for (int j = 0; j < 1 << i; ++j)
 			{
-				int size = 1 << (_n - i);
-				for (int k = 0; k < size >> 1; ++k)
+				// group count
+				int groupCount = 1 << (_n - i - 1);
+				int groupSize = j << 1;
+				for (int k = 0; k < groupCount; ++k)
 				{
-					int p = j * size;
-					x2[k + p] = x1[k + p] + x1[k + p + size >> 1] * w[i * (1 << i)];
-					x2[k + p + size >> 1] = x1[k + p] - x1[k + p + size >> 1] * w[i * (1 << i)];
+					int pos = k * groupSize;
+					std::complex<double> first = _fd[pos + k];
+					std::complex<double> second = _fd[pos + k + j] * w[k * (1 << i)];
+					_fd[pos + k] = first + second;
+					_fd[pos + k + j] = first - second;
 				}
 			}
-
-			std::complex<double> tmp;
 		}
-		*/
 	}
 }
