@@ -1237,7 +1237,9 @@ namespace Emerald
 	int EERaderNext(int _count, int _index);
 	std::vector<int> EERader(int _count);
 	int EERader(int _count, int _index);
+
 	void EEFFT(const std::vector<std::complex<double>>& _td, std::vector<std::complex<double>>& _fd, int _n);
+	void EEFFT(const char* _td, int bytes, std::vector<std::complex<double>>& _fd, int _n);
 }
 
 #endif

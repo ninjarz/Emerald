@@ -914,7 +914,7 @@ namespace Emerald
 
 		// rader
 		auto rader = EERader(count);
-		for (int i = 0; i < _td.size(); ++i)
+		for (unsigned int i = 0; i < _td.size(); ++i)
 		{
 			_fd[i] = _td[rader[i]];
 		}
@@ -923,21 +923,40 @@ namespace Emerald
 		// level
 		for (int i = 0; i < _n; ++i)
 		{
-			// cross count
-			for (int j = 0; j < 1 << i; ++j)
+			// cross
+			int crossCount = 1 << i;
+			for (int j = 0; j < crossCount; ++j)
 			{
-				// group count
+				// group
 				int groupCount = 1 << (_n - i - 1);
-				int groupSize = j << 1;
-				for (int k = 0; k < groupCount; ++k)
+				int p = groupCount * j;
+				int groupSize = 1 << (i + 1);
+				for (int k = j; k < count; k += groupSize)
 				{
-					int pos = k * groupSize;
-					std::complex<double> first = _fd[pos + k];
-					std::complex<double> second = _fd[pos + k + j] * w[k * (1 << i)];
-					_fd[pos + k] = first + second;
-					_fd[pos + k + j] = first - second;
+					std::complex<double> first = _fd[k];
+					std::complex<double> second = _fd[k + crossCount] * w[p];
+					_fd[k] = first + second;
+					_fd[k + crossCount] = first - second;
 				}
 			}
 		}
 	}
+
+	void EEFFT(const char* _td, int bytes, std::vector<std::complex<double>>& _fd, int _n)
+	{
+		std::vector<std::complex<double>> td(1 << _n);
+		for (int i(0), j(0); i < td.size(); ++i, j += bytes)
+		{
+			double value = 0;
+			for (int k = 0; k < bytes; ++k)
+			{
+				value *= (int)1 << 8;
+				value += _td[j + k];
+			}
+			td[i] = std::complex<double>(value, 0);
+		}
+
+		EEFFT(td, _fd, _n);
+	}
 }
+
