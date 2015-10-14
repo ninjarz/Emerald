@@ -125,13 +125,12 @@ namespace Emerald
 				{
 					if (codecContext->pix_fmt == AV_PIX_FMT_YUV420P)
 					{
-
+						int i = 0;
 					}
 					else
 					{
-
+						return false;
 					}
-					int i = 0;
 				}
 			}
 			av_free_packet(packet);

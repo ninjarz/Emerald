@@ -789,7 +789,7 @@ namespace Emerald
 				else
 				{
 					int bytes = m_format.wBitsPerSample >> 3;
-					unsigned int endPos = pos + _count * m_format.nBlockAlign > tmp->second.size() ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
+					unsigned int endPos = (unsigned int)(pos + _count * m_format.nBlockAlign > tmp->second.size()) ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
 					for (unsigned int i = pos; i < endPos; i += m_format.nBlockAlign)
 					{
 						result += tmp->second.substr(i, bytes);

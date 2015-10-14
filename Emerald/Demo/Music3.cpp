@@ -1,12 +1,12 @@
 // Music Demo
-#if 1
+#if 0
 #include "../Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 int main(int _argc, char** _argv)
 {
 	EEMusic music;
-	music.AsyncLoadMusic("Music/tmp.mp3");
+	music.AsyncLoadMusic("Music/zhntn.mp3");
 	music.SetFrequencyRatio(1.f);
 	music.Start();
 

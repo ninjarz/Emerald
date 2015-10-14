@@ -1,5 +1,5 @@
 // Video Demo
-#if 0
+#if 1
 #include "../Emerald.h"
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)

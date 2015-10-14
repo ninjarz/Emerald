@@ -42,13 +42,13 @@ int main(int _argc, char** _argv)
 	{
 		EEBeginScene(EEColor::BLACK);
 
-		std::string samples = music.GetCurrentLeftSamples(100);
+		auto samples = music.GetCurrentLeftSamplesDouble(100);
 		if (samples.size())
 		{
 			for (unsigned int i = 0; i < samples.size(); ++i)
 			{
 				tdQuads[loopPos].SetPositionX(desc.width - scene.GetPositionX());
-				tdQuads[loopPos].SetHeight(samples[i]);
+				tdQuads[loopPos].SetHeight(samples[i] / 64);
 				scene.SetPositionX(scene.GetPositionX() - tdWidth);
 
 				loopPos = ++loopPos % tdQuads.size();

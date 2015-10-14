@@ -7,12 +7,13 @@
 #include "EESmartPtr.h"
 #include "EEBitmap.h"
 
-#include <iostream>
-//It should be designed to be a smart pointer
+#include <iostream> // debug
+
+
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EETextureType
+	// EETextureType
 	//----------------------------------------------------------------------------------------------------
 	typedef enum EETextureType
 	{
@@ -45,7 +46,7 @@ namespace Emerald
 		int number;
 	};
 
-	//EETexture
+	// EETexture
 	//----------------------------------------------------------------------------------------------------
 	class EETexture : public EESmartPtr<EETextureData>
 	{
@@ -83,7 +84,7 @@ namespace Emerald
 	//	ID3D11ShaderResourceView *m_texture;
 	};
 
-	//EETexture_APIs
+	// EETexture_APIs
 	//----------------------------------------------------------------------------------------------------
 	bool EESaveTextureToFile(EETexture& _texture, LPCWSTR _fileName, EETextureType _type);
 	EETexture EETextureCombine(EETexture* _texture, unsigned int _num);
