@@ -138,7 +138,9 @@ namespace Emerald
 		double GetTotalTime();
 		float GetProgress();
 		double GetProgressTime();
-		std::string GetCurrentSample(int _count = 1); // todo: return char* (bytes)
+		std::string GetCurrentSamples(int _count = 1);
+		std::string GetCurrentLeftSamples(int _count = 1);
+		std::vector<double> GetCurrentLeftSamplesDouble(int _count = 1);
 
 	protected:
 		bool PushBuffer(const EEMusicCell& _buffer);

@@ -741,7 +741,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	std::string EEMusic::GetCurrentSample(int _count)
+	std::string EEMusic::GetCurrentSamples(int _count)
 	{
 		if (m_sourceVoice)
 		{
@@ -766,6 +766,78 @@ namespace Emerald
 		}
 
 		return std::string();
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	std::string EEMusic::GetCurrentLeftSamples(int _count)
+	{
+		std::string result;
+
+		if (m_sourceVoice)
+		{
+			XAUDIO2_VOICE_STATE state;
+			m_sourceVoice->GetState(&state);
+
+			if (state.pCurrentBufferContext)
+			{
+				auto tmp = (std::pair<int, std::string>*)state.pCurrentBufferContext;
+				int pos = (int)((state.SamplesPlayed + m_beginSamples) * m_format.nBlockAlign - tmp->first);
+				if (pos < 0)
+				{
+					// error
+				}
+				else
+				{
+					int bytes = m_format.wBitsPerSample >> 3;
+					unsigned int endPos = pos + _count * m_format.nBlockAlign > tmp->second.size() ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
+					for (unsigned int i = pos; i < endPos; i += m_format.nBlockAlign)
+					{
+						result += tmp->second.substr(i, bytes);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<double> EEMusic::GetCurrentLeftSamplesDouble(int _count)
+	{
+		std::vector<double> result;
+
+		if (m_sourceVoice)
+		{
+			XAUDIO2_VOICE_STATE state;
+			m_sourceVoice->GetState(&state);
+
+			if (state.pCurrentBufferContext)
+			{
+				auto tmp = (std::pair<int, std::string>*)state.pCurrentBufferContext;
+				int pos = (int)((state.SamplesPlayed + m_beginSamples) * m_format.nBlockAlign - tmp->first);
+				if (pos < 0)
+				{
+					// error
+				}
+				else
+				{
+					int bytes = m_format.wBitsPerSample >> 3;
+					unsigned int endPos = pos + _count * m_format.nBlockAlign > tmp->second.size() ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
+					for (unsigned int i = pos; i < endPos; i += m_format.nBlockAlign)
+					{
+						double value = 0;
+						for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+						{
+							value *= (int)1 << 8;
+							value += tmp->second[i + k];
+						}
+						result.push_back(value);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	//----------------------------------------------------------------------------------------------------

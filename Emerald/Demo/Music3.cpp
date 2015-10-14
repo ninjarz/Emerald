@@ -26,10 +26,9 @@ int main(int _argc, char** _argv)
 	desc.isVsync = true;				//是否垂直同步
 	EEInitialize(desc);
 
-	int sampleSize = music.GetBitsPerSample() / 8;
-	float tdWidth = 1.5f;
+	float tdWidth = 1.f;
 	EEScene scene;
-	std::vector<EEQuad2D> tdQuads(desc.width);
+	std::vector<EEQuad2D> tdQuads(512);
 	for (auto& tdQuad : tdQuads)
 	{
 		tdQuad.SetPositionY((float)desc.height / 2);
@@ -38,19 +37,20 @@ int main(int _argc, char** _argv)
 		scene.AddObject(&tdQuad);
 	}
 	int loopPos = 0;
-	// int offset = music.GetChannels() > 1 ? 
+
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 
-		std::string sample = music.GetCurrentSample();
-		if (sample.size())
+		auto samples = music.GetCurrentLeftSamplesDouble(512);
+		if (samples.size() == 512)
 		{
-			// todo: just deal with the left channel
-			for (unsigned int i = 0; i < sample.size(); ++i)
+			std::vector<std::complex<double>> fd(512);
+			EEFFT(samples, fd, 9);
+			for (unsigned int i = 1; i < samples.size(); ++i)
 			{
 				tdQuads[loopPos].SetPositionX(desc.width - scene.GetPositionX());
-				tdQuads[loopPos].SetHeight(sample[i]);
+				tdQuads[loopPos].SetHeight(sqrt(fd[i].real() * fd[i].real() + fd[i].imag() * fd[i].imag()) / 10000);
 				scene.SetPositionX(scene.GetPositionX() - tdWidth);
 
 				loopPos = ++loopPos % tdQuads.size();
@@ -62,7 +62,6 @@ int main(int _argc, char** _argv)
 	}
 
 	EEShutdown();
-	system("pause");
 	return 0;
 }
 #endif

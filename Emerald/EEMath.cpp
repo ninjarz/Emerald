@@ -942,13 +942,26 @@ namespace Emerald
 		}
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	void EEFFT(const std::vector<double>& _td, std::vector<std::complex<double>>& _fd, int _n)
+	{
+		std::vector<std::complex<double>> td(1 << _n);
+		for (unsigned int i(0); i < td.size(); ++i)
+		{
+			td[i] = std::complex<double>(_td[i], 0);
+		}
+
+		EEFFT(td, _fd, _n);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	void EEFFT(const char* _td, int bytes, std::vector<std::complex<double>>& _fd, int _n)
 	{
 		std::vector<std::complex<double>> td(1 << _n);
-		for (int i(0), j(0); i < td.size(); ++i, j += bytes)
+		for (unsigned int i(0), j(0); i < td.size(); ++i, j += bytes)
 		{
 			double value = 0;
-			for (int k = 0; k < bytes; ++k)
+			for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
 			{
 				value *= (int)1 << 8;
 				value += _td[j + k];
