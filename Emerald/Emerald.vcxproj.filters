@@ -705,7 +705,7 @@
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
     <ClInclude Include="EEVideo.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Emerald</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

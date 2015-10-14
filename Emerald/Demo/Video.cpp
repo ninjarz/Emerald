@@ -7,7 +7,7 @@ int main(int _argc, char** _argv)
 {
 	EEVideo video;
 
-	video.Open("");
+	video.Open("Demo/Video/qsx.flv");
 	video.Play();
 
 	system("pause");

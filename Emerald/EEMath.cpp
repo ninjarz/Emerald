@@ -1,5 +1,8 @@
 #include "EEMath.h"
+
 #include <algorithm>
+#include "EEHelper.h"
+
 
 namespace Emerald
 {
@@ -961,10 +964,23 @@ namespace Emerald
 		for (unsigned int i(0), j(0); i < td.size(); ++i, j += bytes)
 		{
 			double value = 0;
-			for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+			// Big Endian
+			if (EEIsBigEndian())
 			{
-				value *= (int)1 << 8;
-				value += _td[j + k];
+				for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+				{
+					value *= (int)1 << 8;
+					value += _td[j + k];
+				}
+			}
+			// Little Endian
+			else
+			{
+				for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+				{
+					value *= (int)1 << 8;
+					value += _td[j + bytes - 1 - k];
+				}
 			}
 			td[i] = std::complex<double>(value, 0);
 		}

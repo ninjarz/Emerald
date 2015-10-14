@@ -2,6 +2,10 @@
 #ifndef _EE_VIDEO_H_
 #define _EE_VIDEO_H_
 
+#include <vector>
+#include "EETexture.h"
+
+
 namespace Emerald
 {
 	// EEVideo
@@ -21,6 +25,9 @@ namespace Emerald
 		bool Play();
 		bool LoadVideo(const char* _fileName);
 
+	protected:
+		// data
+		std::vector<EETexture> m_data;
 	};
 }
 

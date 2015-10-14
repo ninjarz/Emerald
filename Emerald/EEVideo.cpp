@@ -123,6 +123,14 @@ namespace Emerald
 				}
 				if (got > 0)
 				{
+					if (codecContext->pix_fmt == AV_PIX_FMT_YUV420P)
+					{
+
+					}
+					else
+					{
+
+					}
 					int i = 0;
 				}
 			}

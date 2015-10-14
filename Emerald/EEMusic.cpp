@@ -826,10 +826,23 @@ namespace Emerald
 					for (unsigned int i = pos; i < endPos; i += m_format.nBlockAlign)
 					{
 						double value = 0;
-						for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+						// Big Endian
+						if (EEIsBigEndian())
 						{
-							value *= (int)1 << 8;
-							value += tmp->second[i + k];
+							for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+							{
+								value *= (int)1 << 8;
+								value += tmp->second[i + k];
+							}
+						}
+						// Little Endian
+						else
+						{
+							for (int k = 0; k < (bytes > 4 ? 4 : bytes); ++k)
+							{
+								value *= (int)1 << 8;
+								value += tmp->second[i + bytes - 1 - k];
+							}
 						}
 						result.push_back(value);
 					}

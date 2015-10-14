@@ -6,7 +6,7 @@
 int main(int _argc, char** _argv)
 {
 	EEMusic music;
-	music.AsyncLoadMusic("Music/zhntn.mp3");
+	music.AsyncLoadMusic("Music/tmp.mp3");
 	music.SetFrequencyRatio(1.f);
 	music.Start();
 
@@ -50,7 +50,7 @@ int main(int _argc, char** _argv)
 			for (unsigned int i = 1; i < samples.size(); ++i)
 			{
 				tdQuads[loopPos].SetPositionX(desc.width - scene.GetPositionX());
-				tdQuads[loopPos].SetHeight(sqrt(fd[i].real() * fd[i].real() + fd[i].imag() * fd[i].imag()) / 10000);
+				tdQuads[loopPos].SetHeight(sqrt(fd[i].real() * fd[i].real() + fd[i].imag() * fd[i].imag()) / 8000);
 				scene.SetPositionX(scene.GetPositionX() - tdWidth);
 
 				loopPos = ++loopPos % tdQuads.size();
