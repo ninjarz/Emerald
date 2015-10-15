@@ -9,10 +9,13 @@ Requirement
 Microsoft DirectX SDK (June 2010) 
 ```
 ```
+boost_1_58_0
+```
+```
 freetype-2.5.3 
 ```
 ```
-ffmpeg-20140723 
+ffmpeg-20141217 
 ```
 Usage
 ----------
