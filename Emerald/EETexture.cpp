@@ -543,7 +543,7 @@ namespace Emerald
 				D3D11_MAPPED_SUBRESOURCE mappedTex2D;
 				if (FAILED(deviceContext->Map(cpuBuf, j, D3D11_MAP_READ, 0, &mappedTex2D)))
 					break;
-				//Resizing is needed... !!! If the size of the src is smaller than the first frame, there will be a choke.
+				// Resizing is needed... !!! If the size of the src is smaller than the first frame, the program will crash
 				Image tmp;
 				tmp.width = subtexDesc.Width;
 				tmp.height = subtexDesc.Height;

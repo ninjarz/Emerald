@@ -28,6 +28,17 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	EESlide::EESlide(const Rect_Float& _rect, std::vector<EETexture>& _texs, float _interval, bool _isLoop)
+		:
+		EEQuad2D(_rect, EETextureCombine(_texs.data(), _texs.size())),
+		m_updateTime(-1.0f),
+		m_changeInterval(_interval),
+		m_isLoop(_isLoop)
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EESlide::EESlide(const EESlide& _slide)
 		:
 		EEQuad2D(_slide),

@@ -25,6 +25,8 @@ namespace Emerald
 		bool Play();
 		bool LoadVideo(const char* _fileName);
 
+		std::vector<EETexture>& GetData();
+
 	protected:
 		// data
 		std::vector<EETexture> m_data;

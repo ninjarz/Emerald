@@ -5,6 +5,7 @@
 #include <vector>
 #include "EEQuad2D.h"
 
+// memo: textures count <= 128
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -15,6 +16,7 @@ namespace Emerald
 	public:
 		EESlide(const Rect_Float& _rect, EETexture& _texs, float _interval = 0.0f, bool _isLoop = true);
 		EESlide(const Rect_Float& _rect, EETexture* _texs, int _amount, float _interval = 0.0f, bool _isLoop = true);
+		EESlide(const Rect_Float& _rect, std::vector<EETexture>& _texs, float _interval = 0.0f, bool _isLoop = true);
 		EESlide(const EESlide& _slide);
 		virtual inline EEObject* Clone() { return new EESlide(*this); }
 

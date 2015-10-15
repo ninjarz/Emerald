@@ -104,21 +104,27 @@ namespace Emerald
 			avformat_close_input(&formatContext);
 			return false;
 		}
+		SwsContext *swsContext = sws_getContext(codecContext->width, codecContext->height, codecContext->pix_fmt, codecContext->width, codecContext->height, AV_PIX_FMT_RGBA, SWS_BICUBIC, nullptr, nullptr, nullptr);
+		if (!swsContext)
+		{
+			avformat_close_input(&formatContext);
+			return false;
+		}
 
 		int width = codecContext->width;
 		int height = codecContext->height;
-		std::vector<char> rgbData(width * height * 4);
-		uint8_t *rgbPixel[3] = { (uint8_t*)rgbData.data(), 0, 0 };
-		int rgbStride[3] = { 4 * width, 0, 0 };
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
 		AVFrame	*frame = av_frame_alloc();
-		int got;
+		AVFrame	*frameRGBA = av_frame_alloc();
+		uint8_t *out_buffer = new uint8_t[avpicture_get_size(AV_PIX_FMT_RGBA, width, height)];
+		avpicture_fill((AVPicture*)frameRGBA, out_buffer, AV_PIX_FMT_RGBA, width, height);
 		while (av_read_frame(formatContext, packet) >= 0)
 		{
 			if (packet->stream_index == streamIndex)
 			{
+				int got = 0;
 				if (avcodec_decode_video2(codecContext, frame, &got, packet) < 0)
 				{
 					printf("Error in decoding video frame.\n");
@@ -127,25 +133,25 @@ namespace Emerald
 				}
 				if (got > 0)
 				{
-					if (codecContext->pix_fmt == AV_PIX_FMT_YUV420P)
+					if (swsContext)
 					{
-						/*
-						SwsContext *swsContext = sws_getContext(width, height, PIX_FMT_YUV420P, width, height, PIX_FMT_RGB32, SWS_BILINEAR, nullptr, nullptr, nullptr);
-						if (swsContext)
-						{
-							sws_scale(swsContext, frame->data, frame->linesize, 0, height, rgbPixel, rgbStride);
-						}
-						*/
-					}
-					else
-					{
-						return false;
+						sws_scale(swsContext, frame->data, frame->linesize, 0, height, frameRGBA->data, frameRGBA->linesize);
+						m_data.push_back(EETexture((unsigned char*)frameRGBA->data[0], width, height));
 					}
 				}
 			}
 			av_free_packet(packet);
 		}
 
+		avcodec_close(codecContext);
+		avformat_close_input(&formatContext);
+
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<EETexture>& EEVideo::GetData()
+	{
+		return m_data;
 	}
 }
