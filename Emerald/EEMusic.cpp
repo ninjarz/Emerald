@@ -9,7 +9,6 @@ extern "C"
 #pragma comment (lib, "avfilter.lib")
 #pragma comment (lib, "avformat.lib")
 #pragma comment (lib, "avutil.lib")
-#pragma comment (lib, "postproc.lib")
 #pragma comment (lib, "swresample.lib")
 #pragma comment (lib, "swscale.lib")
 #include <libavcodec/avcodec.h>
@@ -17,7 +16,6 @@ extern "C"
 #include <libavformat/avio.h>
 #include <libswresample/swresample.h>
 #include <libavutil/opt.h>
-#include <libavutil/audioconvert.h>
 #include <libavutil/mathematics.h>
 }
 
@@ -396,7 +394,7 @@ namespace Emerald
 		}
 
 		int channels = codecContext->channels;
-		int bitsPerSample = av_get_bits_per_sample_fmt(codecContext->sample_fmt);
+		int bitsPerSample = av_get_bits_per_sample(av_get_pcm_codec(codecContext->sample_fmt, -1));
 		int bytesPerSample = bitsPerSample / 8;
 		int samplesPerSec = codecContext->sample_rate;
 		int blockAlign = bytesPerSample * channels;
@@ -430,7 +428,7 @@ namespace Emerald
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
-		AVFrame	*frame = avcodec_alloc_frame();
+		AVFrame	*frame = av_frame_alloc();
 		uint32_t len = 0;
 		int got;
 		while (av_read_frame(formatContext, packet) >= 0)
@@ -530,7 +528,7 @@ namespace Emerald
 		}
 
 		int channels = codecContext->channels;
-		int bitsPerSample = av_get_bits_per_sample_fmt(codecContext->sample_fmt);
+		int bitsPerSample = av_get_bits_per_sample(av_get_pcm_codec(codecContext->sample_fmt, -1));
 		int bytesPerSample = bitsPerSample / 8;
 		int samplesPerSec = codecContext->sample_rate;
 		int blockAlign = bytesPerSample * channels;
@@ -556,7 +554,7 @@ namespace Emerald
 		m_loader = new boost::thread([&, bytesPerSample, formatContext, streamIndex, codecContext, codec] () mutable ->bool {
 			AVPacket *packet = new AVPacket;
 			av_init_packet(packet);
-			AVFrame	*frame = avcodec_alloc_frame();
+			AVFrame	*frame = av_frame_alloc();
 			uint32_t len = 0;
 			int got;
 			while (av_read_frame(formatContext, packet) >= 0)
@@ -789,7 +787,7 @@ namespace Emerald
 				else
 				{
 					int bytes = m_format.wBitsPerSample >> 3;
-					unsigned int endPos = (unsigned int)(pos + _count * m_format.nBlockAlign > tmp->second.size()) ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
+					unsigned int endPos = (unsigned int)(pos + _count * m_format.nBlockAlign) > tmp->second.size() ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
 					for (unsigned int i = pos; i < endPos; i += m_format.nBlockAlign)
 					{
 						result += tmp->second.substr(i, bytes);
@@ -822,7 +820,7 @@ namespace Emerald
 				else
 				{
 					int bytes = m_format.wBitsPerSample >> 3;
-					unsigned int endPos = pos + _count * m_format.nBlockAlign > tmp->second.size() ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
+					unsigned int endPos = (unsigned int)(pos + _count * m_format.nBlockAlign) > tmp->second.size() ? tmp->second.size() : pos + _count * m_format.nBlockAlign;
 					for (unsigned int i = pos; i < endPos; i += m_format.nBlockAlign)
 					{
 						double value = 0;

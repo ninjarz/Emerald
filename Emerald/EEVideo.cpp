@@ -8,7 +8,6 @@ extern "C"
 #pragma comment (lib, "avfilter.lib")
 #pragma comment (lib, "avformat.lib")
 #pragma comment (lib, "avutil.lib")
-#pragma comment (lib, "postproc.lib")
 #pragma comment (lib, "swresample.lib")
 #pragma comment (lib, "swscale.lib")
 #include <libavcodec/avcodec.h>
@@ -16,8 +15,10 @@ extern "C"
 #include <libavformat/avio.h>
 #include <libswresample/swresample.h>
 #include <libavutil/opt.h>
-#include <libavutil/audioconvert.h>
+#include <libavutil/avutil.h>
 #include <libavutil/mathematics.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
 }
 
 
@@ -106,10 +107,13 @@ namespace Emerald
 
 		int width = codecContext->width;
 		int height = codecContext->height;
+		std::vector<char> rgbData(width * height * 4);
+		uint8_t *rgbPixel[3] = { (uint8_t*)rgbData.data(), 0, 0 };
+		int rgbStride[3] = { 4 * width, 0, 0 };
 
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
-		AVFrame	*frame = avcodec_alloc_frame();
+		AVFrame	*frame = av_frame_alloc();
 		int got;
 		while (av_read_frame(formatContext, packet) >= 0)
 		{
@@ -125,7 +129,13 @@ namespace Emerald
 				{
 					if (codecContext->pix_fmt == AV_PIX_FMT_YUV420P)
 					{
-						int i = 0;
+						/*
+						SwsContext *swsContext = sws_getContext(width, height, PIX_FMT_YUV420P, width, height, PIX_FMT_RGB32, SWS_BILINEAR, nullptr, nullptr, nullptr);
+						if (swsContext)
+						{
+							sws_scale(swsContext, frame->data, frame->linesize, 0, height, rgbPixel, rgbStride);
+						}
+						*/
 					}
 					else
 					{
