@@ -104,22 +104,26 @@ namespace Emerald
 			avformat_close_input(&formatContext);
 			return false;
 		}
-		SwsContext *swsContext = sws_getContext(codecContext->width, codecContext->height, codecContext->pix_fmt, codecContext->width, codecContext->height, AV_PIX_FMT_RGBA, SWS_BICUBIC, nullptr, nullptr, nullptr);
+
+		m_width = codecContext->width;
+		m_height = codecContext->height;
+		m_frameRate = codecContext->framerate.num / codecContext->framerate.den;
+		m_totalTime = formatContext->duration / (double)AV_TIME_BASE;
+		int count = m_frameRate * m_totalTime * 1.1;
+		m_data.reserve(count);
+
+		SwsContext *swsContext = sws_getContext(codecContext->width, codecContext->height, codecContext->pix_fmt, m_width, m_height, AV_PIX_FMT_RGBA, SWS_BICUBIC, nullptr, nullptr, nullptr);
 		if (!swsContext)
 		{
 			avformat_close_input(&formatContext);
 			return false;
 		}
-
-		int width = codecContext->width;
-		int height = codecContext->height;
-
 		AVPacket *packet = new AVPacket;
 		av_init_packet(packet);
 		AVFrame	*frame = av_frame_alloc();
 		AVFrame	*frameRGBA = av_frame_alloc();
-		uint8_t *out_buffer = new uint8_t[avpicture_get_size(AV_PIX_FMT_RGBA, width, height)];
-		avpicture_fill((AVPicture*)frameRGBA, out_buffer, AV_PIX_FMT_RGBA, width, height);
+		uint8_t *out_buffer = new uint8_t[avpicture_get_size(AV_PIX_FMT_RGBA, m_width, m_height)];
+		avpicture_fill((AVPicture*)frameRGBA, out_buffer, AV_PIX_FMT_RGBA, m_width, m_height);
 		while (av_read_frame(formatContext, packet) >= 0)
 		{
 			if (packet->stream_index == streamIndex)
@@ -135,14 +139,16 @@ namespace Emerald
 				{
 					if (swsContext)
 					{
-						sws_scale(swsContext, frame->data, frame->linesize, 0, height, frameRGBA->data, frameRGBA->linesize);
-						m_data.push_back(EETexture((unsigned char*)frameRGBA->data[0], width, height));
+						sws_scale(swsContext, frame->data, frame->linesize, 0, codecContext->height, frameRGBA->data, frameRGBA->linesize);
+						m_data.push_back(EEBitmap(m_width, m_height, (unsigned char*)frameRGBA->data[0])); // copy copy copy X
 					}
 				}
 			}
 			av_free_packet(packet);
 		}
 
+		av_frame_free(&frame);
+		av_frame_free(&frameRGBA);
 		avcodec_close(codecContext);
 		avformat_close_input(&formatContext);
 
@@ -150,7 +156,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	std::vector<EETexture>& EEVideo::GetData()
+	std::vector<EEBitmap>& EEVideo::GetData()
 	{
 		return m_data;
 	}

@@ -8,6 +8,14 @@
 
 namespace Emerald
 {
+	// EEVideoData
+	//----------------------------------------------------------------------------------------------------
+	struct EEVideoData
+	{
+
+
+	};
+
 	// EEVideo
 	//----------------------------------------------------------------------------------------------------
 	class EEVideo
@@ -25,11 +33,17 @@ namespace Emerald
 		bool Play();
 		bool LoadVideo(const char* _fileName);
 
-		std::vector<EETexture>& GetData();
+		std::vector<EEBitmap>& GetData();
 
 	protected:
+		// info
+		int m_width;
+		int m_height;
+		double m_frameRate;
+		double m_totalTime;
+
 		// data
-		std::vector<EETexture> m_data;
+		std::vector<EEBitmap> m_data; // X, Too Large!
 	};
 }
 

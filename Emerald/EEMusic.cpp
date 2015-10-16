@@ -472,6 +472,7 @@ namespace Emerald
 		m_totalTime = (double)m_totalSamples / samplesPerSec;
 		data.resize(m_totalBytes);
 
+		av_frame_free(&frame);
 		avcodec_close(codecContext);
 		avformat_close_input(&formatContext);
 
@@ -624,6 +625,7 @@ namespace Emerald
 			m_totalSamples = len / m_format.nBlockAlign;
 			m_totalTime = (double)m_totalSamples / m_format.nSamplesPerSec;
 
+			av_frame_free(&frame);
 			avcodec_close(codecContext);
 			avformat_close_input(&formatContext);
 

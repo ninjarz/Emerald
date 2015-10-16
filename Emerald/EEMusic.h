@@ -147,7 +147,7 @@ namespace Emerald
 		bool SubmitBuffer();
 
 	protected:
-		// state
+		// info
 		IXAudio2SourceVoice *m_sourceVoice;
 		EEMusicCallBack m_musicCallBack;
 		WAVEFORMATEX m_format;

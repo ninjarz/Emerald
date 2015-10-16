@@ -11,8 +11,9 @@ int main(int _argc, char** _argv)
 	desc.width = 800;
 	desc.height = 450;
 	desc.isSSAA = true;
-	desc.isVsync = false;
+	desc.isVsync = true;
 	EEInitialize(desc);
+
 
 	EEVideo video;
 	if (!video.Open("Demo/Video/qsx.flv"))
@@ -20,6 +21,7 @@ int main(int _argc, char** _argv)
 		return 0;
 	}
 	// video.Play();
+
 
 	auto data = video.GetData();
 	int i = 0;
@@ -29,6 +31,8 @@ int main(int _argc, char** _argv)
 	{
 		EEBeginScene(EEColor::BLACK);
 
+		i = ++i % data.size();
+		quad2D.SetTexture(data[i]);
 		quad2D.Process();
 
 		EEEndScene();

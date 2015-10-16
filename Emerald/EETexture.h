@@ -80,8 +80,6 @@ namespace Emerald
 		ID3D11UnorderedAccessView* GetTextureUAV();
 		ID3D11RenderTargetView* GetTextureRTV();
 
-	//private:
-	//	ID3D11ShaderResourceView *m_texture;
 	};
 
 	// EETexture_APIs
