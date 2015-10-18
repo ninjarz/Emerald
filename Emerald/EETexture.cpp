@@ -76,6 +76,7 @@ namespace Emerald
 		SAFE_RELEASE(resource);
 		SAFE_RELEASE(texture);
 		SAFE_RELEASE(textureUAV);
+		SAFE_RELEASE(textureRTV);
 	}
 
 	//EETexture

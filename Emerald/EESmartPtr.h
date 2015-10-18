@@ -17,16 +17,18 @@ namespace Emerald
 			m_counter(new int(1)),
 			m_value(_value)
 		{
-
+			// std::cout << "init:" << *m_counter << std::endl;
 		}
+
 		EESmartPtr(const EESmartPtr &_smartPtr)
 			:
 			m_counter(_smartPtr.m_counter),
 			m_value(_smartPtr.m_value)
 		{
-			//std::cout << *m_counter << std::endl;
+			// std::cout << "copy:" << *m_counter << std::endl;
 			++*m_counter;
 		}
+
 		virtual ~EESmartPtr()
 		{
 			DecCounter();
@@ -54,9 +56,9 @@ namespace Emerald
 
 		void DecCounter()
 		{
-			//std::cout << *m_counter << std::endl;
 			if (--*m_counter == 0)
 			{
+				// std::cout << "delete:" << *m_counter << std::endl;
  				delete m_counter;
 				m_counter = nullptr;
 				if (m_value)
