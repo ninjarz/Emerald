@@ -199,120 +199,145 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::Start()
 	{
-		if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
-			return false;
-
-		m_state = EE_MUSIC_PLAYING;
-		if (!SubmitBuffer())
-			m_state = EE_MUSIC_NO_BUFFER;
-		else
+		if (m_sourceVoice)
 		{
-			for (int i = 1; i < XAUDIO2_MAX_QUEUED_BUFFERS; ++i)
+			if (FAILED(m_sourceVoice->Start(0, XAUDIO2_COMMIT_NOW)))
+				return false;
+
+			m_state = EE_MUSIC_PLAYING;
+			if (!SubmitBuffer())
+				m_state = EE_MUSIC_NO_BUFFER;
+			else
 			{
-				SubmitBuffer();
+				for (int i = 1; i < XAUDIO2_MAX_QUEUED_BUFFERS; ++i)
+				{
+					SubmitBuffer();
+				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	// _begin: 0.f-1.f
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::Play(float _begin)
 	{
-		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
-			return false;
-
-		m_beginSamples = (int)(_begin * m_totalSamples);
-		unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
-		for (auto& data : m_data)
+		if (m_sourceVoice)
 		{
-			if (data.second.size() <= beginBytes)
-			{
-				beginBytes -= data.second.size();
-			}
-			else
-			{
-				PushBuffer(EEMusicCell(&data, beginBytes));
-				beginBytes = 0;
-			}
-		}
-		// todo
-		// PushBuffer(EEMusicCell(nullptr, 0, 0, EE_MUSIC_CELL_END));
+			if (FAILED(m_sourceVoice->FlushSourceBuffers()))
+				return false;
 
-		return Start();
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEMusic::Play(float _begin, float _len, int _times)
-	{
-		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
-			return false;
-
-		m_beginSamples = (int)(_begin * m_totalSamples);
-		for (int times = 0; times < _times; ++times)
-		{
+			m_beginSamples = (int)(_begin * m_totalSamples);
 			unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
-			unsigned int byteLen = (int)(_len * m_totalSamples) * (m_format.wBitsPerSample / 8);
 			for (auto& data : m_data)
 			{
 				if (data.second.size() <= beginBytes)
 				{
 					beginBytes -= data.second.size();
 				}
-				else if (data.second.size() - beginBytes <= byteLen)
-				{
-					XAUDIO2_BUFFER buffer;
-					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
-					if (times != _times - 1)
-						PushBuffer(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_DEFAULT));
-					else
-						PushBuffer(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_END));
-					byteLen -= data.second.size() - beginBytes;
-					beginBytes = 0;
-				}
-				else if (byteLen != 0) // data.size() - beginBytes > byteLen && byteLen != 0
-				{
-					XAUDIO2_BUFFER buffer;
-					ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
-					if (times != _times - 1)
-						PushBuffer(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_DEFAULT));
-					else
-						PushBuffer(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_END));
-					byteLen = 0;
-					beginBytes = 0;
-					break;
-				}
 				else
-					break;
+				{
+					PushBuffer(EEMusicCell(&data, beginBytes));
+					beginBytes = 0;
+				}
 			}
+			// todo
+			// PushBuffer(EEMusicCell(nullptr, 0, 0, EE_MUSIC_CELL_END));
+
+			return Start();
 		}
 
-		return Start();
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEMusic::Play(float _begin, float _len, int _times)
+	{
+		if (m_sourceVoice)
+		{
+			if (FAILED(m_sourceVoice->FlushSourceBuffers()))
+				return false;
+
+			m_beginSamples = (int)(_begin * m_totalSamples);
+			for (int times = 0; times < _times; ++times)
+			{
+				unsigned int beginBytes = m_beginSamples * (m_format.wBitsPerSample / 8);
+				unsigned int byteLen = (int)(_len * m_totalSamples) * (m_format.wBitsPerSample / 8);
+				for (auto& data : m_data)
+				{
+					if (data.second.size() <= beginBytes)
+					{
+						beginBytes -= data.second.size();
+					}
+					else if (data.second.size() - beginBytes <= byteLen)
+					{
+						XAUDIO2_BUFFER buffer;
+						ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
+						if (times != _times - 1)
+							PushBuffer(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_DEFAULT));
+						else
+							PushBuffer(EEMusicCell(&data, beginBytes, 0, EE_MUSIC_CELL_END));
+						byteLen -= data.second.size() - beginBytes;
+						beginBytes = 0;
+					}
+					else if (byteLen != 0) // data.size() - beginBytes > byteLen && byteLen != 0
+					{
+						XAUDIO2_BUFFER buffer;
+						ZeroMemory(&buffer, sizeof(XAUDIO2_BUFFER));
+						if (times != _times - 1)
+							PushBuffer(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_DEFAULT));
+						else
+							PushBuffer(EEMusicCell(&data, beginBytes, byteLen, EE_MUSIC_CELL_END));
+						byteLen = 0;
+						beginBytes = 0;
+						break;
+					}
+					else
+						break;
+				}
+			}
+
+			return Start();
+		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::Pause()
 	{
-		if (FAILED(m_sourceVoice->Stop()))
-			return false;
+		if (m_sourceVoice)
+		{
+			if (FAILED(m_sourceVoice->Stop()))
+				return false;
 
-		m_state = EE_MUSIC_PAUSE;
+			m_state = EE_MUSIC_PAUSE;
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEMusic::Stop()
 	{
-		if (FAILED(m_sourceVoice->FlushSourceBuffers()))
-			return false;
-		if (FAILED(m_sourceVoice->Stop()))
-			return false;
+		if (m_sourceVoice)
+		{
+			if (FAILED(m_sourceVoice->FlushSourceBuffers()))
+				return false;
+			if (FAILED(m_sourceVoice->Stop()))
+				return false;
 
-		m_state = EE_MUSIC_DEFAULT;
+			m_state = EE_MUSIC_DEFAULT;
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 
 	// todo
@@ -372,7 +397,7 @@ namespace Emerald
 			return false;
 		}
 		// find the stream
-		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, 0, 0, NULL, 0)) < 0)
+		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0)) < 0)
 		{
 			avformat_close_input(&formatContext);
 			return false;
@@ -507,7 +532,7 @@ namespace Emerald
 			return false;
 		}
 		// find the stream
-		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, 0, 0, NULL, 0)) < 0)
+		if ((streamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0)) < 0)
 		{
 			avformat_close_input(&formatContext);
 			return false;

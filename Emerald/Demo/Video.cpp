@@ -17,24 +17,18 @@ int main(int _argc, char** _argv)
 	EEInitialize(desc);
 
 
-	EEVideo video;
+	EEVideo video(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()));
 	if (!video.Open("Demo/Video/qsx.flv"))
 	{
 		return 0;
 	}
-	// video.Play();
-
-
-	int i = 0;
-	EEQuad2D quad2D(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), video.GetFrame(0));
+	video.Play();
 
 	while (EERun())
 	{
 		EEBeginScene(EEColor::BLACK);
 
-		i = ++i % video.GetPacketSize();
-		quad2D.SetTexture(video.GetFrame(i));
-		quad2D.Process();
+		video.Process();
 
 		EEEndScene();
 	}
