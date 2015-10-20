@@ -18,7 +18,7 @@ int main(int _argc, char** _argv)
 
 
 	EEVideo video(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()));
-	if (!video.Open("Demo/Video/qsx.flv"))
+	if (!video.Open("Demo/Video/surface.flv"))
 	{
 		return 0;
 	}

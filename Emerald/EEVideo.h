@@ -23,6 +23,7 @@ extern "C"
 #include <libswscale/swscale.h>
 }
 #include <vector>
+#include <queue>
 #include "EEQuad2D.h"
 #include "EEMusic.h"
 
@@ -59,10 +60,10 @@ namespace Emerald
 		bool Play();
 
 		int GetPacketSize();
-		EETexture GetFrame(int _num);
 
 	protected:
 		bool LoadVideo(const char* _fileName);
+		bool DecodePacket(int _num);
 
 	protected:
 		// info
@@ -75,14 +76,16 @@ namespace Emerald
 		int m_height;
 		double m_frameRate;
 		double m_totalTime;
+		double m_timeBase;
 
 		bool m_isRunning;
 		double m_startTime;
-		int m_currentFrame;
+		int m_currentPacket;
 
 		// data
 		EEQuad2D m_screen;
-		std::vector<AVPacket*> m_data;
+		std::vector<AVPacket*> m_packets;
+		std::queue<std::pair<int64_t, EETexture>> m_frames;
 		EEMusic m_music;
 	};
 }

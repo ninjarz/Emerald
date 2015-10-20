@@ -29,9 +29,11 @@ namespace Emerald
 		m_streamIndex(-1),
 		m_codecContext(nullptr),
 		m_swsContext(nullptr),
+		m_width(-1),
+		m_height(-1),
 		m_isRunning(false),
 		m_startTime(-1),
-		m_currentFrame(-1)
+		m_currentPacket(-1)
 	{
 		InitializeVideo();
 
@@ -44,9 +46,11 @@ namespace Emerald
 		m_streamIndex(-1),
 		m_codecContext(nullptr),
 		m_swsContext(nullptr),
+		m_width(int(_rect.z - _rect.x)),
+		m_height(int(_rect.w - _rect.y)),
 		m_isRunning(false),
 		m_startTime(-1),
-		m_currentFrame(-1),
+		m_currentPacket(-1),
 
 		m_screen(_rect)
 	{
@@ -59,14 +63,14 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEVideo::~EEVideo()
 	{
-		for (auto& packet : m_data)
+		for (auto& packet : m_packets)
 		{
 			avpicture_free((AVPicture*)packet);
 			av_free_packet(packet);
 			delete packet;
 			packet = nullptr;
 		}
-		m_data.clear();
+		m_packets.clear();
 
 		if (m_frameRGBA)
 		{
@@ -89,23 +93,41 @@ namespace Emerald
 	{
 		if (m_isRunning)
 		{
-			double deltaTime = EEGetTotalTime() - m_startTime;
-			int currentFrame = int(deltaTime * m_frameRate);
+			double deltaTime = (EEGetTotalTime() - m_startTime) / m_timeBase;
 
-			if ((unsigned int)currentFrame < m_data.size())
+			// handle the packets
+			int nextPacket = m_currentPacket + 1;  //int currentFrame = int(deltaTime * m_frameRate);
+			while (nextPacket < (int)m_packets.size())
 			{
-				if (m_currentFrame != currentFrame)
+				if (m_packets[nextPacket]->dts < deltaTime)
 				{
-					m_currentFrame = currentFrame;
-					m_screen.SetTexture(GetFrame(m_currentFrame));
+					DecodePacket(nextPacket++);
 				}
-
-				return m_screen.Update();
+				else
+				{
+					if (m_currentPacket != nextPacket - 1)
+						m_currentPacket = nextPacket - 1;
+					break;
+				}
 			}
-			else
+
+			// handle the frames
+			while (!m_frames.empty())
+			{
+				if (m_frames.front().first < deltaTime)
+				{
+					m_screen.SetTexture(m_frames.front().second);
+					m_frames.pop();
+				}
+			}
+
+			// the end
+			if ((int)m_packets.size() <= m_currentPacket && m_frames.empty())
 			{
 				m_isRunning = false;
 			}
+
+			return m_screen.Update();
 		}
 
 		return false;
@@ -144,7 +166,7 @@ namespace Emerald
 	{
 		m_isRunning = true;
 		m_startTime = EEGetTotalTime();
-		m_currentFrame = 0;
+		m_currentPacket = -1;
 		m_music.Play(); // X
 
 		return true;
@@ -153,38 +175,10 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	int EEVideo::GetPacketSize()
 	{
-		return m_data.size();
+		return m_packets.size();
 	}
 
-	//----------------------------------------------------------------------------------------------------
-	EETexture EEVideo::GetFrame(int _num)
-	{
-		if (_num < GetPacketSize())
-		{
-			AVFrame	*frame = av_frame_alloc();
-
-			int got = 0;
-			if (avcodec_decode_video2(m_codecContext, frame, &got, m_data[_num]) < 0)
-			{
-				printf("Error in decoding video frame.\n");
-			}
-			if (got > 0)
-			{
-				if (m_swsContext)
-				{
-					sws_scale(m_swsContext, frame->data, frame->linesize, 0, m_codecContext->height, m_frameRGBA->data, m_frameRGBA->linesize);
-					
-					av_frame_free(&frame);
-					return EETexture((unsigned char*)m_frameRGBA->data[0], m_width, m_height);
-				}
-			}
-			printf("123\n");
-			av_frame_free(&frame);
-		}
-
-		return EETexture();
-	}
-
+	// Get packets (ordered by dts)
 	//----------------------------------------------------------------------------------------------------
 	bool EEVideo::LoadVideo(const char* _fileName)
 	{
@@ -225,8 +219,10 @@ namespace Emerald
 			return false;
 		}
 
-		m_width = m_codecContext->width;
-		m_height = m_codecContext->height;
+		if (m_width == -1)
+			m_width = m_codecContext->width;
+		if (m_height == -1)
+			m_height = m_codecContext->height;
 		m_swsContext = sws_getContext(m_codecContext->width, m_codecContext->height, m_codecContext->pix_fmt, m_width, m_height, AV_PIX_FMT_RGBA, SWS_BICUBIC, nullptr, nullptr, nullptr);
 		if (!m_swsContext)
 		{
@@ -237,8 +233,9 @@ namespace Emerald
 		avpicture_alloc((AVPicture*)m_frameRGBA, AV_PIX_FMT_RGBA, m_width, m_height);
 		m_frameRate = m_codecContext->framerate.num / m_codecContext->framerate.den;
 		m_totalTime = m_formatContext->duration / (double)AV_TIME_BASE;
+		m_timeBase = av_q2d(m_formatContext->streams[m_streamIndex]->time_base);
 		int count = (int)(m_frameRate * m_totalTime * 1.1);	
-		m_data.reserve(count);
+		m_packets.reserve(count);
 
 		int flag = 0;
 		while (flag >= 0)
@@ -251,7 +248,7 @@ namespace Emerald
 			{
 				if (packet->stream_index == m_streamIndex)
 				{
-					m_data.push_back(packet);
+					m_packets.push_back(packet);
 				}
 				else
 				{
@@ -269,5 +266,40 @@ namespace Emerald
 		}
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEVideo::DecodePacket(int _num)
+	{
+		if (_num < GetPacketSize())
+		{
+			int got = 0;
+			AVFrame	*frame = av_frame_alloc();
+			if (avcodec_decode_video2(m_codecContext, frame, &got, m_packets[_num]) < 0)
+			{
+				printf("Error in decoding video frame.\n");
+			}
+
+			if (got > 0)
+			{
+				if (m_swsContext)
+				{
+					sws_scale(m_swsContext, frame->data, frame->linesize, 0, m_codecContext->height, m_frameRGBA->data, m_frameRGBA->linesize);
+					m_frames.push(std::pair<int64_t, EETexture>(frame->pkt_pts, EETexture((unsigned char*)m_frameRGBA->data[0], m_width, m_height)));
+					
+					av_frame_free(&frame);
+					return true;
+				}
+			}
+			else
+			{
+				// todo: handle the rest
+				// printf("%d\n", _num);
+			}
+
+			av_frame_free(&frame);
+		}
+
+		return false;
 	}
 }
