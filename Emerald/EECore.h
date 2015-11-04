@@ -208,7 +208,7 @@ namespace Emerald
 	bool EEInitialize(const EEDesc& _EEDesc = { L"Emerald", false, 800, 450, true, false });
 	void EEShutdown();
 	int EERun();
-	void EESetRuntime(float _time);
+	void EESetRunTime(float _time);
 }
 
 #endif

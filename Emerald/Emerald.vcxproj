@@ -84,6 +84,7 @@
     <ClCompile Include="Demo\Canny.cpp" />
     <ClCompile Include="Demo\ContrastAndBright.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAConfig.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMain.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAManager.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp" />
@@ -205,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Demo\DIVAProject\DIVAConfig.h" />
+    <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAManager.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMap.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMenu.h" />

@@ -489,6 +489,9 @@
     <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -735,6 +738,9 @@
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
     <ClInclude Include="Demo\DIVAProject\DIVAMenu.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
   </ItemGroup>

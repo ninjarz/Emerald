@@ -15,8 +15,12 @@ public:
 
 private:
 	bool Initialize();
+	void Shutdown();
 
 private:
+	// state
+	DIVAState m_state;
+
 	// UI
 	EEScene m_scene;
 	EEQuad2D m_backgroundQuad;
@@ -31,7 +35,6 @@ private:
 	EEIntBoard m_dpBoard;
 	EEParticleEmitter m_noteParticle;
 	EEButton m_freeModeButton;
-
-	// state
-	DIVAState m_state;
+	EEProgressbar m_musicBar;
+	EEQuad2D m_musicBarArea;
 };

@@ -9,6 +9,7 @@ enum DIVAState
 {
 	DIVA_DEFAULT = 0,
 	DIVA_MENU,
+	DIVA_FREE_MODE,
 	DIVA_END
 };
 

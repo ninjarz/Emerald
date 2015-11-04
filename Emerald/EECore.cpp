@@ -91,20 +91,26 @@ namespace Emerald
 			TranslateMessage(&m_msg);
 			DispatchMessageW(&m_msg);
 
-			if (m_runTime > 0)
-			{
-				m_runTime -= (float)GetDeltaTime();
-				if (m_runTime < 0.0f)
-					m_runTime = 0.0f;
-			}
-
-
-			if (m_runTime == 0.0f || m_msg.message == WM_QUIT || (m_msg.message == WM_KEYDOWN && m_msg.wParam == VK_ESCAPE))
+			if (m_msg.message == WM_QUIT || (m_msg.message == WM_KEYDOWN && m_msg.wParam == VK_ESCAPE))
 			{
 				m_runTime = -1.0f;
 				Stop();
 				return false;
 			}
+		}
+
+		if (m_runTime > 0)
+		{
+			m_runTime -= (float)GetDeltaTime();
+			if (m_runTime < 0.0f)
+				m_runTime = 0.0f;
+		}
+
+		if (m_runTime == 0.0f)
+		{
+			m_runTime = -1.0f;
+			Stop();
+			return false;
 		}
 
 		return true;
@@ -247,7 +253,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EESetRuntime(float _time)
+	void EESetRunTime(float _time)
 	{
 		EECore::s_EECore->SetRunTime(_time);
 	}

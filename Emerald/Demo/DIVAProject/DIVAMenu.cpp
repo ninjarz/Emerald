@@ -1,8 +1,10 @@
 #include "DIVAMenu.h"
 
 
+//----------------------------------------------------------------------------------------------------
 DIVAMenu::DIVAMenu()
 	:
+	m_state(DIVA_DEFAULT),
 	m_scene(),
 	m_backgroundQuad(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\背景.jpg"),
 	m_logoQuad(Rect_Float((float)EEGetWidth() * 0.0325f, (float)EEGetHeight() * 0.3733f, (float)EEGetWidth() * 0.67375f, (float)EEGetHeight() * 0.63222f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\PDF.png"),
@@ -14,20 +16,22 @@ DIVAMenu::DIVAMenu()
 	m_bottomQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.9122f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 1.0f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\底.png"),
 	m_dpQuad(Rect_Float((float)EEGetWidth() * 0.726875f, (float)EEGetHeight() * 0.0111f, (float)EEGetWidth() * 0.784375f, (float)EEGetHeight() * 0.0578f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\dp.png"),
 	m_dpBoard(Rect_Float((float)EEGetWidth() * 0.784375f, (float)EEGetHeight() * 0.0111f, (float)EEGetWidth() * 0.984375f, (float)EEGetHeight() * 0.0578f), 8),
-	m_freeModeButton(EE_BUTTON_SCALE, Rect_Float((float)EEGetWidth() * 0.03f, (float)EEGetHeight() * 0.8489f, (float)EEGetWidth() * 0.1075f, (float)EEGetHeight() * 0.9856f), 1.3f, 0.2f, 0.2f, L"Texture/Project Diva Freedom\\主界面\\默认主题/自由模式.png")
-
+	m_freeModeButton(EE_BUTTON_SCALE, Rect_Float((float)EEGetWidth() * 0.03f, (float)EEGetHeight() * 0.8489f, (float)EEGetWidth() * 0.1075f, (float)EEGetHeight() * 0.9856f), 1.3f, 0.2f, 0.2f, L"Texture/Project Diva Freedom\\主界面\\默认主题/自由模式.png", [this] { m_state = DIVA_FREE_MODE; }),
+	m_musicBar(Rect_Float(820.f, 335.f, 1100.f, 340.f), Rect_Float(0.0f, 0.0f, 190.f, 5.f), L"Texture/主界面/播放器/进度.png", L"Texture/主界面/播放器/时间轴.png"),
+	m_musicBarArea(Rect_Float(580.f, 305.f, 800.f, 370.f))
 {
 	Initialize();
 }
 
+//----------------------------------------------------------------------------------------------------
 DIVAMenu::~DIVAMenu()
 {
-
 }
 
+//----------------------------------------------------------------------------------------------------
 DIVAState DIVAMenu::Process()
 {
-	while (EERun())
+	while (EERun() && m_state == DIVA_DEFAULT)
 	{
 		EEBeginScene(EEColor::BLACK);
 
@@ -37,9 +41,12 @@ DIVAState DIVAMenu::Process()
 		EEEndScene();
 	}
 
-	return DIVA_END;
+	Shutdown();
+
+	return m_state;
 }
 
+//----------------------------------------------------------------------------------------------------
 bool DIVAMenu::Initialize()
 {
 	m_backgroundQuad.SetLocalZOrder(10.0f);
@@ -132,5 +139,77 @@ bool DIVAMenu::Initialize()
 	EEFade(&m_freeModeButton, 1.0f, 1.0f, 3.5);
 	m_scene.AddObject(&m_freeModeButton);
 
+	m_musicBar.SetLocalZOrder(5.f);
+	m_scene.AddObject(&m_musicBar);
+
+	m_musicBarArea.SetOverFunc(
+		[this]
+	{
+		FLOAT3 pos = m_musicBar.GetPosition();
+		if (pos.x > 580.0f)
+		{
+			pos.x -= (float)(EEGetDeltaTime() * 1000);
+			if (pos.x < 580.f)
+				pos.x = 580.f;
+			m_musicBar.SetPosition(pos);
+		}
+	});
+	m_musicBarArea.SetFreeFunc(
+		[this]
+	{
+		FLOAT3 pos = m_musicBar.GetPosition();
+		if (pos.x < 820.0f)
+		{
+			pos.x += (float)(EEGetDeltaTime() * 1000);
+			if (pos.x > 820.0f)
+				pos.x = 820.0f;
+			m_musicBar.SetPosition(pos);
+		}
+	});
+	m_scene.AddObject(&m_musicBarArea);
+
 	return true;
+}
+
+//----------------------------------------------------------------------------------------------------
+void DIVAMenu::Shutdown()
+{
+	EETimerStop();
+	m_circle1Quad.RemoveThread();
+	m_circle2Quad.RemoveThread();
+
+	float finishTime = 1.4f;
+	float deltaTime = 0.4f;
+
+	EEFade(&m_logoQuad, deltaTime, 0.0f);
+	EEFade(&m_road1Quad, deltaTime, 0.0f);
+	EEFade(&m_road2Quad, deltaTime, 0.0f);
+	EEFade(&m_noteParticle, deltaTime, 0.0f);
+
+	m_road1Quad.SetRotation(MATRIX::IDENTITY);
+	m_road2Quad.SetRotation(MATRIX::IDENTITY);
+	EEMoveBy(&m_road1Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
+	EEMoveBy(&m_road2Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
+
+	EEMoveBy(&m_topQuad, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
+	EEMoveBy(&m_dpQuad, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
+	EEMoveBy(&m_dpBoard, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
+
+	EEMoveBy(&m_bottomQuad, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+	EEMoveBy(&m_freeModeButton, finishTime, FLOAT2(0.f, 150.0f), deltaTime);
+
+	EEFade(&m_scene, deltaTime, 0.0f, 1.0f);
+
+	EESetRunTime(finishTime);
+	while (EERun())
+	{
+		EEBeginScene(EEColor::BLACK);
+
+		m_dpBoard.SetValue(EEGetFPS());
+		EEProcess(&m_scene);
+
+		EEEndScene();
+	}
+
+	EERemoveThread();
 }
