@@ -6,6 +6,18 @@ namespace Emerald
 {
 	//EEIntBoard
 	//----------------------------------------------------------------------------------------------------
+	EEIntBoard::EEIntBoard(const Rect_Float& _boardRect, int _range)
+		:
+		EEQuad2D(_boardRect),
+		m_range(_range),
+		m_isRangeDirty(true),
+		m_value(0),
+		m_isValueDirty(true),
+		m_num(_range)
+	{
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEIntBoard::EEIntBoard(const Rect_Float& _boardRect, int _range, EETexture* _textures)
 		:
 		EEQuad2D(_boardRect),
@@ -112,6 +124,15 @@ namespace Emerald
 	{
 		m_range = _range;
 		m_isRangeDirty = true;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEIntBoard::SetNumTextures(EETexture* _textures)
+	{
+		for (int i = 0; i < 10; ++i)
+			m_numTexs[i] = _textures[i];
 
 		return true;
 	}

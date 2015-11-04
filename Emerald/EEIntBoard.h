@@ -13,6 +13,7 @@ namespace Emerald
 	class EEIntBoard : public EEQuad2D
 	{
 	public:
+		EEIntBoard(const Rect_Float& _boardRect, int _range);
 		EEIntBoard(const Rect_Float& _boardRect, int _range, EETexture* _textures);
 		EEIntBoard(const EEIntBoard& _intBoard);
 		virtual ~EEIntBoard();
@@ -22,6 +23,7 @@ namespace Emerald
 
 		bool SetValue(int _value);
 		bool SetRange(int _range);
+		bool SetNumTextures(EETexture* _textures);
 
 		int GetValue();
 		int GetRange();

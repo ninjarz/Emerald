@@ -112,6 +112,9 @@
     <Filter Include="头文件\Emerald\EEShader\EECannyShader">
       <UniqueIdentifier>{1983e395-f950-4aa2-82ac-aa6cd547e8c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Demo\DIVAProject">
+      <UniqueIdentifier>{5dfde8f0-d80a-4c66-9ef3-5cc1e2ce75a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -471,6 +474,21 @@
     <ClCompile Include="Demo\Music3.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMain.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAManager.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAConfig.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -706,6 +724,18 @@
     </ClInclude>
     <ClInclude Include="EEVideo.h">
       <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAManager.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAConfig.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMap.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMenu.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -67,6 +67,8 @@ namespace Emerald
 			deltaEndScale = _info.deltaEndScale;
 			//texture
 			texture = _info.texture;
+
+			return *this;
 		}
 	};
 
@@ -114,6 +116,7 @@ namespace Emerald
 	class EEParticleEmitter : public EEObject
 	{
 	public:
+		EEParticleEmitter();
 		EEParticleEmitter(const EEParticleInfo& _info);
 		EEParticleEmitter(const EEParticleEmitter& _emitter);
 		virtual ~EEParticleEmitter();
@@ -123,10 +126,9 @@ namespace Emerald
 		EEParticle* GenerateParticle();
 		void RecastParticle(EEParticle* _particle);
 
-		//localZOrder
+		bool SetParticleInfo(const EEParticleInfo& _info);
 		virtual void SetLocalZOrder(float _localZOrder);
 
-		//position
 		virtual FLOAT3 GetCenter() const;
 		virtual FLOAT3 GetFinalCenter() const;
 

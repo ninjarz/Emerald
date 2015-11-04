@@ -105,6 +105,14 @@ namespace Emerald
 
 	//EEParticleEmitter
 	//----------------------------------------------------------------------------------------------------
+	EEParticleEmitter::EEParticleEmitter()
+		:
+		EEObject()
+	{
+
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEParticleEmitter::EEParticleEmitter(const EEParticleInfo& _info)
 		:
 		EEObject(),
@@ -212,6 +220,21 @@ namespace Emerald
 			scaleSpeed,
 			m_particleInfo.texture
 			);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEParticleEmitter::SetParticleInfo(const EEParticleInfo& _info)
+	{
+		m_particleInfo = _info;
+		m_position = _info.position;
+		SetLocalZOrder(_info.position.z);
+		m_particles.clear();
+		for (int i = 0; i < _info.amount; ++i)
+		{
+			m_particles.push_back(GenerateParticle());
+		}
+
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

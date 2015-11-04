@@ -85,25 +85,26 @@ namespace Emerald
 	{
 		Start();
 		Tick();
-		if (PeekMessageW(&m_msg, NULL, 0, 0, PM_REMOVE))
+
+		while (PeekMessageW(&m_msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&m_msg);
 			DispatchMessageW(&m_msg);
-		}
 
-		if (m_runTime > 0)
-		{
-			m_runTime -= (float)GetDeltaTime();
-			if (m_runTime < 0.0f)
-				m_runTime = 0.0f;
-		}
+			if (m_runTime > 0)
+			{
+				m_runTime -= (float)GetDeltaTime();
+				if (m_runTime < 0.0f)
+					m_runTime = 0.0f;
+			}
 
 
-		if (m_runTime == 0.0f || m_msg.message == WM_QUIT || (m_msg.message == WM_KEYDOWN && m_msg.wParam == VK_ESCAPE))
-		{
-			m_runTime = -1.0f;
-			Stop();
-			return false;
+			if (m_runTime == 0.0f || m_msg.message == WM_QUIT || (m_msg.message == WM_KEYDOWN && m_msg.wParam == VK_ESCAPE))
+			{
+				m_runTime = -1.0f;
+				Stop();
+				return false;
+			}
 		}
 
 		return true;

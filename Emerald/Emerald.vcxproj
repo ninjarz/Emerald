@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -40,8 +40,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\lib\freetype-2.5.3\include;D:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\include;$(IncludePath);$(DXSDK_DIR)\Include;D:\Lib\boost_1_58_0\boost_1_58_0</IncludePath>
-    <LibraryPath>D:\lib\ffmpeg-20140723-git-a613257-win32-dev\ffmpeg-20140723-git-a613257-win32-dev\lib;D:\Lib\freetype-2.5.3\objs\win32;$(LibraryPath);$(DXSDK_DIR)\Lib\x86;D:\Lib\boost_1_58_0\boost_1_58_0\stage\lib</LibraryPath>
+    <IncludePath>E:\Lib\FFmpeg\vs2013_build\include;E:\lib\freetype-2.5.3\include;$(IncludePath);$(DXSDK_DIR)\Include;E:\Lib\boost_1_55_0\boost_1_55_0</IncludePath>
+    <LibraryPath>E:\Lib\FFmpeg\vs2013_build\lib;E:\Lib\freetype-2.5.3\objs\win32;$(LibraryPath);$(DXSDK_DIR)\Lib\x86;E:\Lib\boost_1_55_0\boost_1_55_0\stage\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>D:\Lib\freetype-2.5.3\include;D:\Lib\FFmpeg\vs2015_build\include;$(IncludePath);$(DXSDK_DIR)Include;D:\Lib\boost_1_58_0\boost_1_58_0</IncludePath>
@@ -83,6 +83,11 @@
     <ClCompile Include="Demo\CameraAction.cpp" />
     <ClCompile Include="Demo\Canny.cpp" />
     <ClCompile Include="Demo\ContrastAndBright.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAConfig.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAMain.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAManager.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp" />
     <ClCompile Include="Demo\DIVA\DIVA.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAGame.cpp" />
@@ -199,6 +204,10 @@
     <None Include="EEWaveCoder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Demo\DIVAProject\DIVAConfig.h" />
+    <ClInclude Include="Demo\DIVAProject\DIVAManager.h" />
+    <ClInclude Include="Demo\DIVAProject\DIVAMap.h" />
+    <ClInclude Include="Demo\DIVAProject\DIVAMenu.h" />
     <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
     <ClInclude Include="Demo\DIVA\DIVAHelper.h" />
     <ClInclude Include="Demo\DIVA\DIVAGame.h" />

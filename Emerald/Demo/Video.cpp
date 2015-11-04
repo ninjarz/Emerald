@@ -1,5 +1,5 @@
 // Video Demo
-#if 1
+#if 0
 #define _EE_MEMORYLEAK_ON_
 #include "../Emerald.h"
 
@@ -18,7 +18,7 @@ int main(int _argc, char** _argv)
 
 
 	EEVideo video(Rect_Float(0, 0, (float)EEGetWidth(), (float)EEGetHeight()));
-	if (!video.Open("Demo/Video/surface.flv"))
+	if (!video.Open("Demo/Video/qsx.flv"))
 	{
 		return 0;
 	}
