@@ -87,6 +87,7 @@ namespace Emerald
 		// texture
 		virtual bool SetTexture(const EETexture& _tex);
 		virtual bool SetTexture(ID3D11ShaderResourceView* _tex);
+		virtual bool SetTexture(EETexture* _texs, int _amount);
 		virtual bool SetTexIndex(int _index);
 		virtual bool SetTexRect(Rect_Float& _texRect);
 		virtual bool SetIsUseTex(bool _isUseTex);

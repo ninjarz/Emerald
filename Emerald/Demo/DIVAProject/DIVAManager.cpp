@@ -1,11 +1,12 @@
 #include "DIVAManager.h"
 #include "DIVAMenu.h"
+#include "DIVAFreeMode.h"
 
 
 //----------------------------------------------------------------------------------------------------
 DIVAManager::DIVAManager()
 	:
-	m_state(DIVA_MENU)
+	m_state(DIVA_FREE_MODE)
 {
 	Initialize();
 }
@@ -36,6 +37,12 @@ bool DIVAManager::Process()
 		{
 			DIVAMenu menu;
 			m_state = menu.Process();
+			break;
+		}
+		case DIVA_FREE_MODE:
+		{
+			DIVAFreeMode freeMode;
+			m_state = freeMode.Process();
 			break;
 		}
 		default:

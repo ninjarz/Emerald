@@ -6,6 +6,18 @@ namespace Emerald
 {
 	//EESlide
 	//----------------------------------------------------------------------------------------------------
+	EESlide::EESlide(const Rect_Float& _rect, float _interval, bool _isLoop)
+		:
+		EEQuad2D(_rect),
+		m_updateTime(-1.0f),
+		m_changeInterval(_interval),
+		m_isLoop(_isLoop)
+	{
+		SetIsUseColor(false);
+		SetIsUseTex(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EESlide::EESlide(const Rect_Float& _rect, EETexture& _texs, float _interval, bool _isLoop)
 		:
 		EEQuad2D(_rect, _texs),

@@ -4,6 +4,9 @@
 
 #include "EEGeometry.h"
 //#include <boost/any.hpp>
+
+
+// XXX
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -20,6 +23,7 @@ namespace Emerald
 	class EEButton : public EEQuad2D
 	{
 	public:
+		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _tex, std::function<void(void)> _funcPtr = [] {});
 		EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, std::function<void(void)> _funcPtr = []{});
 		EEButton(EEButtonType _type, const Rect_Float& _rect, ID3D11ShaderResourceView* _upTex, ID3D11ShaderResourceView* _overTex, ID3D11ShaderResourceView* _downTex, std::function<void(void)> _funcPtr = []{});
 		EEButton(EEButtonType _type, const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, std::function<void(void)> _funcPtr = []{});

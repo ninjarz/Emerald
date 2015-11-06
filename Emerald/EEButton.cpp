@@ -7,6 +7,29 @@ namespace Emerald
 {
 	//EEButton
 	//----------------------------------------------------------------------------------------------------
+	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _tex, std::function<void(void)> _funcPtr)
+		:
+		EEQuad2D(_rect, _tex),
+		//type
+		m_type(_type),
+		//scale
+		m_aimScale(1.0),
+		m_currScaleTime(0.0),
+		m_aimScaleTime(0.0),
+		//alpha
+		m_aimAlpha(1.0f),
+		m_currFadeTime(0.0f),
+		m_aimFadeTime(0.0f),
+		//callback function
+		m_callbackFunc(_funcPtr),
+		//button picture
+		m_overTex(_tex),
+		m_downTex(_tex)
+	{
+		SetIsFocusable(true);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEButton::EEButton(EEButtonType _type, const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, std::function<void(void)> _funcPtr)
 		:
 		EEQuad2D(_rect, _upTex),

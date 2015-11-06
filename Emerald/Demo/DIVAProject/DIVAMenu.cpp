@@ -10,8 +10,8 @@ DIVAMenu::DIVAMenu()
 	m_logoQuad(Rect_Float((float)EEGetWidth() * 0.0325f, (float)EEGetHeight() * 0.3733f, (float)EEGetWidth() * 0.67375f, (float)EEGetHeight() * 0.63222f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\PDF.png"),
 	m_circle1Quad(Rect_Float((float)EEGetWidth() * 0.083125f, (float)EEGetHeight() * 0.1456f, (float)EEGetWidth() * 0.434375f, (float)EEGetHeight() * 0.7689f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\圈1.png"),
 	m_circle2Quad(Rect_Float((float)EEGetWidth() * -0.00875f, (float)EEGetHeight() * -0.018889f, (float)EEGetWidth() * 0.52625f, (float)EEGetHeight() * 0.93222f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\圈2.png"),
-	m_road1Quad(Rect_Float((float)EEGetWidth() * 0.05875f, (float)EEGetHeight() * 0.0922f, (float)EEGetWidth() * 0.70375f, (float)EEGetHeight() * 0.8267f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\线1.png"),
-	m_road2Quad(Rect_Float((float)EEGetWidth() * 0.340625f, (float)EEGetHeight() * 0.1333f, (float)EEGetWidth() * 0.658125f, (float)EEGetHeight() * 0.7456f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\线2.png"),
+	m_line1Quad(Rect_Float((float)EEGetWidth() * 0.05875f, (float)EEGetHeight() * 0.0922f, (float)EEGetWidth() * 0.70375f, (float)EEGetHeight() * 0.8267f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\线1.png"),
+	m_line2Quad(Rect_Float((float)EEGetWidth() * 0.340625f, (float)EEGetHeight() * 0.1333f, (float)EEGetWidth() * 0.658125f, (float)EEGetHeight() * 0.7456f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\线2.png"),
 	m_topQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.0f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.0711f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\顶.png"),
 	m_bottomQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.9122f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 1.0f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\底.png"),
 	m_dpQuad(Rect_Float((float)EEGetWidth() * 0.726875f, (float)EEGetHeight() * 0.0111f, (float)EEGetWidth() * 0.784375f, (float)EEGetHeight() * 0.0578f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\dp.png"),
@@ -69,15 +69,15 @@ bool DIVAMenu::Initialize()
 	EERotateYX(&m_circle2Quad, 25.0f, -1.5f * EE_2PI, 2.0f, true);
 	m_scene.AddObject(&m_circle2Quad);
 
-	m_road1Quad.SetLocalZOrder(8.f);
-	m_road1Quad.SetAlpha(0.0f);
-	EEFade(&m_road1Quad, 1.0f, 1.0f, 3.5f);
-	m_scene.AddObject(&m_road1Quad);
+	m_line1Quad.SetLocalZOrder(8.f);
+	m_line1Quad.SetAlpha(0.0f);
+	EEFade(&m_line1Quad, 1.0f, 1.0f, 3.5f);
+	m_scene.AddObject(&m_line1Quad);
 
-	m_road2Quad.SetLocalZOrder(8.f);
-	m_road2Quad.SetAlpha(0.0f);
-	EEFade(&m_road2Quad, 1.0f, 1.0f, 3.5f);
-	m_scene.AddObject(&m_road2Quad);
+	m_line2Quad.SetLocalZOrder(8.f);
+	m_line2Quad.SetAlpha(0.0f);
+	EEFade(&m_line2Quad, 1.0f, 1.0f, 3.5f);
+	m_scene.AddObject(&m_line2Quad);
 
 	m_topQuad.SetLocalZOrder(7.f);
 	m_topQuad.SetAlpha(0.0f);
@@ -182,14 +182,14 @@ void DIVAMenu::Shutdown()
 	float deltaTime = 0.4f;
 
 	EEFade(&m_logoQuad, deltaTime, 0.0f);
-	EEFade(&m_road1Quad, deltaTime, 0.0f);
-	EEFade(&m_road2Quad, deltaTime, 0.0f);
+	EEFade(&m_line1Quad, deltaTime, 0.0f);
+	EEFade(&m_line2Quad, deltaTime, 0.0f);
 	EEFade(&m_noteParticle, deltaTime, 0.0f);
 
-	m_road1Quad.SetRotation(MATRIX::IDENTITY);
-	m_road2Quad.SetRotation(MATRIX::IDENTITY);
-	EEMoveBy(&m_road1Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
-	EEMoveBy(&m_road2Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
+	m_line1Quad.SetRotation(MATRIX::IDENTITY);
+	m_line2Quad.SetRotation(MATRIX::IDENTITY);
+	EEMoveBy(&m_line1Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
+	EEMoveBy(&m_line2Quad, finishTime, FLOAT2(-850.f, 0.0f), deltaTime);
 
 	EEMoveBy(&m_topQuad, finishTime, FLOAT2(0.f, -64.0f), deltaTime);
 	EEMoveBy(&m_dpQuad, finishTime, FLOAT2(0.f, -64.0f), deltaTime);

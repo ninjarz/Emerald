@@ -14,6 +14,7 @@ namespace Emerald
 	class EESlide : public EEQuad2D
 	{
 	public:
+		EESlide(const Rect_Float& _rect, float _interval = 0.0f, bool _isLoop = true);
 		EESlide(const Rect_Float& _rect, EETexture& _texs, float _interval = 0.0f, bool _isLoop = true);
 		EESlide(const Rect_Float& _rect, EETexture* _texs, int _amount, float _interval = 0.0f, bool _isLoop = true);
 		EESlide(const Rect_Float& _rect, std::vector<EETexture>& _texs, float _interval = 0.0f, bool _isLoop = true);

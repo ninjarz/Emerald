@@ -296,6 +296,12 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEObject::SetTexture(EETexture* _texs, int _amount)
+	{
+		return SetTexture(EETextureCombine(_texs, _amount));
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEObject::SetTexIndex(int _index)
 	{
 		m_texIndex = _index;
