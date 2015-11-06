@@ -492,6 +492,9 @@
     <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
+    <ClCompile Include="EEScrollView.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -742,6 +745,9 @@
     </ClInclude>
     <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h">
       <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="EEScrollView.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -183,6 +183,7 @@
     <ClCompile Include="EERecorder.cpp" />
     <ClCompile Include="EERipple.cpp" />
     <ClCompile Include="EEScene.cpp" />
+    <ClCompile Include="EEScrollView.cpp" />
     <ClCompile Include="EESlide.cpp" />
     <ClCompile Include="EESmartPtr.cpp" />
     <ClCompile Include="EESocket.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="EERecorder.h" />
     <ClInclude Include="EERipple.h" />
     <ClInclude Include="EEScene.h" />
+    <ClInclude Include="EEScrollView.h" />
     <ClInclude Include="EESlider.h" />
     <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />
