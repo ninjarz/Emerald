@@ -129,6 +129,9 @@ namespace Emerald
 	EEObject::~EEObject()
 	{
 		RemoveThread();
+
+		if (m_parent)
+			m_parent->m_children.erase(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -177,7 +180,12 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	void EEObject::SetParent(EEObject* _parent)
 	{
+		if (m_parent)
+			m_parent->m_children.erase(this);
+
 		m_parent = _parent;
+		if (m_parent)
+			m_parent->m_children[this] = true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

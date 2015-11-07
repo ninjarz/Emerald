@@ -50,6 +50,7 @@ namespace Emerald
 		static ID3D11Buffer *s_objectBuffer;
 		static EEObject *s_focusedObject;
 		static EEObject *s_triggeredObject;
+
 	public:
 		EEObject();
 		EEObject(const FLOAT3& _position);
@@ -186,6 +187,7 @@ namespace Emerald
 		// info
 		bool m_isAlive;
 		EEObject *m_parent;
+		std::map<EEObject*, bool> m_children;
 
 		// translate
 		FLOAT3 m_position;
