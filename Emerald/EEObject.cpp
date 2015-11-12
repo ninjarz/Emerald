@@ -135,13 +135,7 @@ namespace Emerald
 			m_parent->m_children.erase(this);
 		}
 
-		for (auto child : m_children)
-		{
-			if (child.first)
-			{
-				child.first->SetParent(nullptr);
-			}
-		}
+		ClearChildren();
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -196,6 +190,21 @@ namespace Emerald
 		m_parent = _parent;
 		if (m_parent)
 			m_parent->m_children[this] = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEObject::ClearChildren()
+	{
+		for (auto child : m_children)
+		{
+			if (child.first)
+			{
+				child.first->SetParent(nullptr);
+			}
+		}
+		m_children.clear();
+
+		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------

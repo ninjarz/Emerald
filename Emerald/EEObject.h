@@ -64,8 +64,9 @@ namespace Emerald
 
 		// life
 		virtual void SetIsAlive(bool _isAlive);
-		// parent
+		// parent & children
 		virtual void SetParent(EEObject* _parent);
+		virtual bool ClearChildren();
 		// position
 		virtual void SetPositionX(float _posX);
 		virtual void SetPositionY(float _posY);
@@ -108,7 +109,7 @@ namespace Emerald
 
 		// life
 		bool IsAlive();
-		// parent
+		// parent & children
 		virtual EEObject* GetParent();
 		// position
 		virtual float GetPositionX() const;

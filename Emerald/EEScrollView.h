@@ -22,7 +22,7 @@ namespace Emerald
 	||                    | |
 	||                    | |
 	++--------------------+-+
-	 |                    |
+	 |    (scroll bar)    |
 	 |                    |
 	 +--------------------+
 	*/
@@ -35,13 +35,18 @@ namespace Emerald
 
 		virtual bool Update();
 		virtual bool Render();
-		bool Pull(int _degree);
+		bool Pull(int _scrollPos);
 		bool Repull();
 
+		bool SetContent(EEObject* _content);
+
 	protected:
-		EEObject* m_content;
-		int m_verticalDegree;
-		int m_verticalMax;
+		EEObject m_content;
+		int m_offsetHeight;
+		int m_verticalScrollHeight;
+		int m_verticalScrollCapacity;
+		int m_verticalScrollPos;
+		int m_verticalPos;
 	};
 }
 
