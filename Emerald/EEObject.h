@@ -119,6 +119,8 @@ namespace Emerald
 		virtual bool IsPositionDirty()  const;
 		virtual FLOAT3 GetCenter() const;
 		virtual FLOAT3 GetRowCenter() const;
+		virtual float GetOffsetWidth() const;
+		virtual float GetOffsetHeight() const;
 		virtual MATRIX GetWorldMatrix();
 		virtual MATRIX GetViewMatrix();
 		virtual MATRIX GetProjectionMatrix();
@@ -179,7 +181,7 @@ namespace Emerald
 	protected:
 		//cbuffer
 		virtual bool MapObjectBuffer();
-		virtual bool MapObjectBuffer(float _alpha);
+		virtual bool MapObjectBuffer(float _alpha); // Deprecated
 		//state
 		virtual bool UpdateObjectState();
 

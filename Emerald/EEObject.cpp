@@ -131,7 +131,17 @@ namespace Emerald
 		RemoveThread();
 
 		if (m_parent)
+		{
 			m_parent->m_children.erase(this);
+		}
+
+		for (auto child : m_children)
+		{
+			if (child.first)
+			{
+				child.first->SetParent(nullptr);
+			}
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -464,6 +474,39 @@ namespace Emerald
 	FLOAT3 EEObject::GetRowCenter() const
 	{
 		return FLOAT3(0.0f, 0.0f, 0.0f);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EEObject::GetOffsetWidth() const
+	{
+		float result = m_position.x; // self, should be rewrote
+		for (auto child : m_children) // children
+		{
+			if (child.first)
+			{
+				float offsetWidth = m_position.x + child.first->GetOffsetWidth();
+				if (result < offsetWidth)
+					result = offsetWidth;
+			}
+		}
+
+		return result;
+	}
+
+	float EEObject::GetOffsetHeight() const
+	{
+		float result = m_position.y; // self, should be rewrote
+		for (auto child : m_children) // children
+		{
+			if (child.first)
+			{
+				float offsetHeight = m_position.y + child.first->GetOffsetHeight();
+				if (result < offsetHeight)
+					result = offsetHeight;
+			}
+		}
+
+		return result;
 	}
 
 	//----------------------------------------------------------------------------------------------------
