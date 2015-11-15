@@ -195,7 +195,7 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEObject::ClearChildren()
 	{
-		for (auto child : m_children)
+		for (auto& child : m_children)
 		{
 			if (child.first)
 			{
@@ -489,7 +489,7 @@ namespace Emerald
 	float EEObject::GetOffsetWidth() const
 	{
 		float result = m_position.x; // self, should be rewrote
-		for (auto child : m_children) // children
+		for (auto& child : m_children) // children
 		{
 			if (child.first)
 			{
@@ -505,7 +505,7 @@ namespace Emerald
 	float EEObject::GetOffsetHeight() const
 	{
 		float result = m_position.y; // self, should be rewrote
-		for (auto child : m_children) // children
+		for (auto& child : m_children) // children
 		{
 			if (child.first)
 			{
