@@ -35,13 +35,16 @@ namespace Emerald
 
 		virtual bool Update();
 		virtual bool Render();
-		bool Pull(int _scrollPos);
+		bool VerticalPull(int _scrollPos);
 		bool Repull();
 
 		bool SetContent(EEObject* _content);
 
+
+
 	protected:
-		EEObject m_content;
+		EEObject m_contentFrame;
+		EEObject* m_content;
 		int m_offsetHeight;
 		int m_verticalScrollHeight;
 		int m_verticalScrollCapacity;

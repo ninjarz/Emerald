@@ -95,7 +95,7 @@
     <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVA\NoteMap.cpp" />
     <ClCompile Include="Demo\DNSServer.cpp" />
-    <ClCompile Include="Demo\Editor.cpp" />
+    <ClCompile Include="Demo\AnimationEditor2.cpp" />
     <ClCompile Include="Demo\Erode.cpp" />
     <ClCompile Include="Demo\FontTest.cpp" />
     <ClCompile Include="Demo\Line2d.cpp" />
@@ -108,6 +108,7 @@
     <ClCompile Include="Demo\Progress.cpp" />
     <ClCompile Include="Demo\Recoder.cpp" />
     <ClCompile Include="Demo\Ripple.cpp" />
+    <ClCompile Include="Demo\ScrollView.cpp" />
     <ClCompile Include="Demo\Slide.cpp" />
     <ClCompile Include="Demo\TCPClient.cpp" />
     <ClCompile Include="Demo\TCPSever.cpp" />

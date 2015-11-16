@@ -456,9 +456,6 @@
     <ClCompile Include="EELineEditor.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\Editor.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\AnimationEditor.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -494,6 +491,12 @@
     </ClCompile>
     <ClCompile Include="EEScrollView.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\ScrollView.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\AnimationEditor2.cpp">
+      <Filter>源文件\Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

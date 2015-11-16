@@ -1,4 +1,5 @@
 #include "EEScrollView.h"
+#include "EECore.h"
 
 
 //----------------------------------------------------------------------------------------------------
@@ -9,6 +10,8 @@ namespace Emerald
 	EEScrollView::EEScrollView(const Rect_Float& _area)
 		:
 		EEQuad2D(_area),
+		m_contentFrame(FLOAT3(- GetWidth() / 2, - GetHeight() / 2, 0.f)),
+		m_content(nullptr),
 		m_offsetHeight(0),
 		m_verticalScrollHeight(0),
 		m_verticalScrollCapacity(0),
@@ -16,19 +19,23 @@ namespace Emerald
 		m_verticalPos(0)
 	{
 		SetIsFocusable(true);
+
+		m_contentFrame.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EEScrollView::EEScrollView(const EEScrollView& _scrollView)
 		:
 		EEQuad2D(_scrollView),
+		m_contentFrame(_scrollView.m_contentFrame),
+		m_content(_scrollView.m_content),
 		m_offsetHeight(_scrollView.m_offsetHeight),
 		m_verticalScrollHeight(_scrollView.m_verticalScrollHeight),
 		m_verticalScrollCapacity(_scrollView.m_verticalScrollCapacity),
 		m_verticalScrollPos(_scrollView.m_verticalScrollPos),
 		m_verticalPos(_scrollView.m_verticalPos)
 	{
-
+		// memo: m_contentFrame.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -43,6 +50,19 @@ namespace Emerald
 		if (!EEQuad2D::Update())
 			return false;
 
+		if (s_triggeredObject == this)
+		{
+			if (EECore::s_EECore->IsKeyInput())
+			{
+				
+			}
+		}
+		m_contentFrame.Update();
+		if (m_content)
+		{
+			m_content->Update();
+		}
+
 		return true;
 	}
 
@@ -52,11 +72,17 @@ namespace Emerald
 		if (!EEQuad2D::Render())
 			return false;
 		
+		m_contentFrame.Render();
+		if (m_content)
+		{
+			m_content->Render();
+		}
+
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEScrollView::Pull(int _scrollPos)
+	bool EEScrollView::VerticalPull(int _scrollPos)
 	{
 		m_verticalScrollPos = _scrollPos;
 		if (m_verticalScrollPos < 0)
@@ -73,7 +99,7 @@ namespace Emerald
 	bool EEScrollView::Repull()
 	{
 		// refresh
-		m_offsetHeight = m_content.GetOffsetHeight();
+		m_offsetHeight = m_contentFrame.GetOffsetHeight();
 		m_verticalScrollHeight = GetHeight() / m_offsetHeight * GetHeight();
 		if (m_verticalScrollHeight > GetHeight())
 			m_verticalScrollHeight = GetHeight();
@@ -94,7 +120,8 @@ namespace Emerald
 	{
 		if (_content)
 		{
-			_content->SetParent(&m_content);
+			m_content = _content;
+			m_content->SetParent(&m_contentFrame);
 			m_verticalPos = 0;
 			Repull();
 
