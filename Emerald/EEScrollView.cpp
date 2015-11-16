@@ -52,11 +52,12 @@ namespace Emerald
 
 		if (s_triggeredObject == this)
 		{
-			if (EECore::s_EECore->IsKeyInput())
+			if (EECore::s_EECore->GetMouseDeltaM())
 			{
-				
+				VerticalPull(m_verticalScrollPos - EECore::s_EECore->GetMouseDeltaM() / 30.f);
 			}
 		}
+		m_contentFrame.SetPositionY(- GetHeight() / 2 - m_verticalPos);
 		m_contentFrame.Update();
 		if (m_content)
 		{
@@ -82,7 +83,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEScrollView::VerticalPull(int _scrollPos)
+	bool EEScrollView::VerticalPull(float _scrollPos)
 	{
 		m_verticalScrollPos = _scrollPos;
 		if (m_verticalScrollPos < 0)
@@ -90,7 +91,10 @@ namespace Emerald
 		if (m_verticalScrollCapacity < m_verticalScrollPos)
 			m_verticalScrollPos = m_verticalScrollCapacity;
 
-		m_verticalPos = (m_verticalScrollPos / m_verticalScrollCapacity * (m_offsetHeight - GetHeight()));
+		if (m_verticalScrollCapacity)
+			m_verticalPos = (m_verticalScrollPos / m_verticalScrollCapacity * (m_offsetHeight - GetHeight()));
+		else
+			m_verticalPos = 0;
 
 		return true;
 	}
@@ -99,14 +103,18 @@ namespace Emerald
 	bool EEScrollView::Repull()
 	{
 		// refresh
-		m_offsetHeight = m_contentFrame.GetOffsetHeight();
+		m_offsetHeight = m_contentFrame.GetOffsetHeight() + GetHeight() / 2;
 		m_verticalScrollHeight = GetHeight() / m_offsetHeight * GetHeight();
 		if (m_verticalScrollHeight > GetHeight())
 			m_verticalScrollHeight = GetHeight();
-		m_verticalScrollCapacity = m_verticalScrollHeight - GetHeight();
+		m_verticalScrollCapacity = GetHeight() - m_verticalScrollHeight;
 
-		// calculate the new pos
-		m_verticalScrollPos = m_verticalPos * (m_verticalScrollCapacity / (m_offsetHeight - GetHeight()));
+		// get the new pos
+		if (m_offsetHeight - GetHeight())
+			m_verticalScrollPos = m_verticalPos * (m_verticalScrollCapacity / (m_offsetHeight - GetHeight()));
+		else
+			m_verticalScrollPos = 0;
+
 		if (m_verticalScrollPos < 0)
 			m_verticalScrollPos = 0;
 		if (m_verticalScrollCapacity < m_verticalScrollPos)

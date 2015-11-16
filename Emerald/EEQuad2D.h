@@ -68,6 +68,8 @@ namespace Emerald
 		virtual float GetWidth() const;
 		virtual float GetHeight() const;
 		virtual FLOAT3 GetCenter() const;
+		virtual float GetOffsetWidth() const;
+		virtual float GetOffsetHeight() const;
 
 		// position
 		virtual Rect_Float GetFinalRect() const;

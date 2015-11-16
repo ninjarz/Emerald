@@ -5,6 +5,7 @@
 #include "EEQuad2D.h"
 
 
+// todo: EEScrollView(EEObject), m_contentFrame(EEQuad2D)
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -35,21 +36,20 @@ namespace Emerald
 
 		virtual bool Update();
 		virtual bool Render();
-		bool VerticalPull(int _scrollPos);
+		bool VerticalPull(float _scrollPos);
 		bool Repull();
 
 		bool SetContent(EEObject* _content);
 
 
-
 	protected:
 		EEObject m_contentFrame;
 		EEObject* m_content;
-		int m_offsetHeight;
-		int m_verticalScrollHeight;
-		int m_verticalScrollCapacity;
-		int m_verticalScrollPos;
-		int m_verticalPos;
+		float m_offsetHeight;
+		float m_verticalScrollHeight;
+		float m_verticalScrollCapacity;
+		float m_verticalScrollPos;
+		float m_verticalPos;
 	};
 }
 

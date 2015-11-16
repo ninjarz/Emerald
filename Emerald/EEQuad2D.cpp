@@ -437,6 +437,27 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	float EEQuad2D::GetOffsetWidth() const
+	{
+		float result = m_position.x + GetWidth() / 2;
+		float offsetWidth = EEObject::GetOffsetWidth();
+		if (result < offsetWidth)
+			result = offsetWidth;
+
+		return result;
+	}
+
+	float EEQuad2D::GetOffsetHeight() const
+	{
+		float result = m_position.y + GetHeight() / 2;
+		float offsetHeight = EEObject::GetOffsetHeight();
+		if (result < offsetHeight)
+			result = offsetHeight;
+
+		return result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	//this function is different with other final functions. it is embellished with scale
 	Rect_Float EEQuad2D::GetFinalRect() const
 	{

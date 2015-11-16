@@ -412,13 +412,14 @@ namespace Emerald
 	{
 		if (m_isVsync)
 		{
-			m_swapChain->Present(1, 0);
+			m_swapChain->Present(4, 0);
 		}
 		else
 		{
 			m_swapChain->Present(0, 0);
 		}
 
+		printf("clear\n");
 		EECore::s_EECore->ClearInput();
 
 		return;
