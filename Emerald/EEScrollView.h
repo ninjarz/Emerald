@@ -5,7 +5,6 @@
 #include "EEQuad2D.h"
 
 
-// todo: EEScrollView(EEObject), m_contentFrame(EEQuad2D)
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
