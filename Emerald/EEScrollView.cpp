@@ -10,7 +10,7 @@ namespace Emerald
 	EEScrollView::EEScrollView(const Rect_Float& _area)
 		:
 		EEQuad2D(_area),
-		m_contentFrame(FLOAT3(- GetWidth() / 2, - GetHeight() / 2, 0.f)),
+		m_contentOrigin(FLOAT3(- GetWidth() / 2, - GetHeight() / 2, 0.f)),
 		m_content(nullptr),
 		m_offsetHeight(0),
 		m_verticalScrollHeight(0),
@@ -20,14 +20,14 @@ namespace Emerald
 	{
 		SetIsFocusable(true);
 
-		m_contentFrame.SetParent(this);
+		m_contentOrigin.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	EEScrollView::EEScrollView(const EEScrollView& _scrollView)
 		:
 		EEQuad2D(_scrollView),
-		m_contentFrame(_scrollView.m_contentFrame),
+		m_contentOrigin(_scrollView.m_contentOrigin),
 		m_content(_scrollView.m_content),
 		m_offsetHeight(_scrollView.m_offsetHeight),
 		m_verticalScrollHeight(_scrollView.m_verticalScrollHeight),
@@ -35,7 +35,7 @@ namespace Emerald
 		m_verticalScrollPos(_scrollView.m_verticalScrollPos),
 		m_verticalPos(_scrollView.m_verticalPos)
 	{
-		// memo: m_contentFrame.SetParent(this);
+		// memo: m_contentOrigin.SetParent(this);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -58,8 +58,8 @@ namespace Emerald
 				VerticalPull(m_verticalScrollPos - EECore::s_EECore->GetMouseDeltaM() / 30.f); // speed
 			}
 		}
-		m_contentFrame.SetPositionY(- GetHeight() / 2 - m_verticalPos);
-		m_contentFrame.Update();
+		m_contentOrigin.SetPositionY(- GetHeight() / 2 - m_verticalPos);
+		m_contentOrigin.Update();
 		if (m_content)
 		{
 			m_content->Update();
@@ -74,7 +74,9 @@ namespace Emerald
 		if (!EEQuad2D::Render())
 			return false;
 		
-		m_contentFrame.Render();
+		D3D11_DEPTH_STENCIL_DESC desc = EECore::s_EECore->GetDepthStencilDesc();
+
+		m_contentOrigin.Render();
 		if (m_content)
 		{
 			m_content->Render();
@@ -104,7 +106,7 @@ namespace Emerald
 	bool EEScrollView::Repull()
 	{
 		// refresh
-		m_offsetHeight = m_contentFrame.GetOffsetHeight() + GetHeight() / 2;
+		m_offsetHeight = m_contentOrigin.GetOffsetHeight() + GetHeight() / 2;
 		m_verticalScrollHeight = GetHeight() / m_offsetHeight * GetHeight();
 		if (m_verticalScrollHeight > GetHeight())
 			m_verticalScrollHeight = GetHeight();
@@ -130,7 +132,7 @@ namespace Emerald
 		if (_content)
 		{
 			m_content = _content;
-			m_content->SetParent(&m_contentFrame);
+			m_content->SetParent(&m_contentOrigin);
 			m_verticalPos = 0;
 			Repull();
 

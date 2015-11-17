@@ -158,6 +158,30 @@ namespace Emerald
 		return true;
 	}
 
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_DEPTH_STENCIL_DESC& EEShaderState::GetDepthStencilDesc() const
+	{
+		return m_depthStencilDesc;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_RASTERIZER_DESC& EEShaderState::GetRasterizerDesc() const
+	{
+		return m_rasterizerDesc;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_SAMPLER_DESC& EEShaderState::GetSamplerDesc() const
+	{
+		return m_samplerDesc;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_BLEND_DESC& EEShaderState::GetBlendDesc() const
+	{
+		return m_blendDesc;
+	}
+
 	//EEShaderState_APIs
 	//----------------------------------------------------------------------------------------------------
 	bool EESetDepthStencilState(const D3D11_DEPTH_STENCIL_DESC& _desc)
@@ -181,5 +205,29 @@ namespace Emerald
 	bool EESetBlendState(const D3D11_BLEND_DESC& _desc)
 	{
 		return EECore::s_EECore->GetEEShaderState()->SetBlendState(_desc);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_DEPTH_STENCIL_DESC& EEGetDepthStencilDesc()
+	{
+		return EECore::s_EECore->GetEEShaderState()->GetDepthStencilDesc();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_RASTERIZER_DESC& EEGetRasterizerDesc()
+	{
+		return EECore::s_EECore->GetEEShaderState()->GetRasterizerDesc();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_SAMPLER_DESC& EEGetSamplerDesc()
+	{
+		return EECore::s_EECore->GetEEShaderState()->GetSamplerDesc();
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	const D3D11_BLEND_DESC& EEGetBlendDesc()
+	{
+		return EECore::s_EECore->GetEEShaderState()->GetBlendDesc();
 	}
 }

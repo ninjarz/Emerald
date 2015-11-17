@@ -419,7 +419,6 @@ namespace Emerald
 			m_swapChain->Present(0, 0);
 		}
 
-		printf("clear\n");
 		EECore::s_EECore->ClearInput();
 
 		return;

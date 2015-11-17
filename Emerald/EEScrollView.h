@@ -11,6 +11,7 @@ namespace Emerald
 	// EEScrollView
 	//----------------------------------------------------------------------------------------------------
 	/*
+content origin
 	 +--------------------+ content
 	 |                    |
 	 |                    |
@@ -42,7 +43,7 @@ namespace Emerald
 
 
 	protected:
-		EEObject m_contentFrame;
+		EEObject m_contentOrigin;
 		EEObject* m_content;
 		float m_offsetHeight;
 		float m_verticalScrollHeight;

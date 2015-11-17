@@ -225,6 +225,16 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EEShaderState* EECore::GetEEShaderState() { return m_EEShaderState; }
 
+	bool EECore::SetDepthStencilState(const D3D11_DEPTH_STENCIL_DESC& _desc) { return m_EEShaderState->SetDepthStencilState(_desc); }
+	bool EECore::SetRasterizerState(const D3D11_RASTERIZER_DESC& _desc) { return m_EEShaderState->SetRasterizerState(_desc); }
+	bool EECore::SetSamplerState(const D3D11_SAMPLER_DESC& _desc) { return m_EEShaderState->SetSamplerState(_desc); }
+	bool EECore::SetBlendState(const D3D11_BLEND_DESC& _desc) { return m_EEShaderState->SetBlendState(_desc); }
+
+	const D3D11_DEPTH_STENCIL_DESC& EECore::GetDepthStencilDesc() const { return m_EEShaderState->GetDepthStencilDesc(); }
+	const D3D11_RASTERIZER_DESC& EECore::GetRasterizerDesc() const { return m_EEShaderState->GetRasterizerDesc(); }
+	const D3D11_SAMPLER_DESC& EECore::GetSamplerDesc() const { return m_EEShaderState->GetSamplerDesc(); }
+	const D3D11_BLEND_DESC& EECore::GetBlendDesc() const { return m_EEShaderState->GetBlendDesc(); }
+
 	//EECore_GUI
 	//----------------------------------------------------------------------------------------------------
 	boost::shared_mutex* EECore::GetControlMutex() { return m_control_mutex; }

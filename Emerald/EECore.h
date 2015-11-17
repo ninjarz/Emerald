@@ -192,6 +192,16 @@ namespace Emerald
 	public:
 		EEShaderState* GetEEShaderState();
 
+		bool SetDepthStencilState(const D3D11_DEPTH_STENCIL_DESC& _desc);
+		bool SetRasterizerState(const D3D11_RASTERIZER_DESC& _desc);
+		bool SetSamplerState(const D3D11_SAMPLER_DESC& _desc);
+		bool SetBlendState(const D3D11_BLEND_DESC& _desc);
+
+		const D3D11_DEPTH_STENCIL_DESC& GetDepthStencilDesc() const;
+		const D3D11_RASTERIZER_DESC& GetRasterizerDesc() const;
+		const D3D11_SAMPLER_DESC& GetSamplerDesc() const;
+		const D3D11_BLEND_DESC& GetBlendDesc() const;
+
 	private:
 		EEShaderState *m_EEShaderState;
 

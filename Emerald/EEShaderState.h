@@ -24,6 +24,11 @@ namespace Emerald
 		bool SetSamplerState(const D3D11_SAMPLER_DESC& _desc);
 		bool SetBlendState(const D3D11_BLEND_DESC& _desc);
 
+		const D3D11_DEPTH_STENCIL_DESC& GetDepthStencilDesc() const;
+		const D3D11_RASTERIZER_DESC& GetRasterizerDesc() const;
+		const D3D11_SAMPLER_DESC& GetSamplerDesc() const;
+		const D3D11_BLEND_DESC& GetBlendDesc() const;
+
 	private:
 		D3D11_DEPTH_STENCIL_DESC m_depthStencilDesc;
 		ID3D11DepthStencilState *m_depthStencilState;
@@ -42,6 +47,11 @@ namespace Emerald
 	bool EESetRasterizerState(const D3D11_RASTERIZER_DESC& _desc);
 	bool EESetSamplerState(const D3D11_SAMPLER_DESC& _desc);
 	bool EESetBlendState(const D3D11_BLEND_DESC& _desc);
+
+	const D3D11_DEPTH_STENCIL_DESC& EEGetDepthStencilDesc();
+	const D3D11_RASTERIZER_DESC& EEGetRasterizerDesc();
+	const D3D11_SAMPLER_DESC& EEGetSamplerDesc();
+	const D3D11_BLEND_DESC& EEGetBlendDesc();
 }
 
 
