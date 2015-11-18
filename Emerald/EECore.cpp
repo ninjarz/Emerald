@@ -190,6 +190,8 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	EED3D* EECore::GetEED3D() { return m_EED3D; };
 
+	void EECore::ClearDepthStencilView() { m_EED3D->ClearDepthStencilView(); }
+
 	bool EECore::SetDevice(ID3D11Device* _para) { m_EED3D->SetDevice(_para); return true; }
 	bool EECore::SetDeviceeContext(ID3D11DeviceContext* _para) { m_EED3D->SetDeviceeContext(_para); return true; }
 	bool EECore::SetScreenNear(float _para) { m_EED3D->SetScreenNear(_para); return true; }

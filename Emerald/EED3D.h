@@ -24,6 +24,7 @@ namespace Emerald
 		void BeginScene(float, float, float, float);
 		void BeginScene(const FLOAT4&);
 		void EndScene();
+		void ClearDepthStencilView();
 
 		bool SetDevice(ID3D11Device* _para);
 		bool SetDeviceeContext(ID3D11DeviceContext* _para);
@@ -64,6 +65,8 @@ namespace Emerald
 	void EEBeginScene(float, float, float, float);
 	void EEBeginScene(const FLOAT4&);
 	void EEEndScene();
+	void EEClearDepthStencilView();
+
 	bool EESetRenderTarget(EETexture* _target = nullptr);
 
 	ID3D11Device* EEGetDevice();

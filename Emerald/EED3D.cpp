@@ -386,7 +386,7 @@ namespace Emerald
 		color[3] = alpha;
 
 		m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
-		m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		ClearDepthStencilView();;
 
 		return;
 	}
@@ -402,7 +402,7 @@ namespace Emerald
 		color[3] = _float4.w;
 
 		m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
-		m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		ClearDepthStencilView();
 
 		return;
 	}
@@ -422,6 +422,12 @@ namespace Emerald
 		EECore::s_EECore->ClearInput();
 
 		return;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EED3D::ClearDepthStencilView()
+	{
+		m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -500,6 +506,9 @@ namespace Emerald
 
 	//----------------------------------------------------------------------------------------------------
 	void EEEndScene() { EECore::s_EECore->GetEED3D()->EndScene(); }
+
+	//----------------------------------------------------------------------------------------------------
+	void EEClearDepthStencilView() { EECore::s_EECore->GetEED3D()->ClearDepthStencilView(); }
 
 	//----------------------------------------------------------------------------------------------------
 	bool EESetRenderTarget(EETexture* _target) { return EECore::s_EECore->GetEED3D()->SetRenderTarget(_target); }

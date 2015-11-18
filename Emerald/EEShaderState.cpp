@@ -115,7 +115,7 @@ namespace Emerald
 
 		m_depthStencilDesc = _desc;
 		device->CreateDepthStencilState(&m_depthStencilDesc, &m_depthStencilState);
-		deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+		deviceContext->OMSetDepthStencilState(m_depthStencilState, 1); // todo: set StencilRef as a parameter
 		return true;
 	}
 

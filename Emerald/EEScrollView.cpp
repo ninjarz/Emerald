@@ -71,17 +71,37 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEScrollView::Render()
 	{
-		if (!EEQuad2D::Render())
-			return false;
-		
-		D3D11_DEPTH_STENCIL_DESC desc = EECore::s_EECore->GetDepthStencilDesc();
+		EECore::s_EECore->ClearDepthStencilView();
+		D3D11_DEPTH_STENCIL_DESC descBackup = EECore::s_EECore->GetDepthStencilDesc();
+		D3D11_DEPTH_STENCIL_DESC desc = descBackup;
+		desc.StencilEnable = true;
+		desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+		desc.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER;
+		desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+		desc.BackFace.StencilFunc = D3D11_COMPARISON_GREATER;
+		EECore::s_EECore->SetDepthStencilState(desc);
 
-		m_contentOrigin.Render();
+		if (!EEQuad2D::Render())
+		{
+			EECore::s_EECore->SetDepthStencilState(descBackup);
+			return false;
+		}
+
 		if (m_content)
 		{
+			desc.FrontFace.StencilFunc = D3D11_COMPARISON_LESS_EQUAL;
+			desc.BackFace.StencilFunc = D3D11_COMPARISON_LESS_EQUAL;
+			EECore::s_EECore->SetDepthStencilState(desc);
+			m_contentOrigin.Render();
 			m_content->Render();
 		}
 
+		EECore::s_EECore->ClearDepthStencilView();
+		EECore::s_EECore->SetDepthStencilState(descBackup);
 		return true;
 	}
 

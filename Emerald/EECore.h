@@ -151,6 +151,8 @@ namespace Emerald
 	public:
 		EED3D* GetEED3D();
 
+		void ClearDepthStencilView();
+
 		bool SetDevice(ID3D11Device* _para);
 		bool SetDeviceeContext(ID3D11DeviceContext* _para);
 		bool SetScreenNear(float _para);
