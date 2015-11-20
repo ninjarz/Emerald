@@ -1,9 +1,13 @@
 #include "DIVAConfig.h"
 
-
 //----------------------------------------------------------------------------------------------------
 bool DIVAConfig::s_isInitialized = false;
 std::map<unsigned int, char> DIVAConfig::s_keyMap;
+
+ int DIVAConfig::s_framesPerBeat = 192;
+ int DIVAConfig::s_periodPerBeat = 4;
+ int DIVAConfig::s_notesNum = 8;
+ int DIVAConfig::s_bgsMax = 10;
 
 //----------------------------------------------------------------------------------------------------
 bool DIVAConfig::Initialize()
