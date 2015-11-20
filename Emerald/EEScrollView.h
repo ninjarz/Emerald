@@ -50,6 +50,7 @@ content origin
 		float m_verticalScrollCapacity;
 		float m_verticalScrollPos;
 		float m_verticalPos;
+		float m_verticalPosDelta;
 	};
 }
 

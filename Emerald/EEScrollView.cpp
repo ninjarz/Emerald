@@ -16,7 +16,8 @@ namespace Emerald
 		m_verticalScrollHeight(0),
 		m_verticalScrollCapacity(0),
 		m_verticalScrollPos(0),
-		m_verticalPos(0)
+		m_verticalPos(0),
+		m_verticalPosDelta(0)
 	{
 		SetIsFocusable(true);
 
@@ -33,7 +34,8 @@ namespace Emerald
 		m_verticalScrollHeight(_scrollView.m_verticalScrollHeight),
 		m_verticalScrollCapacity(_scrollView.m_verticalScrollCapacity),
 		m_verticalScrollPos(_scrollView.m_verticalScrollPos),
-		m_verticalPos(_scrollView.m_verticalPos)
+		m_verticalPos(_scrollView.m_verticalPos),
+		m_verticalPosDelta(_scrollView.m_verticalPosDelta)
 	{
 		// memo: m_contentOrigin.SetParent(this);
 	}
@@ -55,7 +57,16 @@ namespace Emerald
 			if (EECore::s_EECore->GetMouseDeltaM())
 			{
 				// ¡ü-m_verticalScrollPos  ¡ý+m_verticalScrollPos
-				VerticalPull(m_verticalScrollPos - EECore::s_EECore->GetMouseDeltaM() / 5.f); // speed
+				m_verticalPosDelta += EECore::s_EECore->GetMouseDeltaM() / 5.f;
+			}
+
+			if (m_verticalPosDelta)
+			{
+				// The posDelta depends on the deltaTime (1.0 - ¡Þ from inverse proportional function)
+				float deltaFactor = 0.16f / EECore::s_EECore->GetDeltaTime() + 1.0f;
+				float currentPosDelta = abs(m_verticalPosDelta) > 1.f ? m_verticalPosDelta / deltaFactor : m_verticalPosDelta;
+				VerticalPull(m_verticalScrollPos - currentPosDelta);
+				m_verticalPosDelta -= currentPosDelta;
 			}
 		}
 		m_contentOrigin.SetPositionY(- GetHeight() / 2 - m_verticalPos);
