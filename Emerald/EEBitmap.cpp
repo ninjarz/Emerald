@@ -1,6 +1,9 @@
 #include "EEBitmap.h"
-
 #include "EECore.h"
+#include "DirectXTex/DirectXTex.h"
+
+using namespace DirectX;
+
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -23,16 +26,7 @@ namespace Emerald
 		m_width(0),
 		m_height(0)
 	{
-		/*
-		D3DX11CreateTextureFromFileW();
-
-		ID3D11DeviceContext* deviceContext = EECore::s_EECore->GetDeviceContext();
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		if (FAILED(deviceContext->Map(s_boxBuffer, 0, D3D11_MAP_READ, 0, &mappedResource)))
-		return false;
-		(char*)mappedResource.pData;
-		deviceContext->Unmap(s_boxBuffer, 0);
-		*/
+		SetData(_file);
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -190,6 +184,43 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEBitmap::SetData(const wchar_t* _file)
+	{
+		wchar_t ext[_MAX_EXT];
+		_wsplitpath_s(_file, nullptr, 0, nullptr, 0, nullptr, 0, ext, _MAX_EXT);
+
+		ScratchImage scratchImage;
+		HRESULT hr;
+		if (_wcsicmp(ext, L".dds") == 0)
+		{
+			hr = LoadFromDDSFile(_file, DDS_FLAGS_FORCE_RGB, nullptr, scratchImage);
+		}
+		else if (_wcsicmp(ext, L".tga") == 0)
+		{
+			hr = LoadFromTGAFile(_file, nullptr, scratchImage);
+		}
+		else
+		{
+			hr = LoadFromWICFile(_file, WIC_FLAGS_ALL_FRAMES | WIC_FLAGS_FORCE_RGB | WIC_FLAGS_IGNORE_SRGB, nullptr, scratchImage);
+		}
+		if (SUCCEEDED(hr))
+		{
+			if (scratchImage.GetImageCount())
+			{
+				// First frame
+				const Image *image = scratchImage.GetImages();
+
+				if (image->format == DXGI_FORMAT_R8G8B8A8_UNORM) // tmp
+				{
+					return SetData(image->width, image->height, image->pixels, image->rowPitch);
+				}
+			}
+		}
+
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	bool EEBitmap::SetData(unsigned int _width, unsigned int _height, const unsigned char* _buffer)
 	{
 		m_data.clear();
@@ -221,7 +252,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEBitmap::PutData(unsigned int _x, unsigned int _y, unsigned int _width, unsigned int _height, EEBitmap& _src)
+	bool EEBitmap::SetData(unsigned int _x, unsigned int _y, unsigned int _width, unsigned int _height, EEBitmap& _src)
 	{
 		// memo: _width may be negative
 		if (_x + _width > (unsigned int)m_width)

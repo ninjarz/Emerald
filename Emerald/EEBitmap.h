@@ -32,9 +32,10 @@ namespace Emerald
 		bool IsEmpty() const;
 		EEBitmap GetSubmap(int _x, int _y, int _width = -1, int _height = -1) const;
 
+		bool SetData(const wchar_t* _file);
 		bool SetData(unsigned int _width, unsigned int _height, const unsigned char* _buffer);
 		bool SetData(unsigned int _width, unsigned int _height, const unsigned char* _buffer, unsigned int _rowPitch);
-		bool PutData(unsigned int _x, unsigned int _y, unsigned int _width, unsigned int _height, EEBitmap& _src);
+		bool SetData(unsigned int _x, unsigned int _y, unsigned int _width, unsigned int _height, EEBitmap& _src);
 
 	protected:
 		std::vector<unsigned char> m_data;

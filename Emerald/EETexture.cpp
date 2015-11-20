@@ -2,7 +2,9 @@
 #include "EECore.h"
 #include "DirectXTex/DirectXTex.h"
 //#include "DirectXTex/DirectXTexP.h"
+
 using namespace DirectX;
+
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald

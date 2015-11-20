@@ -79,6 +79,7 @@
     <ClCompile Include="Demo\animation.cpp" />
     <ClCompile Include="Demo\AnimationEditor.cpp" />
     <ClCompile Include="Demo\Average.cpp" />
+    <ClCompile Include="Demo\Bitmap.cpp" />
     <ClCompile Include="Demo\Blur.cpp" />
     <ClCompile Include="Demo\CameraAction.cpp" />
     <ClCompile Include="Demo\Canny.cpp" />

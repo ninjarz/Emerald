@@ -87,7 +87,7 @@ namespace Emerald
 		}
 		//wprintf(L"char:%c left:%d top:%d ax:%d ay:%d\n", _char, s_face->glyph->bitmap_left, s_face->glyph->bitmap_top, s_face->glyph->advance.x >> 6, s_face->glyph->advance.y >> 6);
 		EEBitmap result(s_face->glyph->advance.x >> 6, (int)(s_fontHeight * 1.5f));
-		result.PutData(s_face->glyph->bitmap_left, s_fontHeight - s_face->glyph->bitmap_top, s_face->glyph->bitmap.width, s_face->glyph->bitmap.rows, EEBitmap(s_face->glyph->bitmap.width, s_face->glyph->bitmap.rows, dst.data()));
+		result.SetData(s_face->glyph->bitmap_left, s_fontHeight - s_face->glyph->bitmap_top, s_face->glyph->bitmap.width, s_face->glyph->bitmap.rows, EEBitmap(s_face->glyph->bitmap.width, s_face->glyph->bitmap.rows, dst.data()));
 		return result;
 	}
 

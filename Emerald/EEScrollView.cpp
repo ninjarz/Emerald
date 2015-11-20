@@ -55,7 +55,7 @@ namespace Emerald
 			if (EECore::s_EECore->GetMouseDeltaM())
 			{
 				// ¡ü-m_verticalScrollPos  ¡ý+m_verticalScrollPos
-				VerticalPull(m_verticalScrollPos - EECore::s_EECore->GetMouseDeltaM() / 30.f); // speed
+				VerticalPull(m_verticalScrollPos - EECore::s_EECore->GetMouseDeltaM() / 5.f); // speed
 			}
 		}
 		m_contentOrigin.SetPositionY(- GetHeight() / 2 - m_verticalPos);
