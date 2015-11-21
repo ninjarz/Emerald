@@ -501,6 +501,9 @@
     <ClCompile Include="Demo\Bitmap.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -754,6 +757,9 @@
     </ClInclude>
     <ClInclude Include="EEScrollView.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,7 @@
     <ClCompile Include="Demo\DIVAProject\DIVAMain.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAManager.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp" />
     <ClCompile Include="Demo\DIVA\DIVA.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAManager.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMap.h" />
+    <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMenu.h" />
     <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
     <ClInclude Include="Demo\DIVA\DIVAHelper.h" />

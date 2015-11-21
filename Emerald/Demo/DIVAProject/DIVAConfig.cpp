@@ -59,49 +59,42 @@ char DIVAConfig::GetKeyMap(unsigned int _key)
 		return (char)0;
 }
 
- int DIVAConfig::GetFramesPerBeat()
+int DIVAConfig::GetFramesPerBeat()
 {
 	Initialize();
 
 	return s_framesPerBeat;
 }
 
- int DIVAConfig::GetPeriodsPerBeat()
+int DIVAConfig::GetPeriodsPerBeat()
 {
 	Initialize();
 
 	return s_periodsPerBeat;
 }
 
- int DIVAConfig::GetNoteNum()
+int DIVAConfig::GetNoteNum()
 {
 	Initialize();
 
 	return s_noteNum;
 }
 
- int DIVAConfig::GetMusicMaxPerFrame()
+int DIVAConfig::GetMusicMaxPerFrame()
 {
 	Initialize();
 
 	return s_musicMaxPerFrame;
 }
 
- int DIVAConfig::GetFramesPerBeat()
-{
-	Initialize();
-
-	return s_framesPerBeat;
-}
-
- int DIVAConfig::GetNoteWidth()
+int DIVAConfig::GetNoteWidth()
 {
 	Initialize();
 
 	return s_noteWidth;
 }
 
- int DIVAConfig::GetNoteHeight()
+int DIVAConfig::GetNoteHeight()
 {
 	Initialize();
 

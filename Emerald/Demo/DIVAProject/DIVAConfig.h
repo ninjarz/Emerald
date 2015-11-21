@@ -15,7 +15,10 @@ enum DIVAState
 //----------------------------------------------------------------------------------------------------
 enum DIVADifficulty
 {
-
+	DIVA_EASY = 0,
+	DIVA_NORMAL,
+	DIVA_HARD,
+	DIVA_FUCK
 };
 
 //----------------------------------------------------------------------------------------------------
@@ -29,7 +32,6 @@ public:
 	static int GetPeriodsPerBeat();
 	static int GetNoteNum();
 	static int GetMusicMaxPerFrame();
-	static int GetFramesPerBeat();
 	static int GetNoteWidth();
 	static int GetNoteHeight();
 
