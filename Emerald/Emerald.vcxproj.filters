@@ -115,15 +115,18 @@
     <Filter Include="源文件\Demo\DIVAProject">
       <UniqueIdentifier>{5dfde8f0-d80a-4c66-9ef3-5cc1e2ce75a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEAlgorithm">
+      <UniqueIdentifier>{75347098-2a6e-4b4b-8cf0-7fac136de29c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEAlgorithm">
+      <UniqueIdentifier>{99b17d78-b08f-410d-bbfe-1e7a872dafb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EECore.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="EEMath.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
     <ClCompile Include="EEInput.cpp">
@@ -321,9 +324,6 @@
     <ClCompile Include="EETextBrowser.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="EEHash.cpp">
-      <Filter>源文件\Emerald</Filter>
-    </ClCompile>
     <ClCompile Include="EECurve2D.cpp">
       <Filter>源文件\Emerald\EEGeometry</Filter>
     </ClCompile>
@@ -504,6 +504,18 @@
     <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
+    <ClCompile Include="EECharacterGenerator.cpp">
+      <Filter>源文件\Emerald</Filter>
+    </ClCompile>
+    <ClCompile Include="EEMath.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="EEHash.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="EEIntervalTree.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -516,9 +528,6 @@
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EEHelper.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
-    <ClInclude Include="EEMath.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
     <ClInclude Include="EEInput.h">
@@ -683,9 +692,6 @@
     <ClInclude Include="EETextBrowser.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
-    <ClInclude Include="EEHash.h">
-      <Filter>头文件\Emerald</Filter>
-    </ClInclude>
     <ClInclude Include="EECurve2D.h">
       <Filter>头文件\Emerald\EEGeometry</Filter>
     </ClInclude>
@@ -760,6 +766,18 @@
     </ClInclude>
     <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h">
       <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="EECharacterGenerator.h">
+      <Filter>头文件\Emerald</Filter>
+    </ClInclude>
+    <ClInclude Include="EEMath.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EEHash.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EEIntervalTree.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

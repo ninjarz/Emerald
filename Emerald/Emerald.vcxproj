@@ -150,6 +150,7 @@
     <ClCompile Include="EEButton.cpp" />
     <ClCompile Include="EECamera.cpp" />
     <ClCompile Include="EECanny.cpp" />
+    <ClCompile Include="EECharacterGenerator.cpp" />
     <ClCompile Include="EECollision.cpp" />
     <ClCompile Include="EEColor.cpp" />
     <ClCompile Include="EEComboBox.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="EEHash.cpp" />
     <ClCompile Include="EEHelper.cpp" />
     <ClCompile Include="EEIntBoard.cpp" />
+    <ClCompile Include="EEIntervalTree.cpp" />
     <ClCompile Include="EELine2D.cpp" />
     <ClCompile Include="EELineBrowser.cpp" />
     <ClCompile Include="EELineEditor.cpp" />
@@ -236,6 +238,7 @@
     <ClInclude Include="EEButton.h" />
     <ClInclude Include="EECamera.h" />
     <ClInclude Include="EECanny.h" />
+    <ClInclude Include="EECharacterGenerator.h" />
     <ClInclude Include="EECollision.h" />
     <ClInclude Include="EEColor.h" />
     <ClInclude Include="EEComboBox.h" />
@@ -256,6 +259,7 @@
     <ClInclude Include="EEHash.h" />
     <ClInclude Include="EEHelper.h" />
     <ClInclude Include="EEIntBoard.h" />
+    <ClInclude Include="EEIntervalTree.h" />
     <ClInclude Include="EELine2D.h" />
     <ClInclude Include="EELineBrowser.h" />
     <ClInclude Include="EELineEditor.h" />
