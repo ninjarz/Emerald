@@ -21,7 +21,7 @@ namespace Emerald
 		bool Generate(const EEBitmap& _bitmap, std::vector<std::string>& _result);
 
 	protected:
-		// Interval Tree
+
 	};
 }
 

@@ -516,6 +516,15 @@
     <ClCompile Include="EEIntervalTree.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
     </ClCompile>
+    <ClCompile Include="EESegmentTree.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="EEBalancedBinaryTree.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="EERedBlackTree.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -777,6 +786,15 @@
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
     <ClInclude Include="EEIntervalTree.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EESegmentTree.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EEBalancedBinaryTree.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EERedBlackTree.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>

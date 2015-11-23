@@ -144,6 +144,7 @@
     <ClCompile Include="EEAction.cpp" />
     <ClCompile Include="EEAnimation.cpp" />
     <ClCompile Include="EEAverage.cpp" />
+    <ClCompile Include="EEBalancedBinaryTree.cpp" />
     <ClCompile Include="EEBitmap.cpp" />
     <ClCompile Include="EEBlur.cpp" />
     <ClCompile Include="EEBox.cpp" />
@@ -186,9 +187,11 @@
     <ClCompile Include="EEProgressBar.cpp" />
     <ClCompile Include="EEQuad2D.cpp" />
     <ClCompile Include="EERecorder.cpp" />
+    <ClCompile Include="EERedBlackTree.cpp" />
     <ClCompile Include="EERipple.cpp" />
     <ClCompile Include="EEScene.cpp" />
     <ClCompile Include="EEScrollView.cpp" />
+    <ClCompile Include="EESegmentTree.cpp" />
     <ClCompile Include="EESlide.cpp" />
     <ClCompile Include="EESmartPtr.cpp" />
     <ClCompile Include="EESocket.cpp" />
@@ -232,6 +235,7 @@
     <ClInclude Include="EEAction.h" />
     <ClInclude Include="EEAnimation.h" />
     <ClInclude Include="EEAverage.h" />
+    <ClInclude Include="EEBalancedBinaryTree.h" />
     <ClInclude Include="EEBitmap.h" />
     <ClInclude Include="EEBlur.h" />
     <ClInclude Include="EEBox.h" />
@@ -273,9 +277,11 @@
     <ClInclude Include="EEProgressbar.h" />
     <ClInclude Include="EEQuad2D.h" />
     <ClInclude Include="EERecorder.h" />
+    <ClInclude Include="EERedBlackTree.h" />
     <ClInclude Include="EERipple.h" />
     <ClInclude Include="EEScene.h" />
     <ClInclude Include="EEScrollView.h" />
+    <ClInclude Include="EESegmentTree.h" />
     <ClInclude Include="EESlider.h" />
     <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />
