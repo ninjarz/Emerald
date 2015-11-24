@@ -14,22 +14,33 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		enum NodeColor
 		{
-			NODE_RED,
+			NODE_RED = 1,
 			NODE_BLACK
 		};
 
 		//----------------------------------------------------------------------------------------------------
 		struct Node
 		{
-			float leftValue;
-			Node *leftChild;
+			Node *parent;
+			Node *left;
+			Node *right;
+			float leftValue; // key
 			float rightValue;
-			Node *rightChild;
 			float maxValue;
 			NodeColor color;
 			_T data;
 
-			inline Node() : leftValue(0.f), leftChild(nullptr), rightValue(0.f), rightChild(nullptr), maxValue(0.f), color(NODE_RED), data() {}
+			inline Node(float _leftValue, float _rightValue, const _T& _data)
+				: 
+				parent(nullptr), 
+				left(nullptr), 
+				right(nullptr), 
+				leftValue(_leftValue),
+				rightValue(_rightValue),
+				maxValue(_rightValue),
+				color(NODE_RED), 
+				data(_data)
+			{}
 		};
 
 	public:
@@ -43,22 +54,68 @@ namespace Emerald
 		{
 		}
 
-		inline bool Insert(int _leftValue, int _rightValue, const _T& _data)
+		inline void Insert(float _leftValue, float _rightValue, const _T& _data)
 		{
 			Node *tree = root;
+			Node *node = CreateNode(_leftValue, _rightValue, _data);
 
 			while (tree)
 			{
-
+				tree->maxValue = max(tree->maxValue, _rightValue);
+				if (_leftValue < tree->leftValue)
+				{
+					if (tree->left)
+						tree = tree->left;
+					else
+					{
+						node->parent = tree;
+						tree->left = node;
+						FixInsert(node);
+						return;
+					}
+				}
+				else
+				{
+					if (tree->right)
+						tree = tree->right;
+					else
+					{
+						node->parent = tree;
+						tree->right = node;
+						FixInsert(node);
+						return;
+					}
+				}
 			}
 
-			return false;
+			node->color = NODE_BLACK;
+			root = node;
+			return;
 		}
 		
 	protected:
-		Node* CreateNode(int _left, int _right, const _T& _value)
+		Node* CreateNode(float _leftValue, float _rightValue, const _T& _data)
 		{
-			return nullptr;
+			return new Node(_leftValue, _rightValue, _data);
+		}
+
+		void FixInsert(Node* _node)
+		{
+			while (_node->parent->color == NODE_RED)
+			{
+
+			}
+		}
+
+		void LeftRotate(Node* _node)
+		{
+			Node *tmp = _node->right;
+
+		}
+
+		void RightRotate(Node* _node)
+		{
+
 		}
 
 		bool Overlap(const Node& _a, const Node& _b)
