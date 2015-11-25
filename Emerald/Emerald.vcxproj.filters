@@ -525,6 +525,9 @@
     <ClCompile Include="EERedBlackTree.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\Algorithm.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -795,6 +798,9 @@
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
     <ClInclude Include="EERedBlackTree.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EEAlgorithm.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>

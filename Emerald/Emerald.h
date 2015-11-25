@@ -3,7 +3,7 @@
 #define _EE_EMERALD_H_
 
 #include "EECore.h"
-#include "EEMath.h"
+#include "EEAlgorithm.h"
 #include "EEColor.h"
 #include "EESystem.h"
 #include "EEInput.h"

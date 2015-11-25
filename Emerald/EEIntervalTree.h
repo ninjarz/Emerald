@@ -1,6 +1,8 @@
 #pragma once
-#ifndef _EE_HASH_H_
-#define _EE_HASH_H_
+#ifndef _EE_INTERVALTREE_H_
+#define _EE_INTERVALTREE_H_
+
+#include <vector>
 
 
 //----------------------------------------------------------------------------------------------------
@@ -24,45 +26,60 @@ namespace Emerald
 			Node *parent;
 			Node *left;
 			Node *right;
-			float leftValue; // key
-			float rightValue;
+			float lowValue; // key
+			float highValue;
 			float maxValue;
 			NodeColor color;
 			_T data;
 
-			inline Node(float _leftValue, float _rightValue, const _T& _data)
+			//----------------------------------------------------------------------------------------------------
+			inline Node(float _lowValue, float _highValue, const _T& _data)
 				: 
 				parent(nullptr), 
 				left(nullptr), 
 				right(nullptr), 
-				leftValue(_leftValue),
-				rightValue(_rightValue),
-				maxValue(_rightValue),
+				lowValue(_lowValue),
+				highValue(_highValue),
+				maxValue(_highValue),
 				color(NODE_RED), 
 				data(_data)
 			{}
+
+			//----------------------------------------------------------------------------------------------------
+			inline void CalculateMaxValue()
+			{
+				maxValue = highValue;
+				if (left)
+					maxValue = max(maxValue, left->maxValue);
+				if (right)
+					maxValue = max(maxValue, right->maxValue);
+			}
 		};
 
 	public:
+		//----------------------------------------------------------------------------------------------------
 		inline EEIntervalTree()
 			:
 			root(nullptr)
 		{
 		}
 
+		//----------------------------------------------------------------------------------------------------
 		inline ~EEIntervalTree()
 		{
+			DeleteNodes(root);
 		}
 
-		inline void Insert(float _leftValue, float _rightValue, const _T& _data)
+		//----------------------------------------------------------------------------------------------------
+		inline void Insert(float _lowValue, float _highValue, const _T& _data)
 		{
 			Node *tree = root;
-			Node *node = CreateNode(_leftValue, _rightValue, _data);
+			Node *node = CreateNode(_lowValue, _highValue, _data);
 
 			while (tree)
 			{
-				tree->maxValue = max(tree->maxValue, _rightValue);
-				if (_leftValue < tree->leftValue)
+				tree->maxValue = max(tree->maxValue, _highValue);
+				if (_lowValue < tree->lowValue)
 				{
 					if (tree->left)
 						tree = tree->left;
@@ -92,37 +109,212 @@ namespace Emerald
 			root = node;
 			return;
 		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline void FindData(float _lowValue, float _highValue, std::vector<_T>& _data)
+		{
+			_data.clear();
+			FindData(root, _lowValue, _highValue, _data);
+		}
 		
 	protected:
-		Node* CreateNode(float _leftValue, float _rightValue, const _T& _data)
+		//----------------------------------------------------------------------------------------------------
+		inline Node* CreateNode(float _lowValue, float _highValue, const _T& _data)
 		{
-			return new Node(_leftValue, _rightValue, _data);
+			return new Node(_lowValue, _highValue, _data);
 		}
 
-		void FixInsert(Node* _node)
+		//----------------------------------------------------------------------------------------------------
+		inline void DeleteNode(Node* _node)
 		{
-			while (_node->parent->color == NODE_RED)
+			if (!_node->left || !_node->right)
 			{
 
 			}
 		}
 
-		void LeftRotate(Node* _node)
+		//----------------------------------------------------------------------------------------------------
+		inline void DeleteNodes(Node* _node)
 		{
-			Node *tmp = _node->right;
+			if (_node)
+			{
+				if (_node->parent)
+				{
+					if (_node == _node->parent->left)
+						_node->parent->left = nullptr;
+					else
+						_node->parent->right = nullptr;
+				}
 
+				DeleteNodes(_node->left);
+				DeleteNodes(_node->right);
+				delete _node;
+			}
 		}
 
-		void RightRotate(Node* _node)
+		//----------------------------------------------------------------------------------------------------
+		inline void FixInsert(Node* _node)
 		{
+			while (_node->parent && _node->parent->color == NODE_RED)
+			{
+				if (_node->parent == _node->parent->parent->left)
+				{
+					// 1
+					Node *uncle = _node->parent->parent->right;
+					if (uncle && uncle->color == NODE_RED)
+					{
+						uncle->color = NODE_BLACK;
+						_node->parent->parent->color = NODE_RED;
+						_node = _node->parent->parent;
+					}
+					else
+					{
+						// 2
+						if (_node == _node->parent->right)
+						{
+							_node = _node->parent;
+							LeftRotate(_node);
+						}
+						// 3
+						else
+						{
+							_node->parent->color = NODE_BLACK;
+							_node->parent->parent->color = NODE_RED;
+							RightRotate(_node->parent->parent);
+							return;
+						}
+					}
+				}
+				else
+				{
+					// 1
+					Node *uncle = _node->parent->parent->left;
+					if (uncle && uncle->color == NODE_RED)
+					{
+						uncle->color = NODE_BLACK;
+						_node->parent->parent->color = NODE_RED;
+						_node = _node->parent->parent;
+					}
+					else
+					{
+						// 2
+						if (_node == _node->parent->left)
+						{
+							_node = _node->parent;
+							RightRotate(_node);
+						}
+						// 3
+						else
+						{
+							_node->parent->color = NODE_BLACK;
+							_node->parent->parent->color = NODE_RED;
+							LeftRotate(_node->parent->parent);
+							return;
+						}
+					}
+				}
+			}
 
+			if (_node == root)
+			{
+				_node->color = NODE_BLACK;
+				return;
+			}
 		}
 
-		bool Overlap(const Node& _a, const Node& _b)
+		//----------------------------------------------------------------------------------------------------
+		inline void LeftRotate(Node* _node)
 		{
-			if (_a.rightValue < _b.leftValue)
+			if (_node->right)
+			{
+				Node *right = _node->right;
+
+				// Connect the right node's left node to the node's right
+				if (right->left)
+					right->left->parent = _node;
+				_node->right = right->left;
+
+				// Connect the right node to the child of node's parent
+				right->parent = _node->parent;
+				if (_node == root)
+					root = right;
+				else if (_node == _node->parent->left)
+					_node->parent->left = right;
+				else
+					_node->parent->right = right;
+
+				// Connect the node to the right node's left
+				_node->parent = right;
+				right->left = _node;
+
+				// Handle maxValue
+				right->maxValue = _node->maxValue;
+				_node->CalculateMaxValue();
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline void RightRotate(Node* _node)
+		{
+			if (_node->left)
+			{
+				Node *left = _node->left;
+
+				if (left->right)
+					left->right->parent = _node;
+				_node->left = left->right;
+
+				left->parent = _node->parent;
+				if (_node == root)
+					root = left;
+				else if (_node == _node->parent->left)
+					_node->parent->left = left;
+				else
+					_node->parent->right = left;
+
+				_node->parent = left;
+				left->right = _node;
+
+				left->maxValue = _node->maxValue;
+				_node->CalculateMaxValue();
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline void FindData(Node* _node, float _lowValue, float _highValue, std::vector<_T>& _data)
+		{
+			if (_node && _lowValue <= _node->maxValue)
+			{
+				if (Overlap(*_node, _lowValue, _highValue))
+				{
+					_data.push_back(_node->data);
+				}
+
+				FindData(_node->left, _lowValue, _highValue, _data);
+				if (_node->lowValue <= _highValue)
+				{
+					FindData(_node->right, _lowValue, _highValue, _data);
+				}
+			}
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool Overlap(const Node& _nodeA, const Node& _nodeB)
+		{
+			if (_nodeA.highValue < _nodeB.lowValue)
 				return false;
-			else if (_b.rightValue < _a.leftValue)
+			else if (_nodeB.highValue < _nodeA.lowValue)
+				return false;
+
+			return true;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool Overlap(const Node& _node, float _lowValue, float _highValue)
+		{
+			if (_node.highValue < _lowValue)
+				return false;
+			else if (_highValue < _node.lowValue)
 				return false;
 
 			return true;
@@ -131,6 +323,6 @@ namespace Emerald
 	protected:
 		Node *root;
 	};
-}
+};
 
 #endif

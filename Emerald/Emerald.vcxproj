@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Demo\Algorithm.cpp" />
     <ClCompile Include="Demo\animation.cpp" />
     <ClCompile Include="Demo\AnimationEditor.cpp" />
     <ClCompile Include="Demo\Average.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="DirectXTex\Filters.h" />
     <ClInclude Include="DirectXTex\scoped.h" />
     <ClInclude Include="EEAction.h" />
+    <ClInclude Include="EEAlgorithm.h" />
     <ClInclude Include="EEAnimation.h" />
     <ClInclude Include="EEAverage.h" />
     <ClInclude Include="EEBalancedBinaryTree.h" />
