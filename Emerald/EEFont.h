@@ -15,6 +15,7 @@
 #include "EEQuad2D.h"
 #include "EETexture.h"
 
+
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
@@ -24,7 +25,9 @@ namespace Emerald
 	{
 	public:
 		static bool InitializeFont();
+		static bool SetFontHeight(int _height);
 		static EEBitmap GetFontBitmap(wchar_t _char);
+		static EEBitmap GetFontBitmap(const char* _string);
 		static EEBitmap GetFontBitmap(std::wstring _string);
 
 	public:
@@ -74,7 +77,9 @@ namespace Emerald
 
 	// EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
+	bool EESetFontHeight(int _height);
 	EEBitmap EEGetFontBitmap(wchar_t _char);
+	EEBitmap EEGetFontBitmap(const char* _string);
 	EEBitmap EEGetFontBitmap(std::wstring _string);
 	void EEPrint(const FLOAT3& _position, const EEColor& _color, wchar_t* _text);
 }

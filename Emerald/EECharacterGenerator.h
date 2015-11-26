@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 #include "EEBitmap.h"
 #include "EEIntervalTree.h"
 
@@ -18,10 +19,14 @@ namespace Emerald
 		EECharacterGenerator();
 		~EECharacterGenerator();
 
-		bool Generate(const EEBitmap& _bitmap, std::vector<std::string>& _result);
+		bool Generate(EEBitmap& _bitmap, std::vector<std::string>& _result);
+		bool Generate(EEBitmap& _bitmap, std::string& _result);
 
 	protected:
+		bool Initialize();
 
+	protected:
+		EEIntervalTree<char> characterTree;
 	};
 }
 

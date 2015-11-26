@@ -254,7 +254,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEBitmap::SetData(unsigned int _x, unsigned int _y, unsigned int _width, unsigned int _height, EEBitmap& _src)
 	{
-		// memo: _width may be negative
 		if (_x + _width > (unsigned int)m_width)
 			_width = (unsigned int)m_width - _x;
 		if (_width > (unsigned int)_src.GetWidth())

@@ -84,6 +84,7 @@
     <ClCompile Include="Demo\Blur.cpp" />
     <ClCompile Include="Demo\CameraAction.cpp" />
     <ClCompile Include="Demo\Canny.cpp" />
+    <ClCompile Include="Demo\CharacterGenerator.cpp" />
     <ClCompile Include="Demo\ContrastAndBright.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAConfig.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp" />

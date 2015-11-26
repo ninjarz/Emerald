@@ -22,6 +22,7 @@
 #include "EEUDP.h"
 #include "EEDNS.h"
 #include "EEAnimation.h"
+#include "EECharacterGenerator.h"
 
 #include "EEAverage.h"
 #include "EERipple.h"

@@ -41,6 +41,13 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
+	bool EEFont::SetFontHeight(int _height)
+	{
+		s_fontHeight = _height;
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEBitmap EEFont::GetFontBitmap(wchar_t _char)
 	{
 		InitializeFont();
@@ -91,7 +98,12 @@ namespace Emerald
 		return result;
 	}
 
-	// 
+	//----------------------------------------------------------------------------------------------------
+	EEBitmap EEFont::GetFontBitmap(const char* _string)
+	{
+		return GetFontBitmap(AnsiToUnicode(_string));
+	}
+
 	//----------------------------------------------------------------------------------------------------
 	EEBitmap EEFont::GetFontBitmap(std::wstring _string)
 	{
@@ -411,9 +423,19 @@ namespace Emerald
 
 	// EEFont_APIS
 	//----------------------------------------------------------------------------------------------------
+	bool EESetFontHeight(int _height)
+	{
+		return EEFont::SetFontHeight(_height);
+	}
+
 	EEBitmap EEGetFontBitmap(wchar_t _char)
 	{
 		return EEFont::GetFontBitmap(_char);
+	}
+
+	EEBitmap EEGetFontBitmap(const char* _string)
+	{
+		return EEFont::GetFontBitmap(_string);
 	}
 
 	EEBitmap EEGetFontBitmap(std::wstring _string)

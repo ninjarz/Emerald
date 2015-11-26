@@ -116,6 +116,12 @@ namespace Emerald
 			_data.clear();
 			FindData(root, _lowValue, _highValue, _data);
 		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool FindData(float _lowValue, float _highValue, _T& _data)
+		{
+			return FindData(root, _lowValue, _highValue, _data);
+		}
 		
 	protected:
 		//----------------------------------------------------------------------------------------------------
@@ -278,6 +284,30 @@ namespace Emerald
 				left->maxValue = _node->maxValue;
 				_node->CalculateMaxValue();
 			}
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool FindData(Node* _node, float _lowValue, float _highValue, _T& _data)
+		{
+			if (_node && _lowValue <= _node->maxValue)
+			{
+				if (Overlap(*_node, _lowValue, _highValue))
+				{
+					_data = _node->data;
+					return true;
+				}
+
+				if (FindData(_node->left, _lowValue, _highValue, _data))
+				{
+					return true;
+				}
+				if (_node->lowValue <= _highValue)
+				{
+					return FindData(_node->right, _lowValue, _highValue, _data);
+				}
+			}
+
+			return false;
 		}
 
 		//----------------------------------------------------------------------------------------------------
