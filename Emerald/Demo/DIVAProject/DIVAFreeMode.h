@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../Emerald.h"
 #include "DIVAConfig.h"
 

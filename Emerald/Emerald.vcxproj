@@ -93,6 +93,7 @@
     <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp" />
+    <ClCompile Include="Demo\DIVAProject\DIVAMusicListView.cpp" />
     <ClCompile Include="Demo\DIVA\DIVA.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
     <ClCompile Include="Demo\DIVA\DIVAGame.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="EELine2D.cpp" />
     <ClCompile Include="EELineBrowser.cpp" />
     <ClCompile Include="EELineEditor.cpp" />
+    <ClCompile Include="EEMagicButton.cpp" />
     <ClCompile Include="EEMemoryLeak.cpp" />
     <ClCompile Include="EEMusic.cpp" />
     <ClCompile Include="EEObject2D.cpp" />
@@ -222,6 +224,7 @@
     <ClInclude Include="Demo\DIVAProject\DIVAMap.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMenu.h" />
+    <ClInclude Include="Demo\DIVAProject\DIVAMusicListView.h" />
     <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
     <ClInclude Include="Demo\DIVA\DIVAHelper.h" />
     <ClInclude Include="Demo\DIVA\DIVAGame.h" />
@@ -270,6 +273,7 @@
     <ClInclude Include="EELine2D.h" />
     <ClInclude Include="EELineBrowser.h" />
     <ClInclude Include="EELineEditor.h" />
+    <ClInclude Include="EEMagicButton.h" />
     <ClInclude Include="EEMemoryLeak.h" />
     <ClInclude Include="EEMusic.h" />
     <ClInclude Include="EEObject2D.h" />

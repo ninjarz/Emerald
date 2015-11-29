@@ -34,7 +34,7 @@ private:
 	EEQuad2D m_dpQuad;
 	EEIntBoard m_dpBoard;
 	EEParticleEmitter m_noteParticle;
-	EEButton m_freeModeButton;
+	EEMagicButton m_freeModeButton;
 	EEProgressbar m_musicBar;
 	EEQuad2D m_musicBarArea;
 };

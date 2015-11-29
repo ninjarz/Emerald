@@ -13,15 +13,15 @@ DIVAFreeMode::DIVAFreeMode()
 	m_line2Slide(Rect_Float((float)EEGetWidth() * -0.169375f, (float)EEGetHeight() * 0.1056f, (float)EEGetWidth() * 0.56f, (float)EEGetHeight() * 0.9233f)),
 	m_starSlide(Rect_Float((float)EEGetWidth() * -0.08375f, (float)EEGetHeight() * 0.2722f, (float)EEGetWidth() * 0.185625f, (float)EEGetHeight() * 0.6467f)),
 	m_itemZoneQuad(Rect_Float((float)EEGetWidth() * 0.643125f, (float)EEGetHeight() * 0.0211f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.0967f), L"Texture/Project Diva Freedom/Song Choosing/Items Zone.png"),
-	m_itemButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.649375f, (float)EEGetHeight() * 0.0244f, (float)EEGetWidth() * 0.74875f, (float)EEGetHeight() * 0.0867f), L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button2.png", L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button2.png", L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button1.png"),
+	m_itemButton(Rect_Float((float)EEGetWidth() * 0.649375f, (float)EEGetHeight() * 0.0244f, (float)EEGetWidth() * 0.74875f, (float)EEGetHeight() * 0.0867f), L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button2.png", L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button2.png", L"Texture/Project Diva Freedom/Song Choosing/Items Zone-Button1.png"),
 	m_topQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.0f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.0456f), L"Texture/Project Diva Freedom/Song Choosing/Top-Frame.png"),
 	m_bottomQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.7922f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 1.0f), L"Texture/Project Diva Freedom/Song Choosing/Bottom-Frame.png"),
 	m_difficultyFrame1Quad(Rect_Float((float)EEGetWidth() * 0.510625f, (float)EEGetHeight() * 0.0967f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Choosing-Frame.png"),
 	m_difficultyFrame2Quad(Rect_Float((float)EEGetWidth() * 0.51375f, (float)EEGetHeight() * 0.1278f, (float)EEGetWidth() * 0.9975f, (float)EEGetHeight() * 0.1822f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty.png"),
-	m_easyButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.51f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.638125f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Easy-Bright.png"),
-	m_normalButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.6325f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.760625f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Normal-Bright.png"),
-	m_hardButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.7525f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.880625f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty hard-Bright.png"),
-	m_extremeButton(EE_BUTTON_THREE, Rect_Float((float)EEGetWidth() * 0.87375f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 1.001875f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Extreme-Bright.png")
+	m_easyButton(Rect_Float((float)EEGetWidth() * 0.51f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.638125f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Easy-Bright.png"),
+	m_normalButton(Rect_Float((float)EEGetWidth() * 0.6325f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.760625f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Normal-Bright.png"),
+	m_hardButton(Rect_Float((float)EEGetWidth() * 0.7525f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.880625f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty hard-Bright.png"),
+	m_extremeButton(Rect_Float((float)EEGetWidth() * 0.87375f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 1.001875f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Extreme-Bright.png")
 {
 	Initialize();
 }

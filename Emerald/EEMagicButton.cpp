@@ -1,4 +1,4 @@
-#include "EEButton.h"
+#include "EEMagicButton.h"
 #include "EECore.h"
 
 
@@ -7,48 +7,48 @@ namespace Emerald
 {
 	//EEButton
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(const Rect_Float& _rect, const EETexture& _tex, std::function<void(void)> _funcPtr)
+	EEMagicButton::EEMagicButton(const Rect_Float& _rect, float _scale, float _scaleTime, float _fadeTime, const EETexture& _tex, std::function<void(void)> _funcPtr)
 		:
 		EEQuad2D(_rect, _tex),
-		m_overTex(_tex),
-		m_downTex(_tex),
-		// callback function
+		//scale
+		m_aimScale(_scale),
+		m_currScaleTime(0.0),
+		m_aimScaleTime(_scaleTime),
+		//alpha
+		m_aimAlpha(0.0f),
+		m_currFadeTime(0.0f),
+		m_aimFadeTime(_fadeTime),
+		//callback function
 		m_callbackFunc(_funcPtr)
 	{
 		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(const Rect_Float& _rect, const EETexture& _upTex, const EETexture& _overTex, const EETexture& _downTex, std::function<void(void)> _funcPtr)
-		:
-		EEQuad2D(_rect, _upTex),
-		m_overTex(_overTex),
-		m_downTex(_downTex),
-		// callback function
-		m_callbackFunc(_funcPtr)
-	{
-		SetIsFocusable(true);
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEButton::EEButton(const EEButton& _Button)
+	EEMagicButton::EEMagicButton(const EEMagicButton& _Button)
 		:
 		EEQuad2D(_Button),
-		m_overTex(_Button.m_overTex),
-		m_downTex(_Button.m_downTex),
-		// callback function
+		//scale
+		m_aimScale(_Button.m_aimScale),
+		m_currScaleTime(_Button.m_currScaleTime),
+		m_aimScaleTime(_Button.m_aimScaleTime),
+		//alpha
+		m_aimAlpha(_Button.m_aimAlpha),
+		m_currFadeTime(_Button.m_currFadeTime),
+		m_aimFadeTime(_Button.m_aimFadeTime),
+		//callback function
 		m_callbackFunc(_Button.m_callbackFunc)
 	{
 		SetIsFocusable(true);
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EEButton::~EEButton()
+	EEMagicButton::~EEMagicButton()
 	{
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEButton::Update()
+	bool EEMagicButton::Update()
 	{
 		if (!EEObject::Update())
 			return false;
@@ -62,11 +62,13 @@ namespace Emerald
 
 		if (m_isScaleDirty || m_isLocalZOrderDirty)
 		{
+			FLOAT3 scale = FLOAT3((m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime) * 0.5f);
+
 			Rect_Float rect(
-				-m_quadWidth / 2,
-				-m_quadHeight / 2,
-				m_quadWidth / 2,
-				m_quadHeight / 2
+				-m_quadWidth / 2 - m_quadWidth * scale.x,
+				-m_quadHeight / 2 - m_quadHeight * scale.y,
+				m_quadWidth / 2 + m_quadWidth * scale.x,
+				m_quadHeight / 2 + m_quadHeight * scale.y
 				);
 
 			EEQuad2DVertex vertices[4];
@@ -95,14 +97,16 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEButton::Render()
+	bool EEMagicButton::Render()
 	{
 		if (!EEObject::Render())
 			return false;
 
-		MapObjectBuffer();
+		float finalAlpha = GetFinalAlpha() * (1.0f - (m_currFadeTime / m_aimFadeTime));
+		MapObjectBuffer(finalAlpha);
 
 		ID3D11DeviceContext *deviceConstext = EECore::s_EECore->GetDeviceContext();
+
 		deviceConstext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		deviceConstext->IASetInputLayout(s_quadIL);
 		UINT stride = sizeof(EEQuad2DVertex);
@@ -110,22 +114,8 @@ namespace Emerald
 		deviceConstext->IASetVertexBuffers(0, 1, &m_quadVB, &stride, &offset);
 		deviceConstext->IASetIndexBuffer(NULL, DXGI_FORMAT_R32_UINT, 0);
 		deviceConstext->VSSetShader(s_quadVS, NULL, 0);
-		ID3D11ShaderResourceView *texture = NULL;
-		switch (m_state)
-		{
-		case EE_OBJECT_FREE:
-			texture = m_tex.GetTexture();
-			deviceConstext->PSSetShaderResources(0, 1, &texture);
-			break;
-		case EE_OBJECT_DOWN:
-			texture = m_downTex.GetTexture();
-			deviceConstext->PSSetShaderResources(0, 1, &texture);
-			break;
-		case EE_OBJECT_OVER:
-			texture = m_overTex.GetTexture();
-			deviceConstext->PSSetShaderResources(0, 1, &texture);
-			break;
-		}
+		ID3D11ShaderResourceView *texture = m_tex.GetTexture();
+		deviceConstext->PSSetShaderResources(0, 1, &texture);
 		deviceConstext->PSSetShader(s_quadPS, NULL, 0);
 		deviceConstext->Draw(4, 0);
 
@@ -133,11 +123,11 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	Rect_Float EEButton::GetFinalRect() const
+	Rect_Float EEMagicButton::GetFinalRect() const
 	{
 		if (m_parent)
 		{
-			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale - 1.0f) * 0.5f;
+			FLOAT3 scale = (m_parent->GetFinalScale() * m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
 			FLOAT3 deltaPos = m_parent->GetFinalPosition();
 			return Rect_Float(
 				m_quadRect.x - m_quadWidth * scale.x + deltaPos.x,
@@ -148,7 +138,7 @@ namespace Emerald
 		}
 		else
 		{
-			FLOAT3 scale = (m_scale - 1.0f) * 0.5f;
+			FLOAT3 scale = (m_scale * (1.0f + (m_aimScale - 1.0f) * (m_currScaleTime / m_aimScaleTime)) - 1.0f) * 0.5f;
 			return Rect_Float(
 				m_quadRect.x - m_quadWidth * scale.x,
 				m_quadRect.y - m_quadHeight * scale.y,
@@ -161,45 +151,52 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETexture* EEButton::GetUpTex()
+	void EEMagicButton::OnMouseFree(const Point& _pos)
 	{
-		return &m_tex;
+		EEObject::OnMouseFree(_pos);
+
+		if (m_currScaleTime)
+			m_isScaleDirty = true;
+		m_currScaleTime -= (float)EECore::s_EECore->GetDeltaTime();
+		if (m_currScaleTime < 0.0f)
+			m_currScaleTime = 0.0f;
+		m_currFadeTime -= (float)EECore::s_EECore->GetDeltaTime();
+		if (m_currFadeTime < 0.0f)
+			m_currFadeTime = 0.0f;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	EETexture* EEButton::GetOverTex()
-	{
-		return &m_overTex;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EETexture* EEButton::GetDownTex()
-	{
-		return &m_downTex;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	void EEButton::OnMouseOver(const Point& _pos)
+	void EEMagicButton::OnMouseOver(const Point& _pos)
 	{
 		EEObject::OnMouseOver(_pos);
+
+		if (m_currScaleTime < m_aimScaleTime)
+			m_isScaleDirty = true;
+		m_currScaleTime += (float)EECore::s_EECore->GetDeltaTime();
+		if (m_currScaleTime > m_aimScaleTime)
+			m_currScaleTime = m_aimScaleTime;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEButton::OnMouseClicked(const Point& _pos)
+	void EEMagicButton::OnMouseClicked(const Point& _pos)
 	{
 		EEObject::OnMouseClicked(_pos);
 	}
 
-	 //----------------------------------------------------------------------------------------------------
-	void EEButton::OnMouseTriggered(const Point& _pos)
+	//----------------------------------------------------------------------------------------------------
+	void EEMagicButton::OnMouseTriggered(const Point& _pos)
 	{
 		EEObject::OnMouseTriggered(_pos);
 
-		if (m_callbackFunc)
+		m_currFadeTime += (float)EECore::s_EECore->GetDeltaTime();
+		if (m_currFadeTime >= m_aimFadeTime)
 		{
-			//(*(void(*)())m_callbackFunc)();
-			m_callbackFunc();
+			m_currFadeTime = m_aimFadeTime;
+			if (m_callbackFunc)
+				m_callbackFunc();
 			s_triggeredObject = nullptr;
 		}
+
+		m_isScaleDirty = true;
 	}
 }

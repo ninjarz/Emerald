@@ -121,6 +121,12 @@
     <Filter Include="源文件\Emerald\EEAlgorithm">
       <UniqueIdentifier>{99b17d78-b08f-410d-bbfe-1e7a872dafb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEGUI\EEButton">
+      <UniqueIdentifier>{7a03ebe1-30c8-488a-8c0a-45b4be472950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEGUI\EEButton">
+      <UniqueIdentifier>{2f4fecdb-6260-41a8-9758-f1191b5ee914}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -175,9 +181,6 @@
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
     <ClCompile Include="EEProgressBar.cpp">
-      <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="EEButton.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
     <ClCompile Include="EEScene.cpp">
@@ -531,6 +534,15 @@
     <ClCompile Include="Demo\CharacterGenerator.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMusicListView.cpp">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClCompile>
+    <ClCompile Include="EEButton.cpp">
+      <Filter>源文件\Emerald\EEGUI\EEButton</Filter>
+    </ClCompile>
+    <ClCompile Include="EEMagicButton.cpp">
+      <Filter>源文件\Emerald\EEGUI\EEButton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -588,9 +600,6 @@
       <Filter>头文件\Emerald\EESocket</Filter>
     </ClInclude>
     <ClInclude Include="EEGUI.h">
-      <Filter>头文件\Emerald\EEGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="EEButton.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
     <ClInclude Include="EEScene.h">
@@ -805,6 +814,15 @@
     </ClInclude>
     <ClInclude Include="EEAlgorithm.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMusicListView.h">
+      <Filter>源文件\Demo\DIVAProject</Filter>
+    </ClInclude>
+    <ClInclude Include="EEButton.h">
+      <Filter>头文件\Emerald\EEGUI\EEButton</Filter>
+    </ClInclude>
+    <ClInclude Include="EEMagicButton.h">
+      <Filter>头文件\Emerald\EEGUI\EEButton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

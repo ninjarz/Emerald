@@ -4,6 +4,7 @@
 
 #include "EEScene.h"
 #include "EEButton.h"
+#include "EEMagicButton.h"
 #include "EEProgressbar.h"
 #include "EELineBrowser.h"
 #include "EELineEditor.h"

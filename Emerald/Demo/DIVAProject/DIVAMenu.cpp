@@ -16,7 +16,7 @@ DIVAMenu::DIVAMenu()
 	m_bottomQuad(Rect_Float((float)EEGetWidth() * 0.0f, (float)EEGetHeight() * 0.9122f, (float)EEGetWidth() * 1.0f, (float)EEGetHeight() * 1.0f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\底.png"),
 	m_dpQuad(Rect_Float((float)EEGetWidth() * 0.726875f, (float)EEGetHeight() * 0.0111f, (float)EEGetWidth() * 0.784375f, (float)EEGetHeight() * 0.0578f), L"Texture\\Project Diva Freedom\\主界面\\默认主题\\dp.png"),
 	m_dpBoard(Rect_Float((float)EEGetWidth() * 0.784375f, (float)EEGetHeight() * 0.0111f, (float)EEGetWidth() * 0.984375f, (float)EEGetHeight() * 0.0578f), 8),
-	m_freeModeButton(EE_BUTTON_SCALE, Rect_Float((float)EEGetWidth() * 0.03f, (float)EEGetHeight() * 0.8489f, (float)EEGetWidth() * 0.1075f, (float)EEGetHeight() * 0.9856f), 1.3f, 0.2f, 0.2f, L"Texture/Project Diva Freedom\\主界面\\默认主题/自由模式.png", [this] { m_state = DIVA_FREE_MODE; }),
+	m_freeModeButton(Rect_Float((float)EEGetWidth() * 0.03f, (float)EEGetHeight() * 0.8489f, (float)EEGetWidth() * 0.1075f, (float)EEGetHeight() * 0.9856f), 1.3f, 0.2f, 0.2f, L"Texture/Project Diva Freedom\\主界面\\默认主题/自由模式.png", [this] { m_state = DIVA_FREE_MODE; }),
 	m_musicBar(Rect_Float(820.f, 335.f, 1100.f, 340.f), Rect_Float(0.0f, 0.0f, 190.f, 5.f), L"Texture/主界面/播放器/进度.png", L"Texture/主界面/播放器/时间轴.png"),
 	m_musicBarArea(Rect_Float(580.f, 305.f, 800.f, 370.f))
 {

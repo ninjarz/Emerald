@@ -180,10 +180,10 @@ namespace Emerald
 		bool operator> (const EEObject& _object) const;
 
 	protected:
-		//cbuffer
+		// cbuffer
 		virtual bool MapObjectBuffer();
 		virtual bool MapObjectBuffer(float _alpha); // Deprecated
-		//state
+		// state
 		virtual bool UpdateObjectState();
 
 	protected:
