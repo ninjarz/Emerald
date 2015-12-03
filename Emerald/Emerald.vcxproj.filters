@@ -543,6 +543,9 @@
     <ClCompile Include="EEMagicButton.cpp">
       <Filter>源文件\Emerald\EEGUI\EEButton</Filter>
     </ClCompile>
+    <ClCompile Include="EEGeneticAlgorithm.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -823,6 +826,9 @@
     </ClInclude>
     <ClInclude Include="EEMagicButton.h">
       <Filter>头文件\Emerald\EEGUI\EEButton</Filter>
+    </ClInclude>
+    <ClInclude Include="EEGeneticAlgorithm.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

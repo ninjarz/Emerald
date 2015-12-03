@@ -169,6 +169,7 @@
     <ClCompile Include="EEErode.cpp" />
     <ClCompile Include="EEFloatBoard.cpp" />
     <ClCompile Include="EEFont.cpp" />
+    <ClCompile Include="EEGeneticAlgorithm.cpp" />
     <ClCompile Include="EEGeometry.cpp" />
     <ClCompile Include="EEGray.cpp" />
     <ClCompile Include="EEGrid.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="Emerald.h" />
     <ClInclude Include="EESlide.h" />
     <ClInclude Include="EEFloatBoard.h" />
+    <ClInclude Include="EEGeneticAlgorithm.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEQuad2DShader.hlsl">
