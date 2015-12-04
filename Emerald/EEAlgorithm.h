@@ -7,6 +7,7 @@
 #include "EERedBlackTree.h"
 #include "EEIntervalTree.h"
 #include "EESegmentTree.h"
+#include "EERouletteWheel.h"
 #include "EEHash.h"
 
 #endif

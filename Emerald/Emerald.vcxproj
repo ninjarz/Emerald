@@ -287,9 +287,11 @@
     <ClInclude Include="EERecorder.h" />
     <ClInclude Include="EERedBlackTree.h" />
     <ClInclude Include="EERipple.h" />
+    <ClInclude Include="EERouletteWheel.h" />
     <ClInclude Include="EEScene.h" />
     <ClInclude Include="EEScrollView.h" />
     <ClInclude Include="EESegmentTree.h" />
+    <ClInclude Include="EESkipList.h" />
     <ClInclude Include="EESlider.h" />
     <ClInclude Include="EESmartPtr.h" />
     <ClInclude Include="EESocket.h" />

@@ -1,5 +1,5 @@
 // Demo
-#if 0
+#if 1
 #include "../Emerald.h"
 
 
@@ -12,10 +12,20 @@ int main(int _argc, char** _argv)
 	tree.Insert(3.f, 4.f, 3);
 	tree.Insert(4.f, 5.f, 4);
 	tree.Insert(5.f, 6.f, 5);
-
 	std::vector<int> data;
 	tree.FindData(3.f, 4.f, data);
 
+	EERedBlackTree<int> rbTree;
+	rbTree.Insert(6);
+	rbTree.Insert(3);
+	rbTree.Insert(5);
+	rbTree.Insert(2);
+	rbTree.Insert(20);
+	rbTree.Insert(1);
+	rbTree.Delete(5);
+	std::vector<int> rbData;
+	rbTree.GetData(rbData);
+	
 	return 0;
 }
 

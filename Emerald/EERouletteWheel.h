@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _EE_INTERVALTREE_H_
-#define _EE_INTERVALTREE_H_
+#ifndef _EE_ROULETTEWHEEL_H_
+#define _EE_ROULETTEWHEEL_H_
 
 #include <vector>
 
@@ -8,10 +8,10 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	// EEIntervalTree
+	// EERouletteWheel
 	//----------------------------------------------------------------------------------------------------
 	template <typename _T>
-	class EEIntervalTree
+	class EERouletteWheel
 	{
 		//----------------------------------------------------------------------------------------------------
 		enum NodeColor
@@ -26,59 +26,57 @@ namespace Emerald
 			Node *parent;
 			Node *left;
 			Node *right;
-			float lowValue; // key
-			float highValue;
-			float maxValue;
+			float range; // key
+			float totalRange;
 			NodeColor color;
 			_T data;
 
 			//----------------------------------------------------------------------------------------------------
-			inline Node(float _lowValue, float _highValue, const _T& _data)
-				: 
-				parent(nullptr), 
-				left(nullptr), 
-				right(nullptr), 
-				lowValue(_lowValue),
-				highValue(_highValue),
-				maxValue(_highValue),
-				color(NODE_RED), 
+			inline Node(float _range, const _T& _data)
+				:
+				parent(nullptr),
+				left(nullptr),
+				right(nullptr),
+				range(_range),
+				totalRange(_range),
+				color(NODE_RED),
 				data(_data)
 			{}
 
 			//----------------------------------------------------------------------------------------------------
-			inline void CalculateMaxValue()
+			inline void CalcTotalRange()
 			{
-				maxValue = highValue;
+				totalRange = _range;
 				if (left)
-					maxValue = max(maxValue, left->maxValue);
+					totalRange += left->totalRange;
 				if (right)
-					maxValue = max(maxValue, right->maxValue);
+					totalRange += right->totalRange;
 			}
 		};
 
 	public:
 		//----------------------------------------------------------------------------------------------------
-		inline EEIntervalTree()
+		inline EERouletteWheel()
 			:
 			root(nullptr)
 		{
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline ~EEIntervalTree()
+		inline ~EERouletteWheel()
 		{
 			DeleteNodes(root);
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline void Insert(float _lowValue, float _highValue, const _T& _data)
+		inline void Insert(float _range, const _T& _data)
 		{
 			Node *tree = root;
-			Node *node = CreateNode(_lowValue, _highValue, _data);
+			Node *node = CreateNode(_range, _data);
 
 			while (tree)
 			{
-				tree->maxValue = max(tree->maxValue, _highValue);
+				tree->totalRange += _range;
 				if (_lowValue < tree->lowValue)
 				{
 					if (tree->left)
@@ -110,24 +108,11 @@ namespace Emerald
 			return;
 		}
 
-		//----------------------------------------------------------------------------------------------------
-		inline void FindData(float _lowValue, float _highValue, std::vector<_T>& _data)
-		{
-			_data.clear();
-			FindData(root, _lowValue, _highValue, _data);
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline bool FindData(float _lowValue, float _highValue, _T& _data)
-		{
-			return FindData(root, _lowValue, _highValue, _data);
-		}
-		
 	protected:
 		//----------------------------------------------------------------------------------------------------
-		inline Node* CreateNode(float _lowValue, float _highValue, const _T& _data)
+		inline Node* CreateNode(float _range, const _T& _data)
 		{
-			return new Node(_lowValue, _highValue, _data);
+			return new Node(_range, _data);
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -170,7 +155,6 @@ namespace Emerald
 					if (uncle && uncle->color == NODE_RED)
 					{
 						uncle->color = NODE_BLACK;
-						_node->parent->color = NODE_BLACK;
 						_node->parent->parent->color = NODE_RED;
 						_node = _node->parent->parent;
 					}
@@ -199,7 +183,6 @@ namespace Emerald
 					if (uncle && uncle->color == NODE_RED)
 					{
 						uncle->color = NODE_BLACK;
-						_node->parent->color = NODE_BLACK;
 						_node->parent->parent->color = NODE_RED;
 						_node = _node->parent->parent;
 					}
@@ -256,8 +239,8 @@ namespace Emerald
 				right->left = _node;
 
 				// Handle maxValue
-				right->maxValue = _node->maxValue;
-				_node->CalculateMaxValue();
+				// right->maxValue = _node->maxValue;
+				// _node->CalculateMaxValue();
 			}
 		}
 
@@ -283,73 +266,9 @@ namespace Emerald
 				_node->parent = left;
 				left->right = _node;
 
-				left->maxValue = _node->maxValue;
-				_node->CalculateMaxValue();
+				//left->maxValue = _node->maxValue;
+				//_node->CalculateMaxValue();
 			}
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline bool FindData(Node* _node, float _lowValue, float _highValue, _T& _data)
-		{
-			if (_node && _lowValue <= _node->maxValue)
-			{
-				if (Overlap(*_node, _lowValue, _highValue))
-				{
-					_data = _node->data;
-					return true;
-				}
-
-				if (FindData(_node->left, _lowValue, _highValue, _data))
-				{
-					return true;
-				}
-				if (_node->lowValue <= _highValue)
-				{
-					return FindData(_node->right, _lowValue, _highValue, _data);
-				}
-			}
-
-			return false;
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline void FindData(Node* _node, float _lowValue, float _highValue, std::vector<_T>& _data)
-		{
-			if (_node && _lowValue <= _node->maxValue)
-			{
-				if (Overlap(*_node, _lowValue, _highValue))
-				{
-					_data.push_back(_node->data);
-				}
-
-				FindData(_node->left, _lowValue, _highValue, _data);
-				if (_node->lowValue <= _highValue)
-				{
-					FindData(_node->right, _lowValue, _highValue, _data);
-				}
-			}
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline bool Overlap(const Node& _nodeA, const Node& _nodeB)
-		{
-			if (_nodeA.highValue < _nodeB.lowValue)
-				return false;
-			else if (_nodeB.highValue < _nodeA.lowValue)
-				return false;
-
-			return true;
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline bool Overlap(const Node& _node, float _lowValue, float _highValue)
-		{
-			if (_node.highValue < _lowValue)
-				return false;
-			else if (_highValue < _node.lowValue)
-				return false;
-
-			return true;
 		}
 
 	protected:

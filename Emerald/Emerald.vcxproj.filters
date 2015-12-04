@@ -830,6 +830,12 @@
     <ClInclude Include="EEGeneticAlgorithm.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
+    <ClInclude Include="EERouletteWheel.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EESkipList.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="EEShader\EEObjectBuffer.hlsl">

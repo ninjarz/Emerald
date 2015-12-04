@@ -63,7 +63,7 @@ namespace Emerald
 			if (m_verticalPosDelta)
 			{
 				// The posDelta depends on the deltaTime (1.0 - ¡Þ from inverse proportional function)
-				float deltaFactor = 0.16f / EECore::s_EECore->GetDeltaTime() + 1.0f;
+				float deltaFactor = float(0.16 / EECore::s_EECore->GetDeltaTime() + 1.0);
 				float currentPosDelta = abs(m_verticalPosDelta) > 1.f ? m_verticalPosDelta / deltaFactor : m_verticalPosDelta;
 				VerticalPull(m_verticalScrollPos - currentPosDelta);
 				m_verticalPosDelta -= currentPosDelta;
