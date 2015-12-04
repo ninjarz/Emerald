@@ -46,7 +46,7 @@ namespace Emerald
 			{}
 
 			//----------------------------------------------------------------------------------------------------
-			inline void CalculateMaxValue()
+			inline void CalcMaxValue()
 			{
 				maxValue = highValue;
 				if (left)
@@ -60,20 +60,20 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline EEIntervalTree()
 			:
-			root(nullptr)
+			m_root(nullptr)
 		{
 		}
 
 		//----------------------------------------------------------------------------------------------------
 		inline ~EEIntervalTree()
 		{
-			DeleteNodes(root);
+			DeleteNodes(m_root);
 		}
 
 		//----------------------------------------------------------------------------------------------------
 		inline void Insert(float _lowValue, float _highValue, const _T& _data)
 		{
-			Node *tree = root;
+			Node *tree = m_root;
 			Node *node = CreateNode(_lowValue, _highValue, _data);
 
 			while (tree)
@@ -106,7 +106,7 @@ namespace Emerald
 			}
 
 			node->color = NODE_BLACK;
-			root = node;
+			m_root = node;
 			return;
 		}
 
@@ -114,13 +114,13 @@ namespace Emerald
 		inline void FindData(float _lowValue, float _highValue, std::vector<_T>& _data)
 		{
 			_data.clear();
-			FindData(root, _lowValue, _highValue, _data);
+			FindData(m_root, _lowValue, _highValue, _data);
 		}
 
 		//----------------------------------------------------------------------------------------------------
 		inline bool FindData(float _lowValue, float _highValue, _T& _data)
 		{
-			return FindData(root, _lowValue, _highValue, _data);
+			return FindData(m_root, _lowValue, _highValue, _data);
 		}
 		
 	protected:
@@ -223,7 +223,7 @@ namespace Emerald
 				}
 			}
 
-			if (_node == root)
+			if (_node == m_root)
 			{
 				_node->color = NODE_BLACK;
 				return;
@@ -244,8 +244,8 @@ namespace Emerald
 
 				// Connect the right node to the child of node's parent
 				right->parent = _node->parent;
-				if (_node == root)
-					root = right;
+				if (_node == m_root)
+					m_root = right;
 				else if (_node == _node->parent->left)
 					_node->parent->left = right;
 				else
@@ -257,7 +257,7 @@ namespace Emerald
 
 				// Handle maxValue
 				right->maxValue = _node->maxValue;
-				_node->CalculateMaxValue();
+				_node->CalcMaxValue();
 			}
 		}
 
@@ -273,8 +273,8 @@ namespace Emerald
 				_node->left = left->right;
 
 				left->parent = _node->parent;
-				if (_node == root)
-					root = left;
+				if (_node == m_root)
+					m_root = left;
 				else if (_node == _node->parent->left)
 					_node->parent->left = left;
 				else
@@ -284,7 +284,7 @@ namespace Emerald
 				left->right = _node;
 
 				left->maxValue = _node->maxValue;
-				_node->CalculateMaxValue();
+				_node->CalcMaxValue();
 			}
 		}
 
@@ -353,7 +353,7 @@ namespace Emerald
 		}
 
 	protected:
-		Node *root;
+		Node *m_root;
 	};
 };
 

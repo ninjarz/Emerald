@@ -2,7 +2,7 @@
 #ifndef _EE_GENETICALGORITHM_H_
 #define _EE_GENETICALGORITHM_H_
 
-#include <bitset>
+// #include <bitset>
 #include <string>
 #include <map>
 #include <list>

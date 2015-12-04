@@ -25,6 +25,11 @@ int main(int _argc, char** _argv)
 	rbTree.Delete(5);
 	std::vector<int> rbData;
 	rbTree.GetData(rbData);
+
+	EERouletteWheel<int> rouletteWheel;
+	rouletteWheel.Insert(30, 1);
+	rouletteWheel.Insert(15, 2);
+	rouletteWheel.Insert(20, 3);
 	
 	return 0;
 }

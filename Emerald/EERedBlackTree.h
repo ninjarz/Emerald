@@ -39,6 +39,36 @@ namespace Emerald
 				color(NODE_RED),
 				data(_data)
 			{}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual Node& operator= (const Node& _node)
+			{
+				parent = _node.parent;
+				left = _node.left;
+				right = _node.right;
+				color = _node.color;
+				data = _node.data;
+
+				return *this;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual bool operator== (const Node& _node) const // XXXXXX
+			{
+				return data == _node.data;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual bool operator< (const Node& _node) const
+			{
+				return data < _node.data;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual void HandleInsert()
+			{
+				int i = 0;
+			}
 		};
 
 	public:
@@ -58,13 +88,48 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline void Insert(const _T& _data)
 		{
-			Node *tree = m_root;
 			Node *node = CreateNode(_data);
+			Insert(node);
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool Delete(const _T& _data)
+		{
+			Node *target = FindNode(m_root, _data);
+			if (target)
+			{
+				DeleteNode(target);
+				return true;
+			}
+
+			return false;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline void GetData(std::vector<_T>& _data)
+		{
+			_data.clear();
+			GetData(m_root, _data);
+		}
+
+	protected:
+		//----------------------------------------------------------------------------------------------------
+		inline Node* CreateNode(const _T& _data)
+		{
+			return new Node(_data);
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline void Insert(Node *_node)
+		{
+			Node *tree = m_root;
+			Node *node = _node;
 
 			while (tree)
 			{
-				// tree->maxValue = max(tree->maxValue, _highValue);
-				if (node->data < tree->data)
+				// Handle insert
+				tree->HandleInsert();
+				if (*node < *tree)
 				{
 					if (tree->left)
 						tree = tree->left;
@@ -93,33 +158,6 @@ namespace Emerald
 			node->color = NODE_BLACK;
 			m_root = node;
 			return;
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline bool Delete(const _T& _data)
-		{
-			Node *target = FindNode(m_root, _data);
-			if (target)
-			{
-				DeleteNode(target);
-				return true;
-			}
-
-			return false;
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline void GetData(std::vector<_T>& _data)
-		{
-			_data.clear();
-			GetData(m_root, _data);
-		}
-
-	protected:
-		//----------------------------------------------------------------------------------------------------
-		inline Node* CreateNode(const _T& _data)
-		{
-			return new Node(_data);
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -260,7 +298,7 @@ namespace Emerald
 				if (_node->left && _node->right)
 				{
 					Node *successor = FindSuccessor(_node->right);
-					_node->data = successor->data;
+					*_node = *successor;
 					DeleteNode(successor);
 				}
 				else
