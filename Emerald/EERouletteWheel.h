@@ -29,9 +29,56 @@ namespace Emerald
 			{}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual void HandleInsert()
+			inline virtual bool AssignData(Node* _node)
 			{
-				int i = 0;
+				if (Node::AssignData(_node))
+				{
+					range = ((Section*)_node)->range;
+					Calculate();
+				}
+				return true;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual bool Equal(Node* _node) const
+			{
+				if (_node)
+				{
+					return range == ((Section*)_node)->range;
+				}
+				return false;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual bool Less(Node* _node) const
+			{
+				if (_node)
+				{
+					return range < ((Section*)_node)->range;
+				}
+				return false;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual void Calculate()
+			{
+				totalRange = range;
+				if (left)
+					totalRange += ((Section*)left)->totalRange;
+				if (right)
+					totalRange += ((Section*)right)->totalRange;
+
+				if (parent)
+					parent->Calculate();
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual void HandleInsert(Node* _node)
+			{
+				if (_node)
+				{
+					totalRange += ((Section*)_node)->totalRange;
+				}
 			}
 		};
 
@@ -52,6 +99,13 @@ namespace Emerald
 			Section *node = CreateNode(_range, _data);
 			EERedBlackTree<_T>::Insert(node);
 		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool Delete(const _T& _data)
+		{
+			return EERedBlackTree<_T>::Delete(_data);
+		}
+
 
 
 	protected:

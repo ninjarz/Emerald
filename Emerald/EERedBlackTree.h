@@ -41,33 +41,44 @@ namespace Emerald
 			{}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual Node& operator= (const Node& _node)
+			inline virtual bool AssignData(Node* _node)
 			{
-				parent = _node.parent;
-				left = _node.left;
-				right = _node.right;
-				color = _node.color;
-				data = _node.data;
-
-				return *this;
+				if (_node)
+				{
+					data = _node->data;
+					return true;
+				}
+				return false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool operator== (const Node& _node) const // XXXXXX
+			inline virtual bool Equal(Node* _node) const
 			{
-				return data == _node.data;
+				return data == _node->data;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool operator< (const Node& _node) const
+			inline virtual bool Less(Node* _node) const
 			{
-				return data < _node.data;
+				return data < _node->data;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual void HandleInsert()
+			inline virtual void Calculate() // Dirction: ¡ü
 			{
-				int i = 0;
+				// Nothing
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual void HandleInsert(Node* _node) // Dirction: ¡ý
+			{
+				// Nothing
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual void HandleRotate(Node* _node) // Redundancy
+			{
+				// Nothing
 			}
 		};
 
@@ -98,7 +109,7 @@ namespace Emerald
 			Node *target = FindNode(m_root, _data);
 			if (target)
 			{
-				DeleteNode(target);
+				Delete(target);
 				return true;
 			}
 
@@ -128,8 +139,8 @@ namespace Emerald
 			while (tree)
 			{
 				// Handle insert
-				tree->HandleInsert();
-				if (*node < *tree)
+				tree->HandleInsert(_node);
+				if (node->Less(tree))
 				{
 					if (tree->left)
 						tree = tree->left;
@@ -257,9 +268,9 @@ namespace Emerald
 				_node->parent = right;
 				right->left = _node;
 
-				// Handle maxValue
-				// right->maxValue = _node->maxValue;
-				// _node->CalculateMaxValue();
+				// Handle rotate
+				// right->HandleRotate(_node);
+				_node->Calculate();
 			}
 		}
 
@@ -285,21 +296,21 @@ namespace Emerald
 				_node->parent = left;
 				left->right = _node;
 
-				// left->maxValue = _node->maxValue;
-				// _node->CalculateMaxValue();
+				// left->HandleRotate(_node);
+				_node->Calculate();
 			}
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline void DeleteNode(Node* _node)
+		inline void Delete(Node* _node)
 		{
 			if (_node)
 			{
 				if (_node->left && _node->right)
 				{
 					Node *successor = FindSuccessor(_node->right);
-					*_node = *successor;
-					DeleteNode(successor);
+					_node->AssignData(successor); // The calculation inside is redundant but safe
+					Delete(successor);
 				}
 				else
 				{
@@ -313,6 +324,9 @@ namespace Emerald
 							_node->parent->left = child;
 						else
 							_node->parent->right = child;
+						// Handle delete
+						if (child->parent)
+							child->parent->Calculate();
 
 						if (_node->color == NODE_BLACK) // Black
 						{
@@ -391,16 +405,27 @@ namespace Emerald
 							}
 						}
 					}
+					else
+					{
+						if (_node == m_root)
+							m_root = nullptr;
+						else if (_node == _node->parent->left)
+							_node->parent->left = nullptr;
+						else
+							_node->parent->right = nullptr;
 
-					if (_node == m_root)
-						m_root = nullptr;
+						// Handle delete
+						if (_node->parent)
+							_node->parent->Calculate();
+					}
+
 					delete _node;
 				}
 			}
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline void DeleteNodes(Node* _node) // Todo: use DeleteNode
+		inline void DeleteNodes(Node* _node) // Todo: use Delete
 		{
 			if (_node)
 			{
