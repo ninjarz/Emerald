@@ -91,7 +91,7 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline ~EERedBlackTree()
+		inline virtual ~EERedBlackTree()
 		{
 			DeleteNodes(m_root);
 		}

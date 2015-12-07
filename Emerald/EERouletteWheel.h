@@ -89,7 +89,7 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline ~EERouletteWheel()
+		inline virtual ~EERouletteWheel()
 		{
 		}
 
@@ -106,13 +106,63 @@ namespace Emerald
 			return EERedBlackTree<_T>::Delete(_data);
 		}
 
+		//----------------------------------------------------------------------------------------------------
+		inline float GetTotalRange()
+		{
+			if (m_root)
+				return ((Section*)m_root)->totalRange;
+			return 0.f;
+		}
 
+		//----------------------------------------------------------------------------------------------------
+		inline bool Select(float _pos, _T& _result)
+		{
+			float turns = _pos / GetTotalRange();
+			if (turns < 0.f)
+				turns += 1.f;
+			_pos = GetTotalRange() * (turns - (int)turns);
+			return Select(m_root, _pos, _result);
+		}
 
 	protected:
 		//----------------------------------------------------------------------------------------------------
 		inline Section* CreateNode(float _range, const _T& _data)
 		{
 			return new Section(_range, _data);
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool Select(Node* _node, float _pos, _T& _result)
+		{
+			if (_node)
+			{
+				// Left
+				if (_node->left)
+				{
+					if (_pos <= ((Section*)_node->left)->totalRange)
+						return Select(_node->left, _pos, _result);
+					_pos -= ((Section*)_node->left)->totalRange;
+				}
+
+				// Self
+				if (_pos <= ((Section*)_node)->range)
+				{
+					_result = _node->data;
+					return true;
+				}
+				_pos -= ((Section*)_node)->range;
+
+				// Right
+				if (_node->right)
+				{
+					if (_pos <= ((Section*)_node->right)->totalRange)
+						return Select(_node->right, _pos, _result);
+					// Overflow
+					return false;
+				}
+			}
+
+			return false;
 		}
 	};
 };

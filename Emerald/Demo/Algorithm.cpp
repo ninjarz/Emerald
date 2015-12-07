@@ -30,6 +30,8 @@ int main(int _argc, char** _argv)
 	rouletteWheel.Insert(30, 1);
 	rouletteWheel.Insert(15, 2);
 	rouletteWheel.Insert(20, 3);
+	int rwResult = 0;
+	rouletteWheel.Select(-30, rwResult);
 	rouletteWheel.Delete(3);
 	
 	return 0;
