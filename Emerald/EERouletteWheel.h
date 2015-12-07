@@ -3,6 +3,7 @@
 #define _EE_ROULETTEWHEEL_H_
 
 #include <vector>
+#include <iterator>
 #include "EERedBlackTree.h"
 
 
@@ -14,6 +15,7 @@ namespace Emerald
 	template <typename _T>
 	class EERouletteWheel : protected EERedBlackTree<_T>
 	{
+	protected:
 		//----------------------------------------------------------------------------------------------------
 		struct Section : public Node
 		{
@@ -26,7 +28,8 @@ namespace Emerald
 				Node(_data),
 				range(_range),
 				totalRange(_range)
-			{}
+			{
+			}
 
 			//----------------------------------------------------------------------------------------------------
 			inline virtual bool AssignData(Node* _node)
@@ -91,6 +94,18 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline virtual ~EERouletteWheel()
 		{
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline NodeIterator begin()
+		{
+			return EERedBlackTree<_T>::begin();
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline NodeIterator end()
+		{
+			return EERedBlackTree<_T>::end();
 		}
 
 		//----------------------------------------------------------------------------------------------------

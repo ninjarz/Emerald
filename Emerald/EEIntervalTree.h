@@ -14,6 +14,7 @@ namespace Emerald
 	template <typename _T>
 	class EEIntervalTree : protected EERedBlackTree<_T>
 	{
+	protected:
 		//----------------------------------------------------------------------------------------------------
 		struct Interval : public Node
 		{
