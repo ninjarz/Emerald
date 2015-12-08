@@ -44,23 +44,15 @@ namespace Emerald
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool Equal(Node* _node) const
+			inline virtual bool IsKeyEqual(Node* _node) const
 			{
-				if (_node)
-				{
-					return lowValue == ((Interval*)_node)->lowValue;
-				}
-				return false;
+				return _node ? lowValue == ((Interval*)_node)->lowValue : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool Less(Node* _node) const
+			inline virtual bool IsKeyLess(Node* _node) const
 			{
-				if (_node)
-				{
-					return lowValue < ((Interval*)_node)->lowValue;
-				}
-				return false;
+				return _node ? lowValue < ((Interval*)_node)->lowValue : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------

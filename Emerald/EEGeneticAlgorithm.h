@@ -5,7 +5,6 @@
 // #include <bitset>
 #include <string>
 #include <map>
-#include <list>
 #include <vector>
 #include "EERouletteWheel.h"
 
@@ -21,9 +20,23 @@ namespace Emerald
 		EEChromosome();
 		virtual ~EEChromosome();
 
+		//----------------------------------------------------------------------------------------------------
 		inline float GetFitness() 
 		{ 
 			return m_fitness;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool operator== (const EEChromosome& _chromosome) const
+		{
+			return m_isAlive == _chromosome.m_isAlive && m_gene == _chromosome.m_gene && m_fitness == _chromosome.m_fitness;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool operator< (const EEChromosome& _chromosome) const
+		{
+			// Redundancy
+			return false;
 		}
 
 	protected:
@@ -45,8 +58,6 @@ namespace Emerald
 		virtual bool Process();
 
 	protected:
-		void CalcTotalFitness();
-		EEChromosome* RouletteWheel();
 		void Crossover();
 		void Mutate();
 
@@ -58,8 +69,7 @@ namespace Emerald
 		std::map<std::string, std::string> m_geneTranslation;
 
 		// runtime
-		float m_totalFitness;
-		std::list<EEChromosome> m_chromosomes;
+		EERouletteWheel<EEChromosome> m_chromosomes;
 	};
 }
 

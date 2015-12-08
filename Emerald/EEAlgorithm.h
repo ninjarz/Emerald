@@ -9,5 +9,6 @@
 #include "EESegmentTree.h"
 #include "EERouletteWheel.h"
 #include "EEHash.h"
+#include "EEGeneticAlgorithm.h"
 
 #endif

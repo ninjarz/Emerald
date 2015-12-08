@@ -24,7 +24,9 @@ namespace Emerald
 		m_maxPopulationSize(0),
 		m_crossoverRate(0.f),
 		m_mutationRate(0.f),
-		m_geneLength(0)
+		m_geneLength(0),
+		m_geneTranslation(),
+		m_chromosomes()
 	{
 
 	}
@@ -55,39 +57,9 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEGeneController::CalcTotalFitness()
-	{
-		m_totalFitness = 0.f;
-
-		for (auto& chromosome : m_chromosomes)
-		{
-			m_totalFitness += chromosome.GetFitness();
-		}
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	EEChromosome* EEGeneController::RouletteWheel()
-	{
-
-
-		return nullptr;
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	void EEGeneController::Crossover()
 	{
-		/*
-		for (auto first = m_chromosomes.begin(); first != m_chromosomes.end(); ++first)
-		{
-			for (auto second = ++first; second != m_chromosomes.end(); ++second)
-			{
-				if ((float)rand() / (float)RAND_MAX < m_crossoverRate)
-				{
-
-				}
-			}
-		}
-		*/
+		
 	}
 
 	//----------------------------------------------------------------------------------------------------

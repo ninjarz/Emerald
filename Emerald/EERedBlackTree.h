@@ -51,17 +51,23 @@ namespace Emerald
 				}
 				return false;
 			}
-
+			
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool Equal(Node* _node) const
+			inline virtual bool IsEqual(Node* _node) const // Find
 			{
-				return data == _node->data;
+				return _node ? data == _node->data : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool Less(Node* _node) const
+			inline virtual bool IsKeyEqual(Node* _node) const // Index
 			{
-				return data < _node->data;
+				return _node ? data == _node->data : false;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual bool IsKeyLess(Node* _node) const // Index
+			{
+				return _node ? data < _node->data : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
@@ -104,14 +110,35 @@ namespace Emerald
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline NodeIterator& operator++ ()
+			inline NodeIterator& operator++ () // Option: stack
 			{
-				// Todo
-				return NodeIterator(nullptr);
+				if (node)
+				{
+					if (node->right)
+					{
+						node = node->right;
+						while (node->left)
+							node = node->left;
+					}
+					else
+					{
+						while (node)
+						{
+							if (node->parent && node == node->parent->left)
+							{
+								node = node->parent;
+								break;
+							}
+							node = node->parent;
+						}
+					}
+				}
+
+				return *this;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline _T operator* ()
+			inline _T& operator* ()
 			{
 				return node->data;
 			}
@@ -134,7 +161,7 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline NodeIterator begin()
 		{
-			return NodeIterator(m_root);
+			return NodeIterator(FindLeast(m_root));
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -153,13 +180,12 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline bool Delete(const _T& _data)
 		{
-			Node *target = FindNode(m_root, _data);
+			Node *target = FindNode(m_root, &Node(_data));
 			if (target)
 			{
 				Delete(target);
 				return true;
 			}
-
 			return false;
 		}
 
@@ -187,7 +213,7 @@ namespace Emerald
 			{
 				// Handle insert
 				tree->HandleInsert(_node);
-				if (node->Less(tree))
+				if (node->IsKeyLess(tree))
 				{
 					if (tree->left)
 						tree = tree->left;
@@ -355,7 +381,7 @@ namespace Emerald
 			{
 				if (_node->left && _node->right)
 				{
-					Node *successor = FindSuccessor(_node->right);
+					Node *successor = FindLeast(_node->right);
 					_node->AssignData(successor); // The calculation inside is redundant but safe
 					Delete(successor);
 				}
@@ -491,26 +517,26 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline Node* FindPredecessor(Node* _node)
+		inline Node* FindGreatest(Node* _node)
 		{
 			if (_node)
 			{
 				if (_node->right == nullptr) // parent X
 					return _node;
-				return FindPredecessor(_node->right);
+				return FindGreatest(_node->right);
 			}
 
 			return nullptr;
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline Node* FindSuccessor(Node* _node)
+		inline Node* FindLeast(Node* _node)
 		{
 			if (_node)
 			{
 				if (_node->left == nullptr) // parent X
 					return _node;
-				return FindSuccessor(_node->left);
+				return FindLeast(_node->left);
 			}
 
 			return nullptr;
@@ -531,22 +557,27 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline Node* FindNode(Node* _node, const _T& _data)
+		inline Node* FindNode(Node* _node, Node* _refer) // Index by data
 		{
-			if (_node)
+			if (_node && _refer)
 			{
-				if (_node->data == _data)
+				if (_node->IsKeyEqual(_refer))
 				{
-					return _node;
+					if (_node->IsEqual(_refer))
+						return _node;
+					else
+					{
+						Node *result = nullptr;
+						result = FindNode(_node->left, _refer);
+						if (!result)
+							result = FindNode(_node->right, _refer);
+						return result;
+					}
 				}
-				else if (_data < _node->data)
-				{
-					return FindNode(_node->left, _data);
-				}
+				else if (_refer->IsKeyLess(_node))
+					return FindNode(_node->left, _refer);
 				else
-				{
-					return FindNode(_node->right, _data);
-				}
+					return FindNode(_node->right, _refer);
 			}
 
 			return nullptr;

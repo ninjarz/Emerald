@@ -43,23 +43,21 @@ namespace Emerald
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool Equal(Node* _node) const
+			inline virtual bool IsEqual(Node* _node) const
 			{
-				if (_node)
-				{
-					return range == ((Section*)_node)->range;
-				}
-				return false;
+				return _node ? range == ((Section*)_node)->range && data == _node->data : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool Less(Node* _node) const
+			inline virtual bool IsKeyEqual(Node* _node) const
 			{
-				if (_node)
-				{
-					return range < ((Section*)_node)->range;
-				}
-				return false;
+				return _node ? range == ((Section*)_node)->range : false;
+			}
+
+			//----------------------------------------------------------------------------------------------------
+			inline virtual bool IsKeyLess(Node* _node) const
+			{
+				return _node ? range < ((Section*)_node)->range : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
@@ -116,9 +114,15 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline bool Delete(const _T& _data)
+		inline bool Delete(float _range, const _T& _data)
 		{
-			return EERedBlackTree<_T>::Delete(_data);
+			Node *target = EERedBlackTree<_T>::FindNode(m_root, &Section(_range, _data));
+			if (target)
+			{
+				EERedBlackTree<_T>::Delete(target);
+				return true;
+			}
+			return false;
 		}
 
 		//----------------------------------------------------------------------------------------------------

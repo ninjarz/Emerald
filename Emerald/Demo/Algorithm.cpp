@@ -25,15 +25,21 @@ int main(int _argc, char** _argv)
 	rbTree.Delete(5);
 	std::vector<int> rbData;
 	rbTree.GetData(rbData);
+	for (auto& rbTmp : rbTree)
+	{
+		rbData.push_back(rbTmp);
+	}
 
 	EERouletteWheel<int> rouletteWheel;
-	rouletteWheel.Insert(30, 1);
-	rouletteWheel.Insert(15, 2);
-	rouletteWheel.Insert(20, 3);
+	rouletteWheel.Insert(50, 1);
+	rouletteWheel.Insert(30, 2);
+	rouletteWheel.Insert(10, 3);
 	int rwResult = 0;
 	rouletteWheel.Select(-30, rwResult);
-	rouletteWheel.Delete(3);
+	rouletteWheel.Delete(10, 3);
 	
+	EEGeneController geneController;
+
 	return 0;
 }
 
