@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "EESmartPtr.h"
 #include "EERouletteWheel.h"
 
 
@@ -17,7 +18,7 @@ namespace Emerald
 	class EEChromosome
 	{
 	public:
-		EEChromosome();
+		EEChromosome(int _geneLength);
 		virtual ~EEChromosome();
 
 		//----------------------------------------------------------------------------------------------------
@@ -26,24 +27,15 @@ namespace Emerald
 			return m_fitness;
 		}
 
-		//----------------------------------------------------------------------------------------------------
-		inline bool operator== (const EEChromosome& _chromosome) const
-		{
-			return m_isAlive == _chromosome.m_isAlive && m_gene == _chromosome.m_gene && m_fitness == _chromosome.m_fitness;
-		}
-
-		//----------------------------------------------------------------------------------------------------
-		inline bool operator< (const EEChromosome& _chromosome) const
-		{
-			// Redundancy
-			return false;
-		}
-
 	protected:
 		bool m_isAlive;
 		std::string m_gene; // bits
 		float m_fitness; // 0.f - ¡Þ
 	};
+
+	// EEChromosomePtr
+	//----------------------------------------------------------------------------------------------------
+	typedef EESmartPtr<EEChromosome> EEChromosomePtr;
 
 	// EEGeneController
 	//----------------------------------------------------------------------------------------------------
@@ -53,13 +45,11 @@ namespace Emerald
 		EEGeneController();
 		virtual ~EEGeneController();
 
-		virtual bool Update();
-		virtual bool Render();
 		virtual bool Process();
 
 	protected:
 		void Crossover();
-		void Mutate();
+		bool Mutate(EEChromosomePtr& _chromosome);
 
 	protected:
 		int m_maxPopulationSize;
@@ -69,7 +59,7 @@ namespace Emerald
 		std::map<std::string, std::string> m_geneTranslation;
 
 		// runtime
-		EERouletteWheel<EEChromosome> m_chromosomes;
+		EERouletteWheel<EEChromosomePtr> m_chromosomes;
 	};
 }
 

@@ -6,7 +6,9 @@ namespace Emerald
 {
 	// EEChromosome
 	//----------------------------------------------------------------------------------------------------
-	EEChromosome::EEChromosome()
+	EEChromosome::EEChromosome(int _geneLength)
+		:
+		m_gene('0', _geneLength)
 	{
 
 	}
@@ -28,7 +30,7 @@ namespace Emerald
 		m_geneTranslation(),
 		m_chromosomes()
 	{
-
+		// Init
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -38,33 +40,31 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEGeneController::Update()
-	{
-
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	bool EEGeneController::Render()
-	{
-		return true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	bool EEGeneController::Process()
 	{
-		return true;
+		Crossover();
+
+		for (auto& chromosome : m_chromosomes)
+		{
+
+		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	void EEGeneController::Crossover()
 	{
+		EEChromosomePtr mom, dad; // selfing X
+		if (!m_chromosomes.RandomSelect(mom) || !m_chromosomes.RandomSelect(dad))
+			return;
+
 		
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EEGeneController::Mutate()
+	bool EEGeneController::Mutate(EEChromosomePtr& _chromosome)
 	{
-
+		return true;
 	}
 }

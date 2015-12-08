@@ -18,15 +18,14 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		struct Interval : public Node
 		{
-			float lowValue; // key
+			// key: lowValue
 			float highValue;
 			float maxValue;
 
 			//----------------------------------------------------------------------------------------------------
 			inline Interval(float _lowValue, float _highValue, const _T& _data)
 				: 
-				Node(_data),
-				lowValue(_lowValue),
+				Node(_lowValue, _data),
 				highValue(_highValue),
 				maxValue(_highValue)
 			{}
@@ -36,23 +35,10 @@ namespace Emerald
 			{
 				if (Node::AssignData(_node))
 				{
-					lowValue = ((Interval*)_node)->lowValue;
 					highValue = ((Interval*)_node)->highValue;
 					Calculate();
 				}
 				return true;
-			}
-
-			//----------------------------------------------------------------------------------------------------
-			inline virtual bool IsKeyEqual(Node* _node) const
-			{
-				return _node ? lowValue == ((Interval*)_node)->lowValue : false;
-			}
-
-			//----------------------------------------------------------------------------------------------------
-			inline virtual bool IsKeyLess(Node* _node) const
-			{
-				return _node ? lowValue < ((Interval*)_node)->lowValue : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
@@ -89,8 +75,7 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline void Insert(float _lowValue, float _highValue, const _T& _data)
 		{
-			Interval *node = CreateNode(_lowValue, _highValue, _data);
-			EERedBlackTree<_T>::Insert(node);
+			EERedBlackTree<_T>::Insert(CreateNode(_lowValue, _highValue, _data));
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -108,7 +93,7 @@ namespace Emerald
 		
 	protected:
 		//----------------------------------------------------------------------------------------------------
-		inline Interval* CreateNode(float _lowValue, float _highValue, const _T& _data)
+		inline Node* CreateNode(float _lowValue, float _highValue, const _T& _data)
 		{
 			return new Interval(_lowValue, _highValue, _data);
 		}
@@ -128,7 +113,7 @@ namespace Emerald
 				{
 					return true;
 				}
-				if (((Interval*)_node)->lowValue <= _highValue)
+				if (((Interval*)_node)->key <= _highValue)
 				{
 					return FindData(_node->right, _lowValue, _highValue, _data);
 				}
@@ -148,7 +133,7 @@ namespace Emerald
 				}
 
 				FindData(_node->left, _lowValue, _highValue, _data);
-				if (((Interval*)_node)->lowValue <= _highValue)
+				if (((Interval*)_node)->key <= _highValue)
 				{
 					FindData(_node->right, _lowValue, _highValue, _data);
 				}
@@ -160,7 +145,7 @@ namespace Emerald
 		{
 			if (((Interval*)_node)->highValue < _lowValue)
 				return false;
-			else if (_highValue < ((Interval*)_node)->lowValue)
+			else if (_highValue < ((Interval*)_node)->key)
 				return false;
 
 			return true;

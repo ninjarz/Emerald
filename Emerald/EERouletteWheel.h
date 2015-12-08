@@ -19,14 +19,13 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		struct Section : public Node
 		{
-			float range; // key
+			// key: range
 			float totalRange;
 
 			//----------------------------------------------------------------------------------------------------
 			inline Section(float _range, const _T& _data)
 				:
-				Node(_data),
-				range(_range),
+				Node(_range, _data),
 				totalRange(_range)
 			{
 			}
@@ -36,34 +35,15 @@ namespace Emerald
 			{
 				if (Node::AssignData(_node))
 				{
-					range = ((Section*)_node)->range;
 					Calculate();
 				}
 				return true;
 			}
 
 			//----------------------------------------------------------------------------------------------------
-			inline virtual bool IsEqual(Node* _node) const
-			{
-				return _node ? range == ((Section*)_node)->range && data == _node->data : false;
-			}
-
-			//----------------------------------------------------------------------------------------------------
-			inline virtual bool IsKeyEqual(Node* _node) const
-			{
-				return _node ? range == ((Section*)_node)->range : false;
-			}
-
-			//----------------------------------------------------------------------------------------------------
-			inline virtual bool IsKeyLess(Node* _node) const
-			{
-				return _node ? range < ((Section*)_node)->range : false;
-			}
-
-			//----------------------------------------------------------------------------------------------------
 			inline virtual void Calculate()
 			{
-				totalRange = range;
+				totalRange = key;
 				if (left)
 					totalRange += ((Section*)left)->totalRange;
 				if (right)
@@ -109,8 +89,7 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline void Insert(float _range, const _T& _data)
 		{
-			Section *node = CreateNode(_range, _data);
-			EERedBlackTree<_T>::Insert(node);
+			EERedBlackTree<_T>::Insert(CreateNode(_range, _data));
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -143,9 +122,16 @@ namespace Emerald
 			return Select(m_root, _pos, _result);
 		}
 
+		//----------------------------------------------------------------------------------------------------
+		inline bool RandomSelect(_T& _result)
+		{
+			float pos = GetTotalRange() * ((float)rand() / (float)RAND_MAX);
+			return Select(pos, _result);
+		}
+
 	protected:
 		//----------------------------------------------------------------------------------------------------
-		inline Section* CreateNode(float _range, const _T& _data)
+		inline virtual Node* CreateNode(float _range, const _T& _data)
 		{
 			return new Section(_range, _data);
 		}
@@ -164,12 +150,12 @@ namespace Emerald
 				}
 
 				// Self
-				if (_pos <= ((Section*)_node)->range)
+				if (_pos <= ((Section*)_node)->key)
 				{
 					_result = _node->data;
 					return true;
 				}
-				_pos -= ((Section*)_node)->range;
+				_pos -= ((Section*)_node)->key;
 
 				// Right
 				if (_node->right)

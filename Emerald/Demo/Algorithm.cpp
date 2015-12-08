@@ -16,13 +16,13 @@ int main(int _argc, char** _argv)
 	tree.FindData(3.f, 4.f, data);
 
 	EERedBlackTree<int> rbTree;
-	rbTree.Insert(6);
-	rbTree.Insert(3);
-	rbTree.Insert(5);
-	rbTree.Insert(2);
-	rbTree.Insert(20);
-	rbTree.Insert(1);
-	rbTree.Delete(5);
+	rbTree.Insert(6.f, 1);
+	rbTree.Insert(3.f, 1);
+	rbTree.Insert(5.f, 1);
+	rbTree.Insert(2.f, 1);
+	rbTree.Insert(20.f, 1);
+	rbTree.Insert(1.f, 1);
+	rbTree.Delete(5.f, 1);
 	std::vector<int> rbData;
 	rbTree.GetData(rbData);
 	for (auto& rbTmp : rbTree)
@@ -39,6 +39,7 @@ int main(int _argc, char** _argv)
 	rouletteWheel.Delete(10, 3);
 	
 	EEGeneController geneController;
+	geneController.Process();
 
 	return 0;
 }

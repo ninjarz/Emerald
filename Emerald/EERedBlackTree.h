@@ -28,15 +28,17 @@ namespace Emerald
 			Node *left;
 			Node *right;
 			NodeColor color;
-			_T data; // key
+			float key;
+			_T data;
 
 			//----------------------------------------------------------------------------------------------------
-			inline Node(const _T& _data)
+			inline Node(float _key, const _T& _data)
 				:
 				parent(nullptr),
 				left(nullptr),
 				right(nullptr),
 				color(NODE_RED),
+				key(_key),
 				data(_data)
 			{
 			}
@@ -46,6 +48,7 @@ namespace Emerald
 			{
 				if (_node)
 				{
+					key = _node->key;
 					data = _node->data;
 					return true;
 				}
@@ -55,19 +58,19 @@ namespace Emerald
 			//----------------------------------------------------------------------------------------------------
 			inline virtual bool IsEqual(Node* _node) const // Find
 			{
-				return _node ? data == _node->data : false;
+				return _node ? key == _node->key && data == _node->data : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
 			inline virtual bool IsKeyEqual(Node* _node) const // Index
 			{
-				return _node ? data == _node->data : false;
+				return _node ? key == _node->key : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
 			inline virtual bool IsKeyLess(Node* _node) const // Index
 			{
-				return _node ? data < _node->data : false;
+				return _node ? key < _node->key : false;
 			}
 
 			//----------------------------------------------------------------------------------------------------
@@ -171,16 +174,15 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline void Insert(const _T& _data)
+		inline void Insert(float _key, const _T& _data)
 		{
-			Node *node = CreateNode(_data);
-			Insert(node);
+			Insert(CreateNode(_key, _data));
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline bool Delete(const _T& _data)
+		inline bool Delete(float _key, const _T& _data)
 		{
-			Node *target = FindNode(m_root, &Node(_data));
+			Node *target = FindNode(m_root, &Node(_key, _data));
 			if (target)
 			{
 				Delete(target);
@@ -198,9 +200,9 @@ namespace Emerald
 
 	protected:
 		//----------------------------------------------------------------------------------------------------
-		inline Node* CreateNode(const _T& _data)
+		inline virtual Node* CreateNode(float _key, const _T& _data)
 		{
-			return new Node(_data);
+			return new Node(_key, _data);
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -557,7 +559,7 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
-		inline Node* FindNode(Node* _node, Node* _refer) // Index by data
+		inline Node* FindNode(Node* _node, Node* _refer) // Index by key
 		{
 			if (_node && _refer)
 			{

@@ -45,6 +45,11 @@ namespace Emerald
 			return *this;
 		}
 
+		bool operator== (const EESmartPtr &_smartPtr) const
+		{
+			return m_counter == _smartPtr.m_counter && m_value == _smartPtr.m_value;
+		}
+
 	protected:
 		void SetValue(_T *_value)
 		{
