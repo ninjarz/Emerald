@@ -12,6 +12,7 @@ namespace Emerald
 	class EESmartPtr
 	{
 	public:
+		//----------------------------------------------------------------------------------------------------
 		EESmartPtr(_T *_value = nullptr)
 			:
 			m_counter(new int(1)),
@@ -20,6 +21,7 @@ namespace Emerald
 			// std::cout << "init:" << *m_counter << std::endl;
 		}
 
+		//----------------------------------------------------------------------------------------------------
 		EESmartPtr(const EESmartPtr &_smartPtr)
 			:
 			m_counter(_smartPtr.m_counter),
@@ -29,11 +31,13 @@ namespace Emerald
 			++*m_counter;
 		}
 
+		//----------------------------------------------------------------------------------------------------
 		virtual ~EESmartPtr()
 		{
 			DecCounter();
 		}
 
+		//----------------------------------------------------------------------------------------------------
 		EESmartPtr& operator= (const EESmartPtr &_smartPtr)
 		{
 			DecCounter();
@@ -45,9 +49,28 @@ namespace Emerald
 			return *this;
 		}
 
+		//----------------------------------------------------------------------------------------------------
 		bool operator== (const EESmartPtr &_smartPtr) const
 		{
 			return m_counter == _smartPtr.m_counter && m_value == _smartPtr.m_value;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		bool operator!= (const EESmartPtr &_smartPtr) const
+		{
+			return !(*this == _smartPtr);
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		_T* operator-> ()
+		{
+			return m_value;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		_T& operator* ()
+		{
+			return *m_value;
 		}
 
 	protected:

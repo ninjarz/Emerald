@@ -15,22 +15,27 @@ namespace Emerald
 {
 	// EEChromosome
 	//----------------------------------------------------------------------------------------------------
-	class EEChromosome
+	struct EEChromosome
 	{
-	public:
-		EEChromosome(int _geneLength);
-		virtual ~EEChromosome();
+		bool isAlive;
+		std::vector<std::string> genes; // bits
+		float fitness; // 0.f - ¡Þ
 
-		//----------------------------------------------------------------------------------------------------
-		inline float GetFitness() 
-		{ 
-			return m_fitness;
+		inline EEChromosome(int _geneAmount)
+			:
+			isAlive(true),
+			genes(_geneAmount),
+			fitness(0.f)
+		{
 		}
 
-	protected:
-		bool m_isAlive;
-		std::string m_gene; // bits
-		float m_fitness; // 0.f - ¡Þ
+		inline EEChromosome(const EEChromosome& _chromosome)
+			:
+			isAlive(_chromosome.isAlive),
+			genes(_chromosome.genes),
+			fitness(_chromosome.fitness)
+		{
+		}
 	};
 
 	// EEChromosomePtr
@@ -45,9 +50,10 @@ namespace Emerald
 		EEGeneController();
 		virtual ~EEGeneController();
 
-		virtual bool Process();
+		virtual bool Epoch();
 
 	protected:
+		bool CalculateFitness(EEChromosomePtr& _chromosome);
 		void Crossover();
 		bool Mutate(EEChromosomePtr& _chromosome);
 
@@ -55,7 +61,8 @@ namespace Emerald
 		int m_maxPopulationSize;
 		float m_crossoverRate;
 		float m_mutationRate;
-		int m_geneLength;
+		int m_geneAmount;
+		float m_geneMutationRate; // Depend on the mutation rate and the amount of genes
 		std::map<std::string, std::string> m_geneTranslation;
 
 		// runtime

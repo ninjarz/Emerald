@@ -39,7 +39,7 @@ int main(int _argc, char** _argv)
 	rouletteWheel.Delete(10, 3);
 	
 	EEGeneController geneController;
-	geneController.Process();
+	while (geneController.Epoch());
 
 	return 0;
 }
