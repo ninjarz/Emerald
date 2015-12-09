@@ -46,7 +46,9 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEGeneController::CalculateFitness(EEChromosomePtr& _chromosome)
 	{
-		// Todo: use lambda
+		_chromosome->fitness = m_fitnessFunc(_chromosome->genes);
+		if (_chromosome->fitness <= 0)
+			_chromosome->isAlive = false;
 
 		return _chromosome->isAlive;
 	}

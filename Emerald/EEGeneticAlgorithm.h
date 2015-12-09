@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <functional>
 #include "EESmartPtr.h"
 #include "EERouletteWheel.h"
 
@@ -64,6 +65,7 @@ namespace Emerald
 		int m_geneAmount;
 		float m_geneMutationRate; // Depend on the mutation rate and the amount of genes
 		std::map<std::string, std::string> m_geneTranslation;
+		std::function<float(std::vector<std::string>)> m_fitnessFunc;
 
 		// runtime
 		EERouletteWheel<EEChromosomePtr> m_chromosomes;
