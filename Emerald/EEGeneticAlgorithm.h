@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <functional>
+#include <boost/any.hpp>
 #include "EESmartPtr.h"
 #include "EERouletteWheel.h"
 
@@ -18,21 +19,18 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	struct EEChromosome
 	{
-		bool isAlive;
 		std::vector<std::string> genes; // bits
-		float fitness; // 0.f - ¡Þ
+		float fitness; // 0.f - 1.f
 
-		inline EEChromosome(int _geneAmount)
+		inline EEChromosome(const std::vector<std::string>& _genes)
 			:
-			isAlive(true),
-			genes(_geneAmount),
+			genes(_genes),
 			fitness(0.f)
 		{
 		}
 
 		inline EEChromosome(const EEChromosome& _chromosome)
 			:
-			isAlive(_chromosome.isAlive),
 			genes(_chromosome.genes),
 			fitness(_chromosome.fitness)
 		{
@@ -48,10 +46,12 @@ namespace Emerald
 	class EEGeneController
 	{
 	public:
-		EEGeneController();
+		EEGeneController(const std::function<float(std::vector<boost::any>)>& _fitnessFunc);
 		virtual ~EEGeneController();
 
 		virtual bool Epoch();
+		virtual bool AddSample(const std::vector<std::string>& _genes);
+		virtual void AddTranslation(std::string _gene, boost::any _meaning);
 
 	protected:
 		bool CalculateFitness(EEChromosomePtr& _chromosome);
@@ -62,10 +62,8 @@ namespace Emerald
 		int m_maxPopulationSize;
 		float m_crossoverRate;
 		float m_mutationRate;
-		int m_geneAmount;
-		float m_geneMutationRate; // Depend on the mutation rate and the amount of genes
-		std::map<std::string, std::string> m_geneTranslation;
-		std::function<float(std::vector<std::string>)> m_fitnessFunc;
+		std::map<std::string, boost::any> m_geneTranslation;
+		std::function<float(std::vector<boost::any>)> m_fitnessFunc;
 
 		// runtime
 		EERouletteWheel<EEChromosomePtr> m_chromosomes;

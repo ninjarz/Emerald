@@ -151,6 +151,7 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline EERedBlackTree()
 			:
+			m_size(0),
 			m_root(nullptr)
 		{
 		}
@@ -171,6 +172,30 @@ namespace Emerald
 		inline NodeIterator end()
 		{
 			return NodeIterator(nullptr);
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline _T& Front()
+		{
+			return FindLeast(m_root)->data;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline _T& Back()
+		{
+			return FindGreatest(m_root)->data;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline void PopFront()
+		{
+			Delete(FindLeast(m_root));
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline unsigned int Size()
+		{
+			return m_size;
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -208,6 +233,7 @@ namespace Emerald
 		//----------------------------------------------------------------------------------------------------
 		inline void Insert(Node *_node)
 		{
+			++m_size;
 			Node *tree = m_root;
 			Node *node = _node;
 
@@ -494,6 +520,7 @@ namespace Emerald
 							_node->parent->Calculate();
 					}
 
+					--m_size;
 					delete _node;
 				}
 			}
@@ -514,6 +541,7 @@ namespace Emerald
 
 				DeleteNodes(_node->left);
 				DeleteNodes(_node->right);
+				--m_size;
 				delete _node;
 			}
 		}
@@ -598,6 +626,7 @@ namespace Emerald
 
 	protected:
 		Node *m_root;
+		unsigned int m_size;
 	};
 };
 

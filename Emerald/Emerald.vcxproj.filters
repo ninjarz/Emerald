@@ -546,6 +546,9 @@
     <ClCompile Include="EEGeneticAlgorithm.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\GeneTest.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">

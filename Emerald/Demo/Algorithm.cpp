@@ -1,5 +1,5 @@
 // Demo
-#if 1
+#if 0
 #include "../Emerald.h"
 
 
@@ -37,9 +37,6 @@ int main(int _argc, char** _argv)
 	int rwResult = 0;
 	rouletteWheel.Select(-30, rwResult);
 	rouletteWheel.Delete(10, 3);
-	
-	EEGeneController geneController;
-	while (geneController.Epoch());
 
 	return 0;
 }

@@ -1,4 +1,5 @@
 #include "EEGeneticAlgorithm.h"
+#include <time.h>
 
 
 //----------------------------------------------------------------------------------------------------
@@ -6,19 +7,16 @@ namespace Emerald
 {
 	// EEGeneController
 	//----------------------------------------------------------------------------------------------------
-	EEGeneController::EEGeneController()
+	EEGeneController::EEGeneController(const std::function<float(std::vector<boost::any>)>& _fitnessFunc)
 		:
-		m_maxPopulationSize(0),
+		m_maxPopulationSize(20),
 		m_crossoverRate(0.7f),
-		m_mutationRate(0.1f),
-		m_geneAmount(500),
-		m_geneMutationRate(0.f),
+		m_mutationRate(0.01f),
 		m_geneTranslation(),
+		m_fitnessFunc(_fitnessFunc),
 		m_chromosomes()
 	{
-		if (m_geneAmount)
-			m_geneMutationRate = float(1 - pow(1 - m_mutationRate, 1.0 / (double)m_geneAmount));
-		// m_chromosomes.Insert(10.f, new EEChromosome(5));
+		srand((unsigned int)time(0));
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -37,20 +35,59 @@ namespace Emerald
 				m_chromosomes.Delete(chromosome->fitness, chromosome);
 		}
 		*/
+		if (m_maxPopulationSize > 0)
+		{
+			while ((unsigned int)m_maxPopulationSize < m_chromosomes.Size())
+				m_chromosomes.PopFront();
+		}
 
 		Crossover();
 
-		return m_chromosomes.begin() != m_chromosomes.end();
+		if (m_chromosomes.begin() != m_chromosomes.end())
+		{
+			if (m_chromosomes.Back()->fitness == 1.f)
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEGeneController::AddSample(const std::vector<std::string>& _genes)
+	{
+		EEChromosomePtr sample(new EEChromosome(_genes));
+
+		if (CalculateFitness(sample))
+		{
+			m_chromosomes.Insert(sample->fitness, sample);
+			return true;
+		}
+		
+		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEGeneController::AddTranslation(std::string _gene, boost::any _meaning)
+	{
+		m_geneTranslation[_gene] = _meaning;
 	}
 
 	//----------------------------------------------------------------------------------------------------
 	bool EEGeneController::CalculateFitness(EEChromosomePtr& _chromosome)
 	{
-		_chromosome->fitness = m_fitnessFunc(_chromosome->genes);
-		if (_chromosome->fitness <= 0)
-			_chromosome->isAlive = false;
+		std::vector<boost::any> meanings;
+		for (auto& gene : _chromosome->genes)
+		{
+			if (m_geneTranslation.find(gene) != m_geneTranslation.end())
+				meanings.push_back(m_geneTranslation[gene]);
+			else
+				return false;
+		}
 
-		return _chromosome->isAlive;
+		_chromosome->fitness = m_fitnessFunc(meanings);
+
+		return _chromosome->fitness > 0;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -61,11 +98,11 @@ namespace Emerald
 			return;
 
 		EEChromosomePtr son(new EEChromosome(*dad)), daughter(new EEChromosome(*mom));
-		if (m_crossoverRate <= ((float)rand() / (float)RAND_MAX) && mom != dad)
+		if (((float)rand() / (float)RAND_MAX) <= m_crossoverRate && mom != dad)
 		{
 			for (unsigned int i = 0; i < son->genes.size(); ++i)
 			{
-				if (0.5f <= ((float)rand() / (float)RAND_MAX))
+				if (((float)rand() / (float)RAND_MAX) <= 0.5f)
 				{
 					std::string tmp = son->genes[i];
 					son->genes[i] = daughter->genes[i];
@@ -85,13 +122,14 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEGeneController::Mutate(EEChromosomePtr& _chromosome)
 	{
+		float geneMutationRate = float(1 - pow(1 - m_mutationRate, 1.0 / (double)_chromosome->genes.size()));
 		for (auto& gene : _chromosome->genes)
 		{
-			if (m_geneMutationRate <= ((float)rand() / (float)RAND_MAX))
+			if (((float)rand() / (float)RAND_MAX) <= geneMutationRate)
 			{
 				for (unsigned int i = 0; i < gene.size(); ++i)
 				{
-					if (0.5f <= ((float)rand() / (float)RAND_MAX))
+					if (((float)rand() / (float)RAND_MAX) <= 0.5f)
 					{
 						gene[i] = gene[i] == '0' ? '1' : '0';
 					}

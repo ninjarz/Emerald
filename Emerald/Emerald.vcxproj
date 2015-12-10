@@ -103,6 +103,7 @@
     <ClCompile Include="Demo\AnimationEditor2.cpp" />
     <ClCompile Include="Demo\Erode.cpp" />
     <ClCompile Include="Demo\FontTest.cpp" />
+    <ClCompile Include="Demo\GeneTest.cpp" />
     <ClCompile Include="Demo\Line2d.cpp" />
     <ClCompile Include="Demo\LineEditor.cpp" />
     <ClCompile Include="Demo\Music.cpp" />
