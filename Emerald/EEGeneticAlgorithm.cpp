@@ -7,11 +7,11 @@ namespace Emerald
 {
 	// EEGeneController
 	//----------------------------------------------------------------------------------------------------
-	EEGeneController::EEGeneController(const std::function<float(std::vector<boost::any>)>& _fitnessFunc)
+	EEGeneController::EEGeneController(const std::function<float(std::vector<boost::any>)>& _fitnessFunc, int _maxPopulationSize, float _crossoverRate, float _mutationRate)
 		:
-		m_maxPopulationSize(20),
-		m_crossoverRate(0.7f),
-		m_mutationRate(0.01f),
+		m_maxPopulationSize(_maxPopulationSize),
+		m_crossoverRate(_crossoverRate),
+		m_mutationRate(_mutationRate),
 		m_geneTranslation(),
 		m_fitnessFunc(_fitnessFunc),
 		m_chromosomes()
@@ -28,13 +28,6 @@ namespace Emerald
 	//----------------------------------------------------------------------------------------------------
 	bool EEGeneController::Epoch()
 	{
-		/*
-		for (auto& chromosome : m_chromosomes)
-		{
-			if (!Update(chromosome))
-				m_chromosomes.Delete(chromosome->fitness, chromosome);
-		}
-		*/
 		if (m_maxPopulationSize > 0)
 		{
 			while ((unsigned int)m_maxPopulationSize < m_chromosomes.Size())
@@ -98,7 +91,7 @@ namespace Emerald
 			return;
 
 		EEChromosomePtr son(new EEChromosome(*dad)), daughter(new EEChromosome(*mom));
-		if (((float)rand() / (float)RAND_MAX) <= m_crossoverRate && mom != dad)
+		if (((float)rand() / (float)RAND_MAX) <= m_crossoverRate)
 		{
 			for (unsigned int i = 0; i < son->genes.size(); ++i)
 			{

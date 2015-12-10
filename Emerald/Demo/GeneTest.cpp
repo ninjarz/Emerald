@@ -59,7 +59,7 @@ int main(int _argc, char** _argv)
 			std::cout << " = " << left << std::endl;
 		}
 
-		float result = 1.f / (0.5f * abs(left - 30) + 1); // Option: logistic regression function
+		float result = 1.f / (0.5f * abs(left - 50) + 1); // Option: logistic regression function
 		std::cout << "Fitness:" << result << std::endl;
 		return result;
 	});
@@ -77,9 +77,9 @@ int main(int _argc, char** _argv)
 	geneController.AddTranslation("00", std::function<int(int, int)>([](int _a, int _b) -> int { return _a + _b; }));
 	geneController.AddTranslation("01", std::function<int(int, int)>([](int _a, int _b) -> int { return _a - _b; }));
 	geneController.AddTranslation("10", std::function<int(int, int)>([](int _a, int _b) -> int { return _a * _b; }));
-	geneController.AddSample({ "0000", "00", "0000", "00", "0000" });
-	geneController.AddSample({ "0000", "01", "0000", "01", "0000" });
-	geneController.AddSample({ "0000", "10", "0000", "10", "0000" });
+	geneController.AddSample({ "0000", "00", "0000", "00", "0000", "00", "0000" });
+	geneController.AddSample({ "0000", "01", "0000", "01", "0000", "01", "0000" });
+	geneController.AddSample({ "0000", "10", "0000", "10", "0000", "10", "0000" });
 	while (geneController.Epoch());
 
 	return 0;

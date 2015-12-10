@@ -22,6 +22,7 @@ namespace Emerald
 		std::vector<std::string> genes; // bits
 		float fitness; // 0.f - 1.f
 
+		//----------------------------------------------------------------------------------------------------
 		inline EEChromosome(const std::vector<std::string>& _genes)
 			:
 			genes(_genes),
@@ -29,11 +30,18 @@ namespace Emerald
 		{
 		}
 
+		//----------------------------------------------------------------------------------------------------
 		inline EEChromosome(const EEChromosome& _chromosome)
 			:
 			genes(_chromosome.genes),
 			fitness(_chromosome.fitness)
 		{
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		inline bool operator!= (const EEChromosome& _chromosome)
+		{
+			return genes != _chromosome.genes;
 		}
 	};
 
@@ -46,7 +54,7 @@ namespace Emerald
 	class EEGeneController
 	{
 	public:
-		EEGeneController(const std::function<float(std::vector<boost::any>)>& _fitnessFunc);
+		EEGeneController(const std::function<float(std::vector<boost::any>)>& _fitnessFunc, int _maxPopulationSize = 2000,float _crossoverRate = 0.7,float _mutationRate = 0.1);
 		virtual ~EEGeneController();
 
 		virtual bool Epoch();
