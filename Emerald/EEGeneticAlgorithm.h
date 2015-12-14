@@ -44,9 +44,6 @@ namespace Emerald
 			return genes != _chromosome.genes;
 		}
 	};
-
-	// EEChromosomePtr
-	//----------------------------------------------------------------------------------------------------
 	typedef EESmartPtr<EEChromosome> EEChromosomePtr;
 
 	// EEGeneController
@@ -72,6 +69,7 @@ namespace Emerald
 		float m_mutationRate;
 		std::map<std::string, boost::any> m_geneTranslation;
 		std::function<float(std::vector<boost::any>)> m_fitnessFunc;
+		// Todo: crossover func, mutation func
 
 		// runtime
 		EERouletteWheel<EEChromosomePtr> m_chromosomes;

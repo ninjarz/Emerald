@@ -549,6 +549,9 @@
     <ClCompile Include="Demo\GeneTest.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
+    <ClCompile Include="EENeuralNetworks.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">
@@ -837,6 +840,9 @@
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
     <ClInclude Include="EESkipList.h">
+      <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EENeuralNetworks.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>

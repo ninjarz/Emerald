@@ -59,7 +59,7 @@ int main(int _argc, char** _argv)
 			std::cout << " = " << left << std::endl;
 		}
 
-		float result = 1.f / (0.5f * abs(left - 50) + 1); // Option: logistic regression function
+		float result = 1.f / (0.05f * abs(left - 100) + 1); // Option: logistic regression function
 		std::cout << "Fitness:" << result << std::endl;
 		return result;
 	});
