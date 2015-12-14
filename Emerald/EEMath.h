@@ -20,6 +20,7 @@ namespace Emerald
 #define EE_1DIV2PI          0.159154943f
 #define EE_PIDIV2           1.570796327f
 #define EE_PIDIV4           0.785398163f
+#define EE_e                2.71828f
 #define EE_F_MAX			FLT_MAX
 #define EE_F_MIN			FLT_MIN
 
