@@ -41,7 +41,6 @@ content origin
 
 		bool SetContent(EEObject* _content);
 
-
 	protected:
 		EEObject m_contentOrigin;
 		EEObject* m_content;

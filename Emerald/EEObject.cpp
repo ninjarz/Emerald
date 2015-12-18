@@ -60,7 +60,7 @@ namespace Emerald
 		m_isUseTex(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
-		//state
+		// State
 		m_isFocusable(false),
 		m_state(EE_OBJECT_FREE)
 	{
@@ -90,7 +90,7 @@ namespace Emerald
 		m_isUseTex(false),
 		m_localZOrder(0.0f),
 		m_isLocalZOrderDirty(true),
-		//state
+		// State
 		m_isFocusable(false),
 		m_state(EE_OBJECT_FREE)
 	{
@@ -102,6 +102,7 @@ namespace Emerald
 		:
 		m_isAlive(_object.m_isAlive),
 		m_parent(_object.m_parent),
+		m_children(_object.m_children),
 		m_position(_object.m_position),
 		m_isPositionDirty(_object.m_isPositionDirty),
 		m_scale(_object.m_scale),
@@ -118,11 +119,12 @@ namespace Emerald
 		m_isUseTex(_object.m_isUseTex),
 		m_localZOrder(_object.m_localZOrder),
 		m_isLocalZOrderDirty(_object.m_isLocalZOrderDirty),
-		//state
+		// State
 		m_isFocusable(false),
 		m_state(_object.m_state)
 	{
-
+		// Todo: handle m_parent and m_children
+		// SetParent(_object.m_parent);
 	}
 
 	//----------------------------------------------------------------------------------------------------

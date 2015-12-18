@@ -10,7 +10,7 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	//EEScne
+	// EEScne
 	//----------------------------------------------------------------------------------------------------
 	class EEScene : public EEObject
 	{
@@ -23,10 +23,8 @@ namespace Emerald
 		virtual bool Render();
 		void AddObject(EEObject* _object);
 		void RemoveObject(EEObject* _object);
-		void SubObject();
 
 	protected:
-		//controls
 		std::vector<EEObject*> m_objects;
 	};
 }

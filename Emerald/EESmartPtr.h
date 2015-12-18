@@ -73,6 +73,16 @@ namespace Emerald
 			return *m_value;
 		}
 
+		// Dangerous
+		//----------------------------------------------------------------------------------------------------
+		/*
+		operator _T* ()
+		{ 
+			return m_value;
+		}
+		*/
+
+
 	protected:
 		void SetValue(_T *_value)
 		{

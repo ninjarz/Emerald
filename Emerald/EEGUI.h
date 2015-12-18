@@ -15,6 +15,8 @@
 #include "EEFloatBoard.h"
 #include "EEAnimation.h"
 #include "EEComboBox.h"
+#include "EEList.h"
 #include "EEScrollView.h"
+#include "EEListView.h"
 
 #endif

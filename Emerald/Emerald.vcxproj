@@ -106,6 +106,7 @@
     <ClCompile Include="Demo\GeneTest.cpp" />
     <ClCompile Include="Demo\Line2d.cpp" />
     <ClCompile Include="Demo\LineEditor.cpp" />
+    <ClCompile Include="Demo\ListView.cpp" />
     <ClCompile Include="Demo\Music.cpp" />
     <ClCompile Include="Demo\Music2.cpp" />
     <ClCompile Include="Demo\Music3.cpp" />
@@ -182,6 +183,8 @@
     <ClCompile Include="EELine2D.cpp" />
     <ClCompile Include="EELineBrowser.cpp" />
     <ClCompile Include="EELineEditor.cpp" />
+    <ClCompile Include="EEList.cpp" />
+    <ClCompile Include="EEListView.cpp" />
     <ClCompile Include="EEMagicButton.cpp" />
     <ClCompile Include="EEMemoryLeak.cpp" />
     <ClCompile Include="EEMusic.cpp" />
@@ -276,6 +279,8 @@
     <ClInclude Include="EELine2D.h" />
     <ClInclude Include="EELineBrowser.h" />
     <ClInclude Include="EELineEditor.h" />
+    <ClInclude Include="EEList.h" />
+    <ClInclude Include="EEListView.h" />
     <ClInclude Include="EEMagicButton.h" />
     <ClInclude Include="EEMemoryLeak.h" />
     <ClInclude Include="EEMusic.h" />

@@ -127,6 +127,12 @@
     <Filter Include="源文件\Emerald\EEGUI\EEButton">
       <UniqueIdentifier>{2f4fecdb-6260-41a8-9758-f1191b5ee914}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Emerald\EEGUI\EEView">
+      <UniqueIdentifier>{85102c5c-ce96-4b56-bb72-8e4042e7a369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Emerald\EEGUI\EEView">
+      <UniqueIdentifier>{113e0393-e3cc-44fd-ad3e-1a0642aa9580}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -492,9 +498,6 @@
     <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
-    <ClCompile Include="EEScrollView.cpp">
-      <Filter>源文件\Emerald\EEGUI</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\ScrollView.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -551,6 +554,18 @@
     </ClCompile>
     <ClCompile Include="EENeuralNetworks.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\ListView.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="EEListView.cpp">
+      <Filter>源文件\Emerald\EEGUI\EEView</Filter>
+    </ClCompile>
+    <ClCompile Include="EEScrollView.cpp">
+      <Filter>源文件\Emerald\EEGUI\EEView</Filter>
+    </ClCompile>
+    <ClCompile Include="EEList.cpp">
+      <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -794,9 +809,6 @@
     <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
-    <ClInclude Include="EEScrollView.h">
-      <Filter>头文件\Emerald\EEGUI</Filter>
-    </ClInclude>
     <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
@@ -844,6 +856,15 @@
     </ClInclude>
     <ClInclude Include="EENeuralNetworks.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="EEListView.h">
+      <Filter>头文件\Emerald\EEGUI\EEView</Filter>
+    </ClInclude>
+    <ClInclude Include="EEScrollView.h">
+      <Filter>头文件\Emerald\EEGUI\EEView</Filter>
+    </ClInclude>
+    <ClInclude Include="EEList.h">
+      <Filter>头文件\Emerald\EEGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

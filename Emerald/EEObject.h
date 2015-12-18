@@ -227,6 +227,10 @@ namespace Emerald
 		std::mutex m_threadMutex;
 	};
 
+	// EEObjectPtr
+	//----------------------------------------------------------------------------------------------------
+	typedef EESmartPtr<EEObject> EEObjectPtr;
+
 	// EEObject_APIs
 	//----------------------------------------------------------------------------------------------------
 	bool EEProcess(EEObject* _object);
