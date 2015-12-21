@@ -42,12 +42,20 @@ namespace Emerald
 		EENeuron();
 		virtual ~EENeuron();
 
+		bool IsActivityDirty();
+		float GetActivity();
+		void AddActivity(float _activity);
+		void ClearActivity();
+		std::map<EENeuronPtr, EESynapsePtr>& GetDendrites();
 		void AddDendrite(EESynapsePtr& _dendrite);
 		void AddAxon(EESynapsePtr& _axon);
+		std::map<EENeuronPtr, EESynapsePtr>& GetAxons();
 		bool RemoveDendrite(EENeuronPtr& _dendrite);
 		bool RemoveAxon(EENeuronPtr& _axon);
 
 	protected:
+		bool m_isActivityDirty;
+		float m_activity;
 		std::map<EENeuronPtr, EESynapsePtr> m_dendrites; // Input
 		std::map<EENeuronPtr, EESynapsePtr> m_axons; // Output
 	};
@@ -60,15 +68,13 @@ namespace Emerald
 		EENeuralNetworks();
 		virtual ~EENeuralNetworks();
 
-		// Feedforword
-		bool Generate(unsigned int _inputCount, unsigned int _outputCount, std::vector<unsigned int> _neuronCounts);
-		/*
-		// Back Propagation
-		bool BPTrain(const std::vector<float>& _input, const std::vector<float>& _outputs);
+		bool Generate(unsigned int _inputCount, unsigned int _outputCount, std::vector<unsigned int> _neuronCounts); // Feedforword
+		bool BPTrain(const std::vector<float>& _input, const std::vector<float>& _outputs); // Back Propagation
 		std::vector<float> Stimulate(const std::vector<float>& _input);
-		*/
 
 	protected:
+		void ClearActivity();
+		void ClearActivity(EENeuronPtr _neuron);
 		bool Link(EENeuronPtr _source, float _weight, EENeuronPtr _target);
 		bool Unlink(EENeuronPtr _source, EENeuronPtr _target);
 		float LogisticSigmoid(float _input);

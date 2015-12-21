@@ -8,6 +8,9 @@ namespace Emerald
 	// EENeuron
 	//----------------------------------------------------------------------------------------------------
 	EENeuron::EENeuron()
+		:
+		m_isActivityDirty(false),
+		m_activity(0.f)
 	{
 
 	}
@@ -16,6 +19,38 @@ namespace Emerald
 	EENeuron::~EENeuron()
 	{
 
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EENeuron::IsActivityDirty()
+	{
+		return m_isActivityDirty;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EENeuron::GetActivity()
+	{
+		return m_activity;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EENeuron::AddActivity(float _activity)
+	{
+		m_activity += _activity;
+		m_isActivityDirty = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EENeuron::ClearActivity()
+	{
+		m_activity = 0.f;
+		m_isActivityDirty = false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::map<EENeuronPtr, EESynapsePtr>& EENeuron::GetDendrites()
+	{
+		return m_dendrites;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -28,6 +63,12 @@ namespace Emerald
 	void EENeuron::AddAxon(EESynapsePtr& _axon)
 	{
 		m_axons[_axon->target] = _axon;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::map<EENeuronPtr, EESynapsePtr>& EENeuron::GetAxons()
+	{
+		return m_axons;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -110,6 +151,45 @@ namespace Emerald
 		}
 
 		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EENeuralNetworks::BPTrain(const std::vector<float>& _input, const std::vector<float>& _outputs)
+	{
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	std::vector<float> EENeuralNetworks::Stimulate(const std::vector<float>& _input)
+	{
+		ClearActivity();
+
+		std::vector<float> result;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EENeuralNetworks::ClearActivity()
+	{
+		for (auto& neuron : m_inputs)
+		{
+			if (neuron->IsActivityDirty())
+			{
+				ClearActivity(neuron);
+			}
+		}
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EENeuralNetworks::ClearActivity(EENeuronPtr _neuron) // Warnning: loop
+	{
+		if (_neuron->IsActivityDirty())
+		{
+			_neuron->ClearActivity();
+			for (auto& axon : _neuron->GetAxons())
+			{
+				ClearActivity(axon.first);
+			}
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
