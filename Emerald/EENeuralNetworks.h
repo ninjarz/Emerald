@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <list>
+#include <map>
 #include "EESmartPtr.h"
 
 
@@ -11,56 +12,44 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
-	struct EEDendrite;
-	typedef EESmartPtr<EEDendrite> EEDendritePtr;
-	struct EEAxon;
-	typedef EESmartPtr<EEAxon> EEAxonPtr;
+	struct EESynapse;
+	typedef EESmartPtr<EESynapse> EESynapsePtr;
 	class EENeuron;
 	typedef EESmartPtr<EENeuron> EENeuronPtr;
 
-	// EEDendrite (Input)
+	// EESynapse (Input & Output)
 	//----------------------------------------------------------------------------------------------------
-	struct EEDendrite
+	struct EESynapse
 	{
+		EENeuronPtr source;
 		float weight;
-		EENeuronPtr parent;
+		EENeuronPtr target;
 
 		//----------------------------------------------------------------------------------------------------
-		inline EEDendrite(float _weight, EENeuronPtr _neuron)
+		inline EESynapse(EENeuronPtr _source, float _weight, EENeuronPtr _target)
 			:
+			source(_source),
 			weight(_weight),
-			parent(_neuron)
+			target(_target)
 		{}
 	};
 
-	// EEAxon (Output)
-	//----------------------------------------------------------------------------------------------------
-	struct EEAxon
-	{
-		EEDendritePtr target;
-
-		//----------------------------------------------------------------------------------------------------
-		inline EEAxon(EEDendritePtr _dendrite)
-			:
-			target(_dendrite)
-		{}
-	};
-
-	// EENeuron
+	// EENeuron (Core)
 	//----------------------------------------------------------------------------------------------------
 	class EENeuron
 	{
 	public:
-		void Link(EENeuronPtr& _target, float _weight);
-		void Unlink(EENeuronPtr& _target);
+		EENeuron();
+		virtual ~EENeuron();
+
+		void AddDendrite(EESynapsePtr& _dendrite);
+		void AddAxon(EESynapsePtr& _axon);
+		bool RemoveDendrite(EENeuronPtr& _dendrite);
+		bool RemoveAxon(EENeuronPtr& _axon);
 
 	protected:
-		void AddDendrite(EEDendritePtr& _dendrite);
-		void AddAxon(EEAxonPtr& _axon);
-
-	protected:
-		std::list<EEDendritePtr> m_dendrites;
-		std::list<EEAxonPtr> m_axons;
+		std::map<EENeuronPtr, EESynapsePtr> m_dendrites; // Input
+		std::map<EENeuronPtr, EESynapsePtr> m_axons; // Output
 	};
 
 	// NeuralNetworks
@@ -69,20 +58,24 @@ namespace Emerald
 	{
 	public:
 		EENeuralNetworks();
-		~EENeuralNetworks();
+		virtual ~EENeuralNetworks();
 
+		// Feedforword
+		bool Generate(unsigned int _inputCount, unsigned int _outputCount, std::vector<unsigned int> _neuronCounts);
 		/*
-		bool Train(const std::vector<float>& _input, const std::vector<float>& _outputs);
+		// Back Propagation
+		bool BPTrain(const std::vector<float>& _input, const std::vector<float>& _outputs);
 		std::vector<float> Stimulate(const std::vector<float>& _input);
 		*/
 
 	protected:
+		bool Link(EENeuronPtr _source, float _weight, EENeuronPtr _target);
+		bool Unlink(EENeuronPtr _source, EENeuronPtr _target);
 		float LogisticSigmoid(float _input);
 
 	protected:
-		std::vector<EEDendrite> m_inputs;
-		std::vector<EENeuronPtr> m_neurons;
-		std::vector<EEAxon> m_outputs;
+		std::vector<EENeuronPtr> m_inputs;
+		std::vector<EENeuronPtr> m_outputs;
 	};
 }
 

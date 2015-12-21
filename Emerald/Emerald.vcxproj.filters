@@ -567,6 +567,9 @@
     <ClCompile Include="EEList.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\NeuralNetworks.cpp">
+      <Filter>源文件\Demo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EESystem.h">

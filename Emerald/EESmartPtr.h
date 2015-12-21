@@ -62,6 +62,12 @@ namespace Emerald
 		}
 
 		//----------------------------------------------------------------------------------------------------
+		bool operator< (const EESmartPtr &_smartPtr) const
+		{
+			return m_value < _smartPtr.m_value;
+		}
+
+		//----------------------------------------------------------------------------------------------------
 		_T* operator-> ()
 		{
 			return m_value;
@@ -71,6 +77,12 @@ namespace Emerald
 		_T& operator* ()
 		{
 			return *m_value;
+		}
+
+		//----------------------------------------------------------------------------------------------------
+		operator bool ()
+		{
+			return m_value ? true : false;
 		}
 
 		// Dangerous

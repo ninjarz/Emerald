@@ -10,5 +10,6 @@
 #include "EERouletteWheel.h"
 #include "EEHash.h"
 #include "EEGeneticAlgorithm.h"
+#include "EENeuralNetworks.h"
 
 #endif
