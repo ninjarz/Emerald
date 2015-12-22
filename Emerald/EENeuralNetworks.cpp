@@ -5,12 +5,30 @@
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
 {
+	// EESynapse (Input & Output)
+	//----------------------------------------------------------------------------------------------------
+	EESynapse::EESynapse(EENeuronPtr _source, float _weight, EENeuronPtr _target)
+		:
+		source(_source),
+		weight(_weight),
+		target(_target)
+	{}
+
+	//----------------------------------------------------------------------------------------------------
+	void EESynapse::Stimulate(float _input)
+	{
+		target->Stimulate(_input * weight);
+	}
+
+
+
 	// EENeuron
 	//----------------------------------------------------------------------------------------------------
 	EENeuron::EENeuron()
 		:
 		m_isActivityDirty(false),
-		m_activity(0.f)
+		m_activity(0.f),
+		m_stimulatedTimes(0)
 	{
 
 	}
@@ -19,6 +37,26 @@ namespace Emerald
 	EENeuron::~EENeuron()
 	{
 
+	}
+
+	// 
+	//----------------------------------------------------------------------------------------------------
+	void EENeuron::Stimulate(float _input)
+	{
+		AddActivity(_input);
+
+		if (m_dendrites.size() <= m_stimulatedTimes) // Memo: for feedforword
+		{
+			if (m_axons.size())
+			{
+				for (auto& axon : m_axons)
+				{
+					axon.second->Stimulate(LogisticSigmoid(_input));
+				}
+
+				ClearActivity();
+			}
+		}
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -34,17 +72,11 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EENeuron::AddActivity(float _activity)
-	{
-		m_activity += _activity;
-		m_isActivityDirty = true;
-	}
-
-	//----------------------------------------------------------------------------------------------------
 	void EENeuron::ClearActivity()
 	{
 		m_activity = 0.f;
 		m_isActivityDirty = false;
+		m_stimulatedTimes = 0;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -93,6 +125,20 @@ namespace Emerald
 			return true;
 		}
 		return false;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EENeuron::AddActivity(float _activity)
+	{
+		m_activity += _activity;
+		m_isActivityDirty = true;
+		++m_stimulatedTimes;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	float EENeuron::LogisticSigmoid(float _input)
+	{
+		return 1 / (1 + pow(EE_e, -1 * _input));
 	}
 
 	// EENeuralNetworks
@@ -154,17 +200,33 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EENeuralNetworks::BPTrain(const std::vector<float>& _input, const std::vector<float>& _outputs)
+	bool EENeuralNetworks::BPTrain(const std::vector<float>& _inputs, const std::vector<float>& _outputs)
 	{
 		return true;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	std::vector<float> EENeuralNetworks::Stimulate(const std::vector<float>& _input)
+	std::vector<float> EENeuralNetworks::Stimulate(const std::vector<float>& _inputs)
 	{
+		if (_inputs.size() != m_inputs.size())
+		{
+			return std::vector<float>();
+		}
+
 		ClearActivity();
 
-		std::vector<float> result;
+		for (unsigned int i = 0; i < m_inputs.size(); ++i)
+		{
+			m_inputs[i]->Stimulate(_inputs[i]);
+		}
+
+		std::vector<float> outputs;
+		for (auto& ouput : m_outputs)
+		{
+			outputs.push_back(ouput->GetActivity());
+		}
+
+		return outputs;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -180,7 +242,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	void EENeuralNetworks::ClearActivity(EENeuronPtr _neuron) // Warnning: loop
+	void EENeuralNetworks::ClearActivity(EENeuronPtr _neuron)
 	{
 		if (_neuron->IsActivityDirty())
 		{
@@ -214,11 +276,5 @@ namespace Emerald
 			return _source->RemoveAxon(_target) && _target->RemoveDendrite(_source);
 		}
 		return false;
-	}
-
-	//----------------------------------------------------------------------------------------------------
-	float EENeuralNetworks::LogisticSigmoid(float _input)
-	{
-		return 1 / (1 + pow(EE_e, -1 * _input));
 	}
 }

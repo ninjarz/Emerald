@@ -83,16 +83,20 @@ namespace Emerald
 			}
 			return true;
 		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEList::AddObjectAt(EEObject* _object, int _index)
+	bool EEList::AddObjectAt(EEObject* _object, unsigned int _index)
 	{
 		if (_object)
 		{
 
 			return true;
 		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
@@ -103,15 +107,19 @@ namespace Emerald
 
 			return true;
 		}
+
+		return false;
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	bool EEList::RemoveObjectAt(int _index)
+	bool EEList::RemoveObjectAt(unsigned int _index)
 	{
 		if (0 <= _index && _index < m_objects.size())
 		{
 
 			return true;
 		}
+
+		return false;
 	}
 }

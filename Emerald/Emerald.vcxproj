@@ -94,11 +94,6 @@
     <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp" />
     <ClCompile Include="Demo\DIVAProject\DIVAMusicListView.cpp" />
-    <ClCompile Include="Demo\DIVA\DIVA.cpp" />
-    <ClCompile Include="Demo\DIVA\DIVAConfig.cpp" />
-    <ClCompile Include="Demo\DIVA\DIVAGame.cpp" />
-    <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp" />
-    <ClCompile Include="Demo\DIVA\NoteMap.cpp" />
     <ClCompile Include="Demo\DNSServer.cpp" />
     <ClCompile Include="Demo\AnimationEditor2.cpp" />
     <ClCompile Include="Demo\Erode.cpp" />
@@ -232,11 +227,6 @@
     <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMenu.h" />
     <ClInclude Include="Demo\DIVAProject\DIVAMusicListView.h" />
-    <ClInclude Include="Demo\DIVA\DIVAConfig.h" />
-    <ClInclude Include="Demo\DIVA\DIVAHelper.h" />
-    <ClInclude Include="Demo\DIVA\DIVAGame.h" />
-    <ClInclude Include="Demo\DIVA\DIVAMusicList.h" />
-    <ClInclude Include="Demo\DIVA\NoteMap.h" />
     <ClInclude Include="DirectXTex\BC.h" />
     <ClInclude Include="DirectXTex\BCDirectCompute.h" />
     <ClInclude Include="DirectXTex\DDS.h" />

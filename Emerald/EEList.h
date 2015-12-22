@@ -36,9 +36,9 @@ namespace Emerald
 		virtual bool Update();
 		virtual bool Render();
 		bool AddObject(EEObject* _object);
-		bool AddObjectAt(EEObject* _object, int _index);
+		bool AddObjectAt(EEObject* _object, unsigned int _index);
 		bool RemoveObject(EEObject* _object);
-		bool RemoveObjectAt(int _index);
+		bool RemoveObjectAt(unsigned int _index);
 
 	protected:
 		std::vector<EEListItem> m_objects;

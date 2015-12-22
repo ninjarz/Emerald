@@ -43,9 +43,6 @@
     <Filter Include="源文件\Emerald\EEGeometry">
       <UniqueIdentifier>{b2d5991e-10cd-40b9-89f3-e0450dbd7679}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Demo\DIVA">
-      <UniqueIdentifier>{7d488e33-c436-43ca-be1c-fff7e4992df2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Emerald\EETexture">
       <UniqueIdentifier>{7a8e9807-242d-4562-aa0e-d6542b6eb12e}</UniqueIdentifier>
     </Filter>
@@ -441,21 +438,6 @@
     <ClCompile Include="Demo\源1.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\DIVA\DIVA.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVA\DIVAConfig.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVA\NoteMap.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVA\DIVAMusicList.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVA\DIVAGame.cpp">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\LineEditor.cpp">
       <Filter>源文件\Demo</Filter>
     </ClCompile>
@@ -772,21 +754,6 @@
     </ClInclude>
     <ClInclude Include="EECanny.h">
       <Filter>头文件\Emerald\EEEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVA\DIVAConfig.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVA\DIVAHelper.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVA\NoteMap.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVA\DIVAMusicList.h">
-      <Filter>源文件\Demo\DIVA</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVA\DIVAGame.h">
-      <Filter>源文件\Demo\DIVA</Filter>
     </ClInclude>
     <ClInclude Include="EELineEditor.h">
       <Filter>头文件\Emerald\EEGUI</Filter>

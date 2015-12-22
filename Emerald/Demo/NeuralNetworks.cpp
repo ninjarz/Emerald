@@ -7,8 +7,8 @@
 int main(int _argc, char** _argv)
 {
 	EENeuralNetworks networks;
-	networks.Generate(2, 1, {100, 200});
-
+	networks.Generate(2, 1, {3, 5});
+	networks.Stimulate({ 0.5, 0.5 });
 
 	return 0;
 }
