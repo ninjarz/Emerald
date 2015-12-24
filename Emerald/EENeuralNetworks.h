@@ -25,7 +25,7 @@ namespace Emerald
 	public:
 		EESynapse(EENeuronPtr _source, float _weight, EENeuronPtr _target);
 
-		void Stimulate(float _input);
+		void Activate(float _input);
 
 	public:
 		EENeuronPtr source;
@@ -42,10 +42,11 @@ namespace Emerald
 		virtual ~EENeuron();
 
 		void Stimulate(float _input);
+		float Activate();
 
-		bool IsActivityDirty();
 		float GetActivity();
-		void ClearActivity();
+		bool IsStimulusDirty();
+		void ClearStimulus();
 		std::map<EENeuronPtr, EESynapsePtr>& GetDendrites();
 		void AddDendrite(EESynapsePtr& _dendrite);
 		void AddAxon(EESynapsePtr& _axon);
@@ -53,16 +54,24 @@ namespace Emerald
 		bool RemoveDendrite(EENeuronPtr& _dendrite);
 		bool RemoveAxon(EENeuronPtr& _axon);
 
-	protected:
-		void AddActivity(float _activity);
-		float LogisticSigmoid(float _input);
+		// Learning
+		void AdjustWeights(float _error);
 
 	protected:
-		bool m_isActivityDirty;
+		void AddStimulus(float _stimulus);
+		float Sigmoid(float _input);
+		float SigmoidD(float _input);
+
+	protected:
 		float m_activity;
+		bool m_isStimulusDirty;
+		float m_stimulus;
 		unsigned int m_stimulatedTimes;
 		std::map<EENeuronPtr, EESynapsePtr> m_dendrites; // Input
 		std::map<EENeuronPtr, EESynapsePtr> m_axons; // Output
+
+		// Learning
+		float m_learningRate;
 	};
 
 	// NeuralNetworks
@@ -74,12 +83,14 @@ namespace Emerald
 		virtual ~EENeuralNetworks();
 
 		bool Generate(unsigned int _inputCount, unsigned int _outputCount, std::vector<unsigned int> _neuronCounts); // Feedforword
-		bool BPTrain(const std::vector<float>& _inputs, const std::vector<float>& _outputs); // Back Propagation
 		std::vector<float> Stimulate(const std::vector<float>& _inputs);
 
+		// Learning
+		bool BPTrain(const std::vector<float>& _inputs, const std::vector<float>& _outputs); // Back Propagation
+
 	protected:
-		void ClearActivity();
-		void ClearActivity(EENeuronPtr _neuron);
+		void ClearStimulus();
+		void ClearStimulus(EENeuronPtr _neuron);
 		bool Link(EENeuronPtr _source, float _weight, EENeuronPtr _target);
 		bool Unlink(EENeuronPtr _source, EENeuronPtr _target);
 
