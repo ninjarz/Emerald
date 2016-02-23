@@ -27,17 +27,18 @@ namespace Emerald
 		virtual void OnMouseOver(const Point& _pos);
 		virtual void OnMouseClicked(const Point& _pos);
 		virtual void OnMouseTriggered(const Point& _pos);
+		virtual void OnTriggered();
 
 	protected:
-		// scale
+		// Scale
 		float m_aimScale;
 		float m_currScaleTime;
 		float m_aimScaleTime;
-		// alpha
+		// Alpha
 		float m_aimAlpha;
 		float m_currFadeTime;
 		float m_aimFadeTime;
-		// callback function
+		// Callback function
 		std::function<void(void)> m_callbackFunc;
 	};
 }

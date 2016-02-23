@@ -3,16 +3,19 @@
 #include <string>
 
 
+//----------------------------------------------------------------------------------------------------
 DIVAMusicList::DIVAMusicList()
 {
 	LoadMusicList();
 }
 
+//----------------------------------------------------------------------------------------------------
 vector<DIVAMusicInfo>* DIVAMusicList::GetMusicList()
 {
 	return &m_musicList;
 }
 
+//----------------------------------------------------------------------------------------------------
 const DIVAMap* DIVAMusicList::GetMap(unsigned int _listId, DIVADifficulty _difficulty)
 {
 	if (_listId < 0 || m_musicList.size() <= _listId)
@@ -33,6 +36,7 @@ const DIVAMap* DIVAMusicList::GetMap(unsigned int _listId, DIVADifficulty _diffi
 	return &maps[_difficulty];
 }
 
+//----------------------------------------------------------------------------------------------------
 bool DIVAMusicList::LoadMusicList()
 {
 	char pathBase[MAX_PATH] = { 0 };

@@ -458,7 +458,7 @@ namespace Emerald
 	}
 
 	//----------------------------------------------------------------------------------------------------
-	//this function is different with other final functions. it is embellished with scale
+	// This function is different from other final functions. It is embellished with scale
 	Rect_Float EEQuad2D::GetFinalRect() const
 	{
 		if (m_parent)
@@ -518,9 +518,12 @@ namespace Emerald
 		{
 			if (s_focusedObject == this && !EECore::s_EECore->IsKeyDown(VK_LBUTTON))
 				s_focusedObject = nullptr;
-			else if (s_focusedObject != this)
+			else if (s_focusedObject != this && s_triggeredObject != this)
 				OnMouseFree(EECore::s_EECore->GetMousePosition());
 		}
+
+		if (s_triggeredObject == this)
+			OnTriggered();
 
 		return true;
 	}

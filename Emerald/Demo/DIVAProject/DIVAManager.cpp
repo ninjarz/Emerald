@@ -6,7 +6,7 @@
 //----------------------------------------------------------------------------------------------------
 DIVAManager::DIVAManager()
 	:
-	m_state(DIVA_FREE_MODE)
+	m_state(DIVA_MENU)
 {
 	Initialize();
 }

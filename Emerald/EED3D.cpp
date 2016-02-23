@@ -412,7 +412,7 @@ namespace Emerald
 	{
 		if (m_isVsync)
 		{
-			m_swapChain->Present(4, 0);
+			m_swapChain->Present(1, 0);
 		}
 		else
 		{

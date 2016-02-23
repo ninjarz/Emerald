@@ -187,7 +187,11 @@ namespace Emerald
 	void EEMagicButton::OnMouseTriggered(const Point& _pos)
 	{
 		EEObject::OnMouseTriggered(_pos);
+	}
 
+	//----------------------------------------------------------------------------------------------------
+	void EEMagicButton::OnTriggered()
+	{
 		m_currFadeTime += (float)EECore::s_EECore->GetDeltaTime();
 		if (m_currFadeTime >= m_aimFadeTime)
 		{

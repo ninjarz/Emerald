@@ -169,6 +169,7 @@ namespace Emerald
 		virtual void OnMouseOver(const Point& _pos);
 		virtual void OnMouseClicked(const Point& _pos);
 		virtual void OnMouseTriggered(const Point& _pos);
+		virtual void OnTriggered();
 
 		// mutex
 		std::mutex& GetThreadMutex();

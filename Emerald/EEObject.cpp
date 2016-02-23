@@ -772,7 +772,12 @@ namespace Emerald
 			m_TriggeredFunc();
 		s_focusedObject = nullptr;
 		s_triggeredObject = this;
-		//m_isTriggered = true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	void EEObject::OnTriggered()
+	{
+		// Virtual
 	}
 
 	//----------------------------------------------------------------------------------------------------
