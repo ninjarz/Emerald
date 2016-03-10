@@ -1,15 +1,19 @@
 #pragma once
 
-#include "DIVAMap.h"
+#include "../../Emerald.h"
+#include "DIVAMusicList.h"
 
 
 //----------------------------------------------------------------------------------------------------
-class DIVAMusicListView
+class DIVAMusicListView : public EEListView
 {
 public:
-	DIVAMusicListView();
-
+	DIVAMusicListView(const Rect_Float& _area);
 
 private:
+	bool Initialize();
+	void Shutdown();
 
+private:
+	DIVAMusicList m_musicList;
 };

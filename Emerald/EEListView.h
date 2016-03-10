@@ -11,9 +11,10 @@ namespace Emerald
 {
 	// EEListView
 	//----------------------------------------------------------------------------------------------------
-	class EEListView : protected EEScrollView
+	class EEListView : public EEScrollView
 	{
 	public:
+		EEListView();
 		EEListView(const Rect_Float& _area);
 		EEListView(const EEListView& _listView);
 		virtual ~EEListView();

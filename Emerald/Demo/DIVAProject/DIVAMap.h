@@ -76,5 +76,4 @@ private:
 	// runtime data
 	int m_framePos;
 	int m_frameForwardPos;
-
 };

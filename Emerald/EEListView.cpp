@@ -5,6 +5,14 @@ namespace Emerald
 {
 	// EEListView
 	//----------------------------------------------------------------------------------------------------
+	EEListView::EEListView()
+		:
+		EEScrollView()
+	{
+		SetContent(&m_list);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEListView::EEListView(const Rect_Float& _area)
 		:
 		EEScrollView(_area)

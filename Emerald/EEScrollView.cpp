@@ -7,6 +7,24 @@ namespace Emerald
 {
 	// EEScrollView
 	//----------------------------------------------------------------------------------------------------
+	EEScrollView::EEScrollView()
+		:
+		EEQuad2D(),
+		m_contentOrigin(FLOAT3(-GetWidth() / 2, -GetHeight() / 2, 0.f)),
+		m_content(nullptr),
+		m_offsetHeight(0),
+		m_verticalScrollHeight(0),
+		m_verticalScrollCapacity(0),
+		m_verticalScrollPos(0),
+		m_verticalPos(0),
+		m_verticalPosDelta(0)
+	{
+		SetIsFocusable(true);
+
+		m_contentOrigin.SetParent(this);
+	}
+
+	//----------------------------------------------------------------------------------------------------
 	EEScrollView::EEScrollView(const Rect_Float& _area)
 		:
 		EEQuad2D(_area),

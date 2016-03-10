@@ -21,7 +21,8 @@ DIVAFreeMode::DIVAFreeMode()
 	m_easyButton(Rect_Float((float)EEGetWidth() * 0.51f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.638125f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Easy-Bright.png"),
 	m_normalButton(Rect_Float((float)EEGetWidth() * 0.6325f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.760625f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Normal-Bright.png"),
 	m_hardButton(Rect_Float((float)EEGetWidth() * 0.7525f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 0.880625f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty hard-Bright.png"),
-	m_extremeButton(Rect_Float((float)EEGetWidth() * 0.87375f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 1.001875f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Extreme-Bright.png")
+	m_extremeButton(Rect_Float((float)EEGetWidth() * 0.87375f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() * 1.001875f, (float)EEGetHeight() * 0.1889f), L"Texture/Project Diva Freedom/Song Choosing/Difficulty Extreme-Bright.png"),
+	m_listView(Rect_Float((float)EEGetWidth() * 0.87375f, (float)EEGetHeight() * 0.1211f, (float)EEGetWidth() / 2, (float)EEGetHeight() / 2))
 {
 	Initialize();
 }
@@ -152,6 +153,9 @@ bool DIVAFreeMode::Initialize()
 		SetDifficulty(3);
 	});
 	m_scene.AddObject(&m_extremeButton);
+
+	
+	m_scene.AddObject(&m_listView);
 
 	return true;
 }

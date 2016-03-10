@@ -130,6 +130,9 @@
     <Filter Include="源文件\Emerald\EEGUI\EEView">
       <UniqueIdentifier>{113e0393-e3cc-44fd-ad3e-1a0642aa9580}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Demo\Tutorial">
+      <UniqueIdentifier>{31f1ca3f-4abf-4693-afab-28418b9fabb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -360,107 +363,14 @@
     <ClCompile Include="EECanny.cpp">
       <Filter>源文件\Emerald\EEEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\animation.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Average.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Blur.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\CameraAction.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Canny.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\ContrastAndBright.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DNSServer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Erode.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\FontTest.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Line2d.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Music.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Picking.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Points.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Progress.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Recoder.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Ripple.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Slide.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\TCPClient.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\TCPSever.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\TCPwithFont.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Test.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Thread.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\UDPClient.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\UDPServer.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\YYClient.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\源1.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\LineEditor.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EETextEditor.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
     <ClCompile Include="EELineEditor.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\AnimationEditor.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Music2.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EEVideo.cpp">
       <Filter>源文件\Emerald</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Video.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Music3.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="Demo\DIVAProject\DIVAMain.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
@@ -479,15 +389,6 @@
     </ClCompile>
     <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\ScrollView.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\AnimationEditor2.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\Bitmap.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
@@ -513,12 +414,6 @@
     <ClCompile Include="EERedBlackTree.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\Algorithm.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\CharacterGenerator.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="Demo\DIVAProject\DIVAMusicListView.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
@@ -531,14 +426,8 @@
     <ClCompile Include="EEGeneticAlgorithm.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\GeneTest.cpp">
-      <Filter>源文件\Demo</Filter>
-    </ClCompile>
     <ClCompile Include="EENeuralNetworks.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\ListView.cpp">
-      <Filter>源文件\Demo</Filter>
     </ClCompile>
     <ClCompile Include="EEListView.cpp">
       <Filter>源文件\Emerald\EEGUI\EEView</Filter>
@@ -549,8 +438,122 @@
     <ClCompile Include="EEList.cpp">
       <Filter>源文件\Emerald\EEGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Demo\Algorithm.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\animation.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\AnimationEditor.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\AnimationEditor2.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Average.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Bitmap.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Blur.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\CameraAction.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Canny.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\CharacterGenerator.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\ContrastAndBright.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DNSServer.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Erode.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\FontTest.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\GeneTest.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Line2d.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\LineEditor.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\ListView.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Music.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Music2.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Music3.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
     <ClCompile Include="Demo\NeuralNetworks.cpp">
-      <Filter>源文件\Demo</Filter>
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Picking.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Points.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Progress.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Recoder.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Ripple.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\ScrollView.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Slide.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\TCPClient.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\TCPSever.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\TCPwithFont.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Test.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Thread.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\UDPClient.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\UDPServer.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\Video.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\YYClient.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\源1.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

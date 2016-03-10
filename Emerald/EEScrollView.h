@@ -30,12 +30,15 @@ content origin
 	class EEScrollView : public EEQuad2D
 	{
 	public:
+		EEScrollView();
 		EEScrollView(const Rect_Float& _area);
 		EEScrollView(const EEScrollView& _scrollView);
 		virtual ~EEScrollView();
 
 		virtual bool Update();
 		virtual bool Render();
+
+	protected:
 		bool VerticalPull(float _scrollPos);
 		bool Repull();
 

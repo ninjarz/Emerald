@@ -2,6 +2,7 @@
 
 #include "../../Emerald.h"
 #include "DIVAConfig.h"
+#include "DIVAMusicListView.h"
 
 
 //----------------------------------------------------------------------------------------------------
@@ -41,4 +42,5 @@ private:
 	EEButton m_normalButton;
 	EEButton m_hardButton;
 	EEButton m_extremeButton;
+	DIVAMusicListView m_listView;
 };
