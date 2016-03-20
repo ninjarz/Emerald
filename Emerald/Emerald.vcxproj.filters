@@ -133,6 +133,18 @@
     <Filter Include="源文件\Demo\Tutorial">
       <UniqueIdentifier>{31f1ca3f-4abf-4693-afab-28418b9fabb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Demo\DIVAProject\Model">
+      <UniqueIdentifier>{338db6b9-f80e-40b5-9fc2-14679b8eb328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Demo\DIVAProject\View">
+      <UniqueIdentifier>{56e6de4e-49ad-4957-b2dd-ef2ccaaa9c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Demo\DIVAProject\Controller">
+      <UniqueIdentifier>{725027dd-a01f-4e13-a8aa-c4796060f40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Emerald\EEAlgorithm\Cryptography">
+      <UniqueIdentifier>{56ef5d61-a2f5-4e96-81d1-d19e99a85c58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -375,24 +387,6 @@
     <ClCompile Include="Demo\DIVAProject\DIVAMain.cpp">
       <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAManager.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAConfig.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClCompile>
     <ClCompile Include="EECharacterGenerator.cpp">
       <Filter>源文件\Emerald</Filter>
     </ClCompile>
@@ -413,9 +407,6 @@
     </ClCompile>
     <ClCompile Include="EERedBlackTree.cpp">
       <Filter>源文件\Emerald\EEAlgorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="Demo\DIVAProject\DIVAMusicListView.cpp">
-      <Filter>源文件\Demo\DIVAProject</Filter>
     </ClCompile>
     <ClCompile Include="EEButton.cpp">
       <Filter>源文件\Emerald\EEGUI\EEButton</Filter>
@@ -553,6 +544,30 @@
       <Filter>源文件\Demo\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="Demo\源1.cpp">
+      <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMap.cpp">
+      <Filter>源文件\Demo\DIVAProject\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMusicList.cpp">
+      <Filter>源文件\Demo\DIVAProject\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMusicListView.cpp">
+      <Filter>源文件\Demo\DIVAProject\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAFreeMode.cpp">
+      <Filter>源文件\Demo\DIVAProject\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAManager.cpp">
+      <Filter>源文件\Demo\DIVAProject\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAMenu.cpp">
+      <Filter>源文件\Demo\DIVAProject\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\DIVAProject\DIVAConfig.cpp">
+      <Filter>源文件\Demo\DIVAProject\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo\SecureHashAlgorithm.cpp">
       <Filter>源文件\Demo\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
@@ -767,24 +782,6 @@
     <ClInclude Include="EEVideo.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAManager.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAConfig.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAMap.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAMenu.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
-    </ClInclude>
     <ClInclude Include="EECharacterGenerator.h">
       <Filter>头文件\Emerald</Filter>
     </ClInclude>
@@ -808,9 +805,6 @@
     </ClInclude>
     <ClInclude Include="EEAlgorithm.h">
       <Filter>头文件\Emerald\EEAlgorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="Demo\DIVAProject\DIVAMusicListView.h">
-      <Filter>源文件\Demo\DIVAProject</Filter>
     </ClInclude>
     <ClInclude Include="EEButton.h">
       <Filter>头文件\Emerald\EEGUI\EEButton</Filter>
@@ -838,6 +832,30 @@
     </ClInclude>
     <ClInclude Include="EEList.h">
       <Filter>头文件\Emerald\EEGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMap.h">
+      <Filter>源文件\Demo\DIVAProject\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMusicList.h">
+      <Filter>源文件\Demo\DIVAProject\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMusicListView.h">
+      <Filter>源文件\Demo\DIVAProject\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAFreeMode.h">
+      <Filter>源文件\Demo\DIVAProject\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAManager.h">
+      <Filter>源文件\Demo\DIVAProject\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAMenu.h">
+      <Filter>源文件\Demo\DIVAProject\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo\DIVAProject\DIVAConfig.h">
+      <Filter>源文件\Demo\DIVAProject\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="EESecureHashAlgorithm.h">
+      <Filter>头文件\Emerald\EEAlgorithm\Cryptography</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

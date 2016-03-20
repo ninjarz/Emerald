@@ -112,6 +112,7 @@
     <ClCompile Include="Demo\Recoder.cpp" />
     <ClCompile Include="Demo\Ripple.cpp" />
     <ClCompile Include="Demo\ScrollView.cpp" />
+    <ClCompile Include="Demo\SecureHashAlgorithm.cpp" />
     <ClCompile Include="Demo\Slide.cpp" />
     <ClCompile Include="Demo\TCPClient.cpp" />
     <ClCompile Include="Demo\TCPSever.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="EERouletteWheel.h" />
     <ClInclude Include="EEScene.h" />
     <ClInclude Include="EEScrollView.h" />
+    <ClInclude Include="EESecureHashAlgorithm.h" />
     <ClInclude Include="EESegmentTree.h" />
     <ClInclude Include="EESkipList.h" />
     <ClInclude Include="EESlider.h" />

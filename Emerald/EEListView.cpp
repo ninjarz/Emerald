@@ -104,4 +104,10 @@ namespace Emerald
 
 		return false;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	bool EEListView::SetContent(EEObject* _content)
+	{
+		return EEScrollView::SetContent(_content);
+	}
 }

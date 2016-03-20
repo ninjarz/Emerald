@@ -38,7 +38,7 @@ content origin
 		virtual bool Update();
 		virtual bool Render();
 
-	protected:
+	public:
 		bool VerticalPull(float _scrollPos);
 		bool Repull();
 

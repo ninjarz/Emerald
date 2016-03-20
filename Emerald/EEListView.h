@@ -28,6 +28,9 @@ namespace Emerald
 		bool RemoveObjectAt(int _index);
 
 	protected:
+		bool SetContent(EEObject* _content);
+
+	protected:
 		EEList m_list;
 	};
 }
