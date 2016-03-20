@@ -198,6 +198,7 @@
     <ClCompile Include="EERipple.cpp" />
     <ClCompile Include="EEScene.cpp" />
     <ClCompile Include="EEScrollView.cpp" />
+    <ClCompile Include="EESecureHashAlgorithm.cpp" />
     <ClCompile Include="EESegmentTree.cpp" />
     <ClCompile Include="EESlide.cpp" />
     <ClCompile Include="EESmartPtr.cpp" />

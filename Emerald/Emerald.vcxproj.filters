@@ -145,6 +145,9 @@
     <Filter Include="头文件\Emerald\EEAlgorithm\Cryptography">
       <UniqueIdentifier>{56ef5d61-a2f5-4e96-81d1-d19e99a85c58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Emerald\EEAlgorithm\Cryptography">
+      <UniqueIdentifier>{66395f42-6338-4e78-b5e2-7d14b651b4de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EESystem.cpp">
@@ -569,6 +572,9 @@
     </ClCompile>
     <ClCompile Include="Demo\SecureHashAlgorithm.cpp">
       <Filter>源文件\Demo\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="EESecureHashAlgorithm.cpp">
+      <Filter>源文件\Emerald\EEAlgorithm\Cryptography</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

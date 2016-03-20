@@ -11,5 +11,6 @@
 #include "EEHash.h"
 #include "EEGeneticAlgorithm.h"
 #include "EENeuralNetworks.h"
+#include "EESecureHashAlgorithm.h"
 
 #endif
