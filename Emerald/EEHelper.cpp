@@ -137,4 +137,40 @@ namespace Emerald
 		_str.erase(_str.find_last_not_of(" ") + 1);
 		return _str;
 	}
+
+	//----------------------------------------------------------------------------------------------------
+	unsigned int RotateL(const unsigned int& value, const unsigned int& shift)
+	{
+		return (value << shift) | (value >> (32 - shift));
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	unsigned long long int RotateL(const unsigned long long int& value, const unsigned long long int& shift)
+	{
+		return (value << shift) | (value >> (64 - shift));
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	unsigned int RotateR(const unsigned int& value, const unsigned int& shift)
+	{
+		return (value << (32 - shift)) | (value >> shift);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	unsigned long long int RotateR(const unsigned long long int& value, const unsigned long long int& shift)
+	{
+		return (value << (64 - shift)) | (value >> shift);
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	unsigned int ShiftR(const unsigned int& value, const unsigned int& shift)
+	{
+		return value >> shift;
+	}
+
+	//----------------------------------------------------------------------------------------------------
+	unsigned long long int ShiftR(const unsigned long long int& value, const unsigned long long int& shift)
+	{
+		return value >> shift;
+	}
 }

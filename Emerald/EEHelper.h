@@ -23,6 +23,13 @@ namespace Emerald
 
 	void TXTFilter(const std::string& _fin, const std::string& _fout);
 	std::string& trim(std::string& _str);
+
+	unsigned int RotateL(const unsigned int& value, const unsigned int& shift);
+	unsigned long long int RotateL(const unsigned long long int& value, const unsigned long long int& shift);
+	unsigned int RotateR(const unsigned int& value, const unsigned int& shift);
+	unsigned long long int RotateR(const unsigned long long int& value, const unsigned long long int& shift);
+	unsigned int ShiftR(const unsigned int& value, const unsigned int& shift);
+	unsigned long long int ShiftR(const unsigned long long int& value, const unsigned long long int& shift);
 }
 
 #endif

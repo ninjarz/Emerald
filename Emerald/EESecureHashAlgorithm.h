@@ -3,7 +3,8 @@
 #define _EE_SECUREHASHALGORITHM_H_
 
 #include <string>
-
+#include <array>
+#include <vector>
 
 //----------------------------------------------------------------------------------------------------
 namespace Emerald
@@ -37,6 +38,13 @@ namespace Emerald
 	{
 	public:
 		static std::string SHA_1(const std::string& _input);
+		static std::string SHA_2_224(const std::string& _input);
+		static std::string SHA_2_256(const std::string& _input);
+		static std::string SHA_2_512(const std::string& _input);
+
+	private:
+		static void Preprocess(const std::string& _input, std::vector<std::array<unsigned char, 64>>& _chunks);
+		static void Preprocess(const std::string& _input, std::vector<std::array<unsigned char, 128>>& _chunks);
 	};
 }
 
